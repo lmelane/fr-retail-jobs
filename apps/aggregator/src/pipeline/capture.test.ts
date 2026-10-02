@@ -153,19 +153,24 @@ describe('native extraction evidence', () => {
     expect(replay.jobs[0].publicationWithdrawnAt).toEqual(live.jobs[0].publicationWithdrawnAt);
   });
 
-  it('isolates replay authentication from live cookies and never primes on the network', async () => {
-    const { clearWafTokens, setWafPrimer } = await import('../lib/wafToken.js');
+  // D-483 : dans une collecte, l'amorçage du défi AWS n'existe plus que sous la politique d'accès de la source
+  // (`connectors/wafBootstrap.ts`, inscrit au journal, rejoué hors réseau : `lib/wafBootstrap.capture.test.ts`). Une
+  // collecte d'une source qu'aucune politique ne nomme ne lance aucun navigateur, et un jeton obtenu hors collecte n'y
+  // entre pas : le défi échoue comme avant le lot, sans contournement général. (Ce témoin attendait auparavant un
+  // amorçage réseau dans toute collecte ; sa partie « rejeu sans réseau » est portée par les témoins D-483.)
+  it('isolates captures from live WAF cookies: no bootstrap policy, no browser, the challenge fails', async () => {
+    const { clearWafTokens, primeWafCookie, setWafPrimer } = await import('../lib/wafToken.js');
     clearWafTokens(); const prime = vi.fn(async () => 'aws-waf-token=live-private'); setWafPrimer(prime);
     const source = key(); let requests = 0;
     vi.stubGlobal('fetch', vi.fn(async () => ++requests === 1
       ? new Response('', { status: 202, headers: { 'x-amzn-waf-action': 'challenge' } }) : new Response(payload)));
     try {
-      await captureExtraction(db, source, {}, undefined, read);
-      const batch = await latest(source);
+      // Prémisse : hors collecte, l'amorceur répond et le jeton est connu du processus.
+      expect(await primeWafCookie(url)).toBe('aws-waf-token=live-private');
       expect(prime).toHaveBeenCalledTimes(1);
-      vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('Network forbidden'); }));
-      expect((await replayExtraction(db, batch.id, read)).jobs).toHaveLength(1);
+      await expect(captureExtraction(db, source, {}, undefined, read)).rejects.toThrow('Challenge aws non levé');
       expect(prime).toHaveBeenCalledTimes(1);
+      expect(requests).toBe(1);
     } finally { clearWafTokens(); setWafPrimer(undefined); }
   });
 
