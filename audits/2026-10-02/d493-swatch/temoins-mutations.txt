@@ -1,13 +1,14 @@
-Témoins du lecteur Swatch Group (D-493), commit a6c5e7c
+Témoins du lecteur Swatch Group (D-493), commit 44dfe00
 
-Sans mutation : 17 réussis, 0 échoués
+Sans mutation : 18 réussis, 0 échoués
 
-G1 lecture des partitions supprimée : 11 échoués / 6 réussis
+G1 lecture des partitions supprimée : 12 échoués / 6 réussis
   ROUGE  seconde lecture (05:06–05:09 UTC), pages réelles : prouvée, 331 offres sur 331, PARTITIONS_RECONCILED
   ROUGE  première lecture (04:56–05:05 UTC) : prouvée aussi, et la même union de 331 que la seconde
   ROUGE  une page servie d'un autre état du listing (cache Akamai, mesuré le 02/10 à 04:53) : non prouvé
   ROUGE  un ordre stable, partitions comprises : prouvé, PARTITIONS_RECONCILED, aucune requête hors du jeu attendu
   ROUGE  partitions dont la somme ne fait pas le total (une offre hors du filtre, ou ajoutée entre deux lectures) : PARTITION_TOTALS_DIFFER
+  ROUGE  une partition vide est un état légitime si la somme tient ; vide quand le complet compte ses offres : refusé
   ROUGE  une offre servie dans deux partitions : PARTITION_OVERLAP, non prouvé
   ROUGE  une offre cachée partout (complet et partition) : PUBLISHER_TOTAL_NOT_REACHED, non prouvé
   ROUGE  une union qui dépasse le total (listing changé pendant la collecte) : UNION_ABOVE_PUBLISHER_TOTAL
@@ -15,29 +16,31 @@ G1 lecture des partitions supprimée : 11 échoués / 6 réussis
   ROUGE  names an unparsed and a failed detail as rejected rows and refuses the proof
   ROUGE  validation et ingestion servies dans un autre ordre : mêmes requêtes de listing, périmètre de la première couvrant la seconde
 
-G2 somme des partitions = total, non vérifiée : 1 échoués / 16 réussis
+G2 somme des partitions = total, non vérifiée : 2 échoués / 16 réussis
   ROUGE  partitions dont la somme ne fait pas le total (une offre hors du filtre, ou ajoutée entre deux lectures) : PARTITION_TOTALS_DIFFER
+  ROUGE  une partition vide est un état légitime si la somme tient ; vide quand le complet compte ses offres : refusé
 
-G3 offre dans deux partitions, non vérifiée : 1 échoués / 16 réussis
+G3 offre dans deux partitions, non vérifiée : 1 échoués / 17 réussis
   ROUGE  une offre servie dans deux partitions : PARTITION_OVERLAP, non prouvé
 
-G4 même dernière page annoncée sur chaque page, non vérifiée : 1 échoués / 16 réussis
+G4 même dernière page annoncée sur chaque page, non vérifiée : 1 échoués / 17 réussis
   ROUGE  une page servie d'un autre état du listing (cache Akamai, mesuré le 02/10 à 04:53) : non prouvé
 
-G5 union = total, non vérifiée : 3 échoués / 14 réussis
+G5 union = total, non vérifiée : 3 échoués / 15 réussis
   ROUGE  sans le filtre du formulaire, la même lecture réelle n'est pas prouvée : 329 sur 331, PARTITION_FILTER_ABSENT
   ROUGE  une offre cachée partout (complet et partition) : PUBLISHER_TOTAL_NOT_REACHED, non prouvé
   ROUGE  une union qui dépasse le total (listing changé pendant la collecte) : UNION_ABOVE_PUBLISHER_TOTAL
 
-G6 filtre de partition absent, non signalé : 1 échoués / 16 réussis
+G6 filtre de partition absent, non signalé : 1 échoués / 17 réussis
   ROUGE  sans le filtre du formulaire, la même lecture réelle n'est pas prouvée : 329 sur 331, PARTITION_FILTER_ABSENT
 
-G7 page au-delà de la dernière, non vérifiée : 1 échoués / 16 réussis
+G7 page au-delà de la dernière, non vérifiée : 1 échoués / 17 réussis
   ROUGE  une page au-delà de la dernière qui porte encore des liens : aucun total, non prouvé, partitions lues quand même
 
-G8 requêtes de listing dépendantes du résultat (partitions arrêtées dès le total atteint) : 6 échoués / 11 réussis
+G8 requêtes de listing dépendantes du résultat (partitions arrêtées dès le total atteint) : 7 échoués / 11 réussis
   ROUGE  un ordre stable, partitions comprises : prouvé, PARTITIONS_RECONCILED, aucune requête hors du jeu attendu
   ROUGE  partitions dont la somme ne fait pas le total (une offre hors du filtre, ou ajoutée entre deux lectures) : PARTITION_TOTALS_DIFFER
+  ROUGE  une partition vide est un état légitime si la somme tient ; vide quand le complet compte ses offres : refusé
   ROUGE  une offre servie dans deux partitions : PARTITION_OVERLAP, non prouvé
   ROUGE  une union qui dépasse le total (listing changé pendant la collecte) : UNION_ABOVE_PUBLISHER_TOTAL
   ROUGE  names an unparsed and a failed detail as rejected rows and refuses the proof

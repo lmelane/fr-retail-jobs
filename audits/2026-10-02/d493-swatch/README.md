@@ -93,9 +93,9 @@ et une page sans lien « Dernier »). Construites par `scripts/construire-fixtur
 Chaque test affirme d'abord sa prémisse.
 
 Chaque garde a été retirée tour à tour (`scripts/temoins-mutations.py`, sortie `temoins-mutations.txt`) : son témoin
-passe au rouge à chaque fois (G1 lecture des partitions : 11 rouges ; G2 somme : 1 ; G3 chevauchement : 1 ; G4
+passe au rouge à chaque fois (G1 lecture des partitions : 12 rouges ; G2 somme : 2 ; G3 chevauchement : 1 ; G4
 annonce de la dernière page : 1 ; G5 union : 3 ; G6 filtre absent : 1 ; G7 page au-delà : 1 ; G8 requêtes dépendantes
-du résultat : 6, dont le témoin de périmètre d'accès). Le typage refuse une erreur injectée (code 2) puis repasse à 0.
+du résultat : 7, dont le témoin de périmètre d'accès). Le typage refuse une erreur injectée (code 2) puis repasse à 0.
 
 Les anciens témoins de relecture par langue et leurs fixtures du 30/09 (`p34`, `p35`, `listes-fr-en`) sont retirés : ils
 gravaient le comportement que ces mesures réfutent. La page 0 du 30/09 reste un témoin du pager sans champs de formulaire.
