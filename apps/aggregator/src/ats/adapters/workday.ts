@@ -394,6 +394,14 @@ async function readPass(shared: Shared, board: Board, memory: BoardMemory, pass:
     if (counted > total) { capped = true; shared.issues.add('PUBLISHER_TOTAL_CAPPED'); shared.issues.add(`FACETS_COUNT_BEYOND_TOTAL=${counted}`); }
   }
   /**
+   * UN TOTAL AU PLAFOND NE SE PROUVE JAMAIS LUI-MÊME (D-520 §4 a, audit du 02/10/2026). Sans facette à plat comptée (aucune
+   * facette, facettes imbriquées seules, valeurs sans compte) et avec une sonde qui ressert une page déjà lue, un site de
+   * 3 000 offres passait « prouvé » sur 2 000 : la forme exacte des fausses preuves de knitwell. Au plafond, Workday ne dit
+   * plus rien : seule la preuve par facette (`facetProof`) peut prouver ce site, et un tableau de partition ou de facette
+   * qui atteint le plafond n'est pas prouvé. Le reste d'une partition configurée est jugé par la partition (ci-dessus).
+   */
+  if (!capped && !board.remainder && total >= WORKDAY_TOTAL_CAP) { capped = true; shared.issues.add('PUBLISHER_TOTAL_AT_CAP'); }
+  /**
    * Second sweep (2026-09-10). An unstable sort can serve the same posting on two
    * consecutive pages while another posting slides between two page boundaries and
    * is never served (Levi's: 1 314 rows announced and read, 7 repeated, 1 306 unique).

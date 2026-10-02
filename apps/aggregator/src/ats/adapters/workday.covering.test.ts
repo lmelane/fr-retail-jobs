@@ -250,11 +250,12 @@ describe('Workday — la preuve par facette n’est adoptée que sous ses trois 
     const facets = facetsFor({ Stores: ids(0, 1_999), DC: ids(1_999, 2_100) }, states);
     server(site, { 'fam-Stores': families.Stores, 'fam-DC': families.DC }, facets);
     const r = await fetchWorkdayJobs(config);
-    // Prémisse : the board itself reports complete (its probe beyond 2 000 serves nothing new), every count adds up.
+    // Prémisse : the board read all it served (its probe beyond 2 000 serves nothing new), every count adds up; a total at
+    // the cap never proves itself (audit of 02/10), so the board is unproven AND named at the cap.
     const board = r.enumeration?.scopes?.find((scope) => scope.scope === 'jobFamilyGroup=Stores');
-    expect(board).toMatchObject({ declaredTotal: WORKDAY_TOTAL_CAP, uniqueIds: WORKDAY_TOTAL_CAP, complete: true });
-    expect(r.enumeration?.issues?.some((issue) => /^COVERING_(BOARD_UNPROVEN|FACET_)/.test(issue))).toBe(false);
-    expect(r.enumeration?.issues).toContain('COVERING_BOARD_AT_CAP=jobFamilyGroup=Stores');
+    expect(board).toMatchObject({ declaredTotal: WORKDAY_TOTAL_CAP, uniqueIds: WORKDAY_TOTAL_CAP, complete: false });
+    expect(r.enumeration?.issues?.some((issue) => /^COVERING_FACET_/.test(issue))).toBe(false);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['COVERING_BOARD_AT_CAP=jobFamilyGroup=Stores', 'COVERING_BOARD_UNPROVEN']));
     unproven(r);
   });
 
@@ -300,5 +301,31 @@ describe('facetProof — chaque condition, isolée', () => {
   it('3 : l’union lue ne fait pas la somme des comptes', () => only({ ...ok, unionIds: 2_099 }, /^COVERING_FACET_TOTAL_MISMATCH=2099\/2100$/, 'unionEqualsCounts'));
   it('3 : les lignes sans chemin comptent dans l’union', () => {
     expect(facetProof({ ...ok, unionIds: 2_099, boards: [ok.boards[0]!, { ...ok.boards[1]!, withoutPath: 1 }] }).adopted).toBe(true);
+  });
+});
+
+/**
+ * AUDIT DU 02/10/2026 (HIGH) : un site au plafond SANS facette à plat comptée, dont la page au-delà ressert une page déjà
+ * lue, était déclaré prouvé (2 000 offres lues sur 3 000, terminaison probante). Un total au plafond ne se prouve jamais
+ * lui-même.
+ */
+describe('Workday — un total au plafond sans facette exploitable n’est jamais prouvé', () => {
+  const forms: Array<[string, Facet[] | undefined]> = [
+    ['aucune facette', undefined],
+    ['facettes imbriquées seules', [{ facetParameter: 'locationMainGroup', values: [{ facetParameter: 'locationCountry', values: [{ descriptor: 'US', id: 'us', count: 3_000 }] }] }]],
+    ['facette à plat sans compte', [{ facetParameter: 'jobFamilyGroup', values: [{ descriptor: 'A', id: 'a' }, { descriptor: 'B', id: 'b' }] }]],
+  ];
+  for (const [label, facets] of forms) it(label, async () => {
+    const site = ids(0, 3_000);
+    vi.mocked(fetchJson).mockImplementation(async (_url: unknown, init: unknown) => {
+      const body = JSON.parse(String((init as { body: string }).body)) as { offset: number };
+      // Prémisse : beyond the cap the site re-serves a page already read, so the probe sees no new id.
+      const list = body.offset >= WORKDAY_TOTAL_CAP ? site.slice(1_980, 2_000) : site.slice(body.offset, body.offset + 20);
+      return { total: body.offset === 0 ? WORKDAY_TOTAL_CAP : 0, facets: body.offset === 0 ? facets : undefined, jobPostings: list.map(posting) };
+    });
+    const r = await fetchWorkdayJobs(config);
+    expect(r.jobs).toHaveLength(2_000);
+    expect(r.complete).toBe(false);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['PUBLISHER_TOTAL_AT_CAP', 'ENUMERATION_NOT_PROVEN']));
   });
 });

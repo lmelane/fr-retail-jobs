@@ -33,7 +33,7 @@ export type ReopeningPlan = {
   resteFermees: Representation[];
   /** L'empreinte des représentations fermées ou retenues lues en base : l'application refuse si elle a changé. */
   empreinte: string;
-  /** L'empreinte du partage (à rouvrir, restent fermées) sous cette liste : un plan retouché à la main est refusé. */
+  /** L'empreinte du partage (à rouvrir, restent fermées) sous cette liste : un plan retouché sans recalcul est refusé (garde de saisie, pas de sécurité). */
   partage: string;
 };
 

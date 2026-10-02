@@ -69,15 +69,17 @@ describe('Workday — enumeration proof against the announced total', () => {
     expect(r.jobs).toHaveLength(2003);
     expect(r.enumeration?.pageEvidence?.at(-1)?.componentCounters).toEqual(['capProbe=1', 'rows=3', 'unseen=3']);
   });
-  it('Nordstrom: past a capped total the board wraps back to its first page — known ids only, still proven', async () => {
+  it('past a total AT the cap the board wraps back to its first page — known ids only: NOT proven, Workday says nothing past 2 000 (D-520 §4 a)', async () => {
     const full = (start: number, withTotal: boolean) => page(Array.from({ length: 20 }, (_, i) => start + i), withTotal ? 2000 : 0);
     const mock = vi.mocked(fetchJson);
     for (let p = 0; p < 100; p++) mock.mockResolvedValueOnce(full(p * 20, p === 0));
     mock.mockResolvedValueOnce(full(0, false));
     const r = await fetchWorkdayJobs(config);
     expect(fetchJson).toHaveBeenCalledTimes(101);
-    expect(r.complete).toBe(true); expect(r.jobs).toHaveLength(2000);
-    expect(r.enumeration?.issues).not.toContain('PUBLISHER_TOTAL_CAPPED');
+    // Before the audit of 02/10/2026: complete, the false proof of knitwell (2 000 read of 3 515). A total at the cap only
+    // proves through the covering facet; without a counted flat facet there is none.
+    expect(r.complete).toBe(false); expect(r.jobs).toHaveLength(2000);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['PUBLISHER_TOTAL_AT_CAP', 'COVERING_FACET_ABSENT', 'ENUMERATION_NOT_PROVEN']));
   });
   it('keeps reading a short page while the publisher announces more, and counts rows without a path', async () => {
     vi.mocked(fetchJson).mockResolvedValueOnce(page(Array.from({ length: 20 }, (_, i) => i), 41)).mockResolvedValueOnce({ total: 0, jobPostings: [...[20, 21, 22].map(posting), { title: 'No path' } as any] }).mockResolvedValueOnce(page(Array.from({ length: 17 }, (_, i) => 23 + i), 0));
