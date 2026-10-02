@@ -179,6 +179,22 @@ describe('Swatch Group — la preuve tombe dès que les lectures ne se recoupent
     expect(r.enumeration?.issues).toEqual(['PARTITION_TOTALS_DIFFER', 'ENUMERATION_NOT_PROVEN']);
   });
 
+  it('une partition vide est un état légitime si la somme tient ; vide quand le complet compte ses offres : refusé', async () => {
+    // Revue adverse du 02/10 : une partition sans aucune offre (aucun temps partiel ce jour-là) passe la forme d'une
+    // seule page. Ce n'est un défaut que si le listing complet la contredit, ce que la somme des totaux voit.
+    serve({ All: sweepOf('All', [[1, 2], [3], []]), 20: sweepOf('20', [[1, 2], [3], []]), 21: { 0: '' } });
+    const legit = await run();
+    expect(legit.enumeration?.scopes?.find((s) => s.scope === 'listing:time=21')).toMatchObject({ declaredTotal: 0, complete: true });
+    expect(legit).toMatchObject({ declaredTotal: 3, complete: true });
+    vi.resetAllMocks();
+    // La même partition vide alors que l'offre 3 est à temps partiel (absente de « 20 ») : 2 + 0 ≠ 3.
+    serve({ All: sweepOf('All', [[1, 2], [3], []]), 20: sweepOf('20', [[1, 2], []]), 21: { 0: '' } });
+    const broken = await run();
+    expect(broken.enumeration?.rawCount).toBe(3);
+    expect(broken.complete).toBe(false);
+    expect(broken.enumeration?.issues).toEqual(['PARTITION_TOTALS_DIFFER', 'ENUMERATION_NOT_PROVEN']);
+  });
+
   it('une offre servie dans deux partitions : PARTITION_OVERLAP, non prouvé', async () => {
     // Total 4 ; partitions 2 + 2 = 4, union 4 : seule l'offre 2, dans les deux, trahit des lectures incohérentes.
     serve({ All: sweepOf('All', [[1, 2], [3, 4], []]), 20: sweepOf('20', [[1, 2], []]), 21: sweepOf('21', [[2, 4], []]) });

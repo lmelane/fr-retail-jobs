@@ -86,7 +86,7 @@ Lieu (`#jl`), description (cinq champs Drupal) et marque (logo) : code inchangé
 
 ## Témoins
 
-`apps/aggregator/src/ats/adapters/swatchgroup.enumeration.test.ts` (17 tests), sur deux fixtures réelles :
+`apps/aggregator/src/ats/adapters/swatchgroup.enumeration.test.ts` (18 tests), sur deux fixtures réelles :
 `swatchgroup-listes-partitions-20261002.json.gz` (les liens de chaque page des deux lectures) et
 `swatchgroup-pages-reelles-20261002.json.br` (dix pages HTML réelles : pages 0, dernière et suivante de chaque lecture,
 et une page sans lien « Dernier »). Construites par `scripts/construire-fixtures.mjs`, rejouable octet pour octet.
@@ -116,9 +116,17 @@ gravaient le comportement que ces mesures réfutent. La page 0 du 30/09 reste un
   la preuve est alors refusée (`PUBLISHER_TOTAL_NOT_REACHED`), la source n'est pas prouvée ce jour-là. Non observé sur
   deux lectures.
 - **Une offre sans valeur `time`** ferait échouer chaque jour le contrôle 3. Aucune le 02/10 (274 + 57 = 331).
-- **Le catalogue** : 380 offres Swatch actives (chiffre de la mission, non remesuré ici) pour 331 en ligne. Ce lot
-  ne mesure pas comment les offres disparues seront fermées à la réouverture (l'adaptateur ne déclare pas
-  `canonicalIds`) : à vérifier avant ou pendant la requalification.
+- **Un état périmé mais cohérent se prouve.** Si le cache sert toutes les pages (complet et partitions) d'un même
+  instant passé, la lecture prouve cet instant : aucun lecteur ne peut le distinguer de l'état courant. Au RUN, ce cas
+  est la relecture du cache de la capture de validation, quelques minutes plus tôt. Signalé par la revue adverse du
+  02/10 (classé CRITICAL par elle, non retenu comme défaut du lecteur : le scénario construit est un instantané
+  cohérent ; la correction proposée, refuser une partition vide, refuserait un état légitime). Témoin ajouté : une
+  partition vide n'est acceptée que si la somme des totaux tient.
+- **Aucune offre ne sera fermée par absence**, avant comme après ce lot : l'adaptateur ne déclare pas `canonicalIds`,
+  et `refreshPlan.ts` (`enumerationEvidence`, `sourceEligibility`) refuse alors toute preuve d'absence (« l'adaptateur
+  ne déclare pas le contrat canonique »), quelle que soit la terminaison. Les offres du catalogue absentes du listing
+  (380 actives selon la mission, non remesuré ici, pour 331 en ligne le 02/10) ne seront donc pas fermées par la
+  réouverture seule. Déclarer ce contrat ouvre la fermeture d'offres : c'est une décision à part, non prise ici.
 - **Politesse** : l'exploration a demandé **354 requêtes** au site entre 04:49 et 05:23 UTC (36 sondes, 247 pages de
   listing en neuf lectures, 71 par l'adaptateur), espacées de 2,5 à 3 s, aucune fiche. Toutes en 200 sauf les
   sondes 301/404/406 attendues ; aucun 403 ni 429. C'est au-delà des « quelques dizaines » demandées : la preuve
