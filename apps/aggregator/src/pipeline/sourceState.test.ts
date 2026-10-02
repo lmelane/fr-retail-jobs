@@ -272,9 +272,10 @@ describe('D-520 — verdict du RUN = réconciliation', () => {
     const issue = { origin: 'UNKNOWN' as const, code: 'EmployerIdentityReviewRequired', count: 1 };
     const summary = summarizeOrchestration({ total: 2, ok: 1, failed: 1, timedOut: 0, failures: ['richemont (bloquant : erreurs d’ingestion)'],
       incidents: [], issues: [{ ...issue, source: 'richemont' }] });
-    // Prémisse : l'ancien verdict était rouge pour cette seule source.
-    expect(summary.executionHealthy).toBe(false);
-    expect(summary.blockingReasons).toEqual(['UNRESOLVED_FAILURE']);
+    // Depuis la classe identité de D-520 (`identity/reviewQueue.ts`), le bilan ne compte plus une identité à revoir parmi
+    // les causes non résolues : elle est en file de revue, avec sa question (le bilan d'avant était UNRESOLVED_FAILURE).
+    expect(summary.executionHealthy).toBe(true);
+    expect(summary.blockingReasons).toEqual([]);
     const states = [computeSourceState({ source: active('richemont'), outcome: run({ runStatus: 'DEGRADED', jobs: 486, issues: [issue] }), previous: null, now: T0 }),
       computeSourceState({ source: active('ok'), outcome: run(), previous: null, now: T0 })];
     expect(systemFailuresOf({ blockingReasons: summary.blockingReasons })).toEqual([]);
