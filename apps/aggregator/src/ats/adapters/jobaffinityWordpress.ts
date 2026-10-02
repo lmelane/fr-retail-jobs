@@ -1,3 +1,4 @@
+import { isKnownPosting } from '../../lib/incrementalReading.js';
 import { captureObservedAt } from '../../capture/context.js';
 import * as cheerio from 'cheerio';
 import pLimit from 'p-limit';
@@ -105,7 +106,10 @@ export async function fetchJobaffinityWordpressJobs(config: Record<string, unkno
   const origin = boardUrl(c.listingUrl).origin;
   if (!c.employer?.trim()) throw new Error('JobAffinity: reviewed board employer required');
   const html = await fetchText(c.listingUrl);
-  const { rows, declaredTotal } = parseJobaffinityGrid(html, c.listingUrl);
+  const { rows: listed, declaredTotal } = parseJobaffinityGrid(html, c.listingUrl);
+  // D-517 : en lecture incrémentale, ni article, ni géographie, ni page de candidature pour une offre déjà connue
+  // (l'identité est le jeton de candidature, celui de `normalizeJobaffinityPost`).
+  const rows = listed.filter(row => !isKnownPosting(jobaffinityApplyUrl(row.attrs['data-applyurl']).split('/').at(-1)));
   const posts = new Map<number, any>();
   // Only IDs in the active board: WP contains old published posts too (1077 vs 993).
   for (let i = 0; i < rows.length; i += 100) {

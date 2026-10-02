@@ -1,60 +1,71 @@
 /**
- * LA PASSE LÉGÈRE DE DÉCOUVERTE — R-143 §1 (D-513, 02/10/2026).
+ * LA PASSE DE DÉCOUVERTE — R-143 §1, D-517 (02/10/2026).
  *
- * « Une nouvelle offre importante ne doit pas arriver chez nous le lendemain si on peut raisonnablement la voir quelques
- * heures après sa publication. » Entre deux RUN, la passe collecte à nouveau les sources dont une collecte COMPLÈTE ne
- * coûte que quelques requêtes (une liste d'API, pas une page par offre), avec exactement l'étape du RUN
- * (`ingestOne` : accès, collecte scellée, écriture dédoublonnée, santé). Une nouvelle offre est écrite, mise en file
- * d'indexation par les déclencheurs de la base et servie dès la fin de sa source. Rien après la boucle : le géocodage
- * (carte, France seule, jusqu'à 2 000 appels) et la soumission à Google (quota partagé d'environ 200 par jour,
- * `googleIndexing.ts`, inactive en production faute de domaine configuré) restent au RUN, pour que la passe finisse
- * avec sa dernière source.
+ * « Toutes les sources significatives découvertes en quelques heures ; le RUN quotidien devient le filet de sécurité,
+ * pas le mécanisme principal de découverte. » Toutes les 6 heures entre deux RUN, la passe lit chaque source qui apporte
+ * des nouvelles offres de façon significative, en LECTURE INCRÉMENTALE (`lib/incrementalReading.ts`) : la liste entière,
+ * le détail des seules publications que la source n'avait jamais montrées, et l'écriture de ces seules publications,
+ * par l'étape exacte du RUN (`ingestOne` : accès, collecte scellée et validée, écriture dédoublonnée). Une nouvelle
+ * offre est servie et mise en file d'indexation dès la fin de sa source.
  *
- * CE QU'ELLE NE FAIT JAMAIS. Rien hors de sa propre lecture : ni refresh (preuve d'absence), ni revue de disponibilité
- * (R-143 §2), ni sonde des liens, ni garde de masse ; ces décisions restent au RUN, qui recollecte chaque source avant
- * de les prendre. Sur ce qu'elle lit, l'écrivain fait comme au RUN (`dedup/upsert.ts`) : une offre revue perd sa
- * retenue, et une fin déclarée par la source ou un retrait natif sur l'offre lue s'appliquent. Une collecte coupée par
- * la fenêtre est tronquée, donc sans droit d'attester (`attestingCapture.ts`), et aucune collecte de passe ne sert de
- * référence aux gardes du RUN (`referenceRuns.ts`).
+ * LA SÉLECTION, PAR L'IMPORTANCE POUR LE CANDIDAT ET PAS PAR LE COÛT (D-517 remplace la règle de coût de la lecture
+ * R-143 §1). Une source entre dans la passe quand elle a fait paraître au moins `SIGNIFICANT_NEW_PER_DAY` publication
+ * nouvelle par jour en moyenne sur les 7 derniers jours (`JobSource.firstSeenAt`), lue en base à chaque passe : une
+ * Maison qui se met à recruter y entre d'elle-même, une source qui se tait en sort. Mesuré le 02/10/2026
+ * (`audits/2026-10-02/fraicheur-d517/`) : 1 par jour retient 147 sources et 96,6 % des nouvelles offres, dont
+ * toutes les Maisons nommées par le CEO (luxe : Prada, Rolex, Burberry, Valentino, Clarins, Swatch ; volume : H&M, Ulta,
+ * Knitwell, Nordstrom, WTTJ, Tapestry). En deçà, une source publie moins d'une offre par jour : une passe sur quatre
+ * en trouverait une, et le RUN la voit dans la journée. Les sources sont lues de la plus productive à la moins
+ * productive, quatre à la fois (la porte par hôte borne le débit sur chaque site, comme au RUN).
+ *
+ * CE QU'ELLE NE FAIT JAMAIS. Rien sur ce qu'elle ne rend pas : une publication connue n'est ni relue, ni réécrite, ni
+ * fermée, ni retenue ; la collecte est scellée `incremental`, jamais complète, jamais attestante, jamais crédible pour
+ * la revue de disponibilité, jamais la référence d'une garde du RUN (`attestingCapture.ts`, `availability.ts`,
+ * `referenceRuns.ts`), et sa santé ne se compare à rien et ne touche pas le résumé du catalogue (`health.ts`). Ni
+ * refresh, ni revue de disponibilité, ni sonde, ni géocodage, ni soumission à Google, ni Healthchecks, ni alerte
+ * e-mail : le RUN garde tout ce qui ferme, masque ou alerte.
+ *
+ * LA QUALIFICATION RESTE AU RUN. Une source dont la qualification native ou l'autorisation d'accès expire dans l'heure
+ * n'est pas lue (`QUALIFICATION_DUE`) : la requalifier demanderait une lecture complète, qui est le travail du RUN.
  *
  * QUAND. Jamais dans la fenêtre du RUN (15:30-18:30 UTC), jamais pendant un RUN ni pendant une autre passe (lu dans
- * `PipelineRun`, revérifié avant chaque source) ; aucune source n'est commencée moins de 2 minutes avant son échéance
- * (45 minutes, jamais au-delà de 15:30 UTC) et chacune est bornée par ce qui reste : Railway saute
+ * `PipelineRun`, revérifié avant chaque source) ; aucune source n'est commencée moins de 2 minutes avant l'échéance
+ * (`LIGHT_PASS_BUDGET_MS`, jamais au-delà de 15:30 UTC), et chacune est bornée par ce qui reste : Railway saute
  * l'exécution suivante d'un cron encore en cours, une passe qui déborderait ferait sauter le RUN du jour.
- * La surveillance Healthchecks est celle du RUN : la passe ne la touche pas (`worker.ts`, `cli.ts`).
- *
- * LES SOURCES. Une liste relue, pas une règle lue à l'exécution dans le journal : la règle (au plus 200 requêtes et au
- * plus une requête pour cinq offres, collecte toujours complète sur les 7 RUN du 25/09 au 01/10, statut OK, moins de 10
- * minutes médianes, au moins une nouvelle offre par jour) et LVMH (128 requêtes Algolia pour 6 240 offres, 97 nouvelles
- * offres par jour ; DEGRADED par une annonce de test retenue sur preuve de l'éditeur et une énumération non déclarée,
- * donc sans droit d'attester), dans l'ordre des durées : la plus longue en dernier. La règle choisit par le COÛT, pas
- * par l'importance des offres : quelles Maisons méritent la fraîcheur reste une question du CEO, posée avec
- * l'activation. Mesures : `audits/2026-10-02/cadence-r143/`. Une clé absente du registre ou non ACTIVE est ignorée.
  */
 import type { PrismaClient } from '@prisma/client';
+import pLimit from 'p-limit';
 import { inRunWindow } from '@catwalks/runtime';
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { log } from '../observability/logger.js';
+import { withIncrementalPass } from '../lib/incrementalReading.js';
+import { requireSourceValidation } from '../connectors/sourceCertification.js';
+import { assertSourceAccess } from '../connectors/sourceAccess.js';
 import { ingestOne, type OrchestratorResult } from './ingestOrchestrator.js';
 import { KIND_TO_ATS } from './ingest.js';
 
-export const LIGHT_PASS_SOURCES: readonly string[] = Object.freeze([
-  'ami-paris', 'figs', 'jojo-maman-bebe', 'gymshark', 'merkal', 'ephemera', 'monica-vinader', 'soeur', 'kiko-milano',
-  'singularu', 'browns', 'kult-olymp-hades', 'eram-3', 'jeans-centre', 'ms-mode', 'my-jewellery', 'boggi-milano',
-  'white-stuff', 'brilliant-earth', 'reformation', 'suitsupply', 'adopt-parfums', 'armand-thiery-flatchr', 'chalhoub',
-  'space-nk', 'hans-anders', 'akira', 'clarkson-eyecare', 'etam', 'aroma-zone', 'lush', 'arcteryx', 'mejuri', 'normal',
-  'element-6', 'galeries-lafayette', 'la-casa-de-las-carcasas', 'rituals', 'lovisa', 'lvmh',
-]);
-/** La durée maximale d'une passe ; mesurée en série : 23 minutes médianes (lvmh 10). */
-export const LIGHT_PASS_BUDGET_MS = 45 * 60_000;
+/** Une source est significative au-delà d'une publication nouvelle par jour en moyenne, sur `SIGNIFICANT_WINDOW_DAYS`. */
+export const SIGNIFICANT_NEW_PER_DAY = 1;
+export const SIGNIFICANT_WINDOW_DAYS = 7;
+/**
+ * La durée maximale d'une passe. Projetée le 02/10/2026 à environ 45 minutes pour la sélection complète en lecture
+ * incrémentale, quatre sources à la fois (`audits/2026-10-02/fraicheur-d517/projection.out`) ; le double laisse la
+ * marge d'un jour lent, et la passe de 10:00 finit toujours avant 15:30.
+ */
+export const LIGHT_PASS_BUDGET_MS = 90 * 60_000;
 /** En deçà, une source n'est pas commencée : elle serait coupée avant d'écrire. */
 export const LIGHT_PASS_MIN_SOURCE_MS = 2 * 60_000;
+/** Les sources lues en même temps ; la porte par hôte (`hostGate.ts`) borne le débit sur chaque site. */
+export const LIGHT_PASS_CONCURRENCY = Number(process.env.LIGHT_PASS_SOURCE_CONCURRENCY ?? 4);
+/** Une qualification ou une autorisation qui expire avant cette marge est laissée au RUN. */
+export const QUALIFICATION_MARGIN_MS = 60 * 60_000;
 /** Un RUN ou une passe restés `RUNNING` au-delà (conteneur tué) ne bloquent plus. Le plus long RUN mesuré : 4 h 13. */
 export const RUN_LOCK_HOURS = 12;
 const RUN_WINDOW_START_UTC_MINUTES = 15 * 60 + 30;
 
 export type RunningRun = { id: string; command: string; startedAt: Date };
 export type LightPassRefusal = 'RUN_WINDOW' | 'RUN_IN_PROGRESS' | 'LIGHT_PASS_IN_PROGRESS';
+export type SignificantSource = { key: string; newPostings: number; perDay: number };
 
 /** Pourquoi une passe ne peut pas (ou plus) travailler à `now`, vu les runs en cours qu'on lui donne ; null quand elle le peut. Pure. */
 export function lightPassRefusal(now: Date, running: readonly RunningRun[]): LightPassRefusal | null {
@@ -84,11 +95,56 @@ export async function runningRuns(prisma: PrismaClient, selfId: string | null): 
   });
 }
 
+/**
+ * Les sources significatives (D-517), de la plus productive à la moins productive : ACTIVE, lisibles par un adaptateur,
+ * au moins `SIGNIFICANT_NEW_PER_DAY` publication vue pour la première fois par jour en moyenne sur les
+ * `SIGNIFICANT_WINDOW_DAYS` derniers jours. Le premier chargement d'une source est un stock, pas un flux : pour une
+ * source enregistrée dans la fenêtre, le flux se compte à partir du lendemain de sa première publication, et il faut au
+ * moins un jour de flux (Estée Lauder, Kering, PVH, enregistrées la veille de la mesure, y entrent ainsi dès le lendemain).
+ */
+export async function significantSources(prisma: PrismaClient, now = new Date()): Promise<SignificantSource[]> {
+  const since = new Date(now.getTime() - SIGNIFICANT_WINDOW_DAYS * 24 * 3_600_000);
+  const rows = await prisma.$queryRaw<{ key: string; kind: string; n: bigint; days: number }[]>`
+    WITH bornes AS (SELECT (${since}::timestamptz AT TIME ZONE 'UTC') AS since, (${now}::timestamptz AT TIME ZONE 'UTC') AS t),
+    debut AS (SELECT js."sourceKey", greatest(bornes.since, min(js."firstSeenAt") + interval '1 day') AS d FROM "JobSource" js, bornes GROUP BY 1, bornes.since),
+    flux AS (SELECT js."sourceKey", count(*) AS n FROM "JobSource" js JOIN debut ON debut."sourceKey" = js."sourceKey", bornes
+             WHERE js."firstSeenAt" >= debut.d AND js."firstSeenAt" < bornes.t GROUP BY 1)
+    SELECT s.key, s.kind, flux.n, extract(epoch FROM (bornes.t - debut.d))::float8 / 86400 AS days
+    FROM "Source" s JOIN flux ON flux."sourceKey" = s.key JOIN debut ON debut."sourceKey" = s.key, bornes
+    WHERE s.status = 'ACTIVE' AND debut.d <= bornes.t - interval '1 day'`;
+  return rows.map(row => ({ key: row.key, kind: row.kind, newPostings: Number(row.n), perDay: Number(row.n) / Number(row.days) }))
+    .filter(row => KIND_TO_ATS[row.kind] && row.perDay >= SIGNIFICANT_NEW_PER_DAY)
+    .sort((a, b) => b.perDay - a.perDay || a.key.localeCompare(b.key))
+    .map(({ key, newPostings, perDay }) => ({ key, newPostings, perDay }));
+}
+
+/**
+ * La qualification native et l'autorisation d'accès de la source tiendront-elles toute la lecture ? Sinon, la raison :
+ * la renouveler demanderait une lecture complète, que seul le RUN fait. Lecture en base, à l'horloge réelle.
+ */
+export async function qualificationDue(prisma: PrismaClient, key: string, now = new Date()): Promise<string | null> {
+  const source = await prisma.source.findUnique({ where: { key }, select: { key: true, currentRevisionId: true } });
+  if (!source?.currentRevisionId) return 'REVISION_MISSING';
+  const until = new Date(now.getTime() + QUALIFICATION_MARGIN_MS);
+  try {
+    await requireSourceValidation(prisma, source.currentRevisionId, until);
+    const decision = await prisma.sourceAccessDecision.findFirst({ where: { sourceKey: key }, orderBy: { sequence: 'desc' } });
+    assertSourceAccess({ key, currentRevisionId: source.currentRevisionId }, decision, until);
+    return null;
+  } catch (error) {
+    const code = error && typeof error === 'object' && 'code' in error ? String((error as { code: unknown }).code) : null;
+    if (!code) throw error;
+    return code;
+  }
+}
+
 export type LightPassResult = OrchestratorResult & {
   refused: LightPassRefusal | null;
   /** Arrêtée avant la fin de sa liste : la fenêtre, le budget ou un RUN qui a commencé. */
   stoppedBy: LightPassRefusal | 'DEADLINE' | null;
   collected: string[]; notCollected: string[]; unknown: string[]; created: number;
+  /** Laissées au RUN : leur qualification ou leur autorisation expire avant la fin de la lecture (code de la garde). */
+  qualificationDue: Array<{ source: string; code: string }>;
 };
 
 /**
@@ -100,46 +156,56 @@ export function lightPassHasIncidents(pass: Pick<LightPassResult, 'failed' | 'ti
 }
 
 export async function runLightPass(prisma: PrismaClient, options: {
-  runId: string | null; sources?: readonly string[]; now?: () => Date;
+  runId: string | null; sources?: readonly string[]; now?: () => Date; concurrency?: number;
 }): Promise<LightPassResult> {
   assertPipelineRunning();
   const now = options.now ?? (() => new Date());
-  const wanted = [...(options.sources ?? LIGHT_PASS_SOURCES)];
   const result: LightPassResult = { total: 0, ok: 0, failed: 0, timedOut: 0, failures: [], incidents: [], issues: [],
-    refused: null, stoppedBy: null, collected: [], notCollected: [], unknown: [], created: 0 };
-  // `now` décide de la fenêtre et du budget ; les offres créées se comptent à l'horloge réelle des écritures.
+    refused: null, stoppedBy: null, collected: [], notCollected: [], unknown: [], created: 0, qualificationDue: [] };
+  // `now` décide de la fenêtre et du budget ; la sélection, la qualification et les offres créées se lisent à l'horloge réelle.
   const writtenSince = new Date();
   const start = now();
   result.refused = lightPassRefusal(start, await runningRuns(prisma, options.runId));
   if (result.refused) {
     await log.warn('light.refused', { reason: result.refused });
-    return { ...result, notCollected: wanted };
+    return { ...result, notCollected: [...(options.sources ?? [])] };
   }
   const deadline = lightPassDeadline(start);
+  const wanted = options.sources ? [...options.sources] : (await significantSources(prisma)).map(source => source.key);
   const registry = new Map((await prisma.source.findMany({ where: { key: { in: wanted }, status: 'ACTIVE' }, select: { key: true, kind: true } }))
     .filter(source => KIND_TO_ATS[source.kind]).map(source => [source.key, source.kind]));
   const keys = wanted.filter(key => registry.has(key));
   result.unknown = wanted.filter(key => !registry.has(key));
   result.total = keys.length;
-  await log.info('light.sources_selected', { sources: keys.length, sourceKeys: keys, ignored: result.unknown, deadline: new Date(deadline).toISOString() });
-  for (const [index, key] of keys.entries()) {
+  await log.info('light.sources_selected', { sources: keys.length, sourceKeys: keys, ignored: result.unknown, deadline: new Date(deadline).toISOString(),
+    rule: options.sources ? 'EXPLICIT' : `D-517 ≥ ${SIGNIFICANT_NEW_PER_DAY}/jour sur ${SIGNIFICANT_WINDOW_DAYS} jours`, concurrency: LIGHT_PASS_CONCURRENCY });
+  const limit = pLimit(Math.max(1, options.concurrency ?? LIGHT_PASS_CONCURRENCY));
+  await Promise.all(keys.map(key => limit(async () => {
+    if (result.stoppedBy) { result.notCollected.push(key); return; }
     const at = now();
     const stop = lightPassRefusal(at, await runningRuns(prisma, options.runId))
       ?? (deadline - at.getTime() < LIGHT_PASS_MIN_SOURCE_MS ? 'DEADLINE' : null);
     if (stop) {
       result.stoppedBy = stop;
-      result.notCollected = keys.slice(index);
-      await log.warn('light.stopped', { reason: stop, notCollected: result.notCollected });
-      break;
+      result.notCollected.push(key);
+      await log.warn('light.stopped', { reason: stop, from: key });
+      return;
+    }
+    const due = await qualificationDue(prisma, key);
+    if (due) {
+      result.qualificationDue.push({ source: key, code: due });
+      await log.info('light.qualification_due', { sourceKey: key, code: due });
+      return;
     }
     assertPipelineRunning();
     await log.withContext({ sourceKey: key, connectorId: registry.get(key)! },
-      () => ingestOne(prisma, key, result, deadline - at.getTime()));
+      () => withIncrementalPass(() => ingestOne(prisma, key, result, deadline - at.getTime())));
     result.collected.push(key);
-  }
-  const created = await prisma.job.findMany({ where: { isActive: true, firstSeenAt: { gte: writtenSince } }, select: { id: true }, take: 500 });
+  })));
+  const created = await prisma.job.findMany({ where: { isActive: true, firstSeenAt: { gte: writtenSince } }, select: { id: true }, take: 5_000 });
   result.created = created.length;
   await log.info('light.completed', { collected: result.collected.length, ok: result.ok, failed: result.failed, timedOut: result.timedOut,
-    stoppedBy: result.stoppedBy, notCollected: result.notCollected, created: result.created, failures: result.failures });
+    stoppedBy: result.stoppedBy, notCollected: result.notCollected, qualificationDue: result.qualificationDue, created: result.created,
+    failures: result.failures });
   return result;
 }

@@ -1,3 +1,4 @@
+import { isKnownPosting } from '../../lib/incrementalReading.js';
 import { createHash } from 'node:crypto';
 import { captureObservedAt, CaptureUnavailableError, OfflineReplayError } from '../../capture/context.js';
 import { assertSourceRunning } from '../../lib/sourceBudget.js';
@@ -665,7 +666,8 @@ async function fetchCareerConnectJobs(origin: string, options: CareerConnectOpti
    */
   if (localePath && jobs.length) {
     const limit = pLimit(DEFAULT_DETAIL_CONCURRENCY);
-    const enriched = await Promise.all(jobs.map((job) => limit(async () => {
+    // D-517 : en lecture incrémentale, la fiche n'est lue que pour une offre jamais vue ; les connues ne sortent pas.
+    const enriched = await Promise.all(jobs.filter(job => !isKnownPosting(job.externalId)).map((job) => limit(async () => {
       if (!job.url) return job;
       try {
         const expectedId = String((job.raw as CareerConnectJob | undefined)?.jobId ?? '');

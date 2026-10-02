@@ -1,3 +1,4 @@
+import { isKnownPosting } from '../../lib/incrementalReading.js';
 import pLimit from 'p-limit';
 import { captureObservedAt } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
@@ -460,8 +461,10 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
   if (!origin) throw new Error('SuccessFactors origin missing');
   if (!Number.isSafeInteger(MAX_PAGES) || MAX_PAGES < 1 || MAX_PAGES > 10000) throw new Error('Invalid SAP page budget');
   const brandProperty = brandPropertyOf(config);
+  // D-517 : en lecture incrémentale, la page de l'offre n'est lue que pour une publication jamais vue.
   const finish = async (result: AdapterResult): Promise<AdapterResult> => ({ ...result,
-    jobs: config.withDescriptions === false ? result.jobs : await attachSuccessFactorsDescriptions(result.jobs, Number(config.detailConcurrency ?? 4), brandProperty) });
+    jobs: config.withDescriptions === false ? result.jobs
+      : await attachSuccessFactorsDescriptions(result.jobs.filter(job => !isKnownPosting(job.externalId)), Number(config.detailConcurrency ?? 4), brandProperty) });
   const rmk = async (html: string): Promise<AdapterResult> => {
     const discovery = await discoverRmkLocales(origin, html);
     const result = await fetchRmkV2Jobs(origin, discovery.locales, brandProperty);

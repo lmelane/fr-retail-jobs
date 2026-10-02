@@ -213,17 +213,17 @@ try {
     }
   } else if (command === 'ingest-light') {
     /**
-     * R-143 §1 — la passe légère de découverte (`pipeline/lightPass.ts`) : les sources dont une collecte complète tient
-     * en quelques requêtes, collectées comme au RUN. Rien hors de sa propre lecture : une fin déclarée par la source et
-     * les retraits natifs sur les offres lues s'appliquent. Refusée dans la fenêtre du RUN et pendant un RUN ; bornée à
-     * 45 minutes. Une source en échec reste visible au bilan et dans SourceRun ; le RUN suivant
-     * la recollecte, aucune alerte n'est envoyée pour elle.
+     * R-143 §1, D-517 — la passe de découverte (`pipeline/lightPass.ts`) : chaque source significative (au moins une
+     * publication nouvelle par jour sur 7 jours), en lecture incrémentale — la liste, le détail du seul neuf, l'écriture
+     * du seul neuf. Rien d'autre : ni fermeture, ni retenue, ni attestation. Refusée dans la fenêtre du RUN et pendant
+     * un RUN ; bornée à 90 minutes. Une source en échec reste visible au bilan et dans SourceRun ; le RUN suivant la
+     * recollecte, aucune alerte n'est envoyée pour elle.
      */
     const { runLightPass, lightPassHasIncidents } = await import('./pipeline/lightPass.js');
     const pass = await runLightPass(prisma, { runId: observation.runId });
     sourceIncidents = lightPassHasIncidents(pass);
     await log.info('command.result', { ok: !sourceIncidents, command, refused: pass.refused, stoppedBy: pass.stoppedBy,
-      collected: pass.collected.length, notCollected: pass.notCollected, ignored: pass.unknown, created: pass.created,
+      collected: pass.collected.length, notCollected: pass.notCollected, ignored: pass.unknown, qualificationDue: pass.qualificationDue, created: pass.created,
       okSources: pass.ok, failed: pass.failed, timedOut: pass.timedOut, failures: pass.failures });
   } else if (command === 'availability') {
     /** R-143 §2 — la revue de disponibilité seule ; `--dry-run` rend le plan sans rien écrire. Sans lui, le bulletin de

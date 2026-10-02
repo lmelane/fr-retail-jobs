@@ -1,3 +1,4 @@
+import { LIGHT_PASS_RUN_COMMAND } from './referenceRuns.js';
 import { employerIdentityHealth } from '../identity/health.js';
 import { Prisma, type PrismaClient } from '@prisma/client';
 
@@ -38,7 +39,9 @@ export async function buildHealthReport(prisma: PrismaClient, asOf = new Date(),
       declaredTotal: number | null; truncated: boolean | null; errors: number | null;
       descriptionRate: number | null; countryRate: number | null; dateRate: number | null; urlRate: number | null;
     }>>(Prisma.sql`${base}, latest AS (
-      SELECT DISTINCT ON ("sourceKey") * FROM "SourceRun"
+      SELECT DISTINCT ON ("sourceKey") * FROM "SourceRun" sr
+      -- D-517 : l'état d'une source se lit au RUN, jamais à une passe de découverte (lecture incrémentale, referenceRuns.ts).
+      WHERE NOT EXISTS (SELECT 1 FROM "PipelineRun" p WHERE p.id = sr."runId" AND p.command = ${LIGHT_PASS_RUN_COMMAND})
       ORDER BY "sourceKey", "ranAt" DESC, id DESC
     ), keys AS (
       SELECT key AS "sourceKey" FROM "Source" WHERE status = 'ACTIVE'

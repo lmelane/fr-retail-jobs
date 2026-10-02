@@ -28,6 +28,7 @@ import { evidenceHash } from '../lib/evidenceHash.js';
 import { isDeclaredEmptyEnumeration, isPublisherConfirmedDrop, isTrustedForAttestation } from './attestation.js';
 import { splitRejectedRows } from './rejectedRows.js';
 import { lightPassRunIds } from './referenceRuns.js';
+import { isIncrementalResult } from '../lib/incrementalReading.js';
 import { enumerationEvidence, type AttestationFacts, type EnumerationEvidence } from './refreshPlan.js';
 
 /** Les identifiants VUS par la capture, classés par devenir. `published` = sorties du manifeste sans disposition. */
@@ -46,6 +47,8 @@ export type AttestingCapture = {
 export type AttestingCaptureResult = { ok: true; capture: AttestingCapture } | { ok: false; captureBatchId: string | null; reasons: string[] };
 
 const HALF = 0.5;
+/** Pourquoi une lecture incrémentale (D-517) n'est jamais une capture attestante ni crédible. */
+export const INCREMENTAL_READING_REASON = 'lecture incrémentale : ne rend que les publications nouvelles, n’atteste aucune absence';
 const COLLAPSE_SHARE = HALF;
 
 /**
@@ -138,6 +141,8 @@ export async function readAttestingCapture(db: Prisma.TransactionClient, sourceK
     return { ok: false, captureBatchId: batch.id, reasons: [`preuve scellée illisible : ${error instanceof Error ? error.message : 'unknown'}`] };
   }
   if (!completion || completion.report.outputs !== manifest.outputs.length) return { ok: false, captureBatchId: batch.id, reasons: ['rapport de fin d’ingestion sans correspondance avec le manifeste scellé'] };
+  // D-517 : une lecture incrémentale ne rend que le neuf ; elle ne dit rien de ce qu'elle ne rend pas, donc n'atteste rien.
+  if (isIncrementalResult(manifest.metadata)) return { ok: false, captureBatchId: batch.id, reasons: [INCREMENTAL_READING_REASON] };
   // R-143 §1 : la référence n'est jamais la collecte d'une passe légère (`referenceRuns.ts`).
   const lightPasses = [...await lightPassRunIds(db)];
   const previous = await db.sourceIngestionCompletion.findFirst({

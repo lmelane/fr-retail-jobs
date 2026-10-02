@@ -1,3 +1,4 @@
+import { isKnownPosting } from '../../lib/incrementalReading.js';
 import { createHash } from 'node:crypto';
 import { captureObservedAt } from '../../capture/context.js';
 import { log } from '../../observability/logger.js';
@@ -433,7 +434,8 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
   // L'identifiant de la fiche, le même que `parseSwatchJobPage` donne à l'offre : une ligne rejetée reste NOMMÉE (D-508 §6).
   const canonicalIdOf = (url: string) => url.match(/\/job\/(\d+)$/)?.[1];
   const jobs = await Promise.all(
-    links.map((url) =>
+    // D-517 : en lecture incrémentale, la fiche n'est lue que pour une offre jamais vue.
+    links.filter((url) => !isKnownPosting(canonicalIdOf(url))).map((url) =>
       limit(async () => {
         const canonicalId = canonicalIdOf(url);
         try {

@@ -1,3 +1,4 @@
+import { isKnownPosting } from '../../lib/incrementalReading.js';
 import { createHash } from 'node:crypto';
 import { captureObservedAt } from '../../capture/context.js';
 import { fetchText } from '../../lib/http.js';
@@ -156,12 +157,14 @@ export async function fetchIcimsJobs(config: Record<string, unknown>): Promise<A
   const complete = declaredPages !== undefined && pagesRead >= declaredPages && termination !== 'PAGE_BUDGET_EXHAUSTED' && issues.size === 0;
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
 
+  // D-517 : en lecture incrémentale, la fiche n'est lue que pour une offre jamais vue.
+  const toRead = out.filter(job => !isKnownPosting(job.externalId));
   const limit = pLimit(Math.max(1, Math.min(4, Number(config.detailConcurrency) || 2)));
   const failedDetail = (job: NormalizedJob, error: unknown): NormalizedJob =>
     ({ ...job, publicationHold: 'ICIMS_DETAIL_FETCH_FAILED', raw: { ...(job.raw as object), detailReadError: String(error) } });
   const failed: number[] = [];
   let detailsRead = 0;
-  const jobs = await Promise.all(out.map((job, index) => limit(async () => {
+  const jobs = await Promise.all(toRead.map((job, index) => limit(async () => {
     const page = icimsPostingURL(job.url);
     if (!page || page.id !== job.externalId || !detailOrigins.has(page.url.origin)) {
       return { ...job, publicationHold: 'ICIMS_DETAIL_ORIGIN_UNQUALIFIED' };
@@ -188,8 +191,8 @@ export async function fetchIcimsJobs(config: Record<string, unknown>): Promise<A
     await waitBeforeDetailRetry(config);
     for (const index of failed.sort((a, b) => a - b)) {
       if (sourceDeadlineReached()) break;
-      try { jobs[index] = mergeIcimsDetail(out[index], await fetchText(out[index].url), config); }
-      catch (error) { jobs[index] = failedDetail(out[index], error); }
+      try { jobs[index] = mergeIcimsDetail(toRead[index], await fetchText(toRead[index].url), config); }
+      catch (error) { jobs[index] = failedDetail(toRead[index], error); }
     }
   }
   return { jobs, complete, truncated: termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredPages !== undefined && pagesRead < declaredPages),

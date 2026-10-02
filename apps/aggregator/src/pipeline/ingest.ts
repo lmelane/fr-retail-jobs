@@ -32,6 +32,8 @@ import { runGeocode } from './geocodeJobs.js';
 import { fetchAtsJobs } from '../ats/index.js';
 import { captureExtraction } from '../capture/batch.js';
 import { adoptQualificationCapture } from '../capture/adoption.js';
+import { incrementalPassActive, withIncrementalReading } from '../lib/incrementalReading.js';
+import { knownPostings } from './knownPostings.js';
 import { recordIngestionCompletion, type OutputFate } from '../capture/completion.js';
 import { validateCapturedSource } from '../connectors/sourceValidation.js';
 import { SourceAdmissionGateError } from '../connectors/sourceAdmission.js';
@@ -124,6 +126,8 @@ export type IngestStats = {
   /** The admitted, sealed collection this run published from, and its immutable end-of-ingestion report. */
   captureBatchId?: string;
   completionReportHash?: string;
+  /** D-517 : une lecture incrémentale — `fetched` ne compte que le neuf ; `knownSkipped`, les publications connues laissées de côté. */
+  incremental?: { knownSkipped: number };
 };
 
 /**
@@ -312,8 +316,11 @@ async function ingestApiSource(
       adoptCaptureRunId === undefined ? {} : { runId: adoptCaptureRunId })
     : null;
   const adopted = adoption && 'adopted' in adoption ? adoption.adopted : null;
-  const extraction = adopted ?? await captureExtraction(
+  const collect = () => captureExtraction(
     prisma, stats.source, config, log.runId(), settings => fetchAtsJobs(type as never, settings), type, { revisionId: source.revisionId, requireActive: true });
+  // D-517 : dans la passe de découverte, la collecte ne lit le détail que du neuf et ne rend que lui (`lib/incrementalReading.ts`).
+  const extraction = adopted ?? (incrementalPassActive()
+    ? await withIncrementalReading(await knownPostings(prisma, source.key), collect) : await collect());
   const { captureBatchId, jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = extraction;
   stats.fetchMs = Date.now() - fetchStartedAt;
   // An adopted capture keeps its own validation, the current one: the publication gate below checks it is still so.
@@ -354,7 +361,9 @@ async function ingestApiSource(
   if (reading.enumerationRefutedBy) stats.enumerationRefutedBy = reading.enumerationRefutedBy;
   stats.declaredTotal = declaredTotal;
   stats.truncated = truncated;
-  if (truncated) {
+  if (extraction.incremental) stats.incremental = { knownSkipped: extraction.incremental.knownSkipped.length };
+  // Une lecture incrémentale ne rend que le neuf : sa « troncature » est voulue, et elle n'atteste rien (D-517).
+  if (truncated && !extraction.incremental) {
     await log.error('source.listing_truncated', `[ingest] ${stats.source}: TRUNCATED — ${jobs.length} collected of ${declaredTotal} declared`);
   }
 

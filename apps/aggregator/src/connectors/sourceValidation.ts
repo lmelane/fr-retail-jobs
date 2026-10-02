@@ -16,6 +16,7 @@ import { lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js
 import { withSourceBudget } from '../lib/sourceBudget.js';
 import { certifiedPortalIdentity, type CertifiedPortalIdentity } from './sourceIdentity.js';
 import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
+import { isIncrementalResult } from '../lib/incrementalReading.js';
 
 import { SOURCE_VALIDATION_POLICY, VALIDATION_UNQUALIFIED_ALLOWANCE, unqualifiedAllowanceFor } from './sourceCertification.js';
 type RevisionPayload = { version: number; key: string; kind: string; config: Record<string, unknown> };
@@ -37,6 +38,13 @@ export type SourceValidationReport = {
   spontaneousWithdrawn?: number;
   /** Only when the already-reviewed portal rule resolves an absent native employer. */
   registryEmployer?: CertifiedPortalIdentity;
+  /**
+   * D-517 : une lecture incrémentale qui n'a rien rendu parce que la source ne listait que des publications déjà
+   * connues (`knownSkipped`, scellé et rejoué à l'identique). Ce n'est pas un flux vide : la liste a été lue et
+   * reconnue. Rien n'est publié, rien n'est attesté ; seule la lecture est qualifiée. Une liste qui n'a rien montré du
+   * tout reste un flux vide non prouvé.
+   */
+  incrementalNothingNew?: number;
   reasons: Record<string, number>;
   /**
    * Le seuil appliqué à ce lot (politique v2) : la règle en vigueur, et le plafond qu'elle a
@@ -128,7 +136,9 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
         if (recovery.status === 'RECOVERABLE') report.qualified++;
         else { report.rejected++; reason(recovery.reason); }
       }
-      if (!report.observed) {
+      const nothingNew = !report.observed && isIncrementalResult(replayed) ? replayed.incremental!.knownSkipped.length : 0;
+      if (nothingNew > 0) report.incrementalNothingNew = nothingNew;
+      else if (!report.observed) {
         // A JSON Feed declares no total: a complete enumeration that read nothing is judged on its single archived response.
         report.nativeEmpty = replayed.complete === true && (replayed.declaredTotal === 0 || replayed.declaredTotal === undefined && replayed.jobs.length === 0) &&
           await nativeEmptyFeed(db, batch.id, revision.kind, store);
@@ -152,7 +162,7 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
   const allowance = unqualifiedAllowanceFor(report.observed + (report.inputUnqualified ?? 0));
   report.allowance = { ...VALIDATION_UNQUALIFIED_ALLOWANCE, applied: allowance };
   const verdict = report.replayExact && unqualified <= allowance && batchReasons.length === 0 &&
-    (report.qualified > 0 || report.nativeEmpty || onlySpontaneous(report)) ? 'VALIDATED' : 'REJECTED';
+    (report.qualified > 0 || report.nativeEmpty || onlySpontaneous(report) || (report.incrementalNothingNew ?? 0) > 0) ? 'VALIDATED' : 'REJECTED';
   return db.$transaction(async tx => {
     // Serialize completed decisions with promotion. The append sequence, not a
     // millisecond timestamp or UUID order, identifies the latest decision.

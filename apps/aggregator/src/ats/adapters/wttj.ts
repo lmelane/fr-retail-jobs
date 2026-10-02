@@ -1,3 +1,4 @@
+import { isKnownPosting } from '../../lib/incrementalReading.js';
 import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { fetchJson, fetchText } from '../../lib/http.js';
@@ -357,7 +358,8 @@ export async function fetchWttjJobs(config: Record<string, unknown>): Promise<Ad
   const complete = jobs.every((job) => typeof (job.raw as WttjHit).description === 'string');
   if (complete) return { jobs, declaredTotal, rejectedRows, enumeration };
   return {
-    jobs: await attachWttjDescriptions(jobs, slug, Number(config.detailConcurrency ?? 4)),
+    // D-517 : en lecture incrémentale, la fiche n'est lue que pour une offre jamais vue.
+    jobs: await attachWttjDescriptions(jobs.filter(job => !isKnownPosting(job.externalId)), slug, Number(config.detailConcurrency ?? 4)),
     declaredTotal, rejectedRows, enumeration,
   };
 }

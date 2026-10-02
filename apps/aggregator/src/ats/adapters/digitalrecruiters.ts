@@ -1,3 +1,4 @@
+import { isKnownPosting } from '../../lib/incrementalReading.js';
 import pLimit from 'p-limit';
 import { captureObservedAt } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
@@ -182,7 +183,8 @@ export async function fetchDigitalRecruitersJobs(
   }
   const listing = result!;
   if (config.withDescriptions === false) return listing;
-  return { ...listing, jobs: await attachDescriptions(listing.jobs, Number(config.detailConcurrency ?? 4), postingEvidenceOptions(config), config) };
+  // D-517 : en lecture incrémentale, la fiche n'est lue que pour une annonce jamais vue.
+  return { ...listing, jobs: await attachDescriptions(listing.jobs.filter(job => !isKnownPosting(job.externalId)), Number(config.detailConcurrency ?? 4), postingEvidenceOptions(config), config) };
 }
 
 async function fetchAllPages(domainName: string, locale: string): Promise<AdapterResult> {

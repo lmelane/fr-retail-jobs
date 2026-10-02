@@ -6,6 +6,7 @@ import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { workdayPortal } from '../portalConfig.js';
+import { isKnownPosting } from '../../lib/incrementalReading.js';
 
 // externalPath is optional in practice: some tenants (Richemont) return rows
 // without it, and treating it as always-present crashed the whole source.
@@ -488,8 +489,9 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
   const truncated = partitions.some((r) => r.termination === 'PAGE_BUDGET_EXHAUSTED' || (r.total > 0 && r.rawCount < r.total));
   if (config.withDescriptions === false) return { jobs: out.map(job => ({ ...job, publicationHold: 'WORKDAY_LISTING_WITHOUT_EMPLOYER_DETAIL' })), declaredTotal, complete, truncated, enumeration, rejectedRows };
   return {
+    // D-517 : en lecture incrémentale, la fiche n'est lue que pour une publication jamais vue (une requête par offre).
     jobs: await attachWorkdayDescriptions(
-      out,
+      out.filter(job => !isKnownPosting(job.externalId)),
       `${origin}/wday/cxs/${tenant}/${site}`,
       Number(config.detailConcurrency ?? 4),
     ),

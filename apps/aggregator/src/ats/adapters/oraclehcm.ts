@@ -1,3 +1,4 @@
+import { isKnownPosting } from '../../lib/incrementalReading.js';
 import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { captureObservedAt } from '../../capture/context.js';
@@ -229,7 +230,8 @@ export async function fetchOracleHcmJobs(config: Record<string, unknown>): Promi
 
   const limit = pLimit(Number(config.detailConcurrency ?? DEFAULT_DETAIL_CONCURRENCY));
   const enriched = await Promise.all(
-    jobs.map((job) =>
+    // D-517 : en lecture incrémentale, la réquisition n'est lue que pour une offre jamais vue.
+    jobs.filter(job => !isKnownPosting(job.externalId)).map((job) =>
       limit(async () => {
         try {
           const detail = await fetchOracleRequisitionDetail(origin, site, job.externalId);

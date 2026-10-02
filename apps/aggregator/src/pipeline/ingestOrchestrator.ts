@@ -7,7 +7,7 @@ import type { PrismaClient } from '@prisma/client';
 import pLimit from 'p-limit';
 import { loadActiveSources, recordSourceRunSummary } from '../connectors/sourceStore.js';
 import { runIngest, KIND_TO_ATS, type IngestStats } from './ingest.js';
-import { checkSourceHealth, type SourceHealth } from './health.js';
+import { checkSourceHealth, recordIncrementalRun, type SourceHealth } from './health.js';
 import { FULL_RUN_MARKER } from './fullRunMarker.js';
 import { briefError } from '../lib/normalize.js';
 import { maintainSourceAccess } from '../connectors/sourceAccessQualification.js';
@@ -15,6 +15,7 @@ import { WafChallengeError } from '../lib/wafToken.js';
 import { ingestionIssue, isDecidedKnownFailure, isNonBlockingIssue, isProvenSourceIssue, issuesFromResult, KNOWN_FAILURE_DECISION, type IngestionIssue } from '../lib/ingestionIssue.js';
 import { failureLine } from '../lib/runSummary.js';
 import { SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
+import { incrementalPassActive } from '../lib/incrementalReading.js';
 
 /**
  * Bounded source concurrency with cooperative cancellation. A timed-out source
@@ -178,7 +179,9 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
     // Record this source's health so a source that stops producing becomes a
     // detectable incident (BROKEN) on its next run — one SourceRun per source.
     // Collect any incident so the run can send ONE digest at the end.
-    const health = await checkSourceHealth(prisma, stats);
+    // D-517 : une collecte de la passe (lecture incrémentale, réussie ou non) ne se compare à aucune collecte et ne
+    // touche pas le résumé du catalogue.
+    const health = incrementalPassActive() ? await recordIncrementalRun(prisma, stats[0]) : await checkSourceHealth(prisma, stats);
     const { issues, incidents } = classifySourceRun(stats, health.incidents);
     result.incidents.push(...incidents);
     result.issues!.push(...issues.map(issue => ({ ...issue, source: key })));
@@ -245,7 +248,8 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
               : briefError(error),
         },
       });
-      await recordSourceRunSummary(tx, key, { status, jobs: 0 });
+      // D-517 : l'échec d'une lecture incrémentale reste dans SourceRun ; le résumé du catalogue reste celui du RUN.
+      if (!incrementalPassActive()) await recordSourceRunSummary(tx, key, { status, jobs: 0 });
     }, SOURCE_WRITE_TRANSACTION).catch(async (error) => {
       await log.error('source.record_failed', `[orchestrator] ${key}: failed to record run — ${briefError(error)}`, { error });
       throw error;

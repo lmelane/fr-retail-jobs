@@ -161,6 +161,29 @@ export type HealthReport = {
 };
 
 /**
+ * D-517 — LA SANTÉ D'UNE LECTURE INCRÉMENTALE. Elle ne rend que le neuf : comparer son volume à celui du RUN ferait
+ * d'elle un effondrement permanent (3 nouvelles contre 2 000 offres). Elle ne se compare donc à rien ; elle n'est
+ * jamais attestante ; elle ne touche pas le résumé du catalogue (`Source.lastRun*`, que lisent l'ordre du RUN, son
+ * budget par source et le back-office) : le RUN reste le seul à le tenir. Ses erreurs restent des incidents nommés.
+ * Sa ligne `SourceRun` appartient à un run de passe (`referenceRuns.ts`) : aucune garde ne la prend pour référence.
+ */
+export async function recordIncrementalRun(prisma: PrismaClient, stat: IngestStats): Promise<HealthReport> {
+  const jobs = stat.created + stat.merged + stat.updated;
+  const health: SourceHealth = { source: stat.source, jobs, previous: null, coverage: coverageOf(stat), rates: ratesOf(stat),
+    status: stat.errors > 0 ? (jobs > 0 ? 'DEGRADED' : 'BROKEN') : 'OK',
+    note: [`lecture incrémentale (D-517) : ${stat.fetched} nouvelle(s), ${stat.incremental?.knownSkipped ?? 0} connue(s) non relue(s)`,
+      stat.errors > 0 ? `${plural(stat.errors, 'erreur', 'erreurs')} de collecte ou d’écriture${failureCauses(stat)}` : null].filter(Boolean).join(' · ') };
+  await prisma.sourceRun.create({ data: { sourceKey: stat.source, ...(log.runId() ? { runId: log.runId() } : {}), status: health.status, jobs,
+    previousJobs: null, fetched: stat.fetched, complete: false, accepted: stat.inSector, declaredTotal: stat.declaredTotal ?? null,
+    truncated: false, errors: stat.errors, canAttestAbsence: false, note: [health.note, health.coverage].filter(Boolean).join(' · '),
+    descriptionRate: health.rates?.description ?? null, dateRate: health.rates?.date ?? null, countryRate: health.rates?.country ?? null,
+    urlRate: health.rates?.url ?? null, ranAt: new Date() } });
+  const incidents = health.status === 'OK' ? [] : [health];
+  return { checkedAt: new Date(), ok: incidents.length ? 0 : 1, degraded: health.status === 'DEGRADED' ? 1 : 0,
+    broken: health.status === 'BROKEN' ? 1 : 0, incidents };
+}
+
+/**
  * Compares this run's per-source counts with the PREVIOUS run's.
  *
  * The baseline is the last SourceRun recorded for each source — not the live

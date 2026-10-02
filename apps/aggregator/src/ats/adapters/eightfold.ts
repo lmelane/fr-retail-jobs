@@ -1,3 +1,4 @@
+import { isKnownPosting } from '../../lib/incrementalReading.js';
 import { createHash } from 'node:crypto';
 import { captureObservedAt } from '../../capture/context.js';
 import { log } from '../../observability/logger.js';
@@ -443,8 +444,10 @@ export async function fetchEightfoldJobs(
   /** Index des fiches en échec, et l'heure du dernier : la relecture attend la fin de SA fenêtre, pas davantage. */
   const failed: number[] = [];
   let lastFailureAt = 0;
+  // D-517 : en lecture incrémentale, la fiche n'est lue que pour une position jamais vue.
+  const toRead = jobs.filter(job => !isKnownPosting(job.externalId));
   const firstPass = await Promise.all(
-    jobs.map((job, index) =>
+    toRead.map((job, index) =>
       limit(async () => {
         try {
           return await readDetail(job);
@@ -456,7 +459,7 @@ export async function fetchEightfoldJobs(
       }),
     ),
   );
-  const reread = await rereadFailedDetails(jobs, failed, lastFailureAt, (job) => limit(() => readDetail(job)));
+  const reread = await rereadFailedDetails(toRead, failed, lastFailureAt, (job) => limit(() => readDetail(job)));
   const withDescriptions = firstPass.map((job, index) => reread.get(index) ?? job);
   return { jobs: withDescriptions, declaredTotal, complete, truncated, enumeration, ...(rejectedRows.length ? { rejectedRows } : {}) };
 }

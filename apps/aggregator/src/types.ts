@@ -184,4 +184,12 @@ export type AdapterResult = {
   complete?: boolean;
   /** The verdict in full, set by `normalizeAdapterResult`; adapters never provide it. */
   enumerationVerdict?: EnumerationVerdict;
+  /**
+   * D-517 — une LECTURE INCRÉMENTALE (`lib/incrementalReading.ts`) : seules les publications inconnues de la source
+   * sont rendues ; `knownSkipped` nomme, triées, celles que la lecture a vues et laissées de côté parce que déjà
+   * connues (ni détail lu, ni sortie). Scellé dans le manifeste, il est le seul état extérieur de la lecture : le rejeu
+   * le rétablit (`capture/batch.ts`), et refait donc exactement les mêmes choix. Une collecte qui le porte n'atteste
+   * jamais une absence, n'est jamais crédible pour la revue de disponibilité et n'est la référence d'aucun garde.
+   */
+  incremental?: { policy: string; knownSkipped: string[] };
 };

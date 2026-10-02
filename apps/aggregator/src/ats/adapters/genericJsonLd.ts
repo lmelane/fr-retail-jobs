@@ -4,6 +4,7 @@ import { log } from '../../observability/logger.js';
 import * as cheerio from 'cheerio';
 import pLimit from 'p-limit';
 import { createHash } from 'node:crypto';
+import { isKnownPosting } from '../../lib/incrementalReading.js';
 import { fetchText } from '../../lib/http.js';
 import { fetchSitemapUrlsDetailed, extractJobPostings, normalizeJobPosting } from '../../connectors/generic/jsonLdSitemap.js';
 import { fetchRssJobs } from '../../connectors/generic/rssFeed.js';
@@ -232,7 +233,9 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     const limit = pLimit(Number(config.concurrency ?? 4));
     let detailFailures = 0;
     const readDetail = async (url: string) => parseJobPostings(await fetchText(url, { headers: { 'user-agent': CRAWLER_IDENTITY } }), url);
-    const listed = [...seen].filter(url => !cards.has(url));
+    const offerLinks = [...seen].filter(url => !cards.has(url));
+    // D-517 : en lecture incrémentale, la page n'est lue que pour un lien jamais vu (l'identité est le sha1 de l'adresse).
+    const listed = offerLinks.filter(url => !isKnownPosting(createHash('sha1').update(url).digest('hex')));
     const failed: number[] = [];
     const pages = await Promise.all(
       listed.map((url, index) =>
@@ -279,7 +282,8 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
      * 0 errors » : la source passait BROKEN sans qu'une ligne dise pourquoi. Un
      * échec total est une panne à nommer, pas un employeur sans poste.
      */
-    if (seen.size > 0 && jobs.length === 0 && !sourceDeadlineReached()) {
+    // Une lecture incrémentale dont tous les liens étaient connus n'a lu aucune page : rien à signaler.
+    if (seen.size > 0 && jobs.length === 0 && !sourceDeadlineReached() && !(offerLinks.length > 0 && listed.length === 0)) {
       throw new Error(
         `generic-listing ${listingPagedUrl}: ${seen.size} lien${seen.size > 1 ? 's' : ''} d'offre, ` +
           `0 offre lue, ${detailFailures} échec${detailFailures > 1 ? 's' : ''} de détail — ` +

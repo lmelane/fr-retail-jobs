@@ -16,6 +16,8 @@ import { requireSourceAccess } from '../connectors/sourceAccess.js';
 import { matchingAccessScope, SourceAccessGateError } from '../connectors/accessScope.js';
 import { assertJournaledBootstrap, bootstrapAuthorizedFor, grantedAllow, observeModeAllow } from '../connectors/wafBootstrap.js';
 import { offlineReplay } from './offlineReplay.js';
+import { readExtractionManifest } from './manifest.js';
+import { withIncrementalReading, withoutIncrementalReading } from '../lib/incrementalReading.js';
 import { ingestionQualifications, SOURCE_ADMISSION_POLICY } from '../connectors/sourceAdmission.js';
 import { lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { HttpStatusError } from '../lib/http.js';
@@ -124,10 +126,21 @@ export async function replayExtraction<T>(db: PrismaClient, batchId: string, wor
     (batch.outcome?.status === 'EXTRACTED' && batch.outcome.transportCoverage === null);
   const { context, left } = offlineReplay(rows, async row => ({ ...row, bytes: row.blobHash ? await readRawBlob(db, row.blobHash, store) : null,
     headers: row.headers as Record<string, string>, cookieNames: row.cookieNames as string[] }), { observedAt: batch.startedAt, legacyBootstrap });
-  return withCaptureContext(context, async () => {
+  /**
+   * D-517 : une lecture incrémentale a décidé, publication par publication, de ne pas lire ce qui était déjà connu. Le
+   * rejeu rétablit l'ensemble que son manifeste scellé nomme (`knownSkipped`) et refait donc les mêmes choix ; toute
+   * autre capture est rejouée SANS lecture incrémentale, même appelée depuis une lecture en cours.
+   */
+  const sealed = batch.outcome?.status === 'EXTRACTED' && batch.outcome.manifestHash
+    ? (await readExtractionManifest(db, batchId, store)).metadata.incremental : undefined;
+  const replay = () => withCaptureContext(context, async () => {
     const result = await work();
     assertCaptureHealthy();
     if (left()) throw new OfflineReplayError('Offline replay left recorded responses unconsumed');
     return result;
   });
+  if (sealed === undefined || sealed === null) return withoutIncrementalReading(replay);
+  if (!Array.isArray(sealed.knownSkipped) || sealed.knownSkipped.some(id => typeof id !== 'string' || !id))
+    throw new OfflineReplayError('Incremental reading without a readable sealed known set');
+  return withIncrementalReading(sealed.knownSkipped, replay);
 }

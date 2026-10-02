@@ -1,3 +1,4 @@
+import { isKnownPosting } from '../../lib/incrementalReading.js';
 import { normalizeLanguage } from '../../normalize/language.js';
 import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
@@ -132,7 +133,8 @@ export async function fetchSmartRecruitersJobs(config: Record<string, unknown>):
 
   const limit = pLimit(Number(config.detailConcurrency ?? 4));
   const jobs = await Promise.all(
-    out.map((job) =>
+    // D-517 : en lecture incrémentale, l'annonce n'est lue que pour une publication jamais vue.
+    out.filter(job => !isKnownPosting(job.externalId)).map((job) =>
       limit(async () => {
         const jobAd = await fetchJobAd(company, job.externalId);
         return applySmartRecruitersJobAd(job, jobAd);
