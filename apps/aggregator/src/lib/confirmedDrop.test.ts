@@ -37,6 +37,8 @@ function fakeDb(sourceKey: string, history: PastRun[]) {
         ? rows.filter(row => args.where.runId.in.includes(row.runId)).map(row => ({ runId: row.runId })) : [],
     },
     source: { updateMany: async () => ({ count: 1 }) },
+    // R-143 §1 (`referenceRuns.ts`) : aucun de ces runs n'est une passe légère.
+    pipelineRun: { findMany: async () => [] },
   };
   return { db: db as unknown as PrismaClient, written };
 }
