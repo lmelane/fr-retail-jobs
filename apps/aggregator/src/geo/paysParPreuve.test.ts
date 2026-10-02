@@ -13,16 +13,28 @@ const base: EntreesPreuve = { ville: null, subdivision: null, lieu: null, paysDu
 describe('le pays sur preuve', () => {
   it('Boots : le point natif départage une ville connue dans six pays', () => {
     const e = { ...base, ville: 'Aberdeen', lieu: 'Aberdeen, Bon Accord Centre', paysDuPoint: 'GB',
-      villeConnue: { pays: ['AU', 'CA', 'GB', 'HK', 'US', 'ZA'], paysAvecSubdivision: [] }, marche: ['GG', 'IM', 'JE', 'NF'] };
+      villeConnue: { pays: ['AU', 'CA', 'GB', 'HK', 'US', 'ZA'], paysAvecSubdivision: [], paysProches: ['GB'] }, marche: ['GG', 'IM', 'JE', 'NF'] };
     expect(e.villeConnue.pays.length).toBeGreaterThan(1); // prémisse : la ville seule ne prouve rien
     expect(e.marche).not.toContain('GB'); // prémisse : le marché observé de Boots ne contient pas GB
     expect(decidePays(e)).toEqual({ pays: 'GB', motif: 'COORDONNEES_ET_VILLE', marche: e.marche });
-    expect(decidePays({ ...e, paysDuPoint: 'IE', ville: 'Dublin', villeConnue: { pays: ['IE', 'US'], paysAvecSubdivision: [] } }))
+    expect(decidePays({ ...e, paysDuPoint: 'IE', ville: 'Dublin', villeConnue: { pays: ['IE', 'US'], paysAvecSubdivision: [], paysProches: ['IE'] } }))
       .toMatchObject({ pays: 'IE', motif: 'COORDONNEES_ET_VILLE' });
   });
 
   it('Intersport : un point dans un pays qui ne connaît pas la ville est une contradiction, jamais un pays', () => {
     const e = { ...base, ville: 'Morteau', paysDuPoint: 'US', villeConnue: { pays: ['FR'], paysAvecSubdivision: [] }, marche: ['FR'] };
+    expect(decidePays(e)).toEqual({ pays: null, cause: 'COORDONNEES_DISCORDANTES' });
+  });
+
+  it('un point loin de toute ville du même nom dans son pays est une contradiction (« Paris » avec un point en Californie)', () => {
+    const e = { ...base, ville: 'Paris', paysDuPoint: 'US', villeConnue: { pays: ['CA', 'FR', 'US'], paysAvecSubdivision: [], paysProches: [] }, marche: ['FR'] };
+    expect(e.villeConnue.pays).toContain('US'); // prémisse : le pays du point connaît le nom
+    expect(decidePays(e)).toEqual({ pays: null, cause: 'COORDONNEES_DISCORDANTES' });
+  });
+
+  it('un point dans un autre pays que celui du référentiel est une contradiction (« California » avec un point en France)', () => {
+    const e = { ...base, lieu: 'California', paysDuPoint: 'FR', subdivisionSeule: ['US'], marche: ['FR', 'US'] };
+    expect(decidePays({ ...e, paysDuPoint: null })).toMatchObject({ pays: 'US' }); // prémisse : sans point, la subdivision prouve
     expect(decidePays(e)).toEqual({ pays: null, cause: 'COORDONNEES_DISCORDANTES' });
   });
 

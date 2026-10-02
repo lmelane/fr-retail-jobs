@@ -15,7 +15,8 @@ type GreenhouseResponse = { jobs: GreenhouseJob[]; meta?: { total?: number } };
 /**
  * The country of a Greenhouse posting. `location.name` is a bare city ("Zurich", "Shanghai": 0 % of On's 309 postings carried
  * a country on 2026-09-10) — the office address, when the board fills it, ends with the country. Read from the FIRST office
- * whose address yields a recognised country; nothing is inferred from a city name alone (D53: no city→country table).
+ * whose address yields a recognised country; nothing is inferred from a city name alone here. A posting the chain leaves without
+ * country may still receive one, on proof, from `geo/paysParPreuve.ts` (D-520, offres sans pays).
  */
 export function greenhouseCountry(job: Pick<GreenhouseJob, 'offices' | 'location'>): string | undefined {
   for (const office of job.offices ?? []) {
@@ -30,7 +31,7 @@ export function greenhouseCountry(job: Pick<GreenhouseJob, 'offices' | 'location
  * et beaucoup de tableaux nomment un bureau par son pays, sans adresse : On (« United States », « China », « Japan » :
  * 157 offres sans pays), Molton Brown (« United Kingdom », « Ireland » : 26). C'est un champ natif, déclaré par l'employeur.
  * Lu en dernier (l'adresse d'un bureau, puis le lieu de l'offre passent avant) et seulement quand le nom ENTIER est un nom de
- * pays : jamais un code (« UK », « US » : R-125 §4), jamais un nom qui est aussi un État ou une province (« Georgia »),
+ * pays : jamais un code (« UK », « US » : deux ou trois lettres ne désignent pas un pays avec certitude), jamais un nom qui est aussi un État ou une province (« Georgia »),
  * jamais un nom composé (« HQ Shanghai », « Remote (United States) »). Des bureaux qui nomment plusieurs pays n'en donnent
  * aucun. Le pays passe ensuite par la confrontation aux lieux déclarés (`declaredPlaceCountry.ts`) : un bureau « China »
  * pour un lieu « Hong Kong » rend Hong Kong (D-442 §2).

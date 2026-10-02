@@ -382,8 +382,10 @@ function resolveSubdivision(country: string | undefined, token: string | undefin
  * La géographie d'une offre, et la preuve qui l'a produite.
  *
  * L'ordre suit la fiabilité : un champ déclaré par la source bat un libellé
- * qu'il faut interpréter. Une ville seule ne produit JAMAIS de pays — « Paris »
- * existe dans 4 pays de la base.
+ * qu'il faut interpréter. Une ville seule ne produit JAMAIS de pays ici — « Paris »
+ * existe dans 4 pays de la base. Quand toute la chaîne laisse une offre sans pays,
+ * `geo/paysParPreuve.ts` (D-520) en cherche un sur preuve : point natif et ville
+ * concordants, ou ville du référentiel GeoNames dans le marché observé de la source.
  */
 export function resolveGeography(input: GeographyInput): ResolvedGeography {
   const out: ResolvedGeography = {};

@@ -82,9 +82,23 @@ describe('la preuve de pays à l’ingestion', () => {
     expect((await db.job.findUniqueOrThrow({ where: { id: jobId } })).countryCode).toBe('GB');
   });
 
-  it('Intersport : un point en Californie pour un magasin de Morteau n’est jamais un pays', async () => {
+  it('Intersport : un point en Californie pour un magasin de Morteau n’est jamais un pays, même quand le marché est connu', async () => {
     const key = await source();
+    await upsertDeduplicated(db, simple(key, 'p0', 'Paris, France'));
+    expect(await db.$queryRaw<{ n: bigint }[]>`SELECT count(*) AS n FROM "Job" j JOIN "JobSource" s ON s."jobId" = j.id
+      WHERE s."sourceKey" = ${key} AND j."countryCode" = 'FR'`).toEqual([{ n: 1n }]); // prémisse : le marché de la source est FR
     const { jobId } = await upsertDeduplicated(db, boots(key, 'i1', 'Morteau', [37.9575, -121.975]));
+    expect((await db.job.findUniqueOrThrow({ where: { id: jobId } })).countryCode).toBeNull();
+    // Un point loin de toute Aberdeen britannique (Londres) ne confirme pas la ville de l'offre.
+    const { jobId: loin } = await upsertDeduplicated(db, boots(key, 'i2', 'Aberdeen, Bon Accord Centre', [51.5074, -0.1278]));
+    expect((await db.job.findUniqueOrThrow({ where: { id: loin } })).countryCode).toBeNull();
+  });
+
+  it('un pays posé ne se confirme jamais lui-même : seule offre de sa source, sa ville unique n’a pas de marché', async () => {
+    const key = await source();
+    const { jobId } = await upsertDeduplicated(db, simple(key, 'x1', 'Vanves'));
+    await db.$executeRaw`UPDATE "Job" SET "countryCode" = 'FR' WHERE id = ${jobId}`; // prémisse : l'offre elle-même porte FR
+    await upsertDeduplicated(db, simple(key, 'x1', 'Vanves'));
     expect((await db.job.findUniqueOrThrow({ where: { id: jobId } })).countryCode).toBeNull();
   });
 
@@ -132,7 +146,8 @@ describe('le rattrapage du stock', () => {
     await expect(applyRattrapagePays(db, { ...falsifie, empreinte: empreinteRattrapage(falsifie.resolutions) })).rejects.toThrow('REVIEWED_PLAN_MISMATCH');
     expect((await db.job.findUniqueOrThrow({ where: { id: jobId } })).countryCode).toBeNull();
 
-    const report = await applyRattrapagePays(db, apercu);
+    // Le fichier relu, tel qu'il revient du disque.
+    const report = await applyRattrapagePays(db, JSON.parse(JSON.stringify(apercu)));
     expect(report.skipped).toBe(0);
     const job = await db.job.findUniqueOrThrow({ where: { id: jobId }, include: { sources: true } });
     expect(job).toMatchObject({ countryCode: 'GB', geoCityId: 97000001, geoSource: 'NATIVE' });

@@ -80,8 +80,7 @@ const compter = (valeurs: string[]) => Object.fromEntries([...valeurs.reduce((m,
 
 /** Ce que la relecture fige : quelles offres, depuis quelle publication et quelle entrée, reçoivent quoi. */
 export const empreinteRattrapage = (resolutions: readonly ResolutionPays[]) =>
-  evidenceHash([...resolutions].map((r) => [r.jobId, r.sourceId, r.inputHash, r.apres.countryCode, r.apres.countryIntegrity, r.apres.adminArea1, r.motif])
-    .sort((a, b) => String(a[0]).localeCompare(String(b[0]))));
+  evidenceHash([...resolutions].sort((a, b) => a.jobId.localeCompare(b.jobId)));
 
 const inputHashOf = (presentation: Prisma.JsonValue) =>
   presentation && typeof presentation === 'object' && !Array.isArray(presentation) && typeof presentation.inputHash === 'string' ? presentation.inputHash : null;
@@ -150,21 +149,27 @@ export async function applyRattrapagePays(db: PrismaClient, reviewed: ApercuRatt
   for (let i = 0; i < reviewed.resolutions.length; i += LOT) {
     const lot = reviewed.resolutions.slice(i, i + LOT);
     await db.$transaction(async (tx) => {
-      // Le même verrou que l'ingestion de la source : aucune observation concurrente ne réécrit l'offre pendant le lot.
+      // Les verrous de l'ingestion (`dedup/upsert.ts`) : celui de la source (partagé), puis celui, EXCLUSIF, de chaque
+      // publication ; une observation concurrente de la même publication attend la fin du lot, et inversement.
       for (const key of [...new Set(lot.map((r) => r.sourceKey))].sort()) await lockSourceWrites(tx, key);
+      for (const entry of lot.map((r) => JSON.stringify(['entry', r.sourceKey, r.externalId])).sort()) {
+        await tx.$queryRaw`SELECT 1 AS locked FROM pg_advisory_xact_lock(hashtextextended(${entry}, 0))`;
+      }
       for (const r of lot) {
+        const [offre] = await tx.$queryRaw<{ id: string }[]>`SELECT "id" FROM "Job" WHERE "id" = ${r.jobId} AND "countryCode" IS NULL
+          AND "isActive" AND "mergedIntoId" IS NULL AND "canonicalSourceKey" = ${r.sourceKey} AND "canonicalExternalId" = ${r.externalId} FOR UPDATE`;
+        if (!offre) { skipped++; continue; }
         const written = await tx.$executeRaw`
           UPDATE "JobSource" SET "presentation" = jsonb_set(jsonb_set(jsonb_set("presentation",
               '{values,countryCode}', to_jsonb(${r.apres.countryCode}::text)),
               '{values,countryIntegrity}', coalesce(to_jsonb(${r.apres.countryIntegrity}::text), 'null'::jsonb)),
               '{values,adminArea1}', coalesce(to_jsonb(${r.apres.adminArea1}::text), 'null'::jsonb))
            WHERE "id" = ${r.sourceId} AND "jobId" = ${r.jobId} AND "presentation"->>'inputHash' = ${r.inputHash}
-             AND "presentation"->'values'->>'countryCode' IS NULL
-             AND EXISTS (SELECT 1 FROM "Job" j WHERE j."id" = ${r.jobId} AND j."countryCode" IS NULL AND j."isActive" AND j."mergedIntoId" IS NULL
-               AND j."canonicalSourceKey" = ${r.sourceKey} AND j."canonicalExternalId" = ${r.externalId})`;
+             AND "presentation"->'values'->>'countryCode' IS NULL`;
         if (written !== 1) { skipped++; continue; }
-        await tx.$executeRaw`UPDATE "Job" SET "countryCode" = ${r.apres.countryCode}, "countryIntegrity" = ${r.apres.countryIntegrity},
-          "adminArea1" = ${r.apres.adminArea1} WHERE "id" = ${r.jobId}`;
+        const job = await tx.$executeRaw`UPDATE "Job" SET "countryCode" = ${r.apres.countryCode}, "countryIntegrity" = ${r.apres.countryIntegrity},
+          "adminArea1" = ${r.apres.adminArea1} WHERE "id" = ${r.jobId} AND "countryCode" IS NULL`;
+        if (job !== 1) throw new Error(`RATTRAPAGE_PAYS_CONFLIT job=${r.jobId}: offer changed under its row lock`);
         await tx.jobEvent.createMany({ data: changedEvents(r.jobId, [{ field: 'country', before: null, after: r.apres.countryCode }], at).map(toEventRow) });
         await recordDataCorrection(tx, { id: randomUUID(), batchId, planHash: reviewed.empreinte, commitHash, finding: RATTRAPAGE_PAYS_FINDING,
           entityType: 'Job', entityId: r.jobId, before: r.avant, after: r.apres,

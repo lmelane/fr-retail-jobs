@@ -55,8 +55,19 @@ export type PreuvePays =
   | { pays: string; motif: MotifPays; marche: readonly string[] }
   | { pays: null; cause: CauseSansPays };
 
-/** Ce que le référentiel sait d'un nom de ville : les pays qui le portent, et ceux où la subdivision indiquée le confirme. */
-export type VilleConnue = { pays: readonly string[]; paysAvecSubdivision: readonly string[] };
+/**
+ * Ce que le référentiel sait d'un nom de ville : les pays qui le portent, ceux où la subdivision indiquée le confirme, et ceux
+ * où une ville de ce nom est à `DISTANCE_POINT_VILLE_KM` au plus du point natif de l'offre.
+ */
+export type VilleConnue = { pays: readonly string[]; paysAvecSubdivision: readonly string[]; paysProches?: readonly string[] };
+
+/**
+ * La distance maximale entre le point natif et une ville du même nom pour que les deux concordent. Sans elle, un point faux
+ * dans un pays qui connaît aussi le nom (« Paris » avec un point aux États-Unis) passait : Intersport publie des magasins
+ * français avec un point en Californie (audit du lot, 02/10/2026). 50 km couvre une galerie commerciale nommée par sa
+ * ville voisine (Boots « Cork, Mallow » : 30 km).
+ */
+export const DISTANCE_POINT_VILLE_KM = 50;
 
 export type EntreesPreuve = {
   ville: string | null;
@@ -78,10 +89,13 @@ const unique = <T>(values: readonly T[]) => [...new Set(values)];
 export function decidePays(e: EntreesPreuve): PreuvePays {
   const villes = unique(e.villeConnue.pays);
   if (e.paysDuPoint) {
-    if (villes.includes(e.paysDuPoint)) return { pays: e.paysDuPoint, motif: 'COORDONNEES_ET_VILLE', marche: e.marche };
+    // Le point et une ville de ce nom, dans le même pays et à moins de 50 km : sinon les deux champs ne concordent pas.
+    if ((e.villeConnue.paysProches ?? []).includes(e.paysDuPoint)) return { pays: e.paysDuPoint, motif: 'COORDONNEES_ET_VILLE', marche: e.marche };
     if (villes.length) return { pays: null, cause: 'COORDONNEES_DISCORDANTES' };
   }
-  const propose = (pays: string, motif: MotifPays): PreuvePays => e.marche.includes(pays) ? { pays, motif, marche: e.marche }
+  // Un point natif dans un autre pays que celui que propose le référentiel est une contradiction, jamais un pays.
+  const propose = (pays: string, motif: MotifPays): PreuvePays => e.paysDuPoint && e.paysDuPoint !== pays ? { pays: null, cause: 'COORDONNEES_DISCORDANTES' }
+    : e.marche.includes(pays) ? { pays, motif, marche: e.marche }
     : { pays: null, cause: e.marche.length ? 'HORS_MARCHE_DE_LA_SOURCE' : 'MARCHE_DE_LA_SOURCE_INCONNU' };
   const sansPreuve = (cause: CauseSansPays): PreuvePays => ({ pays: null, cause: e.paysDuPoint ? 'POINT_NON_CORROBORE' : cause });
   if (e.ville) {
@@ -120,16 +134,21 @@ function subdivisionCandidate(lieu: string | null | undefined): string | null {
 
 type Lecteur = Pick<Prisma.TransactionClient, '$queryRaw'>;
 
-/** Les pays où le référentiel connaît ce nom de ville, et ceux où la subdivision indiquée le confirme. */
-export async function villeConnue(db: Lecteur, ville: string | null, subdivision: string | null): Promise<VilleConnue> {
-  if (!ville?.trim()) return { pays: [], paysAvecSubdivision: [] };
-  const rows = await db.$queryRaw<{ pays: string; confirme: boolean }[]>`
+/** Les pays où le référentiel connaît ce nom de ville, ceux où la subdivision indiquée le confirme, ceux proches du point. */
+export async function villeConnue(db: Lecteur, ville: string | null, subdivision: string | null,
+  point: { latitude: number; longitude: number } | null = null): Promise<VilleConnue> {
+  if (!ville?.trim()) return { pays: [], paysAvecSubdivision: [], paysProches: [] };
+  const lat = point?.latitude ?? null, lon = point?.longitude ?? null;
+  const rows = await db.$queryRaw<{ pays: string; confirme: boolean; proche: boolean }[]>`
     SELECT n."countryCode" AS pays,
-           bool_or(${subdivision}::text IS NOT NULL AND c."subdivisionKeys" && catwalks_subdivision_cles(${subdivision}::text)) AS confirme
+           bool_or(${subdivision}::text IS NOT NULL AND c."subdivisionKeys" && catwalks_subdivision_cles(${subdivision}::text)) AS confirme,
+           bool_or(${lat}::float8 IS NOT NULL AND 6371.0088 * 2 * asin(least(1::float8, sqrt(power(sin(radians(c."latitude" - ${lat}::float8) / 2), 2)
+             + cos(radians(${lat}::float8)) * cos(radians(c."latitude")) * power(sin(radians(c."longitude" - ${lon}::float8) / 2), 2)))) <= ${DISTANCE_POINT_VILLE_KM}) AS proche
       FROM "GeoCityName" n JOIN "GeoCity" c ON c."id" = n."cityId"
      WHERE n."nameKey" = catwalks_lieu_cle(${ville}::text)
      GROUP BY n."countryCode" ORDER BY n."countryCode"`;
-  return { pays: rows.map((r) => r.pays), paysAvecSubdivision: rows.filter((r) => r.confirme).map((r) => r.pays) };
+  return { pays: rows.map((r) => r.pays), paysAvecSubdivision: rows.filter((r) => r.confirme).map((r) => r.pays),
+    paysProches: rows.filter((r) => r.proche).map((r) => r.pays) };
 }
 
 /** Les pays dont une subdivision porte ce nom (« California » → US), pour un lieu sans ville. */
@@ -142,17 +161,21 @@ export async function subdivisionConnue(db: Lecteur, lieu: string | null): Promi
   return rows.map((r) => r.pays);
 }
 
-/** Le marché observé d'une source : les pays des offres actives que portent ses publications actives. */
-export async function marcheDeLaSource(db: Lecteur, sourceKey: string): Promise<string[]> {
+/**
+ * Le marché observé d'une source : les pays des AUTRES offres actives que portent ses publications actives. L'offre de la
+ * publication examinée en est exclue : un pays posé sur elle ne se confirme jamais lui-même à l'observation suivante.
+ */
+export async function marcheDeLaSource(db: Lecteur, sourceKey: string, externalId: string | null = null): Promise<string[]> {
   const rows = await db.$queryRaw<{ pays: string }[]>`
     SELECT DISTINCT j."countryCode" AS pays FROM "JobSource" s JOIN "Job" j ON j."id" = s."jobId"
      WHERE s."sourceKey" = ${sourceKey} AND s."isActive" AND j."isActive" AND j."mergedIntoId" IS NULL AND j."countryCode" IS NOT NULL
+       AND NOT EXISTS (SELECT 1 FROM "JobSource" moi WHERE moi."jobId" = j."id" AND moi."sourceKey" = ${sourceKey} AND moi."externalId" = ${externalId}::text)
      ORDER BY 1`;
   return rows.map((r) => r.pays);
 }
 
 /** Ce que la décision lit d'une offre : sa ville (telle que la chaîne l'écrit), son lieu, son point natif, sa source. */
-export type LieuDeLOffre = { sourceKey: string; ville: string | null; lieu: string | null; latitude: number | null; longitude: number | null };
+export type LieuDeLOffre = { sourceKey: string; externalId: string | null; ville: string | null; lieu: string | null; latitude: number | null; longitude: number | null };
 
 /** Le point natif d'une offre, valide et hors (0, 0) — la même règle que `catwalks_coordonnees_valides` (D-496). */
 export function paysDuPointNatif(latitude: number | null, longitude: number | null, frontieres?: Frontieres): string | null {
@@ -161,17 +184,24 @@ export function paysDuPointNatif(latitude: number | null, longitude: number | nu
   return verdict.pays;
 }
 
-/** Le marché de chaque source, lu une fois par passage quand l'appelant en garde la mémoire (rattrapage du stock). */
+/**
+ * Le marché de chaque source, lu une fois par passage quand l'appelant en garde la mémoire : le rattrapage du stock, où toutes
+ * les offres examinées sont sans pays, donc absentes du marché qu'on exclurait pour chacune.
+ */
 export type MemoireMarches = Map<string, Promise<string[]>>;
 
 /** Lit le référentiel et le marché de la source, puis décide. Lecture seule. */
 export async function preuvePays(db: Lecteur, offre: LieuDeLOffre, frontieres?: Frontieres, marches?: MemoireMarches): Promise<PreuvePays> {
   const subdivision = offre.ville ? subdivisionDuLieu(offre.lieu, offre.ville) : null;
-  const marcheLu = marches?.get(offre.sourceKey) ?? marcheDeLaSource(db, offre.sourceKey);
-  marches?.set(offre.sourceKey, marcheLu);
-  const connue = await villeConnue(db, offre.ville, subdivision);
+  const paysDuPoint = paysDuPointNatif(offre.latitude, offre.longitude, frontieres);
+  const point = paysDuPoint && offre.latitude !== null && offre.longitude !== null ? { latitude: offre.latitude, longitude: offre.longitude } : null;
+  const connue = await villeConnue(db, offre.ville, subdivision, point);
   const seule = offre.ville ? [] : await subdivisionConnue(db, offre.lieu);
-  const marche = await marcheLu;
-  return decidePays({ ville: offre.ville, subdivision, lieu: offre.lieu, paysDuPoint: paysDuPointNatif(offre.latitude, offre.longitude, frontieres),
-    villeConnue: connue, subdivisionSeule: seule, marche });
+  const entrees = { ville: offre.ville, subdivision, lieu: offre.lieu, paysDuPoint, villeConnue: connue, subdivisionSeule: seule };
+  // Le marché n'est lu que si la décision en dépend (le point et la ville suffisent à 1 900 offres Boots sur 1 973).
+  const sansMarche = decidePays({ ...entrees, marche: [] });
+  if (sansMarche.pays !== null || sansMarche.cause !== 'MARCHE_DE_LA_SOURCE_INCONNU') return sansMarche;
+  const marcheLu = marches?.get(offre.sourceKey) ?? marcheDeLaSource(db, offre.sourceKey, offre.externalId);
+  marches?.set(offre.sourceKey, marcheLu);
+  return decidePays({ ...entrees, marche: await marcheLu });
 }

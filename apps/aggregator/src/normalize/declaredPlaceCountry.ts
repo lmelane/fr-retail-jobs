@@ -47,7 +47,8 @@
  *     US et CA). Seule la règle du territoire lit un nom de territoire dans ces champs, sous le champ du pays
  *     englobant (`CN`, `US`) et pour sa liste fermée ;
  *   · le repli des signaux français (`isFranceJob`) ;
- *   · les coordonnées : le code n'en a aucune lecture en pays. Ce sont elles, avec le code, que l'adresse
+ *   · les coordonnées : ce module n'en a aucune lecture en pays (seule la preuve d'une offre que la chaîne laisse sans pays,
+ *     `geo/paysParPreuve.ts`, lit le point natif, et seulement concordant avec la ville). Ce sont elles, avec le code, que l'adresse
  *     contredit (Ulta : Carolina, Porto Rico ; Foot Locker : Caroline du Sud) ;
  *   · un code pays à deux ou trois lettres, pour le champ « nom du pays » : c'est le signal que l'adresse
  *     contredit, pas un champ d'adresse ;

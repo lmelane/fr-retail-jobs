@@ -17,7 +17,7 @@ export async function countryProofOf(db: Lecteur, candidate: CandidateJob, front
   const status = countryChainStatus(candidate);
   if (status === 'DECIDED') return undefined;
   if (status === 'ABSTAINED') return { pays: null, cause: 'CONTRADICTION_DECLAREE' };
-  return preuvePays(db, { sourceKey: candidate.sourceKey, ville: cityOf(candidate) ?? null, lieu: candidate.location ?? null,
+  return preuvePays(db, { sourceKey: candidate.sourceKey, externalId: candidate.externalId, ville: cityOf(candidate) ?? null, lieu: candidate.location ?? null,
     latitude: candidate.latitude ?? null, longitude: candidate.longitude ?? null }, frontieres, marches);
 }
 
