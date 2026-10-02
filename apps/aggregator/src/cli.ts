@@ -267,11 +267,8 @@ try {
     const { readSourceStatesReport } = await import('./pipeline/sourceStateStore.js');
     const { stateReportText } = await import('./pipeline/sourceStateReport.js');
     const report = await readSourceStatesReport(prisma);
-    if (process.argv.includes('--json')) await log.info('command.result', { ok: true, command, report });
-    else {
-      await log.info('command.result', { ok: true, command, summary: report.summary, neverComputed: report.neverComputed });
-      process.stdout.write(`${stateReportText(report).join('\n')}\n`);
-    }
+    // Comme `coverage` : le texte se lit dans `lines` du résultat journalisé (aucune écriture brute sur la sortie).
+    await log.info('command.result', process.argv.includes('--json') ? { ok: true, command, report } : { ok: true, command, lines: stateReportText(report) });
   } else if (command === 'verifier-source') {
     /** D-520 §4 — la vérification ciblée d'une source, hors RUN et hors fenêtre 15:30-18:30 UTC ; son état est écrit tout de suite. */
     const { verifySource } = await import('./pipeline/verifySource.js');
