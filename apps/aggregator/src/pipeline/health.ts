@@ -120,8 +120,8 @@ export type SourceHealth = {
  *   · `ENUMERATION_TRUNCATED` : la collecte n'a pas lu tout ce que l'éditeur annonce (la liste, pas le marché) ;
  *   · `RETENTION_TO_INSTRUCT` : des offres retenues sans preuve de l'éditeur ni décision (fiche illisible, identité
  *     contredite) — le contenu, pas le volume ;
- *   · `ENUMERATION_UNPROVABLE` : la limite de la famille (`STRUCTURAL_LIMIT_MARKERS`) — l'éditeur n'expose aucune liste
- *     démontrable ; classée, non bloquante, jamais attestante ;
+ *   · `ENUMERATION_UNPROVABLE` : une liste NON PROUVÉE dont le lecteur nomme la raison (`STRUCTURAL_LIMIT_MARKERS` : page
+ *     d'accueil sans liste, flux) — bloquante comme toute liste non prouvée (D-453 §1), sauf pour les sources de D-480 §1 ;
  *   · `SOURCE_HEALTH_REGRESSION` ne nomme plus que le volume : chute non confirmée par l'éditeur, zéro, couverture d'URL. */
 export type HealthFinding = 'ENUMERATION_NOT_PROVEN' | 'ENUMERATION_REFUTED' | 'NATIVE_RETENTION_JUMP' | 'DESCRIPTION_COVERAGE_BELOW_FLOOR' | 'NATIVE_REFUSAL_MASS'
   | 'ENUMERATION_TRUNCATED' | 'RETENTION_TO_INSTRUCT' | 'ENUMERATION_UNPROVABLE';
@@ -286,7 +286,7 @@ export function evaluateSourceHealth(stat: IngestStats, before: number | null, r
   // A drop the publisher confirms (D-484 §2), or one where fewer than ten postings disappear (D-491), is no defect of
   // the collection: it is named, and blocks nothing on its own.
   const dropped = collection.confirmedDrop ?? collection.minorDrop;
-  // D-520 : la limite de la famille n'est pas un défaut de cette collecte ; une retenue à côté d'elle est jugée pour elle-même.
+  // D-520 : une liste indémontrable n'empêche pas de juger la retenue à côté d'elle, nommée pour elle-même.
   const unprovable = collection.finding === 'ENUMERATION_UNPROVABLE';
   const otherDefect = (collection.status === 'BROKEN' || collection.status === 'DEGRADED') && !dropped && !unprovable;
   const guard = retention.nonBlocking && !otherDefect ? negativeProofGuard(stat, retentionBaseline) : undefined;
@@ -454,10 +454,23 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
    * digest. Le droit d'attester reste arbitré séparément par `isTrustedForAttestation`.
    */
   if (jobs > 0 && stat.complete === false) {
-    // D-520 : la famille dit que l'éditeur n'expose aucune liste démontrable. Classée, non bloquante, jamais attestante.
+    /*
+     * D-520 (audit du 02/10/2026) : un défaut de LISTE ne cache jamais une chute de volume ni une couverture de champ
+     * effondrée. Sans ce contrôle, une liste non prouvée sortait ici avant eux : pour une source dont la liste est un échec
+     * connu (D-480 §1), une chute de 40 à 1 offre ou 0 % de descriptions passait non bloquante (« tout autre défaut de ces
+     * sources reste bloquant »). Le défaut de liste reste nommé dans la note.
+     */
+    const listNote = stat.enumerationReading === 'NOT_PROVEN' ? 'énumération non prouvée' : 'énumération réfutée';
+    const collapsed = before != null && before > 0 && jobs < before * COLLAPSE_RATIO && before - jobs >= MINOR_DROP_BLOCKING_DISAPPEARED;
+    const fields = fieldCoverageIncident(stat);
+    if (collapsed) return { ...base, status: 'DEGRADED',
+      note: `${Math.round((1 - jobs / before!) * 100)} % d’offres en moins qu’au run précédent, sur une liste non démontrée (${listNote}), à instruire` };
+    if (fields) return { ...base, status: 'DEGRADED', ...(fields.startsWith('descriptions manquantes') ? { finding: 'DESCRIPTION_COVERAGE_BELOW_FLOOR' as const } : {}),
+      note: `${fields} · ${listNote}` };
+    // D-520 : le lecteur nomme pourquoi la liste ne peut pas être démontrée en l'état (page d'accueil sans liste, flux).
     if (stat.enumerationReading === 'NOT_PROVEN' && stat.enumerationUnprovable) {
       return { ...base, status: 'DEGRADED', finding: 'ENUMERATION_UNPROVABLE',
-        note: `liste indémontrable : l’éditeur n’expose ni total ni fin de liste (${stat.enumerationUnprovable}), limite de la famille classée (D-520), aucune absence attestée` };
+        note: `liste indémontrable en l’état : le lecteur ne lit ni total ni fin de liste (${stat.enumerationUnprovable}), aucune absence attestée, à instruire` };
     }
     if (stat.enumerationReading === 'NOT_PROVEN') {
       return { ...base, status: 'DEGRADED', finding: 'ENUMERATION_NOT_PROVEN',

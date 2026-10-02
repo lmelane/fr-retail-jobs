@@ -42,11 +42,12 @@ export function isProvenSourceIssue(issue: IngestionIssue): boolean {
  */
 type KnownFailure = { code: string; detail?: string };
 export const DECIDED_KNOWN_FAILURES: Readonly<Record<string, readonly KnownFailure[]>> = {
-  // L'éditeur ne permet pas de prouver la liste complète.
-  lumentee: [{ code: 'ENUMERATION_NOT_PROVEN' }],
-  attaquer: [{ code: 'ENUMERATION_NOT_PROVEN' }],
-  'kastner-ohler': [{ code: 'ENUMERATION_NOT_PROVEN' }],
-  picard: [{ code: 'ENUMERATION_NOT_PROVEN' }],
+  // L'éditeur ne permet pas de prouver la liste complète. `ENUMERATION_UNPROVABLE` (D-520, 02/10/2026) nomme le MÊME défaut
+  // quand le lecteur dit pourquoi (page d'accueil sans liste, flux RSS) : même source, même défaut décrit, aucune extension.
+  lumentee: [{ code: 'ENUMERATION_NOT_PROVEN' }, { code: 'ENUMERATION_UNPROVABLE' }],
+  attaquer: [{ code: 'ENUMERATION_NOT_PROVEN' }, { code: 'ENUMERATION_UNPROVABLE' }],
+  'kastner-ohler': [{ code: 'ENUMERATION_NOT_PROVEN' }, { code: 'ENUMERATION_UNPROVABLE' }],
+  picard: [{ code: 'ENUMERATION_NOT_PROVEN' }, { code: 'ENUMERATION_UNPROVABLE' }],
   tapestry: [{ code: 'ENUMERATION_REFUTED' }, { code: 'ENUMERATION_NOT_PROVEN' }],
   'knitwell-us-retail': [{ code: 'ENUMERATION_REFUTED' }, { code: 'ENUMERATION_NOT_PROVEN' }],
   // L'éditeur bloque par sa limite de débit (réponse 406, et elle seule) ou vide ses offres (description « - »).

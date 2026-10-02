@@ -7,6 +7,7 @@ import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { workdayPortal } from '../portalConfig.js';
 import { isKnownPosting } from '../../lib/incrementalReading.js';
+import { assertSourceRunning } from '../../lib/sourceBudget.js';
 
 // externalPath is optional in practice: some tenants (Richemont) return rows
 // without it, and treating it as always-present crashed the whole source.
@@ -469,19 +470,20 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
   for (const board of boards) results.push(await enumerateBoard(shared, board));
   const partitioned = Boolean(boards[0]?.partition);
   // Only a capped site read without any partition goes on to the covering facet: every other board is untouched.
-  const covering = !partitioned && results[0]?.capped ? await readCoveringFacet(shared, results[0]!) : undefined;
+  const covering = !partitioned && results[0]?.capped ? await readCoveringFacetSafely(shared, results[0]!) : undefined;
   if (covering) {
     const coverPages = covering.results.reduce((sum, r) => sum + r.pages, 0);
     const enumeration: AdapterResult['enumeration'] = { method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION_COVERING_FACET', endpoint,
       pages: results[0]!.pages + coverPages, rawCount: results[0]!.rawCount + covering.results.reduce((sum, r) => sum + r.rawCount, 0),
-      termination: covering.termination, issues: [...issues], enumerationTraversalComplete: covering.proven,
+      termination: covering.termination, issues: [...issues], enumerationTraversalComplete: covering.reconciled,
       canonicalAbsenceProofUsable: shared.pathlessRows.size === 0,
-      scopes: [{ scope: 'jobs', declaredTotal: covering.sigma, uniqueIds: shared.coverIds.size, pages: results[0]!.pages + coverPages, complete: covering.proven },
+      scopes: [{ scope: 'jobs', declaredTotal: covering.sigma, uniqueIds: shared.coverIds.size, pages: results[0]!.pages + coverPages, complete: covering.reconciled },
         { scope: 'jobs:capped-site', declaredTotal: results[0]!.total || -1, uniqueIds: results[0]!.uniqueIds, pages: results[0]!.pages, complete: false },
         ...covering.results.map((r): Scope => ({ scope: r.scope, declaredTotal: r.total || -1, uniqueIds: r.uniqueIds, pages: r.pages, complete: r.complete }))],
       pageEvidence };
     const truncated = covering.results.some((r) => r.termination === 'PAGE_BUDGET_EXHAUSTED' || (r.total > 0 && r.rawCount < r.total));
-    return finishWorkday(config, out, { declaredTotal: covering.sigma, complete: covering.proven, truncated, enumeration, rejectedRows }, origin, tenant, site);
+    // `complete` reste faux même quand les comptes concordent : voir `readCoveringFacet`, « la preuve n'est pas adoptée ».
+    return finishWorkday(config, out, { declaredTotal: covering.sigma, complete: false, truncated, enumeration, rejectedRows }, origin, tenant, site);
   }
   const partitions = results.filter((r) => r.scope !== 'jobs:unpartitioned');
   const remainder = partitioned ? results.find((r) => r.scope === 'jobs:unpartitioned') : undefined;
@@ -605,16 +607,20 @@ export function coveringFacet(facets: readonly WorkdayFacet[] | undefined, cap =
  * sans valeur de la facette ET servie au-delà du plafond resterait invisible ; elle ferait compter une autre facette
  * de plus, sauf à n'avoir aucune valeur dans aucune. Elle est écrite ici, pas cachée.
  *
- * LA PREUVE N'OUVRE PAS LA FERMETURE. La terminaison `COVERING_FACET_RECONCILED` n'est pas probante pour le refresh
- * (`refreshPlan.ts`, `PROVING_TERMINATIONS`) : la source est saine et lue en entier, mais ses absences ne ferment rien
- * tant que le propriétaire n'a pas décidé que cette lecture fait preuve, comme la relecture de SuccessFactors.
+ * LA PREUVE N'EST PAS ADOPTÉE (audit du 02/10/2026). Quand toutes ces conditions tiennent, la terminaison est
+ * `COVERING_FACET_RECONCILED` et la preuve est archivée (portées, compteurs), mais la sortie reste `complete: false` avec
+ * `COVERING_FACET_PROOF_NOT_ADOPTED` : transmise, elle donnerait `canAttestAbsence`, ouvrirait la chute confirmée de
+ * D-484 §2 et les retenues de disponibilité (`availability.ts`), qui ne lisent pas la terminaison. Décider qu'une lecture
+ * par facette fait preuve appartient au propriétaire (`refreshPlan.ts`). Jusque-là : toutes les offres sont collectées,
+ * aucune n'est fermée ni retenue sur cette lecture, et knitwell reste sous D-480 §1.
  */
-async function readCoveringFacet(shared: Shared, site: BoardResult): Promise<{ sigma: number; results: BoardResult[]; proven: boolean; termination: string } | undefined> {
+async function readCoveringFacet(shared: Shared, site: BoardResult): Promise<{ sigma: number; results: BoardResult[]; reconciled: boolean; termination: string } | undefined> {
   const cover = coveringFacet(shared.siteFacets);
   if (!cover) { shared.issues.add('COVERING_FACET_ABSENT'); return undefined; }
   const siteIds = [...shared.seen];
+  // `canonicalIds: []` : une page d'inventaire ne nomme aucune offre ; sans la propriété, le contrat canonique serait partiel.
   shared.pageEvidence.push({ url: `${shared.endpoint}#coveringFacet=${encodeURIComponent(cover.parameter)}`, checkedAt: captureObservedAt().toISOString(),
-    sha256: createHash('sha256').update(JSON.stringify(shared.siteFacets)).digest('hex'), offset: 0, pagination: null, ids: [], publisherCounter: `total=${site.total}`,
+    sha256: createHash('sha256').update(JSON.stringify(shared.siteFacets)).digest('hex'), offset: 0, pagination: null, ids: [], canonicalIds: [], publisherCounter: `total=${site.total}`,
     componentCounters: [...cover.values.map((v) => `${cover.parameter}=${v.descriptor}:${v.count}`), `sum=${cover.sum}`, `agreeing=${cover.agreeing}`, ...(cover.exceeded ? ['exceeded=1'] : [])] });
   const results: BoardResult[] = [];
   // A value counted at zero has nothing to read; its zero still adds up in the facet's sum.
@@ -633,9 +639,23 @@ async function readCoveringFacet(shared: Shared, site: BoardResult): Promise<{ s
     ...(cover.agreeing < 2 || cover.exceeded ? ['COVERING_FACET_WITHOUT_AGREEMENT'] : []),
   ];
   for (const failure of failures) shared.issues.add(failure);
-  const proven = failures.length === 0;
-  if (!proven) shared.issues.add('ENUMERATION_NOT_PROVEN');
-  return { sigma: cover.sum, results, proven, termination: proven ? 'COVERING_FACET_RECONCILED' : 'COVERING_FACET_UNPROVEN' };
+  const reconciled = failures.length === 0;
+  shared.issues.add(reconciled ? 'COVERING_FACET_PROOF_NOT_ADOPTED' : 'ENUMERATION_NOT_PROVEN');
+  return { sigma: cover.sum, results, reconciled, termination: reconciled ? 'COVERING_FACET_RECONCILED' : 'COVERING_FACET_UNPROVEN' };
+}
+
+/**
+ * La lecture couvrante ajoute des centaines de requêtes à une source déjà lue : une erreur de l'une d'elles ne doit pas
+ * coûter la source entière. Les offres du site plafonné restent collectées et l'échec est nommé ; une interruption de la
+ * source (délai, arrêt du pipeline) se propage comme avant.
+ */
+async function readCoveringFacetSafely(shared: Shared, site: BoardResult): Promise<Awaited<ReturnType<typeof readCoveringFacet>>> {
+  try { return await readCoveringFacet(shared, site); }
+  catch (error) {
+    assertSourceRunning();
+    shared.issues.add(`COVERING_FACET_READ_FAILED:${String(error instanceof Error ? error.message : error).slice(0, 200)}`);
+    return undefined;
+  }
 }
 
 type WorkdayDetail = {

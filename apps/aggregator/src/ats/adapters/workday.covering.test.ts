@@ -3,6 +3,7 @@ vi.mock('../../lib/http.js', () => ({ fetchJson: vi.fn(), fetchText: vi.fn() }))
 import { fetchJson } from '../../lib/http.js';
 import { coveringFacet, fetchWorkdayJobs, WORKDAY_TOTAL_CAP } from './workday.js';
 import { PROVING_TERMINATIONS } from '../../pipeline/refreshPlan.js';
+import { normalizeAdapterResult } from '../index.js';
 
 /**
  * D-520, liste non prouvée, famille Workday : le PLAFOND DE L'API. knitwell-us-retail, sondé le 02/10/2026 : `total`
@@ -53,17 +54,25 @@ describe('Workday — un site plafonné à 2 000 lu par sa facette couvrante (D-
     expect(Math.max(...Object.values(families).map((list) => list.length))).toBeLessThan(WORKDAY_TOTAL_CAP);
   });
 
-  it('lit chaque valeur de la facette sous le plafond : 2 100 offres sur 2 100, liste prouvée, aucun employeur tiré de la facette', async () => {
+  it('lit chaque valeur de la facette sous le plafond : 2 100 offres sur 2 100, comptes concordants, preuve archivée mais NON adoptée, aucun employeur tiré de la facette', async () => {
     server(all, { 'fam-Stores': families.Stores, 'fam-Corporate': families.Corporate, 'fam-DC': families.DC }, facetsFor(families, states));
     const r = await fetchWorkdayJobs(config);
     // Avant ce lot : 2 020 offres (les 2 000 du site et la page sondée au-delà), complete: false, PUBLISHER_TOTAL_CAPPED.
     expect(r.jobs).toHaveLength(2_100);
     expect(new Set(r.jobs.map((job) => job.externalId)).size).toBe(2_100);
     expect(r.declaredTotal).toBe(2_100);
-    expect(r.complete).toBe(true); expect(r.truncated).toBe(false);
-    expect(r.enumeration).toMatchObject({ method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION_COVERING_FACET', termination: 'COVERING_FACET_RECONCILED' });
-    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['PUBLISHER_TOTAL_CAPPED', 'COVERED_BY_FACET=jobFamilyGroup']));
+    // Reconciled and archived as such, but never handed on as complete: canAttestAbsence, D-484 §2 and availability holds
+    // read `complete`, not the termination. Adopting this proof is the owner's decision.
+    expect(r.complete).toBe(false); expect(r.truncated).toBe(false);
+    expect(r.enumeration).toMatchObject({ method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION_COVERING_FACET', termination: 'COVERING_FACET_RECONCILED',
+      enumerationTraversalComplete: true });
+    expect(r.enumeration?.scopes?.[0]).toMatchObject({ scope: 'jobs', declaredTotal: 2_100, uniqueIds: 2_100, complete: true });
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['PUBLISHER_TOTAL_CAPPED', 'COVERED_BY_FACET=jobFamilyGroup', 'COVERING_FACET_PROOF_NOT_ADOPTED']));
     expect(r.enumeration?.issues).not.toContain('ENUMERATION_NOT_PROVEN');
+    // Through the dispatcher's normalisation: the canonical contract holds on every page, nothing turns the lot into a broken contract.
+    const normalized = normalizeAdapterResult(r);
+    expect(normalized.complete).toBe(false);
+    expect(normalized.enumeration?.issues).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
     // A job family is not a Maison: the employer stays the detail's to name.
     expect(r.jobs.every((job) => job.company === undefined && job.employerEvidence === undefined)).toBe(true);
     // Every page of a covering board carries its ids, so the canonical contract holds.
@@ -75,6 +84,19 @@ describe('Workday — un site plafonné à 2 000 lu par sa facette couvrante (D-
   it('la lecture prouvée n’ouvre pas la fermeture : sa terminaison n’est pas probante pour le refresh', () => {
     expect(PROVING_TERMINATIONS.has('COVERING_FACET_RECONCILED')).toBe(false);
     expect(PROVING_TERMINATIONS.has('COVERING_FACET_UNPROVEN')).toBe(false);
+  });
+
+  it('une erreur pendant la lecture couvrante ne coûte pas la source : le site plafonné reste collecté, l’échec est nommé', async () => {
+    server(all, { 'fam-Stores': families.Stores, 'fam-Corporate': families.Corporate, 'fam-DC': families.DC }, facetsFor(families, states));
+    const served = vi.mocked(fetchJson).getMockImplementation()!;
+    vi.mocked(fetchJson).mockImplementation(async (url: unknown, init: unknown) => {
+      if (String((init as { body: string }).body).includes('fam-Corporate')) throw new Error('HTTP 502 for …');
+      return served(url as never, init as never);
+    });
+    const r = await fetchWorkdayJobs(config);
+    expect(r.jobs.length).toBeGreaterThanOrEqual(2_020);
+    expect(r.complete).toBe(false);
+    expect(r.enumeration?.issues?.some((issue) => issue.startsWith('COVERING_FACET_READ_FAILED:'))).toBe(true);
   });
 
   it('une offre servie par le site mais absente des tableaux de la facette : tout est collecté, rien n’est prouvé', async () => {

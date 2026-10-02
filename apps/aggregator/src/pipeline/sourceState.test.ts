@@ -36,14 +36,13 @@ describe('D-520 — vocabulaire fermé', () => {
     expect(issueCause({ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE' })).toBe('LISTE_INDEMONTRABLE');
     // What stays « volume anormal » is the volume: a drop the publisher does not confirm, a zero.
     expect(issueCause({ origin: 'UNKNOWN', code: 'SOURCE_HEALTH_REGRESSION' })).toBe('ANOMALIE_VOLUME');
-    // The family limit is a classified trajectory without deadline: it never escalates nor waits.
-    const s = computeSourceState({ source: active('attaquer'), previous: null, now: at(0),
+    // A list the reader cannot demonstrate is to be repaired (find a full list); under D-480 §1 it is a decision, without deadline.
+    const other = computeSourceState({ source: active('maison'), previous: null, now: at(0),
       outcome: run({ runStatus: 'DEGRADED', jobs: 3, issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE' }] }) });
-    expect(s).toMatchObject({ state: 'DEGRADEE', cause: 'LISTE_INDEMONTRABLE', trajectory: 'DECISION', deadline: null, escalated: false });
-    const later = computeSourceState({ source: active('attaquer'), previous: s, now: at(24 * 30),
-      outcome: run({ runStatus: 'DEGRADED', jobs: 3, issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE' }] }, 24 * 30) });
-    expect(later).toMatchObject({ trajectory: 'DECISION', escalated: false });
-    expect(reconcileRun({ states: [later], now: at(24 * 30), runStartedAt: at(24 * 30), systemFailures: [], unexplainedCoverage: [] }).green).toBe(true);
+    expect(other).toMatchObject({ state: 'DEGRADEE', cause: 'LISTE_INDEMONTRABLE', trajectory: 'A_REPARER' });
+    const known = computeSourceState({ source: active('attaquer'), previous: null, now: at(0),
+      outcome: run({ runStatus: 'DEGRADED', jobs: 3, issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE' }] }) });
+    expect(known).toMatchObject({ cause: 'LISTE_INDEMONTRABLE', trajectory: 'DECISION', decision: 'D-480', deadline: null });
   });
 
   it('un code inconnu est NON_CLASSEE, et la réconciliation passe rouge', () => {

@@ -17,13 +17,13 @@ Mesures en lecture seule de la production le 02/10/2026 entre 14:55 et 15:04 UTC
 | `troncatures.sql` → `.csv` | la terminaison scellée de chaque collecte tronquée | idem |
 | `rejeu.py` → `rejeu.out` | les 8 RUN rejoués, par classe : bloquantes avant / après, ce qui reste | `python3 rejeu.py > rejeu.out` |
 | `collecte-workday-plafond.mts` → `collecte-knitwell-avant.out`, `collecte-knitwell-apres.out` | collecte locale réelle de knitwell-us-retail, liste seule, avec le code d'avant puis celui du lot | commande en tête du `.mts` |
-| `temoins-classes-sur-6fad1df.out` | les témoins du lot de classes lancés sur le code d'avant : 6 échecs | voir plus bas |
+| `temoins-classes-sur-6fad1df.out` | les témoins du lot de classes lancés sur le code d'avant (premier état du lot) : 6 échecs | voir plus bas |
 | `knitwell-effet.sql` → `.out` | l'effet en production de la fausse preuve de knitwell | `db.py readonly` après 18:30 UTC |
 
 ## Causes racines, par famille
 
 **Liste non prouvée (56 occurrences).**
-- *generic-listing, page d'accueil* (attaquer, kastner-ohler, lumentee, et marc-o-polo avant son lecteur dédié) et *flux RSS* (picard) : 32 occurrences. L'éditeur n'expose ni total, ni fin de liste, ni plan du site. Aucun lecteur ne peut le prouver : c'est une limite de la famille.
+- *generic-listing, page d'accueil* (attaquer, kastner-ohler, lumentee, et marc-o-polo avant son lecteur dédié) et *flux RSS* (picard) : 32 occurrences. Le lecteur ne lit ni total, ni fin de liste, ni plan du site. Reste à chercher si l'éditeur publie une liste complète. Pour kastner-ohler, le point de départ est une fiche d'offre : sa configuration est à revoir.
 - *Workday, plafond de l'API* (knitwell, tapestry) : 9 occurrences. `total` ne dépasse jamais 2 000. Au-delà, l'API ressert une page déjà lue (sondé le 02/10 : offsets 2 000, 3 000, 3 500 et 3 520 identiques). Les facettes, elles, comptent tout le tableau : 3 515 chez knitwell.
 - *Workday, tri instable ou total changé pendant la lecture* (mango, nordstrom) et *Phenom, identifiants répétés* (hugo-boss, skechers) : 13 occurrences. Corrigés le 30/09 (`898ffb5`, D-482), prouvés depuis.
 - *swatch-group* (25/09) et *foot-locker-france* (28/09) : un cas chacun. foot-locker est revenue seule. swatch-group est traitée par un autre lot (D-493, D-508).
@@ -44,14 +44,17 @@ Mesures en lecture seule de la production le 02/10/2026 entre 14:55 et 15:04 UTC
 
 ## Ce que ce lot change
 
-1. **Workday, plafond de l'API** (`6fad1df`).
-   - **Défaut trouvé en mesurant** : la collecte locale de knitwell avec le code d'avant rend 1 999 offres et 1 ligne sans chemin. Elle déclare la liste prouvée (`collecte-knitwell-avant.out`). Le RUN du 30/09 l'a enregistrée `complete` et `canAttestAbsence`, soit une fausse preuve d'absence sur 1 515 offres en ligne : la forme exacte de l'incident du 27/09.
-   - Une facette qui compte plus d'offres que le total plafonné prouve désormais le plafond.
-   - Le site plafonné est relu par sa facette couvrante. Collecte locale réelle : **3 515 offres sur 3 515, liste prouvée** (`collecte-knitwell-apres.out`), aucun employeur tiré de la facette.
-   - La terminaison n'est pas probante pour le refresh : aucune offre ne se ferme sur elle sans décision du propriétaire.
-2. **Classes exactes** (`b1afa2c`).
-   - La troncature devient `ENUMERATION_TRUNCATED` (liste non prouvée) et la retenue à instruire `RETENTION_TO_INSTRUCT` (contenu incomplet). Une retenue à instruire à côté d'un défaut de liste est nommée et bloque.
-   - La limite de famille devient `ENUMERATION_UNPROVABLE` : classe `LISTE_INDEMONTRABLE`, non bloquante, jamais attestante. Le critère est la sortie du lecteur, jamais le nom de la source.
+1. **Workday, plafond de l'API** (`6fad1df`, corrigé à l'audit).
+   - **Défaut trouvé en mesurant.** Avec le code d'avant, la collecte locale de knitwell rend 1 999 offres et 1 ligne sans chemin, et déclare la liste prouvée (`collecte-knitwell-avant.out`). Les facettes comptent pourtant 3 515 offres. En production, `canAttestAbsence` vaut vrai sur des collectes de 2 000 offres lues sur 3 515 (voir `knitwell-effet.out`).
+   - Une facette qui compte plus d'offres que le total plafonné prouve désormais le plafond (`FACETS_COUNT_BEYOND_TOTAL`). La lecture n'est plus jamais prouvée à tort.
+   - Le site plafonné est relu par sa facette couvrante. Collecte locale réelle (`collecte-knitwell-apres.out`) : **3 515 offres sur 3 515**, comptes concordants (4 facettes d'accord), aucun employeur tiré de la facette.
+   - **La preuve est archivée mais pas adoptée.** La sortie reste `complete: false` avec `COVERING_FACET_PROOF_NOT_ADOPTED`, et la terminaison n'est pas probante. Transmise, cette preuve ouvrirait l'attestation d'absence, la chute confirmée de D-484 §2 et les retenues de disponibilité. Le décider revient au CEO (carte de décision). knitwell reste sous D-480 §1 : elle collecte tout et ne ferme rien.
+   - Une erreur pendant la lecture couvrante ne coûte pas la source : `COVERING_FACET_READ_FAILED`.
+2. **Classes exactes** (`b1afa2c`, corrigé à l'audit).
+   - La troncature devient `ENUMERATION_TRUNCATED` (liste non prouvée) et la retenue à instruire `RETENTION_TO_INSTRUCT` (contenu incomplet).
+   - Une liste non prouvée dont le lecteur nomme la raison (page d'accueil sans liste, flux RSS) devient `ENUMERATION_UNPROVABLE`, classe `LISTE_INDEMONTRABLE`, à réparer. **Elle reste bloquante** (D-453 §1, D-482 : aucune extension de D-480). Elle est non bloquante pour les quatre sources nommées par D-480 §1, sous ce code plus précis.
+   - Rendre cette classe non bloquante pour toute la famille est une carte de décision, pas une décision d'architecture.
+   - Un défaut de liste ne cache plus rien. Une retenue à instruire, une chute de 10 offres ou plus et une couverture de champ effondrée sont nommées et bloquent, y compris pour une source de D-480 (« tout autre défaut reste bloquant »).
 
 ## Rejeu des 8 RUN (`rejeu.out`)
 
@@ -61,10 +64,14 @@ Mesures en lecture seule de la production le 02/10/2026 entre 14:55 et 15:04 UTC
 | Régression de volume | 63 | 61 | 26 | 26 | 18 | 6 | 2 (urbn-hub les 28/09 et 01/10, retenue à instruire) |
 | Qualification rejetée | 26 | 26 | 26 | 26 | 26 | 0 | 0 |
 
-**Lecture honnête.** Les règles de ce lot ne retirent aucun blocage sur ces 8 RUN : les quatre sources de page d'accueil et knitwell étaient déjà non bloquantes par D-480. Elles en ajoutent un : knitwell le 29/09, dont la retenue à instruire était cachée par D-480 (« tout autre défaut reste bloquant »). Les blocages ont disparu par les correctifs de lecteurs du 30/09 et du 01/10, tous déjà sur `development`. Ce lot apporte trois choses :
-- la limite est classée par famille, et non plus par nom de source : une nouvelle Maison de la même famille ne bloquera pas ;
-- « volume anormal » ne désigne plus que le volume : 1 occurrence sur 63 au lieu de 63 ;
-- knitwell est lue en entier, et sa fausse preuve d'absence est fermée.
+**Lecture honnête.**
+- Les règles de ce lot ne retirent aucun blocage sur ces 8 RUN. Elles en ajoutent un : knitwell le 29/09, dont la retenue à instruire était cachée par D-480.
+- Les blocages ont disparu grâce aux correctifs de lecteurs du 30/09 et du 01/10, déjà sur `development`. `READER_FIX` les attribue à la main, par source, sur la preuve des collectes suivantes. crocs, gemmyo, sephora et ulta étaient déjà prouvées certains jours avant leur correctif : leur défaut est intermittent, et une seule collecte prouvée depuis ne suffit pas à le dire levé.
+- « Revenue seule » veut dire que la cause n'est pas établie. Ces sources reviendront peut-être, et demanderont alors une enquête.
+- Ce que ce lot apporte :
+  - chaque incident porte sa classe exacte ; « volume anormal » ne nomme plus que 1 occurrence sur 63 ;
+  - knitwell est lue en entier, sans fausse preuve d'absence ;
+  - un défaut de liste ne cache plus d'autre défaut.
 
 ## Témoins
 

@@ -45,7 +45,6 @@ READER_FIX = {
     'pvh': ('D-481 §4 (30/09) bascule Phenom CareerConnect', 'validée depuis le 30/09 07:26'),
     'zegna-altamira': ('D-482 (30/09) lecteur Altamira', 'validée depuis le 30/09 06:34'),
     'groupe-chantelle': ('898ffb5 (30/09) relecture différée Talentsoft', 'validée depuis le 30/09 06:36'),
-    'knitwell-us-retail': ('CE LOT : facette couvrante Workday', 'collecte locale du 02/10 : 3 515 sur 3 515, prouvée'),
 }
 
 # Une retenue à instruire s'écrit « N à instruire (MOTIF=n) » ; « non prouvée … à instruire » est l'étiquette de la liste.
@@ -71,10 +70,15 @@ def judge(r):
         # Ce lot : une retenue à instruire à côté d'un défaut de liste est nommée et bloque, même sous D-480 ou une limite.
         if TO_INSTRUCT.search(note):
             return before, None, 'CONTENU_INCOMPLET', 'retenue à instruire à côté de la liste → RETENTION_TO_INSTRUCT'
+        # Le 24/09, ces sources étaient dites « réfutées » sans fait observé (correction d'étiquette de D-453, 25/09) : le code
+        # de development les lit NON PROUVÉES. Ce lot nomme la raison (ENUMERATION_UNPROVABLE) sans changer le blocage :
+        # bloquante, sauf échec connu de D-480 §1 (D-482). Approximation assumée : la famille est lue sur la configuration
+        # (startUrl seul, feedUrl), pas sur la sortie scellée du lecteur, et le plafond de 150 liens n'est pas rejoué.
         if structural(src) and cur == 'ENUMERATION_NOT_PROVEN':
-            return before, 'D-520 limite de la famille', 'LISTE_INDEMONTRABLE', 'page d’accueil ou flux : ni total ni fin de liste'
+            return before, before, 'LISTE_INDEMONTRABLE', 'page d’accueil ou flux : le lecteur ne lit ni total ni fin de liste'
         if src == 'knitwell-us-retail':
-            return before, 'ce lot : facette couvrante (liste lue et prouvée)', None, 'plafond Workday 2 000'
+            # Ce lot : la facette couvrante lit tout (3 515) ; la preuve n'est pas adoptée, la source reste sous D-480 §1.
+            return before, before, 'LISTE_NON_PROUVEE', 'plafond Workday 2 000 (lue en entier par la facette couvrante, preuve non adoptée)'
         return before, before, 'LISTE_NON_PROUVEE', re.sub(r'.*\(([^)]*)\).*', r'\1', note.split('·')[0])[:60]
     if 'descriptions manquantes' in note:
         b = 'D-480 §1' if src in D480 and 'DESCRIPTION_COVERAGE_BELOW_FLOOR' in D480[src] else None

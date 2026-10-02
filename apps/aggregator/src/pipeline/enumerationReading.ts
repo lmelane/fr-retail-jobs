@@ -33,11 +33,12 @@ export type EnumerationReading = 'PROVEN' | 'NOT_PROVEN' | 'REFUTED' | 'UNKNOWN'
 export const ABSENCE_OF_PROOF_MARKERS: ReadonlySet<string> = new Set(['ENUMERATION_NOT_PROVEN', 'NO_PUBLISHER_LISTING_OR_SITEMAP', 'PUBLISHER_FEED_WITHOUT_TOTAL']);
 
 /**
- * LA LIMITE D'UNE FAMILLE (D-520, lecture D-492 du 02/10/2026) : les motifs par lesquels un lecteur dit que l'ÉDITEUR
- * n'expose aucune liste qu'une lecture pourrait démontrer complète — ni total, ni fin de liste, ni plan du site. Ce
- * n'est pas une panne à instruire chaque jour : rien dans le lecteur ne la lèvera. La lecture reste NON PROUVÉE (aucune
- * absence attestée, aucune offre fermée) ; seule sa classe change. Liste POSITIVE et FERMÉE, sous-ensemble des marqueurs
- * d'absence de preuve : un fait qui réfute l'énumération l'emporte toujours (la lecture est alors RÉFUTÉE).
+ * POURQUOI UNE LISTE NE PEUT PAS ÊTRE DÉMONTRÉE EN L'ÉTAT (D-520, 02/10/2026) : les motifs par lesquels un lecteur dit
+ * qu'il ne lit ni total, ni fin de liste, ni plan du site. La lecture reste NON PROUVÉE (aucune absence attestée) et
+ * BLOQUANTE (D-453 §1) hors des sources de D-480 §1 ; seule sa classe change (`ENUMERATION_UNPROVABLE`, à réparer :
+ * trouver une liste complète chez l'éditeur). Le marqueur dit ce que fait le LECTEUR, pas ce que publie l'éditeur
+ * (kastner-ohler part d'une fiche d'offre). Liste POSITIVE et FERMÉE, sous-ensemble des marqueurs d'absence de preuve :
+ * un fait qui réfute l'énumération l'emporte toujours (la lecture est alors RÉFUTÉE).
  *   · `NO_PUBLISHER_LISTING_OR_SITEMAP` : les liens d'une page d'accueil, faute de liste ou de plan publiés ;
  *   · `PUBLISHER_FEED_WITHOUT_TOTAL` : un flux RSS/Atom, qui ne dit ni combien d'offres il porte ni s'il les porte toutes.
  */

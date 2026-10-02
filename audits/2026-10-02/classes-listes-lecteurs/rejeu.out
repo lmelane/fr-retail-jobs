@@ -10,7 +10,7 @@ RUN | occurrences | bloquantes relevées | bloquantes, règles d’avant ce lot 
 2026-09-30 | 5 | 0 | 0 | 0 | 0 | 0 | 0
 2026-10-01 | 6 | 0 | 0 | 0 | 0 | 0 | 0
 total | 56 | 45 | 15 | 16 | 13 | 1 | 2
-classe de sourceState après ce lot (toutes occurrences) : LISTE_INDEMONTRABLE 28, LISTE_NON_PROUVEE 25, non bloquante par règle 2, CONTENU_INCOMPLET 1
+classe de sourceState après ce lot (toutes occurrences) : LISTE_INDEMONTRABLE 28, LISTE_NON_PROUVEE 27, CONTENU_INCOMPLET 1
 reste, nommé (bloquant, aucun correctif de lecteur, pas revenue seule) :
    2026-09-25 · swatch-group · LISTE_NON_PROUVEE · énumération non prouvée : l’adaptateur ne démontre pas la fi
    2026-09-29 · knitwell-us-retail · CONTENU_INCOMPLET · retenue à instruire à côté de la liste → RETENTION_TO_INSTRUCT

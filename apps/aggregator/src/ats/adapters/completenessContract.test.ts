@@ -39,15 +39,15 @@ const serve = (route: (url: string) => string | Error) => vi.mocked(fetchText).m
 beforeEach(() => vi.resetAllMocks());
 
 /** One established source run of this adapter result, read by the RUN exactly as `ingestOne` reads it. */
-function runOf(normalized: AdapterResult) {
+function runOf(normalized: AdapterResult, source = 'witness') {
   const jobs = normalized.jobs.length;
-  const stat: IngestStats = { source: 'witness', complete: normalized.complete, declaredTotal: normalized.declaredTotal, truncated: normalized.truncated,
+  const stat: IngestStats = { source, complete: normalized.complete, declaredTotal: normalized.declaredTotal, truncated: normalized.truncated,
     ...readEnumeration(normalized), fetched: jobs, inSector: jobs, france: jobs, created: 0, merged: 0, updated: jobs, errors: 0,
     withDescription: jobs, withDate: jobs, withCountry: jobs, withUrl: jobs, captureBatchId: 'batch', completionReportHash: 'report' };
   const health = evaluateSourceHealth(stat, jobs);
   const { issues, incidents } = classifySourceRun([stat], health.status === 'DEGRADED' || health.status === 'BROKEN' ? [health] : []);
   const summary = summarizeOrchestration({ total: 2, ok: issues.length ? 1 : 2, failed: issues.length ? 1 : 0, timedOut: 0,
-    failures: issues.length ? [failureLine('witness', issues, 'erreurs d’ingestion')] : [], incidents, issues: issues.map(issue => ({ ...issue, source: 'witness' })) });
+    failures: issues.length ? [failureLine(source, issues, 'erreurs d’ingestion')] : [], incidents, issues: issues.map(issue => ({ ...issue, source })) });
   return { stat, health, incidents, issues, summary };
 }
 
@@ -90,18 +90,21 @@ describe('NON PROUVÉE — `complete: false` sans aucune coupure observée ni li
   });
 });
 
-describe('LIMITE DE LA FAMILLE (D-520) — l’éditeur n’expose aucune liste démontrable : classée, non bloquante, jamais attestante', () => {
+describe('LISTE INDÉMONTRABLE EN L’ÉTAT (D-520) — le lecteur nomme pourquoi : classée à part, BLOQUANTE (D-453 §1, D-482), sauf échec connu de D-480 §1', () => {
   const expectFamilyLimit = (normalized: AdapterResult, marker: string) => {
-    const { stat, health, incidents, issues, summary } = runOf(normalized);
+    const { stat, health, issues, summary } = runOf(normalized);
     // The reading stays NOT PROVEN — only its class changes; nothing observed refutes it.
     expect(stat).toMatchObject({ enumerationReading: 'NOT_PROVEN', enumerationUnprovable: marker });
     expect(normalized.complete).toBe(false);
     expect(health).toMatchObject({ status: 'DEGRADED', finding: 'ENUMERATION_UNPROVABLE' });
     expect(health.note).toContain('liste indémontrable');
     expect(issues).toEqual([{ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE', count: 1 }]);
-    expect(incidents).toEqual([expect.objectContaining({ blocking: false, knownFailure: 'D-520 (limite de la famille)' })]);
-    // Before D-520 : outcome FAILED, blockingReasons ['UNRESOLVED_FAILURE'], every day, for a limit no reader can lift.
-    expect(summary).toMatchObject({ outcome: 'COMPLETED_WITH_ERRORS', blockingReasons: [], familyLimits: { decision: 'D-520', sources: ['witness'] } });
+    // Any other source of the family still fails the RUN: no extension of D-480 (D-482).
+    expect(summary).toMatchObject({ outcome: 'FAILED', blockingReasons: ['UNRESOLVED_FAILURE'] });
+    // The four sources D-480 §1 names keep their known, non-blocking failure under the more precise code.
+    const known = runOf(normalized, 'attaquer');
+    expect(known.incidents).toEqual([expect.objectContaining({ blocking: false, knownFailure: 'D-480' })]);
+    expect(known.summary.blockingReasons).toEqual([]);
   };
 
   it('picard — a careers Atom feed announces no extent', async () => {
@@ -137,6 +140,21 @@ describe('LIMITE DE LA FAMILLE (D-520) — l’éditeur n’expose aucune liste 
     expect(health.finding).toBe('ENUMERATION_TRUNCATED');
     expect(issues.map(issue => issue.code)).toEqual(['ENUMERATION_TRUNCATED']);
     expect(summary).toMatchObject({ outcome: 'FAILED', blockingReasons: ['UNRESOLVED_FAILURE'] });
+  });
+
+  it('a list defect never hides a collapse nor a field coverage gone: 40 → 1 offers, 0 % descriptions — blocking, even for a D-480 source', () => {
+    const base: IngestStats = { source: 'attaquer', complete: false, enumerationReading: 'NOT_PROVEN', enumerationUnprovable: 'NO_PUBLISHER_LISTING_OR_SITEMAP',
+      fetched: 1, inSector: 1, france: 1, created: 0, merged: 0, updated: 1, errors: 0, withDescription: 1, withDate: 1, withCountry: 1, withUrl: 1,
+      captureBatchId: 'batch', completionReportHash: 'report' };
+    const collapse = evaluateSourceHealth(base, 40);
+    expect(collapse.finding).toBeUndefined(); expect(collapse.note).toContain('98 % d’offres en moins');
+    expect(classifySourceRun([base], [collapse]).incidents[0]).toMatchObject({ blocking: true });
+    const empty = { ...base, fetched: 30, inSector: 30, updated: 30, withDescription: 0, withDate: 30, withCountry: 30, withUrl: 30 };
+    const fields = evaluateSourceHealth(empty, 30);
+    expect(fields.finding).toBe('DESCRIPTION_COVERAGE_BELOW_FLOOR');
+    expect(classifySourceRun([empty], [fields]).incidents[0]).toMatchObject({ blocking: true });
+    // Fewer than ten postings gone (D-491) is no collapse: the list defect is what is named.
+    expect(evaluateSourceHealth({ ...base, fetched: 3, inSector: 3, updated: 3, withDescription: 3, withDate: 3, withCountry: 3, withUrl: 3 }, 9).finding).toBe('ENUMERATION_UNPROVABLE');
   });
 
   it('a retention to instruct next to the family limit is named and blocks: the limit never hides another defect', () => {

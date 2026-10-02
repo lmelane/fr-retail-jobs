@@ -122,8 +122,9 @@ describe('D-484 §2 : toute autre chute reste bloquante', () => {
     expect(await blocks(AIGLE_2909, [{ ...AIGLE_2809, declaredTotal: null }])).toEqual([{ origin: 'UNKNOWN', code: 'SOURCE_HEALTH_REGRESSION', count: 1 }]);
   });
   it('énumération non prouvée', async () => {
+    // D-520 : la chute est nommée pour elle-même (une liste non prouvée ne la cache plus) ; bloquante dans les deux cas.
     expect(await blocks({ ...AIGLE_2909, complete: false, enumerationReading: 'NOT_PROVEN' }))
-      .toEqual([{ origin: 'UNKNOWN', code: 'ENUMERATION_NOT_PROVEN', count: 1 }]);
+      .toEqual([{ origin: 'UNKNOWN', code: 'SOURCE_HEALTH_REGRESSION', count: 1 }]);
     // Même sans la branche d'énumération qui la précède, la règle elle-même la refuse.
     expect(isPublisherConfirmedDrop({ previous: 121, previousDeclaredTotal: 122, published: 60, fetched: 60, declaredTotal: 60, complete: false })).toBe(false);
     expect(isPublisherConfirmedDrop({ previous: 121, previousDeclaredTotal: 122, published: 60, fetched: 60, declaredTotal: 60, complete: undefined })).toBe(false);
