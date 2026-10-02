@@ -6,7 +6,8 @@
 set -u
 TESTS="src/pipeline/lightPass.test.ts src/ats/incrementalReading.test.ts"
 FILES="src/capture/batch.ts src/pipeline/attestingCapture.ts src/lib/incrementalReading.ts src/ats/adapters/workday.ts src/ats/adapters/smartrecruiters.ts
-  src/ats/adapters/oraclehcm.ts src/connectors/sourceValidation.ts src/pipeline/ingestOrchestrator.ts src/pipeline/healthReport.ts src/pipeline/lightPass.ts src/pipeline/ingest.ts"
+  src/ats/adapters/oraclehcm.ts src/connectors/sourceValidation.ts src/pipeline/ingestOrchestrator.ts src/pipeline/healthReport.ts src/pipeline/lightPass.ts src/pipeline/ingest.ts
+  src/coverage/coverageReading.ts src/pipeline/knownPostings.ts src/ats/index.ts"
 before=$(cat $FILES | shasum)
 
 mutate() { # nom, fichier, motif sed (aller), motif sed (retour)
@@ -40,8 +41,8 @@ mutate "6. Oracle lit toutes les réquisitions" src/ats/adapters/oraclehcm.ts \
   's/    jobs.filter(job => !isKnownPosting(job.externalId)).map((job) =>/    jobs.map((job) => \/\/ MUTANT/' \
   's/    jobs.map((job) => \/\/ MUTANT/    jobs.filter(job => !isKnownPosting(job.externalId)).map((job) =>/'
 mutate "7. « rien de neuf » rejeté comme flux vide" src/connectors/sourceValidation.ts \
-  's/if (nothingNew > 0) report.incrementalNothingNew = nothingNew;/if (false) report.incrementalNothingNew = nothingNew;/' \
-  's/if (false) report.incrementalNothingNew = nothingNew;/if (nothingNew > 0) report.incrementalNothingNew = nothingNew;/'
+  's/if (recognized > 0 \&\& report.qualified === 0 \&\& report.rejected === 0) report.incrementalNothingNew = recognized;/if (false) report.incrementalNothingNew = recognized;/' \
+  's/if (false) report.incrementalNothingNew = recognized;/if (recognized > 0 \&\& report.qualified === 0 \&\& report.rejected === 0) report.incrementalNothingNew = recognized;/'
 mutate "8. santé de passe comparée au RUN et résumé réécrit" src/pipeline/ingestOrchestrator.ts \
   's/const health = incrementalPassActive() ? await recordIncrementalRun/const health = false ? await recordIncrementalRun/' \
   's/const health = false ? await recordIncrementalRun/const health = incrementalPassActive() ? await recordIncrementalRun/'
@@ -58,8 +59,24 @@ mutate "12. le stock d'une source nouvelle compté comme flux" src/pipeline/ligh
   "s/greatest(bornes.since, min(js.\"firstSeenAt\") + interval '1 day')/bornes.since/" \
   "s/SELECT js.\"sourceKey\", bornes.since AS d/SELECT js.\"sourceKey\", greatest(bornes.since, min(js.\"firstSeenAt\") + interval '1 day') AS d/"
 mutate "13. passe en lecture complète (incrémentale désactivée)" src/pipeline/ingest.ts \
-  's/  const extraction = incrementalPassActive() ? await withIncrementalReading/  const extraction = false ? await withIncrementalReading/' \
-  's/  const extraction = false ? await withIncrementalReading/  const extraction = incrementalPassActive() ? await withIncrementalReading/'
+  's/  const extraction = adopted ?? (incrementalPassActive()$/  const extraction = adopted ?? (false/' \
+  's/  const extraction = adopted ?? (false$/  const extraction = adopted ?? (incrementalPassActive()/'
+
+mutate "14. tolérance des lignes illisibles calculée sur le seul neuf" src/connectors/sourceValidation.ts \
+  's/unqualifiedAllowanceFor(report.observed + (report.incrementalKnown ?? 0) + /unqualifiedAllowanceFor(report.observed + /' \
+  's/unqualifiedAllowanceFor(report.observed + (report.inputUnqualified/unqualifiedAllowanceFor(report.observed + (report.incrementalKnown ?? 0) + (report.inputUnqualified/'
+mutate "15. alerte de couverture : qualification de référence prise à une passe" src/coverage/coverageReading.ts \
+  "s/ AND \${notLightPass(Prisma.raw('cb'))}\$/ AND true -- MUTANT/" \
+  "s/ AND true -- MUTANT\$/ AND \${notLightPass(Prisma.raw('cb'))}/"
+mutate "16. une sortie retenue d'une passe tenue pour connue" src/pipeline/knownPostings.ts \
+  's/      AND NOT EXISTS (SELECT 1 FROM "PipelineRun" pass WHERE pass.id = cb."runId" AND pass.command = /      AND true OR NOT EXISTS (SELECT 1 FROM "PipelineRun" pass WHERE pass.id = cb."runId" AND pass.command = /' \
+  's/      AND true OR NOT EXISTS (SELECT 1 FROM "PipelineRun" pass WHERE pass.id = cb."runId" AND pass.command = /      AND NOT EXISTS (SELECT 1 FROM "PipelineRun" pass WHERE pass.id = cb."runId" AND pass.command = /'
+mutate "17. source à amorçage anti-robot lue par la passe" src/pipeline/lightPass.ts \
+  's/ \&\& !leftToRun.has(row.key))/ \&\& !!leftToRun) \/\/ MUTANT/' \
+  's/ \&\& !!leftToRun) \/\/ MUTANT/ \&\& !leftToRun.has(row.key))/'
+mutate "18. connues laissées de côté hors du contrat canonique" src/ats/index.ts \
+  's/, ...incrementalSkippedIds()\],/], \/\/ MUTANT/' \
+  's/\], \/\/ MUTANT/, ...incrementalSkippedIds()],/'
 
 after=$(cat $FILES | shasum)
 [ "$before" = "$after" ] && echo "arbre restauré à l'identique" || { echo "ARBRE MODIFIÉ"; exit 1; }

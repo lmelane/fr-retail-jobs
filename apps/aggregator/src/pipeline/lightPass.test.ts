@@ -5,7 +5,7 @@ import { randomUUID } from 'node:crypto';
 import { publicJobSql, publicJobWhere } from '@catwalks/db/availability';
 import { publicationFixture } from '../test/publication-fixture.js';
 import { ingestSyntheticFeed, qualifiedSource, releaseQualifiedSources, resolvedCompany, syntheticFeed, type SyntheticPosting } from '../test/ingestionFixture.js';
-import { lightPassDeadline, lightPassHasIncidents, lightPassRefusal, runLightPass, significantSources, LIGHT_PASS_BUDGET_MS } from './lightPass.js';
+import { lightPassDeadline, lightPassHasIncidents, lightPassRefusal, runLightPass, significantSources, LEFT_TO_RUN, LIGHT_PASS_BUDGET_MS } from './lightPass.js';
 import { runAvailabilityReview } from './availability.js';
 import { INCREMENTAL_READING_REASON, readAttestingCapture } from './attestingCapture.js';
 import { sendHealthAlert } from './alert.js';
@@ -15,6 +15,8 @@ import { readExtractionManifest } from '../capture/manifest.js';
 import { buildHealthReport } from './healthReport.js';
 import { ingestOne } from './ingestOrchestrator.js';
 import { withIncrementalPass } from '../lib/incrementalReading.js';
+import { readCoverageState } from '../coverage/coverageReading.js';
+import { knownPostings } from './knownPostings.js';
 
 // L'alerte e-mail du RUN (Brevo) : une passe ne doit jamais l'envoyer.
 vi.mock('./alert.js', async importOriginal => ({ ...await importOriginal<typeof import('./alert.js')>(), sendHealthAlert: vi.fn(async () => true) }));
@@ -57,6 +59,18 @@ const feedCalls = (transport: ReturnType<typeof network>) =>
 const served = async () => (await db.job.findMany({ where: publicJobWhere(), select: { externalId: true } })).map(job => job.externalId).sort();
 const servedSql = async () => (await db.$queryRaw<{ externalId: string }[]>(Prisma.sql`SELECT j."externalId" FROM "Job" j WHERE ${publicJobSql(Prisma.sql`j`)}`))
   .map(row => row.externalId).sort();
+/** Runs `work` under a real `ingest-light` PipelineRun and its logger, as the CLI does in production. */
+async function underLightRun<T>(work: (runId: string) => Promise<T>): Promise<T> {
+  const light = randomUUID();
+  await db.pipelineRun.create({ data: { id: light, command: 'ingest-light' } });
+  installLogger(new OperationalLogger({ runId: light, write: async () => undefined, delay: async () => undefined,
+    persist: async record => { await db.pipelineEvent.create({ data: { ...record, payload: record.payload as Prisma.InputJsonValue } }); } }));
+  try { return await work(light); } finally {
+    installLogger(new OperationalLogger({ runId: `local-${randomUUID()}` }));
+    vi.unstubAllGlobals();
+    await db.pipelineRun.update({ where: { id: light }, data: { finishedAt: new Date(), status: 'COMPLETED' } });
+  }
+}
 /** A UTC instant of today at hh:mm, outside of any real clock. */
 const at = (hh: number, mm = 0) => { const d = new Date(); d.setUTCHours(hh, mm, 0, 0); return d; };
 
@@ -149,6 +163,26 @@ describe('D-517 — une lecture incrémentale ne lit, n’écrit et ne rend que 
     expect(await runLightPass(db, { runId: null, sources: [key], now: () => at(10) })).toMatchObject({ collected: [key], ok: 1, created: 1 });
   });
 
+  it('une nouvelle seulement retenue (non listée) : la collecte est validée, rien n’est publié, la passe suivante la relit', async () => {
+    const key = await establishedSource('retenue');
+    await ingestSyntheticFeed(db, key, [{ id: 'a' }, { id: 'r-cachee', listed: false }]);
+    // Prémisse : une sortie du RUN non publiée est connue (sa fiche n'est pas relue à chaque passe).
+    const knownBefore = await knownPostings(db, key);
+    expect(knownBefore.has('a') && knownBefore.has('r-cachee')).toBe(true);
+    await underLightRun(async light => {
+      network([{ id: 'a' }, { id: 'r-cachee', listed: false }, { id: 'p-cachee', listed: false }]);
+      expect(await runLightPass(db, { runId: light, sources: [key], now: () => at(5) })).toMatchObject({ collected: [key], ok: 1, failed: 0, created: 0 });
+    });
+    const batch = await db.captureBatch.findFirstOrThrow({ where: { sourceKey: key, purpose: 'JOBS', attemptOrdinal: { not: null } }, orderBy: { attemptOrdinal: 'desc' } });
+    expect(await db.sourceExtraction.findMany({ where: { batchId: batch.id }, select: { externalId: true } })).toEqual([{ externalId: 'p-cachee' }]);
+    // Sans la tolérance « rien de neuf à publier », ce lot serait REJETÉ et la source sortirait des passes du jour.
+    expect(await db.sourceValidation.findFirstOrThrow({ where: { captureBatchId: batch.id } }))
+      .toMatchObject({ verdict: 'VALIDATED', report: expect.objectContaining({ held: 1, incrementalNothingNew: 2 }) });
+    // La sortie retenue d'une passe n'est pas « connue » : la passe suivante relira sa fiche.
+    expect([...await knownPostings(db, key)].sort()).toEqual([...knownBefore].sort());
+    expect(knownBefore.has('p-cachee')).toBe(false);
+  });
+
   it('une qualification qui expire dans l’heure : la source est laissée au RUN, sans requête', async () => {
     const key = await establishedSource('qualif');
     await ingestSyntheticFeed(db, key, [{ id: 'a' }]);
@@ -199,6 +233,30 @@ describe('D-517 — l’état d’une source se lit au RUN, jamais à une passe'
     expect(await db.source.findUniqueOrThrow({ where: { key } })).toMatchObject({ lastRunJobs: 1, lastRunStatus: 'OK' });
   });
 
+  it('l’alerte de couverture garde la qualification du RUN pour référence, jamais celle d’une passe sans rien de neuf', async () => {
+    const key = await establishedSource('couverture');
+    const stock = Array.from({ length: 12 }, (_, i) => ({ id: `c${i}` }));
+    await ingestSyntheticFeed(db, key, stock);
+    // La passe de 21:00, sous son propre PipelineRun `ingest-light`, ne voit que les 12 connues.
+    const light = randomUUID();
+    await db.pipelineRun.create({ data: { id: light, command: 'ingest-light' } });
+    installLogger(new OperationalLogger({ runId: light, write: async () => undefined, delay: async () => undefined,
+      persist: async record => { await db.pipelineEvent.create({ data: { ...record, payload: record.payload as Prisma.InputJsonValue } }); } }));
+    try {
+      network(stock);
+      expect(await runLightPass(db, { runId: light, sources: [key], now: () => at(21) })).toMatchObject({ collected: [key], created: 0 });
+    } finally {
+      installLogger(new OperationalLogger({ runId: `local-${randomUUID()}` }));
+      vi.unstubAllGlobals();
+      await db.pipelineRun.update({ where: { id: light }, data: { finishedAt: new Date(), status: 'COMPLETED' } });
+    }
+    // Prémisse : la dernière validation de la source est celle de la passe, qui ne qualifie rien (rien de neuf).
+    const latest = await db.sourceValidation.findFirstOrThrow({ where: { captureBatch: { sourceKey: key } }, orderBy: { sequence: 'desc' }, include: { captureBatch: true } });
+    expect(latest).toMatchObject({ verdict: 'VALIDATED', report: expect.objectContaining({ qualified: 0 }), captureBatch: { runId: light } });
+    const { knownSources } = await readCoverageState(db, { at: new Date(), horizons: {} });
+    expect(knownSources.find(source => source.sourceKey === key)).toMatchObject({ qualified: 12 });
+  });
+
   it('le rapport de santé lit la dernière ligne du RUN, pas celle de la passe qui a suivi', async () => {
     const key = await establishedSource('rapport');
     await ingestSyntheticFeed(db, key, [{ id: 'a' }, { id: 'b' }, { id: 'c' }]);
@@ -212,27 +270,31 @@ describe('D-517 — l’état d’une source se lit au RUN, jamais à une passe'
   });
 });
 
-describe('D-517 — une ligne illisible dans une lecture incrémentale : incident nommé, rien d’attesté ni de retenu', () => {
-  it('lecture avec une ligne rejetée : la revue du RUN ne la juge pas crédible, rien de fermé ni retenu, incident sans alerte', async () => {
+describe('D-517 — une ligne illisible dans une lecture incrémentale : nommée, tolérée comme au RUN, rien d’attesté ni de retenu', () => {
+  it('lecture avec une ligne rejetée : validée sur la liste lue, la revue du RUN ne la juge pas crédible, rien de fermé ni retenu, aucune alerte', async () => {
     const key = await establishedSource('tronquee');
     const stock = Array.from({ length: 4 }, (_, i) => ({ id: `o${i}` }));
     await ingestSyntheticFeed(db, key, stock);
     await ingestSyntheticFeed(db, key, stock);
-    // La passe ne voit que o0 (connue), puis une ligne sans intitulé : une erreur de collecte, nommée.
+    // La passe ne voit que o0 (connue), puis une ligne sans intitulé : une ligne illisible, nommée dans la preuve.
     network([{ id: 'o0' }, { id: 'sans-intitule', title: null }]);
     const pass = await runLightPass(db, { runId: null, sources: [key], now: () => at(4) });
-    expect(pass).toMatchObject({ collected: [key], failed: 1 });
+    expect(pass).toMatchObject({ collected: [key], ok: 1, created: 0 });
     // Prémisse : la dernière collecte de la source EST celle de la passe, scellée, et elle ne voit pas o1, o2, o3.
     const batch = await db.captureBatch.findFirstOrThrow({ where: { sourceKey: key, purpose: 'JOBS', attemptOrdinal: { not: null } }, orderBy: { attemptOrdinal: 'desc' } });
-    expect((await readExtractionManifest(db, batch.id)).metadata).toMatchObject({ incremental: { knownSkipped: ['o0'] } });
+    expect((await readExtractionManifest(db, batch.id)).metadata).toMatchObject({ incremental: { knownSkipped: ['o0'] },
+      rejectedRows: [expect.objectContaining({ canonicalId: 'sans-intitule' })] });
+    // La tolérance des lignes illisibles se calcule sur la liste lue (comme au RUN), pas sur le seul neuf (zéro ici).
+    expect(await db.sourceValidation.findFirstOrThrow({ where: { captureBatchId: batch.id } }))
+      .toMatchObject({ verdict: 'VALIDATED', report: expect.objectContaining({ incrementalKnown: 1, inputUnqualified: 1 }) });
     // Elle n'atteste rien, et la revue du RUN qui la lirait ne retiendrait rien.
-    expect(await readAttestingCapture(db, key, new Date())).toMatchObject({ ok: false, captureBatchId: batch.id });
+    expect(await readAttestingCapture(db, key, new Date())).toMatchObject({ ok: false, captureBatchId: batch.id, reasons: [INCREMENTAL_READING_REASON] });
     const plan = await runAvailabilityReview(db, { dryRun: true });
     expect(plan.sources.find(source => source.sourceKey === key)).toMatchObject({ credible: false, held: 0, missed: 0 });
     expect(await db.jobSource.count({ where: { sourceKey: key, isActive: true, availabilityHold: null } })).toBe(4);
     expect(await served()).toEqual(['o0', 'o1', 'o2', 'o3']);
-    // Un incident de source : la commande finit COMPLETED_WITH_ERRORS (cli.ts), sans alerte e-mail.
-    expect(lightPassHasIncidents(pass)).toBe(true);
+    // Aucune alerte e-mail ; un incident de source ferait finir la commande COMPLETED_WITH_ERRORS (cli.ts).
+    expect(lightPassHasIncidents({ failed: 1, timedOut: 0 })).toBe(true);
     expect(lightPassHasIncidents({ failed: 0, timedOut: 0 })).toBe(false);
     expect(vi.mocked(sendHealthAlert)).not.toHaveBeenCalled();
   });
@@ -335,7 +397,7 @@ describe('R-143 §1 — la fenêtre et le budget de la passe (pur)', () => {
 
 });
 
-describe('D-517 — la sélection par l’importance pour le candidat, pas par le coût', () => {
+describe('D-517 — la sélection par l’importance pour le candidat (toute source qui a du neuf), pas par le coût', () => {
   /** `n` publications vues pour la première fois aux instants `hoursAgo` (le flux d'une source). */
   async function seen(key: string, hoursAgo: readonly number[]) {
     const company = await resolvedCompany(db, key);
@@ -350,23 +412,34 @@ describe('D-517 — la sélection par l’importance pour le candidat, pas par l
   }
   const days = (n: number, from = 0) => Array.from({ length: n }, (_, i) => from + i * 24);
 
-  it('au moins une nouvelle par jour sur 7 jours : retenue, de la plus productive à la moins productive ; le stock d’une source nouvelle ne compte pas', async () => {
+  it('toute source qui a fait paraître une nouvelle publication dans la semaine est retenue, de la plus productive à la moins productive ; le stock d’une source nouvelle ne compte pas', async () => {
     const busy = await establishedSource('volume');      // un stock ancien, puis 14 nouvelles en 7 jours
     await seen(busy, [400, ...days(14).map(h => h / 2 + 1)]);
-    const steady = await establishedSource('luxe');      // un stock ancien, puis 7 nouvelles en 7 jours : 1 par jour
-    await seen(steady, [400, ...days(7, 2)]);
-    const quiet = await establishedSource('calme');      // un stock ancien, puis 6 nouvelles : moins d'une par jour
-    await seen(quiet, [400, ...days(6, 2)]);
-    const loaded = await establishedSource('chargee');   // enregistrée il y a 3 jours : 40 en stock, puis 1 nouvelle
-    await seen(loaded, [...Array(40).fill(72), 10]);
+    const calm = await establishedSource('luxe-calme');   // un stock ancien, puis 2 nouvelles en 7 jours (Patek, Mulberry…)
+    await seen(calm, [400, 30, 100]);
+    const mute = await establishedSource('muette');      // un stock ancien, rien de nouveau depuis 8 jours
+    await seen(mute, [400, 200]);
+    const loaded = await establishedSource('chargee');   // enregistrée il y a 3 jours : 40 en stock, rien de nouveau depuis
+    await seen(loaded, Array(40).fill(72));
     const fresh = await establishedSource('enregistree'); // enregistrée il y a 50 h : 30 en stock, puis 5 nouvelles le lendemain
     await seen(fresh, [...Array(30).fill(50), 20, 18, 16, 14, 12]);
-    const ours = new Set([busy, steady, quiet, loaded, fresh]);
+    const today = await establishedSource('du-jour');     // enregistrée il y a 20 h : pas encore un jour de flux
+    await seen(today, [...Array(30).fill(20), 5]);
+    const ours = new Set([busy, calm, mute, loaded, fresh, today]);
     const selected = (await significantSources(db)).filter(source => ours.has(source.key));
-    // Prémisse : le stock des sources nouvelles est bien plus gros que leur flux (40 et 30 contre 1 et 5).
-    expect(await db.jobSource.count({ where: { sourceKey: loaded } })).toBe(41);
-    expect(selected.map(source => source.key)).toEqual([fresh, busy, steady]);
-    expect(selected.find(source => source.key === steady)?.perDay).toBeCloseTo(1, 1);
+    // Prémisse : le stock des sources nouvelles est dans la fenêtre de 7 jours, et bien plus gros que leur flux.
+    expect(await db.jobSource.count({ where: { sourceKey: loaded, firstSeenAt: { gte: new Date(Date.now() - 7 * 86_400_000) } } })).toBe(40);
+    expect(selected.map(source => source.key)).toEqual([fresh, busy, calm]);
+    expect(selected.find(source => source.key === calm)).toMatchObject({ newPostings: 2 });
+  });
+
+  it('une source à amorçage anti-robot (Ralph Lauren) reste au RUN tant que D-483 et D-516 jugent ses collectes', async () => {
+    expect(LEFT_TO_RUN.has('ralph-lauren-avature')).toBe(true);
+    const key = await establishedSource('amorcage');
+    await seen(key, [400, ...days(7, 1)]);
+    // Prémisse : la source a du neuf, elle est retenue sans la garde.
+    expect((await significantSources(db, new Date(), new Set())).map(source => source.key)).toContain(key);
+    expect((await significantSources(db, new Date(), new Set([key]))).map(source => source.key)).not.toContain(key);
   });
 
   it('une source en pause n’est jamais lue, même productive', async () => {

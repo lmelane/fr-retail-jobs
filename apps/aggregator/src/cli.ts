@@ -214,9 +214,9 @@ try {
   } else if (command === 'ingest-light') {
     /**
      * R-143 §1, D-517 — la passe de découverte (`pipeline/lightPass.ts`) : chaque source significative (au moins une
-     * publication nouvelle par jour sur 7 jours), en lecture incrémentale — la liste, le détail du seul neuf, l'écriture
-     * du seul neuf. Rien d'autre : ni fermeture, ni retenue, ni attestation. Refusée dans la fenêtre du RUN et pendant
-     * un RUN ; bornée à 90 minutes. Une source en échec reste visible au bilan et dans SourceRun ; le RUN suivant la
+     * publication nouvelle sur 7 jours), en lecture incrémentale — la liste, le détail du seul neuf, l'écriture du seul
+     * neuf, avec les règles du RUN sur ce neuf (retenues, fin déclarée par l'éditeur). Jamais une preuve d'absence : rien
+     * de connu n'est fermé, retenu ni masqué. Refusée dans la fenêtre du RUN et pendant un RUN ; bornée à 90 minutes. Une source en échec reste visible au bilan et dans SourceRun ; le RUN suivant la
      * recollecte, aucune alerte n'est envoyée pour elle.
      */
     const { runLightPass, lightPassHasIncidents } = await import('./pipeline/lightPass.js');

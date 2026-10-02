@@ -1,5 +1,10 @@
 # R-143 §1 — fraîcheur de la découverte : mesure, coût par cadence, premier pas
 
+> **Remplacé par D-517 (02/10/2026)** : [`../fraicheur-d517/`](../fraicheur-d517/README.md). La liste figée de 40 sources
+> choisies par coût, la lecture complète, le budget de 45 minutes et les passes de 04, 10 et 22 UTC décrits ci-dessous ne
+> sont plus le code : la passe lit toute source qui a du neuf sur 7 jours, en lecture incrémentale, cinq fois par jour.
+> Les mesures de ce dossier restent valables pour leur date.
+
 Production en lecture seule (`db.py readonly`), le 02/10/2026 entre 11:08 et 11:17 UTC, hors fenêtre du RUN. Tout se
 rejoue depuis ce dossier :
 

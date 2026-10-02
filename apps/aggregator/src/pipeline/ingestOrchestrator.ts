@@ -160,8 +160,10 @@ export function ingestCommandVerdict(stats: IngestStats[], incidents: readonly S
 }
 
 /**
- * One source, bounded by its own timeout; the counters it touches are shared. The RUN and the light discovery pass
- * (R-143 §1, `lightPass.ts`) run exactly this step; the pass only lowers the timeout to what its own window has left.
+ * One source, bounded by its own timeout; the counters it touches are shared. The RUN and the discovery pass (R-143 §1,
+ * D-517, `lightPass.ts`) run exactly this step. Inside a pass (`withIncrementalPass`), the collection is an incremental
+ * reading (`ingest.ts`), its health row compares to nothing, and neither success nor failure touches `Source.lastRun*`;
+ * the pass also lowers the timeout to what its own window has left.
  */
 export async function ingestOne(prisma: PrismaClient, key: string, result: OrchestratorResult, maxTimeoutMs = Infinity): Promise<void> {
   const started = Date.now();

@@ -8,8 +8,10 @@ Modèle (rejouable, graine fixe), celui de `cadence-r143/projection.py`, appliqu
   (Indeed). Seconde lecture « heure exacte » : les offres dont l'heure de publication est connue et postérieure à la
   collecte précédente, la seule où le délai mesuré EST le délai de découverte (population biaisée, voir README).
 - L'offre apparaît à un instant T entre max(postedAt, collecte précédente) et sa première observation (tiré
-  uniformément quand l'heure est inconnue, 10 tirages par offre, graine 20261002). Une source de la passe est lue à
-  chaque passe (04, 10, 22 UTC), à l'heure de la passe plus l'instant où elle se termine dans une passe à 4 sources
+  uniformément quand l'heure est inconnue, 10 tirages par offre, graine 20261002). HYPOTHÈSE DU MODÈLE, pas un fait
+  mesuré : T n'est jamais antérieur à la collecte précédente de la source ; une offre republiée ou datée avant son
+  apparition garde donc son délai, d'où un p90 que la cadence ne fait presque pas bouger. Une source de la passe est lue
+  à chaque passe (01, 05, 09, 13, 21 UTC), à l'heure de la passe plus l'instant où elle se termine dans une passe à 4 sources
   en parallèle (ordonnancement simulé, dans l'ordre de la sélection) : projection = min(observation réelle, première
   passe achevée après T). Les autres sources gardent leur observation réelle (RUN quotidien).
 - Coût d'une lecture incrémentale, par source : la LISTE entière (requêtes de liste mesurées au dernier RUN, F2), plus
@@ -49,8 +51,10 @@ F4 = {r['key']: r for r in section(mine, 'F4')}
 cad = (HERE.parent / 'cadence-r143' / 'mesure-sources.out').read_text().split('\n')
 M1 = {r['key']: r for r in section(cad, 'M1')}
 
-# --- La sélection : la règle exacte de la passe (F4, significantSources) -----------------------------------------------
-selected = [k for k, r in sorted(F4.items(), key=lambda kv: -f(kv[1]['par_jour'])) if r['retenue'] == 't']
+# --- La sélection : la règle de la passe (significantSources) -- toute source avec au moins une nouvelle publication sur 7
+# jours et un jour de flux. F4 donne n et jours par source ; sa colonne « retenue » est l'ancien seuil d'une par jour.
+eligible = lambda r: f(r['n']) >= 1 and f(r['jours']) >= 1
+selected = [k for k, r in sorted(F4.items(), key=lambda kv: -f(kv[1]['par_jour'])) if eligible(r)]
 flux = {k: f(r['par_jour']) for k, r in F4.items()}
 flux_total = sum(f(r['n']) for r in F4.values())
 flux_sel = sum(f(F4[k]['n']) for k in selected)
@@ -147,10 +151,10 @@ def pct(values, q):
     return v[lo] + (v[hi] - v[lo]) * (k - lo)
 
 
-def project(sources, hours, offset):
+def project(sources, hours, offset, population=None):
     chosen = set(sources)
     out, exact_out, covered = [], [], 0
-    for o in offers:
+    for o in (offers if population is None else population):
         posted, seen = P(o['posted']), P(o['first_seen'])
         base = (seen - posted).total_seconds() / 3600
         if base < 0:
@@ -185,17 +189,20 @@ def project(sources, hours, offset):
                 emed=pct(exact_out, 0.5), ep90=pct(exact_out, 0.9), n=len(out), en=len(exact_out), covered=covered)
 
 
-print('== Sélection D-517 (règle exacte de la passe, F4)')
+print('== Sélection D-517 (règle de la passe : au moins une nouvelle publication sur 7 jours, un jour de flux)')
 print(f'   {len(selected)} sources retenues sur {len(F4)} ACTIVE avec un flux ; {100 * flux_sel / flux_total:.1f} % des nouvelles publications'
       f' ({flux_sel:.0f} sur {flux_total:.0f} en 7 jours) ; avant (40 sources par coût) : {100 * flux_old / flux_total:.1f} %')
 for name in ['prada-group', 'rolex', 'burberry', 'valentino', 'clarins', 'swatch-group', 'hm-group', 'ulta-jibe', 'knitwell-us-retail',
              'nordstrom', 'wttj-sector', 'tapestry', 'estee-lauder-companies', 'kering', 'pvh', 'lvmh', 'parfums-chanel', 'richemont-workday']:
     print(f'   {name:24s} {"retenue" if name in selected else "NON retenue"} {flux.get(name, 0):6.1f} / jour')
-excluded = sorted(((k, flux[k]) for k in F4 if k not in selected), key=lambda kv: -kv[1])[:12]
-print('   premières sources non retenues :', ', '.join(f'{k} {v:.1f}' for k, v in excluded))
+calm = sorted(((k, flux[k]) for k in selected if flux[k] < 1), key=lambda kv: -kv[1])
+print(f'   dont {len(calm)} sources calmes (moins d’une par jour), que le seuil d’une par jour écartait :', ', '.join(f'{k} {v:.1f}' for k, v in calm[:20]), '…')
+excluded = [k for k in F4 if k not in selected]
+print(f'   non retenues : {len(excluded)} (moins d’un jour de flux) :', ', '.join(excluded))
 for th in (0.5, 1, 2):
-    s = [k for k, r in F4.items() if f(r['par_jour']) >= th and f(r['jours']) >= 1]
-    print(f'   seuil {th} / jour : {len(s)} sources, {100 * sum(f(F4[k]["n"]) for k in s) / flux_total:.1f} % du flux')
+    s_ = [k for k, r in F4.items() if f(r['par_jour']) >= th and f(r['jours']) >= 1]
+    print(f'   seuil {th} / jour : {len(s_)} sources, {100 * sum(f(F4[k]["n"]) for k in s_) / flux_total:.1f} % du flux,'
+          f' {sum(incremental_requests(k) for k in s_):.0f} requêtes par passe')
 
 print('\n== Coût d’une passe (lecture incrémentale de la sélection)')
 by_kind = {}
@@ -209,18 +216,27 @@ tot_inc, tot_full = sum(inc.values()), sum(full_req.values())
 new_day = sum(flux[k] for k in selected)
 print(f'   une passe : {tot_inc:.0f} requêtes (lecture complète des mêmes sources : {tot_full:.0f}) ; {makespan / 60:.0f} min à 4 sources en parallèle'
       f' (série : {sum(dur.values()) / 60:.0f} min) ; plus longue source : {max(dur, key=dur.get)} {max(dur.values()) / 60:.0f} min')
-print(f'   toutes les 4 h (5 passes) : +{5 * tot_inc:.0f} requêtes par jour ({100 * 5 * tot_inc / run_req:.0f} % du RUN)')
-print(f'   par jour, 3 passes : +{3 * tot_inc:.0f} requêtes ({100 * 3 * tot_inc / run_req:.0f} % du RUN, {run_req:.0f}) ;'
-      f' écritures : le neuf seul, ~{new_day * 0.75:.0f} offres écrites par jour (+{100 * new_day * 0.75 / run_writes:.1f} % des {run_writes:.0f} réécritures du RUN),'
-      f' contre +{3 * sum(f(M1.get(k, {}).get("offres_lues_med")) for k in selected):.0f} si la passe relisait tout')
+sel_old = [k for k, r in F4.items() if r['retenue'] == 't']
+for name, n in [('5 passes (01, 05, 09, 13, 21 UTC), retenu', 5), ('3 passes (04, 10, 22 UTC)', 3)]:
+    print(f'   {name:42s} +{n * tot_inc:.0f} requêtes par jour ({100 * n * tot_inc / run_req:.0f} % des {run_req:.0f} du RUN), {n} × ~{makespan / 60:.0f} min de worker')
+print(f'   écritures : le neuf seul, au plus ~{new_day:.0f} offres écrites par jour par les passes (+{100 * new_day / run_writes:.1f} % des {run_writes:.0f}'
+      f' réécritures du RUN), contre +{5 * sum(f(M1.get(k, {}).get("offres_lues_med")) for k in selected):.0f} à 5 passes si elles relisaient tout')
 
-print('\n== Découverte projetée (RUN à 16:00 UTC, passes à 04, 10, 22 UTC)')
+HOURS = [1, 5, 9, 13, 21]
+print('\n== Découverte projetée (RUN à 16:00 UTC) — modèle, pas une mesure ; borne haute (chaque passe lit chaque source)')
 base = project([], [], {})
 light = project([k for k in OLD_LIGHT if k in M1], [4, 10, 22], {k: 0 for k in OLD_LIGHT})
-d517 = project(selected, [4, 10, 22], done)
-d517_4h = project(selected, [0, 4, 8, 12, 20], done)
-for name, r in [('RUN seul (aujourd’hui)', base), ('lecture R-143 §1 : 40 sources par coût, toutes les 6 h', light),
-                ('D-517 : sélection par importance, incrémentale, toutes les 6 h', d517),
-                ('D-517, toutes les 4 h (00, 04, 08, 12, 20)', d517_4h)]:
-    print(f'   {name:62s} mesure du CEO médiane {r["med"]:5.1f} h p90 {r["p90"]:5.1f} h, ≤24 h {100 * r["le24"]:4.1f} %'
+inc_old = {k: incremental_requests(k) for k in sel_old}
+done_old, _ = schedule([k for k in selected if k in set(sel_old)], {k: seconds(k, inc_old[k]) for k in sel_old})
+for name, r in [('RUN seul (aujourd’hui)', base), ('lecture R-143 §1 : 40 sources par coût, 04/10/22', light),
+                ('seuil 1 / jour (147 sources), 04/10/22', project(sel_old, [4, 10, 22], done_old)),
+                ('D-517 retenu : toute source avec du neuf, 04/10/22', project(selected, [4, 10, 22], done)),
+                ('D-517 retenu : toute source avec du neuf, 01/05/09/13/21', project(selected, HOURS, done))]:
+    print(f'   {name:56s} mesure du CEO médiane {r["med"]:5.1f} h p90 {r["p90"]:5.1f} h, ≤24 h {100 * r["le24"]:4.1f} %'
           f' | heure exacte ({r["en"]}) médiane {r["emed"]:4.1f} h p90 {r["ep90"]:4.1f} h | offres couvertes {100 * r["covered"] / r["n"]:4.1f} %')
+# Les Maisons de luxe sur Workday ou SuccessFactors n'ont pas d'heure de publication : elles ne pèsent que sur la mesure du CEO.
+lux = ['prada-group', 'rolex', 'burberry', 'valentino', 'clarins', 'parfums-chanel', 'richemont-workday', 'swatch-group', 'lvmh']
+sub = [o for o in offers if o['sk'] in lux]
+for name, r in [('RUN seul', project([], [], {}, sub)), ('D-517 retenu, 01/05/09/13/21', project(selected, HOURS, done, sub))]:
+    print(f'   Maisons de luxe ({len(sub)} offres : {", ".join(lux)}), {name:30s} mesure du CEO médiane {r["med"]:5.1f} h p90 {r["p90"]:5.1f} h,'
+          f' ≤24 h {100 * r["le24"]:4.1f} % | heure exacte : {r["en"]} offres')

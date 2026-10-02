@@ -2,7 +2,7 @@ import { applyNativeEmployerRules, nativeEmployerRules } from '../identity/nativ
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { captureObservedAt } from '../capture/context.js';
 import { applySpontaneousApplicationRule } from '../pipeline/spontaneousApplication.js';
-import { finishIncrementalReading } from '../lib/incrementalReading.js';
+import { finishIncrementalReading, incrementalSkippedIds } from '../lib/incrementalReading.js';
 import { canonicalIdContract } from './canonicalIdContract.js';
 import { fetchJobaffinityWordpressJobs } from './adapters/jobaffinityWordpress.js';
 import { fetchFlatchrJobs } from './adapters/flatchr.js';
@@ -163,7 +163,8 @@ export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult):
       candidateExternalIds: normalized.jobs.map(job => job.externalId),
       canonicalObservedIds: canonical,
       // Les offres retenues ont bien été VUES : leur disposition est nommée par le motif de retenue.
-      heldIds: normalized.jobs.filter(job => job.publicationHold).map(job => job.externalId),
+      // D-517 : une publication connue, vue et laissée de côté par une lecture incrémentale, a sa disposition nommée.
+      heldIds: [...normalized.jobs.filter(job => job.publicationHold).map(job => job.externalId), ...incrementalSkippedIds()],
       writeFailedIds: [],
       rejectedIds: normalized.rejectedRows?.flatMap(r => {
         // Un rejet dont l'identifiant canonique est connu est une DISPOSITION, pas un trou.

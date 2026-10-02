@@ -61,6 +61,11 @@ export function isKnownPosting(externalId: string | null | undefined): boolean {
   return true;
 }
 
+/** The known ids this incremental reading has set aside so far (none outside a reading): a named disposition. */
+export function incrementalSkippedIds(): string[] {
+  return [...(readings.getStore()?.skipped ?? [])];
+}
+
 /**
  * The adapter result of an incremental reading: only the postings the source never showed, sealed as never complete
  * and never attesting, with the sorted ids it saw and set aside. Outside an incremental reading, `result` unchanged.
@@ -80,8 +85,9 @@ export function isIncrementalResult(metadata: { incremental?: unknown } | null |
 
 /**
  * LA PASSE QUI DEMANDE LA LECTURE INCRÉMENTALE. La passe de découverte (`pipeline/lightPass.ts`) l'arme autour de chaque
- * source ; seule la COLLECTE D'OFFRES de l'ingestion (`pipeline/ingest.ts`) la convertit en lecture incrémentale. La
- * qualification native qui la précède (`maintainSourceAccess`), si elle devait avoir lieu, lit donc tout, comme au RUN.
+ * source ; seule la COLLECTE D'OFFRES de l'ingestion (`pipeline/ingest.ts`) la convertit en lecture incrémentale. Une
+ * qualification native (`maintainSourceAccess`) lit toujours tout ; la passe n'en déclenche pas (elle laisse au RUN toute
+ * source dont la qualification expire dans l'heure), et sa propre collecte validée rafraîchit la qualification.
  */
 const passes = new AsyncLocalStorage<boolean>();
 export const withIncrementalPass = <T>(work: () => Promise<T>): Promise<T> => passes.run(true, work);

@@ -59,6 +59,9 @@ describe('D-517 — Workday (Knitwell, Nordstrom, Tapestry, Swarovski…) : la l
     expect(urls().filter(url => url.endsWith('/jobs')).length).toBeGreaterThan(0);
     expect(result.jobs.map(job => job.externalId)).toEqual(['Sales_3']);
     expect(result.incremental?.knownSkipped).toEqual(['Sales_0', 'Sales_1', 'Sales_2']);
+    // Les connues laissées de côté sont une disposition nommée : le contrat des identifiants canoniques tient.
+    expect(result.enumeration?.pageEvidence?.flatMap(page => page.canonicalIds ?? [])).toContain('Sales_0');
+    expect(result.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
   });
 });
 

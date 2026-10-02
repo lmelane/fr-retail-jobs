@@ -39,12 +39,18 @@ export type SourceValidationReport = {
   /** Only when the already-reviewed portal rule resolves an absent native employer. */
   registryEmployer?: CertifiedPortalIdentity;
   /**
-   * D-517 : une lecture incrémentale qui n'a rien rendu parce que la source ne listait que des publications déjà
-   * connues (`knownSkipped`, scellé et rejoué à l'identique). Ce n'est pas un flux vide : la liste a été lue et
-   * reconnue. Rien n'est publié, rien n'est attesté ; seule la lecture est qualifiée. Une liste qui n'a rien montré du
-   * tout reste un flux vide non prouvé.
+   * D-517 : une lecture incrémentale qui n'a rien de neuf à publier — la source ne listait que des publications déjà
+   * connues (`knownSkipped`, scellé et rejoué à l'identique), plus d'éventuelles nouvelles retenues (fiche en échec,
+   * non listée). Ce n'est pas un flux vide : la liste a été lue et reconnue. Rien n'est publié, rien n'est attesté ;
+   * seule la lecture est qualifiée. Une liste qui n'a rien montré du tout reste un flux vide non prouvé, et une sortie
+   * neuve irrécupérable reste un défaut du lecteur.
    */
   incrementalNothingNew?: number;
+  /**
+   * D-517 : les publications connues que la lecture incrémentale a vues dans la liste. La tolérance des lignes illisibles
+   * se calcule sur toute la liste lue, comme au RUN, pas sur les seules nouveautés.
+   */
+  incrementalKnown?: number;
   reasons: Record<string, number>;
   /**
    * Le seuil appliqué à ce lot (politique v2) : la règle en vigueur, et le plafond qu'elle a
@@ -136,15 +142,18 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
         if (recovery.status === 'RECOVERABLE') report.qualified++;
         else { report.rejected++; reason(recovery.reason); }
       }
-      const nothingNew = !report.observed && isIncrementalResult(replayed) ? replayed.incremental!.knownSkipped.length : 0;
-      if (nothingNew > 0) report.incrementalNothingNew = nothingNew;
+      // D-517 : une lecture incrémentale qui a reconnu la liste et n'a rien de neuf à publier (rien, ou seulement des
+      // publications retenues) n'est pas un flux vide ; une sortie neuve irrécupérable reste un défaut du lecteur.
+      const recognized = isIncrementalResult(replayed) ? replayed.incremental!.knownSkipped.length : 0;
+      if (recognized > 0) report.incrementalKnown = recognized;
+      if (recognized > 0 && report.qualified === 0 && report.rejected === 0) report.incrementalNothingNew = recognized;
       else if (!report.observed) {
         // A JSON Feed declares no total: a complete enumeration that read nothing is judged on its single archived response.
         report.nativeEmpty = replayed.complete === true && (replayed.declaredTotal === 0 || replayed.declaredTotal === undefined && replayed.jobs.length === 0) &&
           await nativeEmptyFeed(db, batch.id, revision.kind, store);
         if (!report.nativeEmpty) reason('EMPTY_FEED_NOT_NATIVELY_PROVEN');
       }
-      if (report.observed && !report.qualified && !onlySpontaneous(report)) reason('NO_QUALIFIED_PUBLICATION');
+      if (report.observed && !report.qualified && !onlySpontaneous(report) && !report.incrementalNothingNew) reason('NO_QUALIFIED_PUBLICATION');
     }
   } catch {
     // Details remain in the capture. Do not copy exception messages containing
@@ -159,7 +168,7 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
   const perPublication = new Set<string>([...PER_PUBLICATION_REASONS, 'ENUMERATION_INCOMPLETE', 'REJECTED_NATIVE_ROWS']);
   const batchReasons = Object.keys(report.reasons).filter(name => !perPublication.has(name));
   const unqualified = report.rejected + (report.inputUnqualified ?? 0);
-  const allowance = unqualifiedAllowanceFor(report.observed + (report.inputUnqualified ?? 0));
+  const allowance = unqualifiedAllowanceFor(report.observed + (report.incrementalKnown ?? 0) + (report.inputUnqualified ?? 0));
   report.allowance = { ...VALIDATION_UNQUALIFIED_ALLOWANCE, applied: allowance };
   const verdict = report.replayExact && unqualified <= allowance && batchReasons.length === 0 &&
     (report.qualified > 0 || report.nativeEmpty || onlySpontaneous(report) || (report.incrementalNothingNew ?? 0) > 0) ? 'VALIDATED' : 'REJECTED';

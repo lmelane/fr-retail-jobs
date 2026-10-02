@@ -18,8 +18,9 @@
  *
  * Les MENACES : offres servies dont TOUTES les représentations confirmées viennent de sources ACTIVES et n'ont été revues
  * par aucune collecte depuis le début du dernier RUN complet (`runStartedAt`, commande `ingest-all`) : collecte en échec,
- * incomplète ou absente du RUN. Le plafond de 72 h les masquera si rien ne reprend. Une passe légère qui revoit une offre
- * la retire des menaces (elle est reconfirmée) ; l'état affiché de la source est celui du RUN, pas de la passe.
+ * incomplète ou absente du RUN. Le plafond de 72 h les masquera si rien ne reprend. Une passe de découverte ne revoit
+ * jamais une offre connue (lecture incrémentale, D-517) : elle ne retire rien des menaces ; l'état affiché de la source,
+ * et sa qualification de référence, sont ceux du RUN, pas de la passe.
  */
 import { Prisma, type PrismaClient } from '@prisma/client';
 import { publicJobSql } from '@catwalks/db/availability';
@@ -228,7 +229,8 @@ export async function readCoverageState(db: Db, options: { at: Date; horizons: C
     WITH q AS (
       SELECT DISTINCT ON (cb."sourceKey") cb."sourceKey", (sv.report->>'qualified')::int AS qualified, sv."validatedAt"
       FROM "SourceValidation" sv JOIN "CaptureBatch" cb ON cb.id = sv."captureBatchId"
-      WHERE sv.verdict = 'VALIDATED' AND sv."validatedAt" <= ${at}
+      -- D-517 : la validation d'une collecte de passe ne qualifie que le neuf (souvent 0) ; la référence est celle du RUN.
+      WHERE sv.verdict = 'VALIDATED' AND sv."validatedAt" <= ${at} AND ${notLightPass(Prisma.raw('cb'))}
       ORDER BY cb."sourceKey", sv."validatedAt" DESC)
     SELECT q."sourceKey", s.maison AS label, s.status::text AS status, q.qualified, q."validatedAt",
       (SELECT count(DISTINCT js."jobId") FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId"

@@ -1,5 +1,5 @@
-== Sélection D-517 (règle exacte de la passe, F4)
-   147 sources retenues sur 285 ACTIVE avec un flux ; 96.6 % des nouvelles publications (11608 sur 12020 en 7 jours) ; avant (40 sources par coût) : 20.5 %
+== Sélection D-517 (règle de la passe : au moins une nouvelle publication sur 7 jours, un jour de flux)
+   285 sources retenues sur 285 ACTIVE avec un flux ; 100.0 % des nouvelles publications (12020 sur 12020 en 7 jours) ; avant (40 sources par coût) : 20.5 %
    prada-group              retenue    8.9 / jour
    rolex                    retenue    4.4 / jour
    burberry                 retenue    2.9 / jour
@@ -18,53 +18,63 @@
    lvmh                     retenue  103.9 / jour
    parfums-chanel           retenue   11.6 / jour
    richemont-workday        retenue   20.7 / jour
-   premières sources non retenues : aeropostale 0.9, audemars-piguet 0.9, burnt 0.9, fenwick-volcanic 0.9, globus 0.9, loccitane-fr 0.9, mulberry 0.9, pepco 0.9, quince 0.9, ssense 0.9, uniqlo-us-retail 0.9, zegna-altamira 0.8
-   seuil 0.5 / jour : 200 sources, 98.7 % du flux
-   seuil 1 / jour : 147 sources, 96.6 % du flux
-   seuil 2 / jour : 103 sources, 93.2 % du flux
+   dont 138 sources calmes (moins d’une par jour), que le seuil d’une par jour écartait : aeropostale 0.9, audemars-piguet 0.9, burnt 0.9, fenwick-volcanic 0.9, globus 0.9, loccitane-fr 0.9, mulberry 0.9, pepco 0.9, quince 0.9, ssense 0.9, uniqlo-us-retail 0.9, zegna-altamira 0.8, ackermans 0.7, bzb 0.7, club-l-london 0.7, everlane 0.7, faguo 0.7, gant 0.7, georges 0.7, lager-157 0.7 …
+   non retenues : 0 (moins d’un jour de flux) : 
+   seuil 0.5 / jour : 200 sources, 98.7 % du flux, 7422 requêtes par passe
+   seuil 1 / jour : 147 sources, 96.6 % du flux, 6470 requêtes par passe
+   seuil 2 / jour : 103 sources, 93.2 % du flux, 5141 requêtes par passe
 
 == Coût d’une passe (lecture incrémentale de la sélection)
-   WORKDAY                 29 sources : lecture complète   38578 requêtes, incrémentale    1435
-   SUCCESSFACTORS          17 sources : lecture complète   13499 requêtes, incrémentale     437
-   SMARTRECRUITERS         12 sources : lecture complète    9624 requêtes, incrémentale     451
+   WORKDAY                 38 sources : lecture complète   42514 requêtes, incrémentale    1595
+   SUCCESSFACTORS          25 sources : lecture complète   14449 requêtes, incrémentale     492
+   SMARTRECRUITERS         17 sources : lecture complète   10019 requêtes, incrémentale     655
    PHENOM                   4 sources : lecture complète    7618 requêtes, incrémentale      69
-   GENERIC_JSONLD           8 sources : lecture complète    6147 requêtes, incrémentale     393
+   GENERIC_JSONLD          12 sources : lecture complète    6354 requêtes, incrémentale     475
    EIGHTFOLD                2 sources : lecture complète    5499 requêtes, incrémentale     322
-   WTTJ                     1 sources : lecture complète    4449 requêtes, incrémentale     144
+   WTTJ                     3 sources : lecture complète    4490 requêtes, incrémentale     168
+   DIGITALRECRUITERS        7 sources : lecture complète    3225 requêtes, incrémentale     312
    JOBAFFINITY_WORDPRESS    2 sources : lecture complète    3071 requêtes, incrémentale      10
-   ICIMS                    1 sources : lecture complète    3024 requêtes, incrémentale      40
+   ICIMS                    2 sources : lecture complète    3061 requêtes, incrémentale      60
    ORACLE_HCM               2 sources : lecture complète    2930 requêtes, incrémentale      15
-   DIGITALRECRUITERS        5 sources : lecture complète    2857 requêtes, incrémentale     240
    SWATCHGROUP              1 sources : lecture complète     550 requêtes, incrémentale     233
    EQWA                     1 sources : lecture complète     539 requêtes, incrémentale     539
    TALENT_FUNNEL            1 sources : lecture complète     393 requêtes, incrémentale     393
-   TALENTVIEW               2 sources : lecture complète     270 requêtes, incrémentale     270
+   PERSONIO                 9 sources : lecture complète     329 requêtes, incrémentale     329
+   TALENTVIEW               4 sources : lecture complète     328 requêtes, incrémentale     328
+   TALENTSOFT               4 sources : lecture complète     310 requêtes, incrémentale     310
    TALEO                    1 sources : lecture complète     236 requêtes, incrémentale     236
-   TALENTSOFT               2 sources : lecture complète     222 requêtes, incrémentale     222
+   teamtailor              69 sources : lecture complète     235 requêtes, incrémentale     235
    JIBE                     1 sources : lecture complète     153 requêtes, incrémentale     153
    EASYCRUIT                1 sources : lecture complète     149 requêtes, incrémentale     149
+   ALTAMIRA                 1 sources : lecture complète     149 requêtes, incrémentale     149
    LVMH_ALGOLIA             1 sources : lecture complète     128 requêtes, incrémentale     128
    BASH_TALENTS             1 sources : lecture complète     103 requêtes, incrémentale     103
+   VOLCANIC                 1 sources : lecture complète      99 requêtes, incrémentale      99
    TEAMTAILOR              11 sources : lecture complète      97 requêtes, incrémentale      97
+   greenhouse              32 sources : lecture complète      96 requêtes, incrémentale      96
    HARRI                    1 sources : lecture complète      69 requêtes, incrémentale      69
    JOBYLON                  1 sources : lecture complète      66 requêtes, incrémentale      66
    RITUALS                  1 sources : lecture complète      63 requêtes, incrémentale      63
    WORKABLE                 2 sources : lecture complète      62 requêtes, incrémentale      62
-   greenhouse              12 sources : lecture complète      36 requêtes, incrémentale      36
-   teamtailor              10 sources : lecture complète      34 requêtes, incrémentale      34
-   recruitee                7 sources : lecture complète      25 requêtes, incrémentale      25
+   talentrecruiter          1 sources : lecture complète      45 requêtes, incrémentale      45
+   recruitee                9 sources : lecture complète      33 requêtes, incrémentale      33
+   lever                    8 sources : lecture complète      24 requêtes, incrémentale      24
+   LEVER                    2 sources : lecture complète      14 requêtes, incrémentale      14
    MAGNET                   1 sources : lecture complète      11 requêtes, incrémentale      11
-   LEVER                    1 sources : lecture complète       7 requêtes, incrémentale       7
-   flatchr                  2 sources : lecture complète       6 requêtes, incrémentale       6
+   flatchr                  3 sources : lecture complète       9 requêtes, incrémentale       9
    magnet                   1 sources : lecture complète       5 requêtes, incrémentale       5
    geodirectory             1 sources : lecture complète       3 requêtes, incrémentale       3
-   lever                    1 sources : lecture complète       3 requêtes, incrémentale       3
-   une passe : 6470 requêtes (lecture complète des mêmes sources : 100526) ; 12 min à 4 sources en parallèle (série : 31 min) ; plus longue source : psycho-bunny 6 min
-   toutes les 4 h (5 passes) : +32352 requêtes par jour (29 % du RUN)
-   par jour, 3 passes : +19411 requêtes (17 % du RUN, 111186) ; écritures : le neuf seul, ~1322 offres écrites par jour (+1.6 % des 81338 réécritures du RUN), contre +222639 si la passe relisait tout
+   ashby                    1 sources : lecture complète       3 requêtes, incrémentale       3
+   une passe : 8160 requêtes (lecture complète des mêmes sources : 107531) ; 12 min à 4 sources en parallèle (série : 45 min) ; plus longue source : psycho-bunny 6 min
+   5 passes (01, 05, 09, 13, 21 UTC), retenu  +40802 requêtes par jour (37 % des 111186 du RUN), 5 × ~12 min de worker
+   3 passes (04, 10, 22 UTC)                  +24481 requêtes par jour (22 % des 111186 du RUN), 3 × ~12 min de worker
+   écritures : le neuf seul, au plus ~1821 offres écrites par jour par les passes (+2.2 % des 81338 réécritures du RUN), contre +400560 à 5 passes si elles relisaient tout
 
-== Découverte projetée (RUN à 16:00 UTC, passes à 04, 10, 22 UTC)
-   RUN seul (aujourd’hui)                                         mesure du CEO médiane  17.3 h p90  42.0 h, ≤24 h 74.9 % | heure exacte (5251) médiane  7.8 h p90 20.9 h | offres couvertes  0.0 %
-   lecture R-143 §1 : 40 sources par coût, toutes les 6 h         mesure du CEO médiane  17.0 h p90  41.9 h, ≤24 h 75.6 % | heure exacte (5251) médiane  5.8 h p90 19.7 h | offres couvertes 21.9 %
-   D-517 : sélection par importance, incrémentale, toutes les 6 h mesure du CEO médiane   6.5 h p90  41.0 h, ≤24 h 76.6 % | heure exacte (5251) médiane  3.1 h p90  6.1 h | offres couvertes 96.5 %
-   D-517, toutes les 4 h (00, 04, 08, 12, 20)                     mesure du CEO médiane   5.2 h p90  40.4 h, ≤24 h 76.8 % | heure exacte (5251) médiane  2.4 h p90  4.7 h | offres couvertes 96.5 %
+== Découverte projetée (RUN à 16:00 UTC) — modèle, pas une mesure ; borne haute (chaque passe lit chaque source)
+   RUN seul (aujourd’hui)                                   mesure du CEO médiane  17.3 h p90  42.0 h, ≤24 h 74.9 % | heure exacte (5251) médiane  7.8 h p90 20.9 h | offres couvertes  0.0 %
+   lecture R-143 §1 : 40 sources par coût, 04/10/22         mesure du CEO médiane  17.0 h p90  41.9 h, ≤24 h 75.6 % | heure exacte (5251) médiane  5.8 h p90 19.7 h | offres couvertes 21.9 %
+   seuil 1 / jour (147 sources), 04/10/22                   mesure du CEO médiane   6.5 h p90  41.0 h, ≤24 h 76.6 % | heure exacte (5251) médiane  3.1 h p90  6.1 h | offres couvertes 96.5 %
+   D-517 retenu : toute source avec du neuf, 04/10/22       mesure du CEO médiane   6.1 h p90  41.0 h, ≤24 h 76.6 % | heure exacte (5251) médiane  3.0 h p90  5.9 h | offres couvertes 100.0 %
+   D-517 retenu : toute source avec du neuf, 01/05/09/13/21 mesure du CEO médiane   5.0 h p90  37.1 h, ≤24 h 76.8 % | heure exacte (5251) médiane  1.9 h p90  3.7 h | offres couvertes 100.0 %
+   Maisons de luxe (1190 offres : prada-group, rolex, burberry, valentino, clarins, parfums-chanel, richemont-workday, swatch-group, lvmh), RUN seul                       mesure du CEO médiane  19.5 h p90  43.8 h, ≤24 h 74.4 % | heure exacte : 296 offres
+   Maisons de luxe (1190 offres : prada-group, rolex, burberry, valentino, clarins, parfums-chanel, richemont-workday, swatch-group, lvmh), D-517 retenu, 01/05/09/13/21   mesure du CEO médiane  11.0 h p90  35.0 h, ≤24 h 80.6 % | heure exacte : 296 offres

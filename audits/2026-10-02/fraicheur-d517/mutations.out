@@ -1,26 +1,37 @@
-1. rejeu sans l'ensemble scellé : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  2 failed | 21 passed (23)
-2. capture incrémentale attestante : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  1 failed | 22 passed (23)
-3. filtre commun retiré (tout rendu) : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  5 failed | 18 passed (23)
+1. rejeu sans l'ensemble scellé : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  5 failed | 22 passed (27)
+2. capture incrémentale attestante : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  2 failed | 25 passed (27)
+3. filtre commun retiré (tout rendu) : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  7 failed | 20 passed (27)
 4. Workday lit toutes les fiches : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  1 failed | 22 passed (23)
+      Tests  1 failed | 26 passed (27)
 5. SmartRecruiters lit toutes les annonces : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  1 failed | 22 passed (23)
+      Tests  1 failed | 26 passed (27)
 6. Oracle lit toutes les réquisitions : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  1 failed | 22 passed (23)
-7. « rien de neuf » rejeté comme flux vide : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  1 failed | 22 passed (23)
-8. santé de passe comparée au RUN et résumé réécrit : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  3 failed | 20 passed (23)
-9. échec de passe dans le résumé du catalogue :       Tests  23 passed (23)
+      Tests  1 failed | 26 passed (27)
+7. « rien de neuf » rejeté comme flux vide : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  4 failed | 23 passed (27)
+8. santé de passe comparée au RUN et résumé réécrit : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  5 failed | 22 passed (27)
+9. échec de passe dans le résumé du catalogue : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 26 passed (27)
 10. rapport de santé lu à la passe : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  1 failed | 22 passed (23)
-11. qualification expirante lue quand même : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  3 failed | 20 passed (23)
+      Tests  1 failed | 26 passed (27)
+11. qualification expirante lue quand même : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 26 passed (27)
 12. le stock d'une source nouvelle compté comme flux : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  1 failed | 22 passed (23)
-13. passe en lecture complète (incrémentale désactivée) : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  4 failed | 19 passed (23)
+      Tests  1 failed | 26 passed (27)
+13. passe en lecture complète (incrémentale désactivée) : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  6 failed | 21 passed (27)
+14. tolérance des lignes illisibles calculée sur le seul neuf : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 26 passed (27)
+15. alerte de couverture : qualification de référence prise à une passe : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 26 passed (27)
+16. une sortie retenue d'une passe tenue pour connue : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  3 failed | 24 passed (27)
+17. source à amorçage anti-robot lue par la passe : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 26 passed (27)
+18. connues laissées de côté hors du contrat canonique : ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 26 passed (27)
 arbre restauré à l'identique

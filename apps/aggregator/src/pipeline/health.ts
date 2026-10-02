@@ -175,7 +175,7 @@ export async function recordIncrementalRun(prisma: PrismaClient, stat: IngestSta
       stat.errors > 0 ? `${plural(stat.errors, 'erreur', 'erreurs')} de collecte ou d’écriture${failureCauses(stat)}` : null].filter(Boolean).join(' · ') };
   await prisma.sourceRun.create({ data: { sourceKey: stat.source, ...(log.runId() ? { runId: log.runId() } : {}), status: health.status, jobs,
     previousJobs: null, fetched: stat.fetched, complete: false, accepted: stat.inSector, declaredTotal: stat.declaredTotal ?? null,
-    truncated: false, errors: stat.errors, canAttestAbsence: false, note: [health.note, health.coverage].filter(Boolean).join(' · '),
+    truncated: true, errors: stat.errors, canAttestAbsence: false, note: [health.note, health.coverage].filter(Boolean).join(' · '),
     descriptionRate: health.rates?.description ?? null, dateRate: health.rates?.date ?? null, countryRate: health.rates?.country ?? null,
     urlRate: health.rates?.url ?? null, ranAt: new Date() } });
   const incidents = health.status === 'OK' ? [] : [health];
