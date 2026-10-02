@@ -1,0 +1,75 @@
+SET
+jour|command|event|motif|n|sources
+2026-09-23|ingest|source.access_qualification_completed|ACCESS_MISSING|6|6
+2026-09-23|ingest|source.access_qualification_completed|ACCESS_STALE|17|17
+2026-09-23|ingest|source.access_qualification_started|ACCESS_MISSING|9|8
+2026-09-23|ingest|source.access_qualification_started|ACCESS_STALE|17|17
+2026-09-23|ingest-all|source.access_qualification_completed|ACCESS_MISSING|23|23
+2026-09-23|ingest-all|source.access_qualification_completed|ACCESS_STALE|710|371
+2026-09-23|ingest-all|source.access_qualification_started|ACCESS_MISSING|57|38
+2026-09-23|ingest-all|source.access_qualification_started|ACCESS_STALE|717|371
+2026-09-24|ingest|source.access_qualification_completed|ACCESS_STALE|3|2
+2026-09-24|ingest|source.access_qualification_started|ACCESS_STALE|3|2
+2026-09-24|ingest-all|source.access_qualification_completed|ACCESS_STALE|407|407
+2026-09-24|ingest-all|source.access_qualification_started|ACCESS_MISSING|4|4
+2026-09-24|ingest-all|source.access_qualification_started|ACCESS_STALE|408|408
+2026-09-25|ingest-all|source.access_qualification_completed|ACCESS_STALE|409|409
+2026-09-25|ingest-all|source.access_qualification_started|ACCESS_MISSING|4|4
+2026-09-25|ingest-all|source.access_qualification_started|ACCESS_STALE|409|409
+2026-09-26|ingest-all|source.access_qualification_completed|ACCESS_STALE|409|409
+2026-09-26|ingest-all|source.access_qualification_started|ACCESS_MISSING|4|4
+2026-09-26|ingest-all|source.access_qualification_started|ACCESS_STALE|409|409
+2026-09-27|ingest-all|source.access_qualification_started|ACCESS_MISSING|4|4
+2026-09-27|ingest-all|source.native_qualification_started|CAPTURE_STALE|369|369
+2026-09-27|ingest-all|source.native_qualification_started|VALIDATION_MISSING|1|1
+2026-09-28|ingest-all|source.access_qualification_completed|ACCESS_STALE|409|409
+2026-09-28|ingest-all|source.access_qualification_started|ACCESS_MISSING|4|4
+2026-09-28|ingest-all|source.access_qualification_started|ACCESS_STALE|409|409
+2026-09-29|ingest|source.access_qualification_completed|ACCESS_STALE|2|2
+2026-09-29|ingest|source.access_qualification_started|ACCESS_STALE|2|2
+2026-09-29|ingest-all|source.access_qualification_started|ACCESS_MISSING|4|4
+2026-09-29|ingest-all|source.native_qualification_started|CAPTURE_STALE|327|327
+2026-09-29|ingest-all|source.native_qualification_started|CAPTURE_SUPERSEDED|1|1
+2026-09-29|ingest-all|source.native_qualification_started|VALIDATION_MISSING|1|1
+2026-09-30|ingest|source.access_qualification_completed|ACCESS_MISSING|2|2
+2026-09-30|ingest|source.access_qualification_completed|ACCESS_STALE|58|51
+2026-09-30|ingest|source.access_qualification_started|ACCESS_MISSING|2|2
+2026-09-30|ingest|source.access_qualification_started|ACCESS_STALE|58|51
+2026-09-30|ingest-all|source.access_qualification_completed|ACCESS_STALE|406|406
+2026-09-30|ingest-all|source.access_qualification_started|ACCESS_STALE|406|406
+2026-10-01|ingest-all|source.access_qualification_completed|ACCESS_STALE|408|408
+2026-10-01|ingest-all|source.access_qualification_started|ACCESS_STALE|411|411
+2026-10-02|ingest|source.access_qualification_completed|ACCESS_STALE|6|6
+2026-10-02|ingest|source.access_qualification_started|ACCESS_STALE|6|6
+revision|premier|dernier|runs|commandes
+72300c97586955536ee1f89b0a9b7b0273fbf8a9|2026-09-22 21:57:20.333|2026-09-23 04:40:32.132|3|ingest,source-campaign
+c3613a1d7b2a3c709f68fb18801eed3277a2302b|2026-09-23 06:36:12.735|2026-09-23 06:36:12.735|1|ingest
+19d9f1c436cef7efec744e666090dd8b625933cb|2026-09-23 07:19:14.476|2026-09-23 07:19:14.476|1|ingest-all
+653920cbc9f24dbe3edecadf755b1772291be72a|2026-09-23 07:51:28.342|2026-09-23 07:51:28.342|1|ingest-all
+95ef0a9fcb8e6914393797f49ecc0558d8ab6f15|2026-09-23 11:02:21.43|2026-09-23 11:19:34.821|12|ingest,source-campaign
+753645b98c1eb607a3df37a7cb3584c10f68fe63|2026-09-23 11:26:35.231|2026-09-23 11:28:25.869|4|ingest,source-campaign
+1db582defcde13912c22ed38b523b9af40dd6a9e|2026-09-23 11:43:01.832|2026-09-23 12:05:07.741|4|ingest,source-campaign
+94c463d26cf7fb1828eee05cac357b3e3658958d|2026-09-23 13:17:01.884|2026-09-23 13:42:14.857|31|ingest,source-campaign
+a5321650adbbd49843a30be60aae7de8ed869d8a|2026-09-23 13:56:04.228|2026-09-23 16:01:58.884|44|ingest,ingest-all,source-campaign
+3581d05557b4e283074811f4ab53796ef2fbcfe9|2026-09-23 17:47:33.585|2026-09-23 18:49:40.343|11|ingest,source-campaign
+421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5|2026-09-23 20:24:22.281|2026-09-23 20:51:53.494|14|ingest,source-campaign
+92c2bb16913f82875b86ee6cb1bf9a5290a7bb72|2026-09-23 21:09:52.613|2026-09-24 06:21:09.72|7|ingest,source-campaign
+504d3888a84569c0890dd043dac0625e162d600c|2026-09-24 06:41:59.38|2026-09-24 06:42:10.903|2|ingest,source-campaign
+f10e1f2f38412abcf4072f6bea17d5ec1955ed7f|2026-09-24 08:26:48.039|2026-09-24 08:40:17.423|2|ingest
+0c4dd7bae956eb433886253d2237247d2e45a312|2026-09-24 09:35:50.464|2026-09-24 09:37:33.782|3|ingest,source-campaign
+2cc91d8637671ba81ea23f03dd558f889befd70f|2026-09-24 09:51:39.336|2026-09-24 16:03:36.238|2|ingest,ingest-all
+1e1ad4cb39fc93d180674817c9fdde956e7cb973|2026-09-25 16:01:46.374|2026-09-25 16:01:46.374|1|ingest-all
+957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f|2026-09-26 16:02:05.511|2026-09-28 08:05:06.017|300|direct-liste,ingest-all
+200950aa404aa5b35b1967e86fffe0bd0c8d2f0e|2026-09-28 08:10:23.085|2026-09-29 19:51:00.23|432|direct-liste,ingest,ingest-all,source-campaign
+e29c0fa2cb861033c65bf24a1fa556a8baabe590|2026-09-29 19:54:04.57|2026-09-30 04:25:29.376|106|direct-liste,ingest
+77d57ff82e255b79741b8d943ab9d56ada030a4c|2026-09-30 04:27:19.971|2026-09-30 05:40:29.169|25|direct-liste,ingest,source-campaign
+35cf0ab4efb517271e5b94c420a61dbc59e84229|2026-09-30 05:42:32.186|2026-09-30 08:15:07.672|70|direct-liste,ingest,source-campaign
+524ba280415edabbcdeca45d5d54c8ff27ef1430|2026-09-30 08:17:23.14|2026-09-30 09:05:04.247|17|direct-liste,ingest
+536e71004c1f166f84ee0282288fd1687ae66d0e|2026-09-30 09:06:48.064|2026-09-30 20:05:15.967|139|direct-liste,ingest,ingest-all
+2aa14bc21cd890d0aaaf672d09a79d6c0262f162|2026-09-30 20:10:18.176|2026-09-30 21:05:08.043|12|direct-liste
+557113c28310081ebf2b1a2aca641515447b4321|2026-09-30 21:08:10.413|2026-10-01 05:10:02.759|101|direct-liste,ingest
+c0b261f34e90c6bb68535dc6f2b748ca5aeefca7|2026-10-01 05:15:50.258|2026-10-02 04:25:04.156|280|direct-liste,ingest-all
+ad4ec613f271a882eb6208f0e9d6e3a760bd8fe9|2026-10-02 04:29:07.846|2026-10-02 09:50:52.981|71|direct-liste,ingest
+9534573d4eb1d4ec03d3c564cb890c78bb2b849b|2026-10-02 09:55:06.721|2026-10-02 14:15:59.09|59|direct-liste,ingest,source-campaign
+derniere_revision|sources_actives_avec_decision|meme_lecteur|autre_revision_source|expirees|refus
+9534573d4eb1d4ec03d3c564cb890c78bb2b849b|412|2|0|0|0

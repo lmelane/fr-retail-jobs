@@ -1,0 +1,12 @@
+RUN | bloquantes avant (une enquête chacune) | reprises dans le RUN | attendent le RUN suivant (1re occurrence) | à réparer (2e RUN) | revue humaine ou cause inconnue | interventions après
+2026-09-24 | 60 | 2 | 36 | 0 | 22 | 22 (pas de RUN précédent dans la fenêtre)
+2026-09-25 | 37 | 0 | 10 | 8 | 19 | 27
+2026-09-26 | 37 | 0 | 3 | 16 | 18 | 34
+2026-09-27 | 36 | 1 | 2 | 16 | 17 | 33
+2026-09-28 | 41 | 0 | 6 | 17 | 18 | 35
+2026-09-29 | 57 | 14 | 7 | 16 | 20 | 36
+2026-09-30 | 3 | 0 | 3 | 0 | 0 | 0
+2026-10-01 | 11 | 2 | 7 | 0 | 2 | 2
+
+Moyenne sur les 7 RUN qui ont un précédent : 31.7 sources bloquantes par RUN avant, 23.9 interventions attendues après.
+Une intervention « à réparer » ou « revue humaine » est nommée avec ce qui est attendu ; elle ne demande plus d’enquête pour être classée.
