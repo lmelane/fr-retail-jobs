@@ -1,0 +1,1488 @@
+[
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "store-manager"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "chef-produit"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "receptionist"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "chef-de-projet-cosmetique"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-commercial"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-merchandiser"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "beauty-consultant"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "charge-de-marketing-et-communication"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "conseiller-en-image"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "formateur"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "makeup-artist"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "responsable-formation"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "responsable-projets-retail"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-marketing-digital"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-marketing-et-ventes"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-showroom"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-store-manager"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "beauty-therapist"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "cashier"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "customer-service-advisor"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "directeur-reseau"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "makeup-artist"
+    ],
+    "ville": [
+     "Marseille"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "manager-floor"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "personal-shopper"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "ville": [
+     "Marseille"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "ville": [
+     "Paris",
+     "Cannes"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "store-manager"
+    ],
+    "ville": [
+     "Lyon"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "visual-merchandiser"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Chennevières-sur-Marne",
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Gagny"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Marseille"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Poissy",
+     "Paris",
+     "Puteaux"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Salon-de-Provence",
+     "Pélissanne",
+     "Aix-en-Provence"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "store-manager"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "chef-produit"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "receptionist"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "chef-de-projet-cosmetique"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-commercial"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "store-manager"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "chef-produit"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "receptionist"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "chef-de-projet-cosmetique"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-commercial"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd"
+ },
+ {
+  "criteres": {
+   "marche": "US",
+   "motCle": "",
+   "lieu": "New York",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "GB",
+   "motCle": "",
+   "lieu": "London",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "DE",
+   "motCle": "",
+   "lieu": "Berlin",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "IT",
+   "motCle": "",
+   "lieu": "Milano",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "ES",
+   "motCle": "",
+   "lieu": "Madrid",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "NL",
+   "motCle": "",
+   "lieu": "Amsterdam",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "CH",
+   "motCle": "",
+   "lieu": "Genève",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "JP",
+   "motCle": "",
+   "lieu": "東京",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "KR",
+   "motCle": "",
+   "lieu": "서울",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "CN",
+   "motCle": "",
+   "lieu": "上海",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "CA",
+   "motCle": "",
+   "lieu": "Toronto",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "AU",
+   "motCle": "",
+   "lieu": "Sydney",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "BE",
+   "motCle": "",
+   "lieu": "Bruxelles",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "SE",
+   "motCle": "",
+   "lieu": "Stockholm",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-faible"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein-faible"
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd-faible"
+ },
+ {
+  "criteres": {
+   "marche": "US",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ },
+ {
+  "criteres": {
+   "marche": "GB",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ },
+ {
+  "criteres": {
+   "marche": "DE",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ },
+ {
+  "criteres": {
+   "marche": "IT",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ },
+ {
+  "criteres": {
+   "marche": "ES",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ },
+ {
+  "criteres": {
+   "marche": "NL",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ },
+ {
+  "criteres": {
+   "marche": "CH",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ },
+ {
+  "criteres": {
+   "marche": "JP",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ },
+ {
+  "criteres": {
+   "marche": "KR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ },
+ {
+  "criteres": {
+   "marche": "CN",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ },
+ {
+  "criteres": {
+   "marche": "CA",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ },
+ {
+  "criteres": {
+   "marche": "AU",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ },
+ {
+  "criteres": {
+   "marche": "BE",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ },
+ {
+  "criteres": {
+   "marche": "SE",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible"
+ }
+]

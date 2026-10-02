@@ -1,0 +1,2310 @@
+[
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 526,
+  "certaines": 43,
+  "incompletes": 6,
+  "certainesLues": 43,
+  "incompletesLues": 6,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "store-manager"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 100,
+  "certaines": 8,
+  "incompletes": 2,
+  "certainesLues": 8,
+  "incompletesLues": 2,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 1,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "chef-produit"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 4,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "receptionist"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "chef-de-projet-cosmetique"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-commercial"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 1,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-merchandiser"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "beauty-consultant"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 22,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "charge-de-marketing-et-communication"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "conseiller-en-image"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 2,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "formateur"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 3,
+  "certaines": 1,
+  "incompletes": 0,
+  "certainesLues": 1,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "makeup-artist"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 2,
+  "certaines": 0,
+  "incompletes": 1,
+  "certainesLues": 0,
+  "incompletesLues": 1,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "responsable-formation"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 3,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "responsable-projets-retail"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-marketing-digital"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-marketing-et-ventes"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-showroom"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-store-manager"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 81,
+  "certaines": 4,
+  "incompletes": 1,
+  "certainesLues": 4,
+  "incompletesLues": 1,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "beauty-therapist"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 26,
+  "certaines": 3,
+  "incompletes": 0,
+  "certainesLues": 3,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "cashier"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 92,
+  "certaines": 9,
+  "incompletes": 0,
+  "certainesLues": 9,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "customer-service-advisor"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 1,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "directeur-reseau"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 2,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "makeup-artist"
+    ],
+    "ville": [
+     "Marseille"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 1,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Marseille (13)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "manager-floor"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 26,
+  "certaines": 4,
+  "incompletes": 1,
+  "certainesLues": 4,
+  "incompletesLues": 1,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "personal-shopper"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "ville": [
+     "Marseille"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 48,
+  "certaines": 3,
+  "incompletes": 1,
+  "certainesLues": 3,
+  "incompletesLues": 1,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Marseille (13)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "ville": [
+     "Paris",
+     "Cannes"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 557,
+  "certaines": 45,
+  "incompletes": 7,
+  "certainesLues": 45,
+  "incompletesLues": 7,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Paris (75)",
+   "Cannes (06)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "store-manager"
+    ],
+    "ville": [
+     "Lyon"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 20,
+  "certaines": 4,
+  "incompletes": 0,
+  "certainesLues": 4,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Lyon (69)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "visual-merchandiser"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 16,
+  "certaines": 4,
+  "incompletes": 0,
+  "certainesLues": 4,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Chennevières-sur-Marne",
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 1,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Chennevières-sur-Marne (94)",
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Gagny"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 1,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Gagny (93)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Marseille"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Marseille (13)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Poissy",
+     "Paris",
+     "Puteaux"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 1,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Poissy (78)",
+   "Paris (75)",
+   "Puteaux (92)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Salon-de-Provence",
+     "Pélissanne",
+     "Aix-en-Provence"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Salon-de-Provence (13)",
+   "Pélissanne (13)",
+   "Aix-en-Provence (13)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein",
+  "total": 294,
+  "certaines": 23,
+  "incompletes": 13,
+  "certainesLues": 23,
+  "incompletesLues": 13,
+  "dimensions": [
+   "temps",
+   "contrat"
+  ],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "store-manager"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein",
+  "total": 66,
+  "certaines": 6,
+  "incompletes": 4,
+  "certainesLues": 6,
+  "incompletesLues": 4,
+  "dimensions": [
+   "temps",
+   "contrat"
+  ],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein",
+  "total": 1,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "chef-produit"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein",
+  "total": 3,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "receptionist"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "chef-de-projet-cosmetique"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-commercial"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein",
+  "total": 1,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd",
+  "total": 259,
+  "certaines": 29,
+  "incompletes": 6,
+  "certainesLues": 29,
+  "incompletesLues": 6,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "store-manager"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd",
+  "total": 24,
+  "certaines": 5,
+  "incompletes": 2,
+  "certainesLues": 5,
+  "incompletesLues": 2,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "animateur-ventes"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd",
+  "total": 1,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "chef-produit"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd",
+  "total": 5,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "receptionist"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "chef-de-projet-cosmetique"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd",
+  "total": 0,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "metier": [
+     "assistant-commercial"
+    ],
+    "ville": [
+     "Paris"
+    ],
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd",
+  "total": 1,
+  "certaines": 0,
+  "incompletes": 0,
+  "certainesLues": 0,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "Paris (75)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "US",
+   "motCle": "",
+   "lieu": "New York",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 110,
+  "certaines": 2,
+  "incompletes": 30,
+  "certainesLues": 2,
+  "incompletesLues": 30,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "New York City (NY)"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "GB",
+   "motCle": "",
+   "lieu": "London",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 103,
+  "certaines": 18,
+  "incompletes": 34,
+  "certainesLues": 18,
+  "incompletesLues": 34,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "London"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "DE",
+   "motCle": "",
+   "lieu": "Berlin",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 25,
+  "certaines": 1,
+  "incompletes": 5,
+  "certainesLues": 1,
+  "incompletesLues": 5,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Berlin"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "IT",
+   "motCle": "",
+   "lieu": "Milano",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 46,
+  "certaines": 3,
+  "incompletes": 10,
+  "certainesLues": 3,
+  "incompletesLues": 10,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Milano"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "ES",
+   "motCle": "",
+   "lieu": "Madrid",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 57,
+  "certaines": 5,
+  "incompletes": 11,
+  "certainesLues": 5,
+  "incompletesLues": 11,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Madrid"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "NL",
+   "motCle": "",
+   "lieu": "Amsterdam",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 22,
+  "certaines": 1,
+  "incompletes": 27,
+  "certainesLues": 1,
+  "incompletesLues": 27,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Amsterdam"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "CH",
+   "motCle": "",
+   "lieu": "Genève",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 23,
+  "certaines": 2,
+  "incompletes": 3,
+  "certainesLues": 2,
+  "incompletesLues": 3,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Genève"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "JP",
+   "motCle": "",
+   "lieu": "東京",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 21,
+  "certaines": 4,
+  "incompletes": 0,
+  "certainesLues": 4,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [
+   "東京都"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "KR",
+   "motCle": "",
+   "lieu": "서울",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 23,
+  "certaines": 8,
+  "incompletes": 5,
+  "certainesLues": 8,
+  "incompletesLues": 5,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "서울특별시"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "CN",
+   "motCle": "",
+   "lieu": "上海",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 14,
+  "certaines": 0,
+  "incompletes": 1,
+  "certainesLues": 0,
+  "incompletesLues": 1,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "上海"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "CA",
+   "motCle": "",
+   "lieu": "Toronto",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 35,
+  "certaines": 3,
+  "incompletes": 3,
+  "certainesLues": 3,
+  "incompletesLues": 3,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Toronto"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "AU",
+   "motCle": "",
+   "lieu": "Sydney",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 23,
+  "certaines": 4,
+  "incompletes": 26,
+  "certainesLues": 4,
+  "incompletesLues": 26,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Sydney"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "BE",
+   "motCle": "",
+   "lieu": "Bruxelles",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 30,
+  "certaines": 0,
+  "incompletes": 2,
+  "certainesLues": 0,
+  "incompletesLues": 2,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Bruxelles"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "SE",
+   "motCle": "",
+   "lieu": "Stockholm",
+   "filtres": {
+    "metier": [
+     "sales-advisor"
+    ],
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent",
+  "total": 2,
+  "certaines": 0,
+  "incompletes": 3,
+  "certainesLues": 0,
+  "incompletesLues": 3,
+  "dimensions": [
+   "contrat"
+  ],
+  "villesResolues": [
+   "Stockholm"
+  ],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-faible",
+  "total": 6130,
+  "certaines": 540,
+  "incompletes": 0,
+  "certainesLues": 50,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ],
+    "temps": [
+     "FULL_TIME"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdi-temps-plein-faible",
+  "total": 2874,
+  "certaines": 285,
+  "incompletes": 0,
+  "certainesLues": 50,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "FR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "FIXED_TERM"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-cdd-faible",
+  "total": 3099,
+  "certaines": 388,
+  "incompletes": 0,
+  "certainesLues": 50,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "US",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 5223,
+  "certaines": 519,
+  "incompletes": 0,
+  "certainesLues": 50,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "GB",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 1217,
+  "certaines": 302,
+  "incompletes": 0,
+  "certainesLues": 50,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "DE",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 678,
+  "certaines": 54,
+  "incompletes": 0,
+  "certainesLues": 50,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "IT",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 855,
+  "certaines": 94,
+  "incompletes": 0,
+  "certainesLues": 50,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "ES",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 719,
+  "certaines": 64,
+  "incompletes": 0,
+  "certainesLues": 50,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "NL",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 351,
+  "certaines": 37,
+  "incompletes": 0,
+  "certainesLues": 37,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "CH",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 185,
+  "certaines": 48,
+  "incompletes": 0,
+  "certainesLues": 48,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "JP",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 169,
+  "certaines": 24,
+  "incompletes": 0,
+  "certainesLues": 24,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "KR",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 152,
+  "certaines": 27,
+  "incompletes": 0,
+  "certainesLues": 27,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "CN",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 528,
+  "certaines": 10,
+  "incompletes": 0,
+  "certainesLues": 10,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "CA",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 743,
+  "certaines": 98,
+  "incompletes": 0,
+  "certainesLues": 50,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "AU",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 193,
+  "certaines": 29,
+  "incompletes": 0,
+  "certainesLues": 29,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "BE",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 152,
+  "certaines": 2,
+  "incompletes": 0,
+  "certainesLues": 2,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ },
+ {
+  "criteres": {
+   "marche": "SE",
+   "motCle": "",
+   "lieu": "",
+   "filtres": {
+    "contrat": [
+     "PERMANENT"
+    ]
+   }
+  },
+  "inscrits": 1,
+  "origine": "grille-permanent-faible",
+  "total": 76,
+  "certaines": 13,
+  "incompletes": 0,
+  "certainesLues": 13,
+  "incompletesLues": 0,
+  "dimensions": [],
+  "villesResolues": [],
+  "violations": {}
+ }
+]

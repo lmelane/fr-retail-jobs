@@ -416,9 +416,9 @@ export type ExamenNouveautes = {
    */
   ids: string[];
   /**
-   * D-515 §2 — les nouvelles qui respectent avec certitude tous les autres critères (métier, lieu, cercle, Maison…) mais
-   * ne précisent pas le contrat ou le temps de travail filtré, ni, pour une alerte forte (`alerteForte`, D-515 §1), le
-   * secteur, la langue ou le programme filtrés : envoyées APRÈS les certaines, séparées et signalées.
+   * D-515 §2 — pour une alerte forte (`alerteForte` : métier ou lieu posés), les nouvelles qui respectent avec certitude
+   * tous les autres critères (métier, lieu, cercle, Maison…) mais ne précisent pas le contrat, le temps de travail, le
+   * secteur, la langue ou le programme filtrés : envoyées APRÈS les certaines, séparées et signalées. Toujours 0 sinon.
    * Une offre qui déclare une autre valeur n'en fait jamais partie (`predicat`). Vides sans `nonPrecisees` (contrat 1).
    */
   incompletes: number;
@@ -432,11 +432,16 @@ export type ExamenNouveautes = {
  * sans fuseau écrits en UTC : les bornes sont converties comme dans `publicJobSql`, jamais selon le fuseau de session.
  */
 export async function examenNouveautes(
-  plan: PlanRecherche,
+  planDemande: PlanRecherche,
   entreeApres: Date,
   publieeApres: Date,
   limite: number,
 ): Promise<ExamenNouveautes> {
+  // D-515 §2 (« correspond fortement au reste des préférences ») : sans métier ni lieu posés (`alerteForte`), une alerte n'a
+  // AUCUNE section des incomplètes, quelle que soit la dimension inconnue, contrat et temps de travail compris : ses filtres
+  // y sont stricts, comme au contrat 1. Une alerte « CDI » seule n'envoie que des CDI confirmés ; ses certaines ne changent
+  // pas (une offre confirmée précise le contrat, le filtre strict retient exactement celles-là).
+  const plan: PlanRecherche = planDemande.nonPrecisees && !alerteForte(planDemande) ? { ...planDemande, nonPrecisees: undefined } : planDemande;
   const asOf = new Date();
   const base = await sqlBase(plan, asOf);
   // D-496 : l'alerte rejoue le cercle de la recherche ENTIÈRE (anneau retenu sur ses offres reconnues, D-513), puis ses nouvelles
@@ -446,7 +451,7 @@ export async function examenNouveautes(
   const prox = cs.length > 0;
   const retenues = prox ? Prisma.sql`retenues` : Prisma.sql`scoped`;
   // D-515 §1, §2 : les inconnues du secteur, de la langue ou du programme ne partent, à part, que si l'alerte correspond
-  // fortement (métier ou lieu confirmés, `alerteForte`) ; sinon l'alerte les filtre strictement, comme la liste.
+  // fortement (métier ou lieu confirmés, `alerteForte`) ; celles du contrat et du temps de travail aussi (plus haut).
   const large = !!plan.nonPrecisees && alerteForte(plan);
   // R-143 §7 : une alerte qui porte une requête rend ses nouvelles dans l'ordre pertinent de la page, à l'instant de l'examen.
   const t0 = plan.pertinence ? instantDeReference() : 0;

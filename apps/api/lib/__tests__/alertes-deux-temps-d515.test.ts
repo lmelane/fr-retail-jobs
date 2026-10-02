@@ -115,6 +115,31 @@ describe.skipIf(!enabled)('D-515 §2 — l’examen d’une alerte : certaines, 
     expect(court(e.jobs)).toContain('rien');
   });
 
+  // Lecture D-492 du 02/10/2026 (alerte cohérente) : « correspond fortement » (D-515 §2) vaut pour TOUTE dimension inconnue.
+  // Sans métier ni lieu posés, la section des incomplètes n'existe pas, contrat et temps de travail compris. Avant ce
+  // correctif, l'alerte « CDI » seule envoyait à part les quatre offres muettes, dont celle de Lyon et celle du comptable.
+  it('« CDI » seule (Maison, sans métier ni lieu) : les CDI reconnus, aucune incomplète ; « temps plein » seul aussi', async () => {
+    const faible = (filtres: JobFilters['filtres']) => alerte(filtres, { q: undefined, lieu: undefined });
+    // PRÉMISSE : sans métier ni lieu, les offres muettes de Lyon et du comptable sont DANS la recherche (la Maison seule les
+    // retient) ; un examen qui tolérerait l'inconnu les enverrait à part.
+    const toutes = await examinerAlerte(faible({}), FILIGRANE, BORNE_PUBLICATION);
+    expect(court(toutes.jobs)).toEqual(expect.arrayContaining(['rien', 'rien-lyon', 'rien-comptable', 'temps-partiel-seul']));
+    const cdi = await examinerAlerte(faible({ contrat: ['PERMANENT'] }), FILIGRANE, BORNE_PUBLICATION);
+    expect(court(cdi.jobs).sort()).toEqual(['cdi', 'cdi-partiel']);
+    expect(cdi.nouvelles).toBe(2);
+    expect(cdi.incompletes).toBe(0);
+    expect(cdi.jobsIncompletes).toEqual([]);
+    const temps = await examinerAlerte(faible({ temps: ['FULL_TIME'] }), FILIGRANE, BORNE_PUBLICATION);
+    expect(court(temps.jobs).sort()).toEqual(['cdd', 'cdi']);
+    expect(temps.incompletes).toBe(0);
+    expect(temps.jobsIncompletes).toEqual([]);
+    // La même alerte avec un métier tapé, ou un lieu seul, correspond fortement : les muettes du cercle partent à part.
+    const metier = await examinerAlerte(alerte({ contrat: ['PERMANENT'] }, { lieu: undefined }), FILIGRANE, BORNE_PUBLICATION);
+    expect(court(metier.jobsIncompletes!)).toContain('rien');
+    const lieu = await examinerAlerte(alerte({ contrat: ['PERMANENT'] }, { q: undefined }), FILIGRANE, BORNE_PUBLICATION);
+    expect(court(lieu.jobsIncompletes!)).toContain('rien');
+  });
+
   it('contrat 1 (sans en-tête) : le filtre strict d’avant, aucune incomplète', async () => {
     const e = await examinerAlerte(alerte({ contrat: ['PERMANENT'] }, { nonPrecisees: undefined }), FILIGRANE, BORNE_PUBLICATION);
     expect(court(e.jobs).sort()).toEqual(['cdi', 'cdi-partiel']);

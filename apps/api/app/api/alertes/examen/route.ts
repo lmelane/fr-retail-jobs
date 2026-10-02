@@ -22,9 +22,10 @@ import { annonceComprehension, annonceFraicheur, annonceNonPrecisees, annoncePro
  * filigrane et publiées après la borne, ou sans date), et les 50 premières nouvelles dans l'ordre de `/emplois`, chacune
  * avec le `chemin` de sa fiche sur le site.
  *
- * D-515 §2 (additif) : `incompletes` et `jobsIncompletes`, les nouvelles qui respectent avec certitude tous les autres
- * critères mais ne précisent pas le contrat ou le temps de travail filtré, ni, pour une alerte qui correspond fortement
- * (métier ou lieu, D-515 §1), le secteur, la langue ou le programme filtrés ; chacune avec `dimensions`. Elles ne sont
+ * D-515 §2 (additif) : pour une alerte qui correspond fortement (métier ou lieu posés), `incompletes` et
+ * `jobsIncompletes`, les nouvelles qui respectent avec certitude tous les autres critères mais ne précisent pas le contrat,
+ * le temps de travail, le secteur, la langue ou le programme filtrés ; chacune avec `dimensions`. Sans métier ni lieu,
+ * aucune (lecture D-492 du 02/10/2026). Elles ne sont
  * JAMAIS dans `jobs` : un backend d'avant, qui ne lit pas ces champs, n'envoie que les certaines, comme avant.
  */
 export const dynamic = 'force-dynamic';
@@ -46,9 +47,9 @@ export async function GET(request: NextRequest) {
   const filtres = { ...parseFilters(paramsMultiples(request.nextUrl.searchParams)), proximite: annonceProximite(request.headers),
     comprendre: annonceComprehension(request.headers), fraicheur: annonceFraicheur(request.headers),
     // D-513, D-515 §2 : le cercle est celui de la page, choisi sur les offres reconnues ; les offres qui respectent
-    // RÉELLEMENT chaque critère sont dans `jobs`, celles qui ne précisent pas le contrat ou le temps de travail filtré
-    // (et, si l'alerte est forte, le secteur, la langue ou le programme : D-515 §1) à part (`jobsIncompletes`) : jamais
-    // un « contrat non précisé » présenté comme un CDI.
+    // RÉELLEMENT chaque critère sont dans `jobs` ; si l'alerte est forte, celles qui ne précisent pas le contrat, le temps
+    // de travail, le secteur, la langue ou le programme filtrés à part (`jobsIncompletes`) : jamais un « contrat non
+    // précisé » présenté comme un CDI.
     nonPrecisees: annonceNonPrecisees(request.headers) };
 
   try {

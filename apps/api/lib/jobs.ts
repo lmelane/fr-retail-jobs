@@ -769,8 +769,9 @@ export type ExamenAlerte = {
   nouvelles: number;
   jobs: JobRow[];
   /**
-   * D-515 §2 — les nouvelles qui respectent avec certitude tous les autres critères mais ne précisent pas le contrat ou le
-   * temps de travail filtré, dans l'ordre de la page ; chacune porte `correspondance: NON_CONFIRMEE` et ses dimensions.
+   * D-515 §2 — pour une alerte forte (métier ou lieu posés), les nouvelles qui respectent avec certitude tous les autres
+   * critères mais ne précisent pas une dimension tolérée filtrée, dans l'ordre de la page ; chacune porte
+   * `correspondance: NON_CONFIRMEE` et ses dimensions.
    * Au seul contrat 2 (`nonPrecisees`) : absentes au contrat 1, dont l'examen reste celui d'avant, au champ près.
    */
   incompletes?: number;

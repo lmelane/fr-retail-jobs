@@ -108,8 +108,8 @@ export type Pertinence = {
  * reconnues, puis 15 382 offres de Maisons sans secteur). Ces dimensions-là (`DIMENSIONS_A_PART`) ne se mêlent donc
  * jamais aux confirmées : la liste, ses facettes et son compte les filtrent strictement ; leurs inconnues forment une
  * SECTION À PART (`section: 'inconnues'`), que le site annonce et borne. Une valeur connue et contraire n'est dans
- * aucune des deux. Une alerte ne les envoie, à part, que si un autre de ses critères, le métier ou le lieu, est
- * confirmé (« correspond fortement », D-515 §2 ; `alerteForte`). Le programme suit le contrat unifié. Le métier et le
+ * aucune des deux. Une alerte n'envoie ses incomplètes, à part, que si un autre de ses critères, le métier ou le lieu,
+ * est confirmé (« correspond fortement », D-515 §2 ; `alerteForte`), et cela vaut aussi pour le contrat et le temps. Le programme suit le contrat unifié. Le métier et le
  * lieu restent stricts (R-141). L'option « Non classé » du secteur demande les offres sans secteur : elles y sont
  * reconnues, jamais « non précisées ».
  */
@@ -259,9 +259,10 @@ function pertinenceDe(criteres: CriteresRecherche, q: string, selections: Select
 }
 
 /**
- * D-515 §2 (« correspond fortement au reste des préférences ») — une alerte n'envoie à part une offre au secteur, à la
- * langue ou au programme inconnus que si un autre de ses critères, le métier (requête tapée ou métier choisi) ou le lieu
- * (lieu ou ville), est confirmé par l'offre. Une alerte sur un seul secteur n'envoie que des confirmées.
+ * D-515 §2 (« correspond fortement au reste des préférences ») — une alerte n'envoie à part une offre au contrat, au
+ * temps de travail, au secteur, à la langue ou au programme inconnus que si un autre de ses critères, le métier (requête
+ * tapée ou métier choisi) ou le lieu (lieu ou ville), est confirmé par l'offre. Une alerte sur un seul secteur, ou « CDI »
+ * seule, n'envoie que des confirmées (lecture D-492 du 02/10/2026, curseur signé et alerte cohérente).
  */
 export function alerteForte(plan: PlanRecherche): boolean {
   return Boolean(plan.q || plan.selections.metier?.length || plan.lieu || plan.selections.ville?.length);

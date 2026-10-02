@@ -1,0 +1,34 @@
+== les 63 (métier et lieu posés) : 63 alertes, 0 en erreur
+   total        avant   2726   après   2726
+   certaines    avant    242   après    242
+   incompletes  avant    204   après    204
+   alertes avec incomplètes : avant 24, après 24
+   alertes SANS certaine mais avec incomplètes : avant 4, après 4
+   certaines différentes : 0
+   violations : avant 0, après 0
+== les 17 faibles (contrat ou temps seuls, sans métier ni lieu) : 17 alertes, 0 en erreur
+   total        avant  23344   après  23344
+   certaines    avant   2534   après   2534
+   incompletes  avant   5242   après      0
+   alertes avec incomplètes : avant 17, après 0
+   alertes SANS certaine mais avec incomplètes : avant 0, après 0
+   certaines différentes : 0
+   violations : avant 0, après 0
+== par alerte faible : certaines avant/après | incomplètes avant/après
+   FR  {"contrat": ["PERMANENT"]}                         540/540 | 110/0
+   FR  {"contrat": ["PERMANENT"], "temps": ["FULL_TIME"]} 285/285 | 283/0
+   FR  {"contrat": ["FIXED_TERM"]}                        388/388 | 110/0
+   US  {"contrat": ["PERMANENT"]}                         519/519 | 2815/0
+   GB  {"contrat": ["PERMANENT"]}                         302/302 | 503/0
+   DE  {"contrat": ["PERMANENT"]}                         54/54 | 290/0
+   IT  {"contrat": ["PERMANENT"]}                         94/94 | 165/0
+   ES  {"contrat": ["PERMANENT"]}                         64/64 | 130/0
+   NL  {"contrat": ["PERMANENT"]}                         37/37 | 269/0
+   CH  {"contrat": ["PERMANENT"]}                         48/48 | 55/0
+   JP  {"contrat": ["PERMANENT"]}                         24/24 | 27/0
+   KR  {"contrat": ["PERMANENT"]}                         27/27 | 24/0
+   CN  {"contrat": ["PERMANENT"]}                         10/10 | 31/0
+   CA  {"contrat": ["PERMANENT"]}                         98/98 | 212/0
+   AU  {"contrat": ["PERMANENT"]}                         29/29 | 164/0
+   BE  {"contrat": ["PERMANENT"]}                         2/2 | 34/0
+   SE  {"contrat": ["PERMANENT"]}                         13/13 | 20/0
