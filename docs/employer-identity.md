@@ -18,6 +18,8 @@ La section sur les publications a été actualisée le **15 septembre 2026** : i
 
 L’objectif est une attribution fidèle à l’organisation réelle. Deux noms proches, un domaine partagé ou un ATS commun ne suffisent pas à fusionner des sociétés. Une entité juridique différente ne signifie pas automatiquement une marque publique différente. Garder les libellés natifs permet de préserver ces distinctions.
 
+R-143 §5 ([[D-513]]) : le candidat voit la Maison, l’entité juridique reste interne. `attach-maisons` ([maisonAttachment.ts](../apps/aggregator/src/identity/maisonAttachment.ts), [maisonPlan.ts](../apps/aggregator/src/identity/maisonPlan.ts)) rattache une entité à sa Maison par la fusion relue ci-dessous, et seulement sur deux preuves réunies : chaque source qui l’a nommée est inscrite au registre pour cette Maison (`Source.maison`, hors portail de groupe), et son nom prolonge mot pour mot celui de la Maison. Ses libellés publiés deviennent des alias relus par source, pour que l’offre suivante aille à la Maison. Une entité ambiguë (sources en désaccord, Maison qui est un groupe, ligne Maison ambiguë, parent différent, Maison sans les secteurs, le domaine ou le groupe que porte l’entité, clé du registre occupée) reste à part ; elle figure, avec son motif, dans le fichier d’aperçu. Une entité dont le nom ne prolonge pas celui de la Maison (« 1630 Swarovski Canada Limited », « United States of Aritzia Inc. ») n’est pas rattachée : il n’existe pas de file de revue, la liste est dans `audits/2026-10-02/r143-dedoublonnage-maison/resultat-mesure-maison.md`.
+
 ## Certification d’un portail
 
 [registerSourceCandidate](../apps/aggregator/src/connectors/sourceCandidate.ts) crée un candidat en DRAFT, refuse les collisions de tenant et ne remplace pas une configuration opérationnelle. Son succès n’est pas une preuve officielle.
@@ -83,7 +85,7 @@ node --import tsx apps/aggregator/scripts/identity/cli.mts plan /chemin/spec.jso
 node --import tsx apps/aggregator/scripts/identity/cli.mts apply /chemin/plan.json EXPECTED_SHA256 DEPLOYED_COMMIT
 ```
 
-Le plan est préparé et revu avant application. La spécification `EmployerRepairSpec` contient `batchId`, déclaration, auteur/date, preuves HTTPS avec texte archivé et SHA-256, fusions explicites d’IDs, alias source-scopés et éventuelles modifications de sociétés. `postingMerges` est une décision distincte, avec ses témoins natifs. Le module applique des verrous, vérifie le hash du plan, l’état avant et les hashes des sources, puis journalise les corrections.
+Le plan est préparé et revu avant application. Les deux commandes de R-143 (`attach-maisons`, `consolidate-publications` du CLI de l’agrégateur) suivent la même règle en deux temps : l’aperçu (`--output=<fichier>`) n’écrit rien ; `--apply --plan=<fichier relu>` n’applique que ce fichier, recalcule l’aperçu et refuse sans rien écrire s’il en diffère (`REVIEWED_PLAN_MISMATCH`). La spécification `EmployerRepairSpec` contient `batchId`, déclaration, auteur/date, preuves HTTPS avec texte archivé et SHA-256, fusions explicites d’IDs, alias source-scopés et éventuelles modifications de sociétés. `postingMerges` est une décision distincte, avec ses témoins natifs. Le module applique des verrous, vérifie le hash du plan, l’état avant et les hashes des sources, puis journalise les corrections.
 
 Trois opérations sur alias sont à distinguer :
 

@@ -259,34 +259,46 @@ try {
     // porte deux (kering : flux Eightfold vivant + sitemap périmée), voir RetireOptions.
     const externalIdPrefix = process.argv.find((a) => a.startsWith('--external-prefix='))?.slice('--external-prefix='.length);
     await log.info('command.result', { ok: true, command, externalIdPrefix, ...(await retireSource(prisma, key, { externalIdPrefix })) });
-  } else if (command === 'consolidate-publications') {
+  } else if (command === 'consolidate-publications' || command === 'attach-maisons') {
     /**
-     * R-143 §4 (D-513) : réunit les offres ACTIVES d'un même employeur qui portent la même clé d'identité native, par la
-     * réparation relue (`dedup/repair.ts`), qui recontrôle toute la preuve deux à deux sur le RAW. Sans `--apply`, rien
-     * n'est écrit : chaque plan est préparé en transaction READ ONLY. `--limit=<n>` borne les groupes (500 par défaut).
-     * À lancer après un RUN fait par le code qui pose les clés natives, jamais pendant le RUN de 18 h.
+     * R-143 §4 et §5 (D-513), deux réparations relues en deux temps.
+     *  - Aperçu (sans `--apply`) : rien n'est écrit ; `--output=<fichier>` garde l'aperçu complet, à relire.
+     *  - Application : `--apply --plan=<fichier relu>` applique CE fichier et lui seul ; l'aperçu est recalculé et la
+     *    commande refuse, sans rien écrire, s'il en diffère (REVIEWED_PLAN_MISMATCH).
+     * `consolidate-publications` réunit les offres actives d'un même employeur qui portent la même clé native
+     * (`dedup/consolidate.ts`, `--limit=<n>` groupes par passage, 500 par défaut) ; `attach-maisons` rattache les entités
+     * juridiques prouvées à leur Maison (`identity/maisonPlan.ts`), signé du commit de l'image déployée.
+     * Jamais pendant le RUN de 18 h.
      */
-    const { consolidateIdentityGroups } = await import('./dedup/consolidate.js');
+    const { readFile, writeFile } = await import('node:fs/promises');
+    const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+    const apply = process.argv.includes('--apply'), output = arg('output'), planFile = arg('plan');
+    if (apply === !planFile) throw new Error('--apply requires --plan=<reviewed preview file>, and --plan is only read by --apply');
+    if (apply && output) throw new Error('--output belongs to the preview; --apply reads --plan');
+    const reviewed = planFile ? JSON.parse(await readFile(planFile, 'utf8')) : undefined;
+    const save = async (value: unknown) => { if (output) await writeFile(output, JSON.stringify(value, null, 2) + '\n', { flag: 'wx', mode: 0o600 }); };
     const { objectStoreConfigured, objectStoreFromEnv } = await import('./retention/objectStore.js');
-    const limit = Number(process.argv.find((a) => a.startsWith('--limit='))?.slice(8) ?? 500);
-    const report = await consolidateIdentityGroups(prisma, { apply: process.argv.includes('--apply'), limit,
-      store: objectStoreConfigured() ? objectStoreFromEnv() : undefined });
-    await log.info('command.result', { ok: report.refused.length === 0, command, apply: process.argv.includes('--apply'), ...report,
-      refused: report.refused.length, refusedSample: report.refused.slice(0, 20) });
-  } else if (command === 'attach-maisons') {
-    /**
-     * R-143 §5 (D-513) : rattache chaque entité juridique prouvée à sa Maison (registre des sources + nom), une décision
-     * relue par Maison (`identity/maisonPlan.ts`). Sans `--apply`, rien n'est écrit ; `--output=<fichier>` garde la
-     * prévisualisation complète. L'application exige l'image déployée (son commit signe chaque correction).
-     */
-    const { attachMaisons } = await import('./identity/maisonPlan.js');
-    const { deployedCommitHash } = await import('./capture/revision.js');
-    const apply = process.argv.includes('--apply');
-    const output = process.argv.find((a) => a.startsWith('--output='))?.slice(9);
-    const report = await attachMaisons(prisma, { apply, commitHash: apply ? deployedCommitHash() : undefined });
-    if (output) { const { writeFile } = await import('node:fs/promises'); await writeFile(output, JSON.stringify(report, null, 2) + '\n', { flag: 'wx' }); }
-    await log.info('command.result', { ok: report.refused.length === 0, command, apply, maisons: report.maisons, entities: report.entities,
-      toCreate: report.toCreate, uncertain: report.uncertain.length, applied: report.applied, movedJobs: report.movedJobs, refused: report.refused.slice(0, 20) });
+    const store = objectStoreConfigured() ? objectStoreFromEnv() : undefined;
+    if (command === 'consolidate-publications') {
+      const { applyReviewedConsolidation, previewConsolidation, DEFAULT_CONSOLIDATION_LIMIT } = await import('./dedup/consolidate.js');
+      if (apply && arg('limit')) throw new Error('--apply reuses the limit recorded in the reviewed file');
+      if (!apply) {
+        const file = await previewConsolidation(prisma, { limit: Number(arg('limit') ?? DEFAULT_CONSOLIDATION_LIMIT), store });
+        await save(file);
+        await log.info('command.result', { ok: file.refused.length === 0, command, apply, limit: file.limit, planned: file.groups.length,
+          refused: file.refused.length, refusedSample: file.refused.slice(0, 20), output });
+      } else {
+        const report = await applyReviewedConsolidation(prisma, reviewed, { store });
+        await log.info('command.result', { ok: report.refused.length === 0, command, apply, ...report, refused: report.refused.length, refusedSample: report.refused.slice(0, 20) });
+      }
+    } else {
+      const { attachMaisons } = await import('./identity/maisonPlan.js');
+      const { deployedCommitHash } = await import('./capture/revision.js');
+      const result = await attachMaisons(prisma, apply ? { reviewed, commitHash: deployedCommitHash() } : {});
+      if (!apply && 'preview' in result) await save(result.preview);
+      await log.info('command.result', { ok: result.refused.length === 0, command, apply, maisons: result.maisons, entities: result.entities,
+        toCreate: result.toCreate, uncertain: result.uncertain.length, applied: result.applied, movedJobs: result.movedJobs, refused: result.refused.slice(0, 20), output });
+    }
   } else if (command === 'resolve-domains') {
     /**
      * Pose Company.domain (le logo) sur les Maisons actives qui n'en ont pas :

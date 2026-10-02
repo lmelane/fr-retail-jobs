@@ -4,7 +4,8 @@ import { randomUUID } from 'node:crypto';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { blockingKey, type CandidateJob } from '../dedup/match.js';
-import { consolidateIdentityGroups, splitIdentityGroups } from '../dedup/consolidate.js';
+import { applyReviewedConsolidation, previewConsolidation, splitIdentityGroups } from '../dedup/consolidate.js';
+import { applyPublicationGroups, planPublicationGroups } from '../dedup/repair.js';
 import { teamtailorPublication } from '../test/fixtures/teamtailorPublication.js';
 
 const db = new PrismaClient();
@@ -19,7 +20,7 @@ const lvmh = (): Candidate => ({ ...base, sourceKey: 'lvmh', externalId: '295010
     description: 'Seasonal Associate', profile: 'Job ID: 295010\nStore Name/Number: TX-Moore Plaza (1954)' } });
 const rmkUrl = 'https://jobs.sephora.com/job/Corpus-Christi-Seasonal-Associate-TX-78411/1158400001/';
 const rmk = (): Candidate => ({ ...base, sourceKey: 'sephora-france', externalId: '1158400001', url: rmkUrl, atsType: 'SUCCESSFACTORS',
-  raw: { id: '1158400001', source: 'successfactors', path: '/job/Corpus-Christi-Seasonal-Associate-TX-78411/1158400001/',
+  raw: { id: '1158400001', source: 'successfactors', path: '/job/Corpus-Christi-Seasonal-Associate-TX-78411/1158400001/', slug: 'Corpus-Christi-Seasonal-Associate-TX-78411',
     successfactorsDetail: { title: 'Seasonal Associate', company: 'Sephora', description: 'Job ID: 295010\nStore Name/Number: TX-Moore Plaza (1954)' } } });
 const teamtailor = (key: string, origin: string): Candidate => ({ ...teamtailorPublication(key, origin), company: 'Maison 123', companyId: 'MAISON_123',
   title: 'Client Advisor', country: 'FR', city: 'Paris', sourceTier: 'EMPLOYER_DIRECT', atsType: 'TEAMTAILOR' });
@@ -63,9 +64,15 @@ describe('R-143 §4 — one opportunity, one offer', () => {
       jobs.push(job);
     }
     expect(await splitIdentityGroups(db)).toEqual([{ companyId: company.id, clusterKey: blockingKey(own), jobIds: jobs.map(j => j.id) }]);
-    expect(await consolidateIdentityGroups(db)).toMatchObject({ groups: 1, planned: 1, applied: 0, refused: [] });
+    const reviewed = await previewConsolidation(db);
+    expect(reviewed).toMatchObject({ limit: 500, refused: [], groups: [{ jobIds: jobs.map(j => j.id) }] });
     expect(await db.job.count({ where: { isActive: true } })).toBe(2);
-    expect(await consolidateIdentityGroups(db, { apply: true })).toMatchObject({ groups: 1, planned: 1, applied: 1, refused: [] });
+    // Un fichier relu qui ne correspond plus à l'aperçu recalculé est refusé, sans rien écrire.
+    const tampered = structuredClone(reviewed); tampered.groups[0].survivor = jobs.find(j => j.id !== reviewed.groups[0].survivor)!.id;
+    await expect(applyReviewedConsolidation(db, tampered)).rejects.toThrow('REVIEWED_PLAN_MISMATCH');
+    await expect(applyReviewedConsolidation(db, { ...reviewed, groups: [] })).rejects.toThrow('REVIEWED_PLAN_MISMATCH');
+    expect(await db.job.count({ where: { isActive: true } })).toBe(2);
+    expect(await applyReviewedConsolidation(db, reviewed)).toMatchObject({ groups: 1, planned: 1, applied: 1, refused: [] });
     const survivor = await db.job.findFirstOrThrow({ where: { isActive: true }, include: { sources: true } });
     expect(survivor.sources.map(s => s.sourceKey).sort()).toEqual([hosted.sourceKey, own.sourceKey].sort());
     const absorbed = jobs.find(j => j.id !== survivor.id)!;
@@ -87,9 +94,29 @@ describe('R-143 §4 — one opportunity, one offer', () => {
       await db.jobSource.create({ data: { jobId: job.id, sourceKey: item.sourceKey, externalId: item.externalId, sourceTier: 'EMPLOYER_DIRECT',
         url: item.url, title: item.title, raw: item.raw as any, isActive: true } });
     }
-    const report = await consolidateIdentityGroups(db, { apply: true });
-    expect(report).toMatchObject({ groups: 1, planned: 0, applied: 0 });
+    const report = await previewConsolidation(db);
+    expect(report.groups).toEqual([]);
     expect(report.refused[0].reason).toContain('pairwise native identity evidence');
+    expect(await applyReviewedConsolidation(db, report)).toMatchObject({ groups: 0, applied: 0 });
     expect(await db.job.count({ where: { isActive: true, mergedIntoId: null } })).toBe(2);
+  });
+
+  it('a merged pair whose page loses its Job ID fails loudly, and the reviewed partition separates it for good', async () => {
+    for (const [key, kind, config] of [['lvmh', 'lvmh_algolia', {}], ['sephora-france', 'successfactors', { origin: 'https://jobs.sephora.com' }]] as const)
+      await db.source.upsert({ where: { key }, update: { kind, config }, create: { key, maison: 'Sephora', kind, config, tier: 'EMPLOYER_DIRECT', tenantKey: key, status: 'ACTIVE' } });
+    const first = await upsertDeduplicated(db, rmk()), second = await upsertDeduplicated(db, lvmh());
+    expect(second.jobId).toBe(first.jobId);
+    // Le texte RMK perd sa ligne « Job ID » : la preuve tombe, l'écriture échoue en nommant l'offre (jamais en silence).
+    const edited = rmk(); (edited.raw as any).successfactorsDetail.description = 'Store Name/Number: TX-Moore Plaza (1954)';
+    await expect(upsertDeduplicated(db, edited)).rejects.toThrow(`PUBLICATION_GROUP_REVIEW_REQUIRED job=${first.jobId}`);
+    // La partition relue existante sépare : chaque publication seule est trivialement prouvée.
+    const sources = await db.jobSource.findMany({ where: { jobId: first.jobId }, orderBy: { id: 'asc' } });
+    const owner = sources.find(s => s.sourceKey === 'lvmh')!, other = sources.find(s => s.sourceKey === 'sephora-france')!;
+    const plan = await planPublicationGroups(db, { jobIds: [first.jobId], groups: [{ jobId: first.jobId, sourceIds: [owner.id] }, { sourceIds: [other.id] }],
+      reason: 'R-143 §4 : la page RMK ne déclare plus sa réquisition, la preuve native ne tient plus' });
+    await applyPublicationGroups(db, plan, plan.planHash);
+    const again = await upsertDeduplicated(db, edited);
+    expect(again.jobId).not.toBe(first.jobId);
+    expect(await db.job.count({ where: { isActive: true } })).toBe(2);
   });
 });
