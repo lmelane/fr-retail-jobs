@@ -1,0 +1,4 @@
+-- D-508 §6 — les représentations actives de swatch-group au catalogue de production (LECTURE SEULE, db.py readonly).
+-- Une ligne par JobSource active : l'offre, son état en ligne, et le nombre d'AUTRES sources actives qui la portent
+-- (une offre portée par une autre source reste ouverte au refresh : JOB_KEPT_BY_ANOTHER_SOURCE).
+\copy (select js."externalId", js."jobId", to_char(js."lastSeenAt" at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') as "lastSeenAt", j."isActive" as "jobActive", (j."mergedIntoId" is null) as "notMerged", replace(j.title, E'\n', ' ') as title, j.city, j."countryCode", c.name as company, (select count(*) from "JobSource" o where o."jobId" = js."jobId" and o."isActive" and o.id <> js.id) as "otherActiveSources", js.url from "JobSource" js left join "Job" j on j.id = js."jobId" left join "Company" c on c.id = j."companyId" where js."sourceKey" = 'swatch-group' and js."isActive" order by js."externalId"::bigint) to stdout with csv header

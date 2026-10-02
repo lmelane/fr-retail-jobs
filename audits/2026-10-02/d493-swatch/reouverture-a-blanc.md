@@ -13,9 +13,11 @@ il **ne se passe pas** à l'importeur.
 
 ## Étapes
 
-1. **Livrer le lecteur.** Loïc pousse `d493-swatch-lecteur` sur `development` ; promotion sur `main` par le contrôle de
+1. **Livrer le lecteur.** Il est sur `development` : `099fcaa` (lecteur D-493) et `df53b95` (identifiants canoniques
+   quand l'énumération est prouvée, D-508 §6). *Correction du 02/10 : la première version de ce fichier citait `a6c5e7c`,
+   un commit de la branche de travail qui n'existe sur aucune branche distante.* Promotion sur `main` par le contrôle de
    release de l'agrégateur (révision, migrations : aucune dans ce lot, retour arrière), jamais autour du RUN de 18 h.
-   Vérifier que l'image du worker porte le SHA qui contient `a6c5e7c` : l'identité du lecteur est celle de l'image.
+   Vérifier que l'image du worker porte un SHA qui contient `df53b95` : l'identité du lecteur est celle de l'image.
 
 2. **Lire la révision à requalifier** (lecture seule) :
 
@@ -41,8 +43,19 @@ il **ne se passe pas** à l'importeur.
 
 4. **Vérifier, sans se fier au code de sortie seul** : verdict `source-add`, décision d'accès ALLOWED,
    `enumeration.complete = true`, terminaison `PARTITIONS_RECONCILED`, `declaredTotal` égal au total en ligne du jour
-   (331 le 02/10), aucune ligne rejetée ; puis RAW, catalogue et API. Mesurer ce que deviennent les offres actives
-   absentes du listing (380 au catalogue selon la mission, 331 en ligne le 02/10) : ce lot ne l'a pas vérifié.
+   (331 le 02/10), aucune ligne rejetée, `canonicalIds` sur toutes les pages de preuve ; puis RAW, catalogue et API.
+
+5. **Passage à blanc de la fermeture, AVANT le RUN de 18 h qui fermera** (D-508 §6) : les offres au catalogue absentes
+   du site se ferment au refresh du RUN suivant, pas à la réouverture. Liste à blanc du 02/10 : **68 offres** (et non
+   « environ 49 », qui était 380 − 331 : 19 offres nouvelles comblent l'écart), `../d508-swatch-fermeture/`. À rejouer
+   en lecture seule après la réouverture, et à faire relire par Loïc :
+
+   ```sh
+   python3 apps/aggregator/scripts/ops/db.py readonly npx tsx audits/2026-10-02/d508-swatch-fermeture/scripts/apercu-apres-reouverture.mts
+   ```
+
+   Attendu : `eligible = true`, ≈ 68 fermetures, `runGuard.refused = false` (garde de masse du RUN : 68 sur 89 666
+   offres vivantes le 02/10). Liste refusée : remettre la source en pause avant 18 h (retour arrière ci-dessous).
 
 ## Retour arrière
 

@@ -31,6 +31,10 @@ hors de la fenêtre du RUN (jamais entre 15:30 et 18:30 UTC).
 - Un témoin d'avant D-483 (`capture.test.ts`, amorçage général dans toute collecte) contredisait le lot : il suit
   désormais la règle D-483 (aucune collecte hors politique d'accès ne lance de navigateur).
 - `npm run test:local` complet vert sur l'état intégré.
+- **D-508 §4 (Marc O'Polo)** et **§6 (Swatch Group)**, ajoutés le 02/10 (commits `c777a75`, `df53b95`) : les candidatures
+  spontanées de Marc O'Polo sont retenues et retirées (`NATIVE_SPONTANEOUS_APPLICATION`), les offres des franchisés
+  gardées ; Swatch déclare ses identifiants canoniques quand son énumération est prouvée, pour que le refresh ferme les
+  offres retirées du site (passage à blanc : `../d508-swatch-fermeture/`). Aucune migration.
 
 ## 3. Preuves locales des lecteurs (lecture seule, réseau réel, aucune base)
 
@@ -111,6 +115,23 @@ python3 $R/release.py normal
 python3 $R/release.py check api
 ```
 
+### 4c. Swatch Group (D-493, D-508 §6), après les deux précédentes, hors fenêtre du RUN
+
+```sh
+cd $R/code
+# La révision à requalifier (lecture seule) : attendu status PAUSED, kind swatchgroup, config origin / lang
+python3 apps/aggregator/scripts/ops/db.py readonly sh -c 'psql "$DATABASE_URL" -XA -f audits/2026-10-02/d493-swatch/reouverture-revision.sql'
+python3 $R/release.py reouvrir swatch-group <UUID_REVISION_LUE> swatchgroup.com loic-melane-d493
+#   … attendre la fin, juger (§5), puis, AVANT le RUN de 18 h qui fermera les offres absentes :
+python3 apps/aggregator/scripts/ops/db.py readonly npx tsx audits/2026-10-02/d508-swatch-fermeture/scripts/apercu-apres-reouverture.mts
+python3 $R/release.py normal
+```
+
+L'aperçu est en lecture seule : il liste les offres que le refresh du RUN suivant fermera (68 au passage à blanc du
+02/10, `../d508-swatch-fermeture/fermetures-a-blanc.csv`), et recalcule la garde de masse sur le périmètre du RUN (68
+sur 89 666 offres vivantes : non refusée). Si Loïc refuse la liste : remettre la source en pause avant 18 h
+(`../d493-swatch/reouverture-a-blanc.md`, « Retour arrière ») ; rien n'est fermé avant le RUN.
+
 Les arguments de ces deux `source-add` sont acceptés par le parseur réel du worker (`sourceLaunchArguments`, exécuté
 le 02/10 sur les deux lignes, la révision de Marc O'Polo remplacée par un UUID de forme valide).
 
@@ -125,11 +146,31 @@ le 02/10 sur les deux lignes, la révision de Marc O'Polo remplacée par un UUID
 - **Marc O'Polo** : la collecte rend `FULL_RESPONSE` sans motif bloquant ; les offres lues = la liste de l'API
   (116 le 30/09) moins les fermées ; l'employeur déclaré par les deux pages d'offre est le même et rattache les offres
   à la société déjà liée aux 55 en ligne (D-489) ; aucune offre fermée à tort parmi les 49 publications retrouvées.
+  D-508 §4, en plus (ces retenues sont attendues : elles ne font pas manquer le critère « offres lues = la liste ») :
+  - **candidatures spontanées retenues, jamais publiées** : `heldReasons.NATIVE_SPONTANEOUS_APPLICATION` = celles de la
+    liste du jour (5 le 30/09 : 3 de catégorie « Initiativ », « Initiativbewerbung Ausbildung » et « Praktikum ») ;
+    retenue décidée, non bloquante ; offres publiées = offres lues moins ces retenues (111 sur 116 le 30/09) ;
+  - **les 2 en ligne le 02/10 retirées** (`withdrawalReason = OUT_OF_SCOPE`) : « WIR SUCHEN DICH! - Initiativbewerbung
+    Ausbildung » (`a9882311f2e4bed01a7acd96edc6735046a2cd67`) et « WE ARE LOOKING FOR YOU! - Unsolicited application
+    Headquarters » (`7a0814c3e95ce7e6d9bdedeacc5c768351a646ad`) ;
+  - **les offres des franchisés publiées sous Marc O'Polo** (9 « Franchise Store » le 30/09, 5 en ligne le 02/10), aucune
+    retenue.
+  Lecture seule après la collecte :
+  ```sh
+  python3 apps/aggregator/scripts/ops/db.py readonly sh -c 'psql "$DATABASE_URL" -XA -c "select js.\"externalId\", j.title, j.\"isActive\", j.\"withdrawalReason\" from \"JobSource\" js join \"Job\" j on j.id = js.\"jobId\" where js.\"sourceKey\" = '"'"'marc-o-polo'"'"' and (j.title ilike '"'"'%initiativ%'"'"' or j.title ilike '"'"'%unsolicited%'"'"' or j.title ilike '"'"'%franchise%'"'"')"'
+  ```
+- **Swatch Group** : `source-add` validé, décision d'accès ALLOWED, `complete = true`, `PARTITIONS_RECONCILED`,
+  `declaredTotal` égal au total en ligne du jour, aucune ligne rejetée ; pages de preuve qui portent toutes
+  `canonicalIds` ; puis l'aperçu de `../d508-swatch-fermeture/` (§4c) : `eligible = true`, liste relue par Loïc.
 - Un seul critère manqué : la source repasse en `PAUSED` (`importer-registre-csv.mts` avec
   `audits/2026-09-30/pause-ralph-lauren-d483.csv` ou `pause-marc-o-polo-d485.csv`, `--ecrire`), motif consigné, rien
   n'est corrigé à chaud.
 
 ## 6. Preuve locale de Marc O'Polo
+
+*Précision du 02/10 (D-508 §4) : cette collecte a précédé la retenue des candidatures spontanées ; avec le lecteur de
+`c777a75`, les candidatures spontanées de la liste sont retenues (5 sur la lecture réelle du 30/09, témoins de
+`marcOPolo.test.ts`), les autres offres sont publiées.*
 
 `collecte-locale-marc-o-polo.json` : lecteur dédié intégré (`fetchMarcOPoloJobs`), configuration du registre relu,
 site réel, 02/10/2026 de 05:02:42 à 05:16:08 UTC (13 min 26 s, cadence plancher de 7 s sous le pare-feu de l'API),

@@ -1,0 +1,349 @@
+{
+ "at": "2026-10-02T06:34:23.285Z",
+ "sortie": [
+  {
+   "cas": {
+    "marche": "FR",
+    "lieu": "Paris (75)"
+   },
+   "lieuCompris": {
+    "type": "ville",
+    "libelle": "Paris (75)"
+   },
+   "refus": {
+    "lieu": [],
+    "ville": []
+   },
+   "totaux": {
+    "lieu": 6143,
+    "ville": 6143
+   },
+   "lus": {
+    "lieu": 6143,
+    "ville": 6143,
+    "complets": true
+   },
+   "memesOffres": true,
+   "memeOrdre": true,
+   "seulementLieu": [],
+   "seulementVille": [],
+   "examen": {
+    "lieu": {
+     "total": 6143,
+     "nouvelles": 1016
+    },
+    "ville": {
+     "total": 6143,
+     "nouvelles": 1016
+    },
+    "memesNouvelles": true
+   }
+  },
+  {
+   "cas": {
+    "marche": "FR",
+    "lieu": "Paris (75)",
+    "q": "vendeur"
+   },
+   "lieuCompris": {
+    "type": "ville",
+    "libelle": "Paris (75)"
+   },
+   "refus": {
+    "lieu": [],
+    "ville": []
+   },
+   "totaux": {
+    "lieu": 987,
+    "ville": 987
+   },
+   "lus": {
+    "lieu": 987,
+    "ville": 987,
+    "complets": true
+   },
+   "memesOffres": true,
+   "memeOrdre": true,
+   "seulementLieu": [],
+   "seulementVille": [],
+   "examen": {
+    "lieu": {
+     "total": 987,
+     "nouvelles": 179
+    },
+    "ville": {
+     "total": 987,
+     "nouvelles": 179
+    },
+    "memesNouvelles": true
+   }
+  },
+  {
+   "cas": {
+    "marche": "FR",
+    "lieu": "Lyon (69)"
+   },
+   "lieuCompris": {
+    "type": "ville",
+    "libelle": "Lyon (69)"
+   },
+   "refus": {
+    "lieu": [],
+    "ville": []
+   },
+   "totaux": {
+    "lieu": 434,
+    "ville": 434
+   },
+   "lus": {
+    "lieu": 434,
+    "ville": 434,
+    "complets": true
+   },
+   "memesOffres": true,
+   "memeOrdre": true,
+   "seulementLieu": [],
+   "seulementVille": [],
+   "examen": {
+    "lieu": {
+     "total": 434,
+     "nouvelles": 57
+    },
+    "ville": {
+     "total": 434,
+     "nouvelles": 57
+    },
+    "memesNouvelles": true
+   }
+  },
+  {
+   "cas": {
+    "marche": "FR",
+    "lieu": "Annecy (74)"
+   },
+   "lieuCompris": {
+    "type": "ville",
+    "libelle": "Annecy (74)"
+   },
+   "refus": {
+    "lieu": [],
+    "ville": []
+   },
+   "totaux": {
+    "lieu": 167,
+    "ville": 167
+   },
+   "lus": {
+    "lieu": 167,
+    "ville": 167,
+    "complets": true
+   },
+   "memesOffres": true,
+   "memeOrdre": true,
+   "seulementLieu": [],
+   "seulementVille": [],
+   "examen": {
+    "lieu": {
+     "total": 167,
+     "nouvelles": 22
+    },
+    "ville": {
+     "total": 167,
+     "nouvelles": 22
+    },
+    "memesNouvelles": true
+   }
+  },
+  {
+   "cas": {
+    "marche": "FR",
+    "lieu": "Paris 15e (75)"
+   },
+   "lieuCompris": {
+    "type": "ville",
+    "libelle": "Paris 15e (75)"
+   },
+   "refus": {
+    "lieu": [],
+    "ville": []
+   },
+   "totaux": {
+    "lieu": 6208,
+    "ville": 6208
+   },
+   "lus": {
+    "lieu": 6208,
+    "ville": 6208,
+    "complets": true
+   },
+   "memesOffres": true,
+   "memeOrdre": true,
+   "seulementLieu": [],
+   "seulementVille": [],
+   "examen": {
+    "lieu": {
+     "total": 6208,
+     "nouvelles": 1030
+    },
+    "ville": {
+     "total": 6208,
+     "nouvelles": 1030
+    },
+    "memesNouvelles": true
+   }
+  },
+  {
+   "cas": {
+    "marche": "FR",
+    "lieu": "Bordeaux (33)",
+    "q": "conseiller"
+   },
+   "lieuCompris": {
+    "type": "ville",
+    "libelle": "Bordeaux (33)"
+   },
+   "refus": {
+    "lieu": [],
+    "ville": []
+   },
+   "totaux": {
+    "lieu": 104,
+    "ville": 104
+   },
+   "lus": {
+    "lieu": 104,
+    "ville": 104,
+    "complets": true
+   },
+   "memesOffres": true,
+   "memeOrdre": true,
+   "seulementLieu": [],
+   "seulementVille": [],
+   "examen": {
+    "lieu": {
+     "total": 104,
+     "nouvelles": 20
+    },
+    "ville": {
+     "total": 104,
+     "nouvelles": 20
+    },
+    "memesNouvelles": true
+   }
+  },
+  {
+   "cas": {
+    "marche": "CH",
+    "lieu": "Genève (GE)"
+   },
+   "lieuCompris": {
+    "type": "ville",
+    "libelle": "Genève"
+   },
+   "refus": {
+    "lieu": [],
+    "ville": []
+   },
+   "totaux": {
+    "lieu": 381,
+    "ville": 381
+   },
+   "lus": {
+    "lieu": 381,
+    "ville": 381,
+    "complets": true
+   },
+   "memesOffres": true,
+   "memeOrdre": true,
+   "seulementLieu": [],
+   "seulementVille": [],
+   "examen": {
+    "lieu": {
+     "total": 381,
+     "nouvelles": 62
+    },
+    "ville": {
+     "total": 381,
+     "nouvelles": 62
+    },
+    "memesNouvelles": true
+   }
+  },
+  {
+   "cas": {
+    "marche": "GB",
+    "lieu": "London (ENG)"
+   },
+   "lieuCompris": {
+    "type": "ville",
+    "libelle": "London"
+   },
+   "refus": {
+    "lieu": [],
+    "ville": []
+   },
+   "totaux": {
+    "lieu": 1615,
+    "ville": 1615
+   },
+   "lus": {
+    "lieu": 1615,
+    "ville": 1615,
+    "complets": true
+   },
+   "memesOffres": true,
+   "memeOrdre": true,
+   "seulementLieu": [],
+   "seulementVille": [],
+   "examen": {
+    "lieu": {
+     "total": 1615,
+     "nouvelles": 361
+    },
+    "ville": {
+     "total": 1615,
+     "nouvelles": 361
+    },
+    "memesNouvelles": true
+   }
+  },
+  {
+   "cas": {
+    "marche": "US",
+    "lieu": "New York (NY)"
+   },
+   "lieuCompris": {
+    "type": "ville",
+    "libelle": "New York City (NY)"
+   },
+   "refus": {
+    "lieu": [],
+    "ville": []
+   },
+   "totaux": {
+    "lieu": 2380,
+    "ville": 2380
+   },
+   "lus": {
+    "lieu": 2380,
+    "ville": 2380,
+    "complets": true
+   },
+   "memesOffres": true,
+   "memeOrdre": true,
+   "seulementLieu": [],
+   "seulementVille": [],
+   "examen": {
+    "lieu": {
+     "total": 2380,
+     "nouvelles": 401
+    },
+    "ville": {
+     "total": 2380,
+     "nouvelles": 401
+    },
+    "memesNouvelles": true
+   }
+  }
+ ]
+}

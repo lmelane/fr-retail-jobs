@@ -1,2 +1,2 @@
 cle;statut_actuel;statut_vise;chemin;lecteur;preuve
-swatch-group;PAUSED;ACTIVE;source-add --registered-revision (jamais importer-registre-csv.mts, qui refuse ACTIVE);commit a6c5e7c, branche d493-swatch-lecteur;audits/2026-10-02/d493-swatch/README.md
+swatch-group;PAUSED;ACTIVE;source-add --registered-revision (jamais importer-registre-csv.mts, qui refuse ACTIVE);commits 099fcaa (lecteur D-493) et df53b95 (identifiants canoniques D-508 §6), branche development;audits/2026-10-02/d493-swatch/README.md

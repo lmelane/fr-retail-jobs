@@ -216,7 +216,8 @@ export function isMarcOPoloSpontaneousApplication(listing: Record<string, unknow
 
 /**
  * Collecte et reprise du RAW retenu passent par cette seule lecture. Rend `null` pour tout RAW qui n'est pas le sien.
- * `observedAt` date le retrait d'une candidature spontanée déjà publiée ; sans lui (reprise), elle reste retenue.
+ * `observedAt` date le retrait d'une candidature spontanée déjà publiée (collecte, et reprise, qui la refuse alors comme
+ * retenue : `PUBLICATION_HELD`).
  */
 export function readMarcOPoloRaw(value: unknown, observedAt?: Date): NormalizedJob | null {
   if (!isRecord(value)) return null;
