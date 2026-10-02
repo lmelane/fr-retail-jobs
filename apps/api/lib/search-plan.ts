@@ -43,6 +43,8 @@ export type CriteresRecherche = {
   prioritePays?: string;
   /** D-500 : le client annonce le contrat 2 (`contrat-client.ts`) ; posé par la route, jamais lu dans l'URL. */
   comprendre?: boolean;
+  /** D-510 : le tri par fraîcheur, au même client (`annonceFraicheur`) ; posé par la route, jamais lu dans l'URL. */
+  fraicheur?: boolean;
 };
 
 export type PlanRecherche = {
@@ -66,10 +68,17 @@ export type PlanRecherche = {
    */
   proximite?: Proximite;
   /**
-   * D-500 (Q1, Q4) : la requête comprise (écriture inclusive, marques de genre, liaisons, formes de base d'un mot seul) et
-   * le classement par le titre, au seul client du contrat 2. Absente : la lecture et l'ordre d'avant, à l'identique.
+   * D-500 (Q1) : la requête comprise (écriture inclusive, marques de genre, liaisons, formes de base d'un mot seul), au
+   * seul client du contrat 2. Absente : la lecture d'avant, à l'identique. (Le classement par le titre, Q4, est remplacé
+   * par le tri par fraîcheur de D-510.)
    */
   comprendre?: boolean;
+  /**
+   * D-510 : l'ordre est l'origine (Catwalks d'abord), puis la fraîcheur (`fraicheur.ts`), puis l'identifiant. La
+   * pertinence, la distance et le pays du visiteur ne trient plus ; ils ne servent qu'à retenir les offres (correspondance
+   * et cercles). Absente : l'ordre d'avant, à l'identique (contrat 1).
+   */
+  fraicheur?: boolean;
 };
 
 export function planifierRecherche(perimetre: Perimetre, criteres: CriteresRecherche): PlanRecherche {
@@ -126,5 +135,6 @@ export function planifierRecherche(perimetre: Perimetre, criteres: CriteresReche
     source: criteres.source,
     prioritePays: criteres.prioritePays && perimetre.pays.includes(criteres.prioritePays) ? criteres.prioritePays : undefined,
     ...(criteres.comprendre ? { comprendre: true } : {}),
+    ...(criteres.fraicheur ? { fraicheur: true } : {}),
   };
 }

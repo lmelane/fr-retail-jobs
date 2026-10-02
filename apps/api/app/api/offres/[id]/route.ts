@@ -14,6 +14,7 @@ import { offerPath } from '@/lib/offer-url';
 import { projeterFiche, projeterLignes } from '@/lib/projection';
 import { balisage } from '@/lib/job-posting-schema';
 import { refuserSiCleInvalide } from '@/lib/cle-api';
+import { annonceFraicheur } from '@/lib/contrat-client';
 
 /** Qualified publication detail; withdrawn IDs can have no public content.
  * Active: 200. Closed or withdrawn: 410. Missing: 404. Database failure: 503.
@@ -57,7 +58,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     // D-468 §3 : « Catwalks » ne nomme pas un employeur commun aux mandats sans Maison publique (D-456 §4). Leur fiche
     // n'a donc pas de bloc Maison : pas d'encadré « Catwalks recrute sur N postes », qui compterait tous les mandats.
     const [similaires, maison] = await Promise.all([
-      getSimilarJobs(job, 6, langueDemandee),
+      // D-510 : au contrat 2, les mêmes similaires et les mêmes blocs (D-470), la plus fraîche d'abord dans chacun ; sans
+      // lui, l'ordre d'avant.
+      getSimilarJobs(job, 6, langueDemandee, annonceFraicheur(request.headers)),
       estMandatCatwalks(job) ? null : getCompanyAside(job.company, job.companyId ?? null),
     ]);
     // Lot 8 : une offre lue seule est libellée dans la langue du marché de son pays.

@@ -1,0 +1,14 @@
+ marche | catwalks | maisons_distinctes | maison_la_plus_presente | plus_ancienne_de_la_page 
+--------+----------+--------------------+-------------------------+--------------------------
+ DE     |        2 |                  7 | H&M Group (17)          | 2026-08-17
+ FR     |       25 |                  6 |                         | 2026-08-17
+ GB     |        1 |                  9 | White Stuff (13)        | 2026-08-17
+ US     |        2 |                  3 | Ulta Beauty (19)        | 2026-08-17
+
+ marche | catwalks | maisons_distinctes | maison_la_plus_presente 
+--------+----------+--------------------+-------------------------
+ DE     |        2 |                  8 | H&M Group (12)
+ FR     |       25 |                  6 | 
+ GB     |        1 |                  9 | White Stuff (12)
+ US     |        2 |                  2 | Sephora (23)
+

@@ -15,8 +15,8 @@ import { CONSERVATION_MAX_JOURS, enregistrerRequete, formeGardee, JOURS_MIN_POPU
 import { semerVilles, viderVilles } from '../__fixtures__/villes';
 
 /**
- * D-500 (Q1, Q2, Q4) et D-501 — de bout en bout sur une base locale : la requête comprise et le classement par
- * l'intitulé (contrat 2), les suggestions canoniques vérifiées par la recherche que lance leur choix, les lieux de tête
+ * D-500 (Q1, Q2) et D-501 — de bout en bout sur une base locale : la requête comprise (contrat 2 ; le classement par
+ * l'intitulé, Q4, est retiré par D-510), les suggestions canoniques vérifiées par la recherche que lance leur choix, les lieux de tête
  * de la base de lieux, les requêtes tapées anonymes (seuil, purge, route).
  */
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : undefined;
@@ -31,7 +31,7 @@ const OFFRES: readonly Offre[] = [
   { titre: 'CONSEILLER DE VENTE /NB', classeComme: 'Conseiller de vente', n: 2 },
   { titre: 'Conseillère de vente', classeComme: 'Conseiller de vente', n: 2 },
   { titre: 'Vendeuse', classeComme: 'Conseiller de vente' },
-  // Une offre du métier dont l'intitulé ne nomme pas le métier : elle passe après celles qui le nomment (Q4).
+  // Une offre du métier dont l'intitulé ne nomme pas le métier.
   { titre: 'Talent de la maison', classeComme: 'Conseiller de vente' },
   { titre: 'Responsable boutique', classeComme: 'Responsable de boutique', n: 2 },
   // Trois offres « Responsable Boutique Adjoint » : un intitulé qui nomme l'adjoint dans un autre ordre (Q2).
@@ -45,7 +45,7 @@ const OFFRES: readonly Offre[] = [
   { titre: 'Directeur de Magasin Femme H/F', autreMaison: true },
   // Sans métier, écrite en écriture inclusive : trouvée par la forme tapée, comme avant (Q1).
   { titre: 'Conseiller(ère) de vente' },
-  // Trouvée par sa seule description : après toutes celles dont l'intitulé contient la requête (Q4).
+  // Trouvée par sa seule description.
   { titre: 'Styliste', description: 'Vous travaillerez avec chaque conseiller de la boutique.' },
   // Trois offres d'un intitulé d'une seule Maison : son intitulé maison, jamais une suggestion (audit métier).
   { titre: 'Vendeur expert huiles essentielles', n: 3 },
@@ -107,7 +107,6 @@ describe.skipIf(!enabled)('D-500, D-501 : la recherche comprend la requête', ()
   });
 
   const fr = (f: Partial<JobFilters>): JobFilters => ({ marche: 'FR', ...f, filtres: { groupe: [GROUPE], ...f.filtres } });
-  const titres = async (f: Partial<JobFilters>) => (await getJobs(fr(f))).jobs.map((j) => j.title);
   const metier = async (code: string) => (await getJobs(fr({ filtres: { metier: [code] } }))).total;
 
   it('PRÉMISSE : le métier porte 10 offres du témoin ; sans le contrat 2, l’écriture inclusive et « /NB » en perdent', async () => {
@@ -133,35 +132,9 @@ describe.skipIf(!enabled)('D-500, D-501 : la recherche comprend la requête', ()
     expect((await getJobs(fr({ q: 'conseillère', comprendre: true }))).total).toBe(10);
   });
 
-  it('Q4 : les intitulés qui contiennent la requête d’abord, puis le métier, puis la description', async () => {
-    const t = await titres({ q: 'conseiller de vente', comprendre: true });
-    expect(t.indexOf('Talent de la maison')).toBe(t.length - 1);
-    const seul = await titres({ q: 'conseillère', comprendre: true });
-    expect(seul.at(-1)).toBe('Styliste');
-    expect(seul.slice(0, -1).every((x) => /conseill/i.test(x))).toBe(true);
-    // Sans le contrat 2, l'ordre d'avant (le rang n'existe pas) : la requête mot à mot.
-    expect((await getJobs(fr({ q: 'conseiller de vente' }))).jobs.map((j) => j.title)).not.toEqual(t);
-  });
-
-  it('Q4 : avec un lieu, la distance reste devant le rang (D-496) ; le rang départage à la même distance', async () => {
-    const loin = ids[0];
-    await prisma.job.update({ where: { id: loin }, data: { city: 'Créteil', location: 'Créteil' } });
-    while (await drainSearchIndex()) { /* index à jour */ }
-    try {
-      const r = await getJobs(fr({ q: 'conseiller de vente', lieu: 'Paris', proximite: true, comprendre: true }));
-      const ordre = r.jobs.map((j) => j.id);
-      // PRÉMISSE : l'offre éloignée nomme le métier (rang le plus haut), l'offre de Paris ne le nomme pas (rang du métier).
-      expect(r.jobs.find((j) => j.id === loin)?.title).toBe('Conseiller de vente H/F');
-      const talent = r.jobs.find((j) => j.title === 'Talent de la maison')!.id;
-      expect(ordre.indexOf(talent)).toBeLessThan(ordre.indexOf(loin));
-      // À Paris, à la même distance, le rang : « Talent de la maison » après toutes celles de Paris qui nomment le métier.
-      const aParis = ordre.filter((id) => id !== loin);
-      expect(aParis.indexOf(talent)).toBe(aParis.length - 1);
-    } finally {
-      await prisma.job.update({ where: { id: loin }, data: { city: 'Paris', location: 'Paris' } });
-      while (await drainSearchIndex()) { /* index à jour */ }
-    }
-  });
+  // Q4 (le classement par l'intitulé) est retiré par D-510 (02/10/2026) : au contrat 2, l'ordre est la fraîcheur
+  // (`fraicheur-d510.test.ts`, dont le témoin « une offre récente moins pertinente passe devant une ancienne plus
+  // pertinente »).
 
   it('Q2 : une ligne par métier dans la forme tapée, des intitulés nettoyés, jamais un intitulé brut', async () => {
     const fr = exigerPerimetre('FR');

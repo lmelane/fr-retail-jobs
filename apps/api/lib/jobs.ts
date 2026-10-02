@@ -8,7 +8,9 @@ import { MARCHES, localeServie, type Perimetre } from '@catwalks/db/marches';
 import { langueDesLibelles, type LangueLibelles } from '@catwalks/db/presentation';
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
 import { prisma, Prisma, canonicalJobId } from '@catwalks/db';
-import { ARITE_CLE_RECHERCHE, examenNouveautes, searchSummary, type CleRecherche } from './job-search-query';
+import type { DirectOffer } from '@prisma/client';
+import { ARITE_CLE_FRAICHEUR, ARITE_CLE_RECHERCHE, examenNouveautes, searchSummary, type CleFraicheur, type CleRecherche } from './job-search-query';
+import { fraicheurDe, trierParFraicheur } from './fraicheur';
 import { CURSEUR_MAX, decoderCurseur, empreinteCriteres, encoderCurseur } from './curseur';
 import { directPubliable, directPubliableSql, directToRow, estIdDirect, estMandatCatwalks, idDirect, statutDirect } from './direct-offers';
 import { offerIdCandidates } from './offer-url';
@@ -64,6 +66,7 @@ export type JobFilters = CriteresRecherche & {
    */
   proximite?: boolean;
   // D-500 : `comprendre` (CriteresRecherche), posé par la route avec le même signal du client que la proximité.
+  // D-510 : `fraicheur` (CriteresRecherche), de même : le tri par fraîcheur.
 };
 
 /**
@@ -536,7 +539,13 @@ export async function getCompanyAside(companyName: string, companyId: string | n
   }
 }
 
-export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibelles = 'fr'): Promise<JobRow[]> {
+/**
+ * Les offres similaires d'une fiche, par blocs (D-468, D-470, D-471) : la même Maison et le même pays (ses offres
+ * Catwalks, puis ses offres agrégées), puis le même secteur (les offres Catwalks, puis les agrégées). D-470 §1 a écarté
+ * « toutes les offres Catwalks avant même les offres agrégées de la même Maison » : les blocs restent. D-510 (contrat 2,
+ * `fraicheur`) : dans chaque bloc, la plus fraîche d'abord (`trierParFraicheur`) ; sans le contrat 2, l'ordre d'avant.
+ */
+export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibelles = 'fr', fraicheur = false): Promise<JobRow[]> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
     const base = {
@@ -556,14 +565,27 @@ export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibel
     // `directPubliable()` porte déjà un `OR`, qu'un second `OR` étalé à côté écraserait.
     const societe = job.companyId ?? null;
     const memeSocieteDirecte: Prisma.DirectOfferWhereInput = societe ? { OR: [{ companyId: societe }, { company: job.company }] } : { company: job.company };
+    // D-510 : la fraîcheur de chaque offre lue, sur ses colonnes (celles du tri de la recherche), avant sa projection.
+    const fraicheurs = new Map<string, number>();
+    const directeLue = (d: DirectOffer): JobRow => {
+      const ligne = directToRow(d);
+      fraicheurs.set(ligne.id, fraicheurDe({ postedAt: d.postedAt, firstSeenAt: d.receivedAt }));
+      return ligne;
+    };
+    const agregeeLue = (row: Parameters<typeof toRow>[0] & { postedAt: Date | null; firstSeenAt: Date }): JobRow => {
+      fraicheurs.set(row.id, fraicheurDe(row));
+      return toRow(row, taxonomy);
+    };
+    // Un bloc est d'une seule origine : le tri y range la plus fraîche d'abord, puis l'identifiant.
+    const trier = (bloc: JobRow[]) => (fraicheur ? trierParFraicheur(bloc, (l) => fraicheurs.get(l.id) ?? fraicheurDe(l)) : bloc);
     const memeEmployeur = async (): Promise<JobRow[]> => {
       // D-419 §1 : les offres Catwalks de la même Maison, dans le même pays, ouvrent la liste.
-      const directes = (await prisma.directOffer.findMany({
+      const directes = trier((await prisma.directOffer.findMany({
         where: { ...directPubliable(), ...memePays, AND: [memeSocieteDirecte], ...(job.origine === 'CATWALKS' ? { id: { not: idDirect(job.id) } } : {}) },
         // `postedAt` d'une offre directe est toujours renseigné : tri simple.
         orderBy: [{ postedAt: 'desc' }, { id: 'asc' }],
         take: limit,
-      })).map(directToRow);
+      })).map(directeLue));
       if (directes.length >= limit) return directes;
       const sameMaison = await prisma.job.findMany({
         where: { ...base, ...memePays, ...(societe ? { companyId: societe } : { company: { name: job.company } }) },
@@ -572,7 +594,7 @@ export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibel
         orderBy: [...ordre],
         take: limit - directes.length,
       });
-      return [...directes, ...sameMaison.map((row) => toRow(row, taxonomy))];
+      return [...directes, ...trier(sameMaison.map(agregeeLue))];
     };
     // D-456 §4 : « Catwalks » ne nomme pas un employeur commun aux mandats sans Maison publique. Sur leur fiche, le bloc
     // « même employeur » (offres directes, puis agrégées) ne propose rien : la liste passe directement au remplissage.
@@ -585,7 +607,7 @@ export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibel
     // D-468 §1 : le remplissage retrouve aussi les offres Catwalks du même secteur, dans la même ville et le même pays,
     // et elles l'ouvrent (D-419 §1). Jamais l'employeur de l'offre elle-même, déjà servi par le bloc « même employeur » ;
     // sur la fiche d'un mandat, cet employeur est « Catwalks » : aucun autre mandat n'y est proposé (D-456 §4).
-    const directesRemplissage = (await prisma.directOffer.findMany({
+    const directesRemplissage = trier((await prisma.directOffer.findMany({
       where: {
         ...directPubliable(), ...memePays, ...memeVille,
         sectorCodes: { hasSome: sectorCodes },
@@ -596,7 +618,7 @@ export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibel
       },
       orderBy: [{ postedAt: 'desc' }, { id: 'asc' }],
       take: limit - memeMaison.length,
-    })).map(directToRow);
+    })).map(directeLue));
     const reste = limit - memeMaison.length - directesRemplissage.length;
     const fill = reste > 0
       ? await prisma.job.findMany({
@@ -613,7 +635,7 @@ export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibel
           take: reste,
         })
       : [];
-    return [...memeMaison, ...directesRemplissage, ...fill.map((row) => toRow(row, taxonomy))];
+    return [...memeMaison, ...directesRemplissage, ...trier(fill.map(agregeeLue))];
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }
@@ -640,8 +662,10 @@ function empreintePlan(plan: ReturnType<typeof planifierRecherche>): string {
     version: `${SEARCH_VERSION}-strict-filters-fr-2`, perimetre: plan.perimetre.code, q: plan.q, lieu: plan.lieu ?? null,
     selections: Object.fromEntries(DIMENSIONS.flatMap((d) => (plan.selections[d]?.length ? [[d, [...plan.selections[d]!].sort()]] : []))),
     prioritePays: plan.prioritePays ?? null, source: plan.source ?? null,
-    // D-500 : la requête comprise et le classement par le titre changent l'ordre ; sans eux, l'empreinte d'avant.
+    // D-500 : la requête comprise change les offres retenues ; sans elle, l'empreinte d'avant.
     ...(plan.comprendre ? { comprendre: 1 } : {}),
+    // D-510 : le tri par fraîcheur change l'ordre et la forme de la clé ; sans lui, l'empreinte d'avant.
+    ...(plan.fraicheur ? { tri: 'fraicheur' } : {}),
     ...(p ? { proximite: { lieu: p.lieu ? point(p.lieu) : null, villes: p.villes ? p.villes.resolues.map(point).sort((x, y) => String(x[0]).localeCompare(String(y[0]))) : null } } : {}),
   });
 }
@@ -726,7 +750,9 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
   }
   const empreinte = empreintePlan(plan);
   // Un curseur d'autres critères est refusé AVANT la recherche (400 CURSEUR_INVALIDE).
-  const curseur = filters.apres ? (decoderCurseur(filters.apres, empreinte, ARITE_CLE_RECHERCHE) as CleRecherche) : null;
+  const curseur = !filters.apres ? null : plan.fraicheur
+    ? (decoderCurseur(filters.apres, empreinte, ARITE_CLE_FRAICHEUR) as CleFraicheur)
+    : (decoderCurseur(filters.apres, empreinte, ARITE_CLE_RECHERCHE) as CleRecherche);
   try {
     const taxonomy = await getOptionalOccupationPresentation(langueDesLibelles(localeAffichage(filters.locale, perimetre)));
     const summary = await searchSummary(plan, curseur, PAGE_SIZE);

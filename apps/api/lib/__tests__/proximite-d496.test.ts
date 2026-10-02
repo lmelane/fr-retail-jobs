@@ -15,9 +15,12 @@ import { drainSearchIndex, initializeSearchIndex } from '../search-index';
  * D-496 (01/10/2026) — LA RECHERCHE DE PROXIMITÉ, sur une vraie base, par la vraie chaîne (`getJobs`, `examinerAlerte`,
  * `suggestLieux`, le déclencheur du point, la fonction de rattrapage), avec un extrait réel de GeoNames.
  *
- * Le témoin clé : « Chennevières-sur-Marne » rend des offres triées par distance croissante, non vides. Sa PRÉMISSE est
- * le défaut mesuré en production : une seule offre porte la ville à son nom, les autres sont autour (Champigny 4 km,
- * Créteil 5,5 km, Paris 16,5 km, La Défense 25 km), et la comparaison au mot près n'en trouvait qu'une.
+ * Le témoin clé : « Chennevières-sur-Marne » rend les offres autour, non vides. Sa PRÉMISSE est le défaut mesuré en
+ * production : une seule offre porte la ville à son nom, les autres sont autour (Champigny 4 km, Créteil 5,5 km, Paris
+ * 16,5 km, La Défense 25 km), et la comparaison au mot près n'en trouvait qu'une.
+ *
+ * D-510 (02/10/2026) : la distance ne trie plus. Les cercles retiennent les offres ; l'ordre est Catwalks d'abord, puis la
+ * plus fraîche (`fraicheur-d510.test.ts`). Le contrat 2 du client porte les deux (`proximite`, `fraicheur`).
  */
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : undefined;
 const enabled = !!url && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) && /test/i.test(url.pathname);
@@ -132,8 +135,22 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
   }, 120_000);
   afterAll(nettoyer);
 
-  // Le client annonce le contrat de proximité (`x-catwalks-client: 2`, contrat-client.ts) : la route pose `proximite`.
-  const filtres = (extra: Partial<JobFilters> = {}): JobFilters => ({ marche: 'FR', proximite: true, ...extra, filtres: { groupe: [GROUPE], ...extra.filtres } });
+  // Le client annonce le contrat 2 (`x-catwalks-client: 2`, contrat-client.ts) : la route pose `proximite` et, depuis
+  // D-510, `fraicheur`.
+  const filtres = (extra: Partial<JobFilters> = {}): JobFilters => ({ marche: 'FR', proximite: true, fraicheur: true, ...extra, filtres: { groupe: [GROUPE], ...extra.filtres } });
+  /** D-510 : l'ordre attendu de ces offres, relu en base — Catwalks d'abord, la plus fraîche, l'identifiant. */
+  const ordreFraicheur = async (ids: string[]) => {
+    const dates = new Map<string, number>();
+    for (const j of await prisma.job.findMany({ where: { id: { in: ids } }, select: { id: true, postedAt: true, firstSeenAt: true } })) {
+      dates.set(j.id, Math.min(j.postedAt?.getTime() ?? Infinity, j.firstSeenAt.getTime()));
+    }
+    const directes = ids.filter((id) => id.startsWith('cw_')).map((id) => id.slice(3));
+    for (const d of await prisma.directOffer.findMany({ where: { id: { in: directes } }, select: { id: true, postedAt: true, receivedAt: true } })) {
+      dates.set(`cw_${d.id}`, Math.min(d.postedAt?.getTime() ?? Infinity, d.receivedAt.getTime()));
+    }
+    const rang = (id: string) => (id.startsWith('cw_') ? 0 : 1);
+    return [...ids].sort((a, b) => rang(a) - rang(b) || dates.get(b)! - dates.get(a)! || (a < b ? -1 : 1));
+  };
   /** Toutes les pages d'une recherche, dans l'ordre servi. */
   const toutes = async (f: JobFilters) => {
     const ids: string[] = [];
@@ -183,13 +200,14 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
     expect(dans15).toBe(8);
   });
 
-  it('TÉMOIN CLÉ : « Chennevières-sur-Marne » rend les offres autour, triées par distance croissante, non vides', async () => {
+  it('TÉMOIN CLÉ : « Chennevières-sur-Marne » rend les offres autour, non vides, la plus fraîche d’abord (D-510)', async () => {
     const { ids, total } = await toutes(filtres({ lieu: 'Chennevières-sur-Marne' }));
     expect(ids.length).toBeGreaterThan(1);
     expect(total).toBe(ids.length);
     const distances = await Promise.all(ids.map(async (id) => haversine(CHENNEVIERES, await point(id))));
-    for (let i = 1; i < distances.length; i++) expect(Math.round(distances[i])).toBeGreaterThanOrEqual(Math.round(distances[i - 1]));
-    expect(villeDe.get(ids[0])).toBe('Chennevières-sur-Marne');
+    expect(ids).toEqual(await ordreFraicheur(ids));
+    // PRÉMISSE : l'ordre par distance serait un autre ordre (l'offre au nom de la ville, à 0 km, est la plus ancienne).
+    expect(villeDe.get(ids[ids.length - 1])).toBe('Chennevières-sur-Marne');
     // Le cercle de 15 km (8 offres) s'élargit à 30 km : Paris et La Défense y entrent ; Meaux (30,7 km) et
     // Fontainebleau (45 km) non.
     const villes = new Set(ids.map((id) => villeDe.get(id)));
@@ -199,7 +217,7 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
   });
 
   it('SANS LE SIGNAL du client, le contrat d’avant : la comparaison au mot près, une seule offre à Chennevières-sur-Marne', async () => {
-    const avant = await toutes(filtres({ lieu: 'Chennevières-sur-Marne', proximite: undefined }));
+    const avant = await toutes(filtres({ lieu: 'Chennevières-sur-Marne', proximite: undefined, fraicheur: undefined }));
     expect(avant.ids.map((id) => villeDe.get(id))).toEqual(['Chennevières-sur-Marne']);
     expect(avant.total).toBe(1);
     // Et le même lieu, annoncé par le client, rend les offres autour.
@@ -219,24 +237,22 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
     expect(villes).toEqual(new Set(['Paris', 'Paris 9e Arrondissement', 'La Défense', 'Créteil', 'Champigny-sur-Marne']));
   });
 
-  it('D-499 : « Paris 15e » rend des offres triées par distance depuis le 15e, puis Paris et sa banlieue', async () => {
+  it('D-499 : « Paris 15e » est son propre lieu ; son cercle retient le 15e, puis Paris et sa banlieue, la plus fraîche d’abord (D-510)', async () => {
     const quinzieme: [number, number] = [48.8412, 2.3003];
-    const r = await getJobs(filtres({ lieu: 'Paris 15e (75)' }));
-    expect(r.lieu).toEqual({ type: 'ville', libelle: 'Paris 15e (75)' });
-    const ids = r.jobs.map((j) => j.id);
+    const { ids } = await toutes(filtres({ lieu: 'Paris 15e (75)' }));
+    expect((await getJobs(filtres({ lieu: 'Paris 15e (75)' }))).lieu).toEqual({ type: 'ville', libelle: 'Paris 15e (75)' });
     expect(ids.length).toBeGreaterThan(2);
     const distances = await Promise.all(ids.map(async (id) => haversine(quinzieme, await point(id))));
-    for (let i = 1; i < distances.length; i++) expect(Math.round(distances[i])).toBeGreaterThanOrEqual(Math.round(distances[i - 1]));
-    // PRÉMISSE : les deux offres du 15e sont plus près du 15e que du centre de Paris, où sont les 15 autres.
-    expect(distances[0]).toBeLessThan(1);
-    expect(distances[1]).toBeLessThan(1);
-    expect(Math.round(distances[2])).toBeGreaterThanOrEqual(4);
+    // Les deux offres du 15e sont dans le cercle, à moins d'un kilomètre ; les autres sont plus loin.
+    expect(distances.filter((d) => d < 1)).toHaveLength(2);
+    expect(Math.max(...distances)).toBeLessThanOrEqual(ANNEAUX_KM[0]);
+    expect(ids).toEqual(await ordreFraicheur(ids));
   });
 
   it('D-499 : un code postal est un lieu, avec son point ; inconnu de la base, il garde son préfixe d’avant', async () => {
     const r = await getJobs(filtres({ lieu: '94430' }));
     expect(r.lieu).toEqual({ type: 'codePostal', libelle: '94430 Chennevières-sur-Marne (94)' });
-    expect(villeDe.get(r.jobs[0].id)).toBe('Chennevières-sur-Marne');
+    expect((await toutes(filtres({ lieu: '94430' }))).ids.map((id) => villeDe.get(id))).toContain('Chennevières-sur-Marne');
     expect(r.total).toBeGreaterThan(1);
     // « 75015 » dessert Paris et le 15e : le lieu le plus précis.
     expect((await getJobs(filtres({ lieu: '75015' }))).lieu).toEqual({ type: 'codePostal', libelle: '75015 Paris 15e (75)' });
@@ -252,7 +268,7 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
     const villes = new Set(r.jobs.map((j) => villeDe.get(j.id)));
     expect(villes.has('Orléans')).toBe(false); // Orléans est à 130 km de Provins
     expect(villes.has('Fontainebleau')).toBe(true);
-    expect(villeDe.get(r.jobs[0].id)).toBe('Provins');
+    expect(villes.has('Provins')).toBe(true);
   });
 
   it('chaque compte de facette annonce la liste qu’un clic affichera, cercle compris', async () => {
@@ -274,6 +290,7 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
     const ids = [...premiere.jobs, ...seconde.jobs].map((j) => j.id);
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids.length).toBe(premiere.total);
+    expect(ids).toEqual(await ordreFraicheur(ids));
   });
 
   it('le filtre « ville » (accueil de l’inscrit, alertes) suit la même proximité, plusieurs villes en union', async () => {
@@ -327,18 +344,18 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
     }
   });
 
-  it('une offre sans point : retenue par le nom de sa ville et rangée après les offres situées ; jamais un homonyme refusé', async () => {
+  it('une offre sans point : retenue par le nom de sa ville, à sa place de fraîcheur (D-510) ; jamais un homonyme refusé', async () => {
     // « Austin, Ohio » (sans point : le déclencheur a refusé de la placer au Texas) n'est pas retenue pour Austin (TX).
     const texas = await getJobs({ marche: 'US', proximite: true, lieu: 'Austin', filtres: { maison: [MAISON] } });
     expect(texas.jobs.map((j) => villeDe.get(j.id))).toEqual(['Austin', 'Austin', 'Austin']);
     expect(await prisma.job.count({ where: { id: { in: texas.jobs.map((j) => j.id) }, geoSource: null } })).toBe(0);
-    // Une offre de Créteil pas encore rattrapée (sans point, sans subdivision) : retenue, et en dernier.
+    // Une offre de Créteil pas encore rattrapée (sans point, sans subdivision) : retenue, à sa place de fraîcheur.
     const id = [...villeDe.entries()].find(([, v]) => v === 'Créteil')![0];
     await prisma.$executeRaw`UPDATE "Job" SET "geoLatitude" = NULL, "geoLongitude" = NULL, "geoCityId" = NULL, "geoSource" = NULL WHERE id = ${id}`;
     try {
       const { ids } = await toutes(filtres({ lieu: 'Créteil' }));
       expect(ids).toContain(id);
-      expect(ids[ids.length - 1]).toBe(id);
+      expect(ids).toEqual(await ordreFraicheur(ids));
     } finally {
       await prisma.$executeRaw`UPDATE "Job" SET "geoLatitude" = 48.79266, "geoLongitude" = 2.46569, "geoCityId" = 3022530, "geoSource" = 'CITY' WHERE id = ${id}`;
     }
@@ -371,7 +388,7 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
     }
   });
 
-  it('les deux origines (précision CEO sous D-419 et D-496) : dans le cercle retenu, toutes les offres Catwalks d’abord, par distance, puis les agrégées, par distance ; hors du cercle, aucune', async () => {
+  it('les deux origines (D-419, D-496, D-510) : dans le cercle retenu, toutes les offres Catwalks d’abord, puis les agrégées, chacune la plus fraîche d’abord ; hors du cercle, aucune', async () => {
     const directe = (suffixe: string, ville: string) => ({
       id: `${P}directe-${suffixe}`, version: BigInt(1), appliedSeq: BigInt(1), eligible: true, payloadHash: 'temoin', payload: {},
       correspondanceVersion: 1, slug: `prox-d496-directe-${suffixe}`, title: 'Conseiller de vente', company: MAISON, companyId: MAISON,
@@ -379,7 +396,7 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
       applyUrl: `https://catwalks.io/offres/prox-d496-directe-${suffixe}`, postedAt: new Date('2026-09-01T00:00:00Z'),
       modifiedAt: new Date('2026-09-01T00:00:00Z'), searchText: 'Conseiller de vente' });
     // Écrites de la plus loin à la plus proche : l'ordre d'écriture ne doit rien décider. La plus proche est aussi la plus
-    // ancienne : la date ne départage pas les offres Catwalks, la distance si.
+    // ancienne : D-510, la fraîcheur départage les offres Catwalks entre elles, plus la distance.
     await prisma.directOffer.create({ data: directe('meaux', 'Meaux') });
     await prisma.directOffer.create({ data: directe('defense', 'La Défense') });
     await prisma.directOffer.create({ data: directe('paris', 'Paris') });
@@ -396,19 +413,18 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
       expect(km('meaux')).toBeGreaterThan(ANNEAUX_KM[1]);
 
       const { ids, total } = await toutes(filtres({ lieu: 'Chennevières-sur-Marne' }));
-      // L'offre Catwalks à 25 km passe devant l'offre agrégée à 0 km ; entre elles, les offres Catwalks vont par distance.
-      expect(ids.slice(0, 3)).toEqual([`cw_${P}directe-champigny`, `cw_${P}directe-paris`, `cw_${P}directe-defense`]);
-      expect(villeDe.get(ids[3])).toBe('Chennevières-sur-Marne');
-      const agregees = await Promise.all(ids.slice(3).map(async (id) => haversine(CHENNEVIERES, await point(id))));
-      for (let i = 1; i < agregees.length; i++) expect(Math.round(agregees[i])).toBeGreaterThanOrEqual(Math.round(agregees[i - 1]));
+      // Les offres Catwalks passent devant toutes les agrégées, l'offre à 25 km comprise ; entre elles, la plus fraîche
+      // d'abord (Paris et La Défense le même jour, départagées par l'identifiant ; Champigny, la plus ancienne, après).
+      expect(ids.slice(0, 3)).toEqual([`cw_${P}directe-defense`, `cw_${P}directe-paris`, `cw_${P}directe-champigny`]);
+      expect(ids).toEqual(await ordreFraicheur(ids));
       // Le cercle retenu (30 km) ne change pas pour une offre Catwalks : Meaux n'est pas rendue, ni comptée.
       expect(ids).not.toContain(`cw_${P}directe-meaux`);
       expect(ids).toHaveLength(29 + 3);
       expect(total).toBe(29 + 3);
       // Un code postal aussi : la même logique de lieu pour les deux origines.
       expect((await getJobs(filtres({ lieu: '94430' }))).jobs.slice(0, 3).map((j) => j.id))
-        .toEqual([`cw_${P}directe-champigny`, `cw_${P}directe-paris`, `cw_${P}directe-defense`]);
-      // Sans lieu, l'ordre d'avant : les offres Catwalks d'abord, toutes, Meaux comprise.
+        .toEqual([`cw_${P}directe-defense`, `cw_${P}directe-paris`, `cw_${P}directe-champigny`]);
+      // Sans lieu : les offres Catwalks d'abord, toutes, Meaux comprise.
       const sansLieu = await toutes(filtres());
       expect(sansLieu.ids.slice(0, 4).sort()).toEqual(['champigny', 'defense', 'meaux', 'paris'].map((s) => `cw_${P}directe-${s}`));
     } finally {
@@ -417,13 +433,14 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
     }
   });
 
-  it('l’alerte rejoue la même recherche : même total, nouvelles les plus proches d’abord', async () => {
+  it('l’alerte rejoue la même recherche : même total, nouvelles dans l’ordre de la page, la plus fraîche d’abord (D-510)', async () => {
     const page = await getJobs(filtres({ lieu: 'Chennevières-sur-Marne' }));
     const examen = await examinerAlerte(filtres({ lieu: 'Chennevières-sur-Marne' }), new Date('2026-09-01T00:00:00Z'), new Date('2026-08-01T00:00:00Z'));
     expect(examen.total).toBe(page.total);
     expect(examen.total).toBe(29); // le cercle de 30 km, pas la seule offre au nom de la ville
     expect(examen.nouvelles).toBe(page.total);
     expect(examen.jobs.map((j) => j.id).slice(0, page.jobs.length)).toEqual(page.jobs.map((j) => j.id));
+    expect(examen.jobs.map((j) => j.id)).toEqual(await ordreFraicheur(examen.jobs.map((j) => j.id)));
     const parVille = await examinerAlerte(filtres({ filtres: { groupe: [GROUPE], ville: ['Chennevières-sur-Marne'] } }),
       new Date('2026-09-01T00:00:00Z'), new Date('2026-08-01T00:00:00Z'));
     expect(parVille.total).toBe(page.total);

@@ -5,12 +5,12 @@ import { MARCHES } from '@catwalks/db/marches';
 import type { OccupationManifest } from '@catwalks/db/occupations';
 import { formesDeBase, replierRequete } from '@catwalks/db/search-comprendre';
 import { snapshotModel, type SnapshotMetadata } from '../search-model';
-import { RANG_METIER, RANG_TITRE, searchSql } from '../search-sql';
 import { planifierRecherche } from '../search-plan';
 import { exigerPerimetre } from '../perimetre';
 
 /**
- * D-500 (Q1, Q4) — LA REQUÊTE COMPRISE, au seul client du contrat 2. Témoin pur, sur le manifeste v3 ACTIF en production
+ * D-500 (Q1) — LA REQUÊTE COMPRISE, au seul client du contrat 2 (le classement par l'intitulé, Q4, est remplacé par le
+ * tri par fraîcheur de D-510 : `fraicheur-d510.test.ts`). Témoin pur, sur le manifeste v3 ACTIF en production
  * (`catwalks-occupations-20260929-v3`), par le vrai modèle et le vrai SQL. Les chiffres sur les offres réelles (au moins
  * 99 % des offres du métier pour « conseiller(ère) de vente ») se mesurent en production, en lecture seule
  * (`audits/2026-10-01/d500-requete/`) ; la chaîne jusqu'à la base, dans `suggestions-canoniques-d500.test.ts`.
@@ -136,28 +136,13 @@ describe('D-500 (Q1) : la requête comprise', () => {
   });
 });
 
-describe('D-500 (Q4) : le classement par l’intitulé, au seul contrat 2', () => {
-  it('sans l’option, le score d’avant ; avec, le rang par l’intitulé puis par le métier, la condition inchangée', () => {
-    const i = compris('conseillère de vente');
-    const sans = searchSql(i), avec = searchSql(i, { classement: true });
-    expect(sans.condition).toEqual(avec.condition);
-    expect(sans.score.sql).not.toContain('CASE WHEN s.vector @@ (to_tsquery');
-    expect(avec.score.sql).toContain('CASE WHEN s.vector @@');
-    expect(avec.score.values).toEqual(expect.arrayContaining([RANG_TITRE, RANG_METIER]));
-    // L'intitulé est lu au seul poids A : chaque expression du métier gardée pour le marché.
-    expect(avec.score.values.filter((v) => typeof v === 'string').some((v) => (v as string).includes("'conseiller':A <-> 'de':A <-> 'vente':A"))).toBe(true);
-    // Une exclusion ou une Maison ne compte pas pour l'intitulé.
-    const chanel = searchSql(compris('vendeur chez chanel sans cdd'), { classement: true });
-    // Les requêtes du rang : celles au seul poids A (la pertinence porte les poids AC et AB).
-    const titre = chanel.score.values.filter((v) => typeof v === 'string' && /':A(?![A-Z])/.test(v as string)) as string[];
-    expect(titre.length).toBe(1);
-    expect(titre.join(' ')).not.toContain('chanel');
-    expect(titre.join(' ')).not.toContain('cdd');
-  });
-
+describe('D-500 : le plan', () => {
   it('le plan ne porte la compréhension qu’au client qui l’annonce ; l’empreinte d’avant sinon', () => {
     const p = exigerPerimetre('FR');
     expect(planifierRecherche(p, { q: 'vendeur', filtres: {} })).not.toHaveProperty('comprendre');
     expect(planifierRecherche(p, { q: 'vendeur', filtres: {}, comprendre: true }).comprendre).toBe(true);
+    // D-510 : le tri par fraîcheur, de même.
+    expect(planifierRecherche(p, { q: 'vendeur', filtres: {} })).not.toHaveProperty('fraicheur');
+    expect(planifierRecherche(p, { q: 'vendeur', filtres: {}, fraicheur: true }).fraicheur).toBe(true);
   });
 });

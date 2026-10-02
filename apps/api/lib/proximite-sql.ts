@@ -9,13 +9,10 @@ import type { Dimension, PlanRecherche } from './search-plan';
  * laisse Annecy s'élargir jusqu'à ses 20 offres. Le lieu de la barre et le filtre se cumulent en intersection.
  *
  * Une offre sans point que le nom de sa ville retient (`dl` nul pour le lieu, `vt` pour une ville du filtre) ou qu'une
- * valeur inconnue de la base retient par égalité de texte (`vi`) est retenue à tout rayon, compte dans chaque anneau, et
- * se range après les offres situées (`DISTANCE_SANS_POINT`).
+ * valeur inconnue de la base retient par égalité de texte (`vi`) est retenue à tout rayon et compte dans chaque anneau.
+ * D-510 : les cercles retiennent les offres ; ils ne les trient plus (le tri est la fraîcheur, `fraicheur.ts`).
  */
 export type Cercle = { colonne: string; lieu: boolean };
-
-/** Une offre retenue sans point, ou par une ville que la base ne connaît pas : rangée après toutes les offres situées. */
-export const DISTANCE_SANS_POINT = RAYON_MAX_KM + 1;
 
 /** Les cercles qui s'appliquent à une restriction (`sauf` : la dimension qu'une facette retire d'elle-même). */
 export function cercles(plan: PlanRecherche, sauf?: Dimension): Cercle[] {
@@ -61,17 +58,6 @@ export function appartient(cs: readonly Cercle[], rayon: (i: number) => Prisma.S
   const ville = villes.length ? [Prisma.sql`(${lettre(t)}.vt OR ${lettre(t)}.vi OR ${Prisma.join(villes, ' OR ')})`] : [];
   const parts = [...lieu, ...ville];
   return parts.length ? Prisma.join(parts, ' AND ') : Prisma.sql`true`;
-}
-
-/** La distance de tri, en kilomètres entiers : au lieu, et à la plus proche des villes dont la ligne est dans le cercle. */
-export function distanceDeTri(cs: readonly Cercle[], rayon: (i: number) => Prisma.Sql, t: string): Prisma.Sql {
-  const parts: Prisma.Sql[] = [];
-  const lieu = cs.findIndex((c) => c.lieu);
-  if (lieu >= 0) parts.push(Prisma.sql`coalesce(${colonne(cs[lieu], t)}, ${DISTANCE_SANS_POINT}::float8)`);
-  // La distance à une ville ne compte que si l'offre est située dans son cercle (une offre retenue sans point : 101).
-  const villes = cs.flatMap((c, i) => (c.lieu ? [] : [Prisma.sql`CASE WHEN ${colonne(c, t)} <= ${rayon(i)} THEN ${colonne(c, t)} END`]));
-  if (villes.length) parts.push(Prisma.sql`coalesce(LEAST(${Prisma.join(villes)}), ${DISTANCE_SANS_POINT}::float8)`);
-  return Prisma.sql`round(GREATEST(${Prisma.join(parts)}))::int`;
 }
 
 /** L'anneau d'une ligne de `base` pour un seul cercle (0 : dans les 15 km, ou retenue sans point). */
