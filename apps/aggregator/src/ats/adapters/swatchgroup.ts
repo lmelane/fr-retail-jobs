@@ -278,20 +278,40 @@ export function parseSwatchJobPage(html: string, url: string): NormalizedJob | n
 }
 
 /**
- * Le lien « Dernier » du pager Drupal, repéré par son icône (indépendante de la langue) :
- * `<a class="page-link" href="?page=34" aria-label="Dernier"><span aria-hidden="true"><i class="icon--last">`.
+ * Le lien « Dernier » du pager Drupal, repéré par son icône (indépendante de la langue). Avec les champs du formulaire,
+ * Drupal recopie la requête dans le lien : `href="?search_api_fulltext=&amp;…&amp;time=All&amp;page=33" aria-label="Dernier">
+ * <span aria-hidden="true"><i class="icon--last">`.
  */
-const LAST_PAGE_LINK = /href="\?page=(\d+)"[^>]*>\s*<span[^>]*>\s*<i class="icon--last"/;
+const LAST_PAGE_LINK = /href="\?(?:[^"]*?&amp;)?page=(\d+)"[^>]*>\s*<span[^>]*>\s*<i class="icon--last"/;
+/** Les numéros du pager. Sans lien « Dernier » (cinq pages ou moins, mesuré le 02/10), le plus grand est la dernière. */
+const PAGE_LINKS = /class="page-link" href="\?(?:[^"]*?&amp;)?page=(\d+)"/g;
 /**
- * Les langues du listing, dans l'ordre des relectures ; la langue configurée n'est pas relue (sauf si elle est la seule
- * nommée). Le décalage n'est pas aléatoire : relue dans la même langue, la liste cache les mêmes offres (six lectures du
- * 30/09 à 06:38, 340 distinctes sur 348, les mêmes huit offres servies deux fois, toujours en fin de page puis en tête
- * de la suivante). L'ordre du listing dépend de la langue : le 30/09 à 07:10, en français 328 distinctes, en anglais
- * 336, l'union 348, le total.
+ * Les champs du formulaire de recherche à leur valeur « - Tout - », tels que le bouton « Rechercher » les envoie sans
+ * filtre ; seul `time` varie (voir plus bas). Ils ne restreignent rien : 331 offres annoncées le 02/10/2026 avec ou sans.
  */
-const RECONCILIATION_LANGS = ['en', 'de', 'it', 'fr'];
-/** Une page lue pour que l'ensemble des requêtes de listing reste le même d'une capture à l'autre, jamais comptée. */
-const STABILITY = Symbol('stability');
+const FORM_DEFAULTS = 'search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All';
+/** Le filtre public qui partitionne le listing : « Plein temps » / « Temps partiel » (274 + 57 = 331 le 02/10/2026). */
+const PARTITION_FILTER = 'time';
+
+/** Les valeurs d'un `<select name=…>` du formulaire, « All » exclu, dans l'ordre de la page. Exporté pour être testé. */
+export function selectOptionValues(html: string, name: string): string[] {
+  const select = html.match(new RegExp(`<select[^>]*\\bname="${name}"[^>]*>([\\s\\S]*?)</select>`, 'i'))?.[1];
+  if (!select) return [];
+  return [...select.matchAll(/<option value="([^"]*)"/g)].map((m) => m[1]).filter((value) => value !== '' && value !== 'All');
+}
+
+/**
+ * La dernière page annoncée : le lien « Dernier », sinon le plus grand numéro du pager, sinon 0 (une seule page, sans
+ * pager). Exporté pour être testé sur les pages réelles.
+ */
+export function announcedLastPage(html: string): { lastIndex: number; viaLastLink: boolean } {
+  const last = LAST_PAGE_LINK.exec(html)?.[1];
+  if (last !== undefined) return { lastIndex: Number(last), viaLastLink: true };
+  return { lastIndex: Math.max(0, ...[...html.matchAll(PAGE_LINKS)].map((m) => Number(m[1]))), viaLastLink: false };
+}
+
+/** Une lecture complète du listing pour une valeur du filtre (« All » : le listing entier). `total` : absent si sa forme ne tient pas. */
+type Sweep = { value: string; total?: number; ids: Set<string>; pages: number; shapeIssues: string[]; firstPage: string };
 
 export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const origin = String(config.origin ?? DEFAULT_ORIGIN).replace(/\/$/, '');
@@ -302,129 +322,106 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
   const seen = new Set<string>();
   const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   let pagesRead = 0;
-  // Chaque carte porte le lien 3 fois (image, titre, « En savoir plus ») : dédoublonner dans la page, puis contre les
-  // pages déjà lues, par l'identifiant de l'offre et non par l'adresse : le préfixe de langue varie d'une offre à
-  // l'autre (en, fr, de, it sur la même page) et ne doit pas faire compter deux fois une offre qui en changerait
-  // entre deux lectures. Rend le nombre d'offres distinctes de la page.
-  // `admit` juge la page AVANT qu'elle ne compte : une page refusée (autre total annoncé) n'ajoute rien à l'union.
-  // Une page de STABILITÉ (`admit === STABILITY`) est lue et archivée sans jamais compter : voir plus bas.
-  const readPage = async (page: number, pass: number, pageLang = lang, admit?: ((html: string, count: number) => boolean) | typeof STABILITY): Promise<{ count: number; html: string; admitted: boolean }> => {
-    const url = `${origin}/${pageLang}/job-finder?page=${page}`;
-    const html = await fetchText(url);
-    const inPage = new Map<string, string>();
-    for (const m of html.matchAll(/href="(\/[a-z]{2}\/job\/(\d+))"/g)) if (!inPage.has(m[2])) inPage.set(m[2], `${origin}${m[1]}`);
-    const stability = admit === STABILITY;
-    const admitted = stability ? false : admit ? admit(html, inPage.size) : true;
-    const fresh = admitted ? [...inPage].filter(([id]) => !seen.has(id)) : [];
-    for (const [id, link] of fresh) {
-      seen.add(id);
-      links.push(link);
-    }
-    pagesRead += 1;
-    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
-      ids: [...inPage.keys()], publisherCounter: '', componentCounters: [`pass=${pass}`, `lang=${pageLang}`,
-        ...(stability ? ['role=STABILITY_NOT_COUNTED'] : admitted ? [] : ['refused=TOTAL_CHANGED']), `links=${inPage.size}`, `fresh=${fresh.length}`, `uniqueLinks=${seen.size}`] });
-    return { count: inPage.size, html, admitted };
-  };
+  let pageSize = 0;
+  const listUrl = (value: string, page: number) => `${origin}/${lang}/job-finder?page=${page}&${FORM_DEFAULTS}&${PARTITION_FILTER}=${value}`;
 
   /*
-   * LE TOTAL DE L'ÉDITEUR, ET NON LA PREMIÈRE PAGE SANS LIEN NOUVEAU (30/09/2026).
+   * D-493 (02/10/2026) : LE LISTING COMPLET, PUIS LE MÊME LISTING PARTITIONNÉ PAR UN FILTRE PUBLIC DU FORMULAIRE.
    *
-   * Le listing n'a pas d'ordre stable : d'une page à l'autre une offre glisse, servie deux fois, et en cache une
-   * autre. Le 30/09 à 05:13 : 35 pages (34 de 10, la dernière de 8) = 348 offres annoncées, 328 liens distincts lus,
-   * 20 répétés, toujours sur deux pages voisines. L'ancienne règle s'arrêtait sur une page sans lien nouveau : elle
-   * ne prouvait rien depuis le 24/09 (page vide au-delà de la fin), et le 23/09 elle avait « prouvé » 71 offres.
+   * Mesuré le 02/10/2026 entre 04:49 et 05:10 UTC (`audits/2026-10-02/d493-swatch/`) :
+   *  1. Les pages `?page=N` sont mises en cache par Akamai (`server-timing: cdn-cache; desc=HIT`) malgré
+   *     `cache-control: private, no-cache`, chacune à son heure et sur chaque serveur de bord : une lecture mêle des
+   *     états du listing d'âges différents (pages 3 et 7 annonçant 32 pages quand les autres en annonçaient 33, six
+   *     offres servies deux fois). C'est la cause des totaux qui différaient d'une langue à l'autre (fr 350, en 360,
+   *     de 360, it 344 le 30/09) et du `PUBLISHER_TOTAL_CHANGED` qui a mis la source en pause.
+   *  2. Lu à l'origine (`desc=MISS`), le listing est le même dans toutes les langues : en français et en anglais,
+   *     mêmes 331 annoncées, même ordre, mêmes liens. Relire une autre langue ne montre donc rien de nouveau.
+   *  3. Mais l'origine elle-même ne sert pas tout : son ordre a des égalités, et deux offres glissent d'une page à la
+   *     suivante (servies deux fois) en en cachant deux autres (33253, 33295) : 329 distinctes pour 331 annoncées, à
+   *     chaque lecture complète.
+   *  4. Partitionné par le filtre « temps de travail » du même formulaire, chaque sous-listing a ses propres
+   *     frontières de page : 274 + 57 = 331 annoncées, 274 et 57 distinctes, aucune offre dans les deux, et leur union
+   *     avec le listing complet compte exactement 331. Deux lectures complètes (04:56 et 05:06 UTC) rendent la même
+   *     union.
    *
-   * La preuve est désormais le total que l'éditeur publie par son pager : le lien « Dernier » de la première page
-   * donne l'index de la dernière page ; toutes les pages avant elle portent le même nombre de liens (celui de la
-   * première) ; la dernière en porte de 1 à ce nombre ; la page suivante n'en porte aucun. Total = index × taille +
-   * liens de la dernière. Le listing est relu dans chaque autre langue, dans l'ordre, tant que l'union des lectures
-   * n'atteint pas ce total ; il n'est prouvé que si elle l'atteint exactement. Une langue qui annonce une autre dernière
-   * page (total changé en cours de lecture) arrête le comptage : non prouvé.
-   *
-   * L'ENSEMBLE DES REQUÊTES DE LISTING NE DÉPEND PAS DE CE QU'ELLES RENDENT (RUN du 30/09/2026, 16:58).
-   *
-   * Au RUN, la source est lue deux fois : la capture de validation, dont le périmètre d'accès est dérivé des requêtes
-   * EXACTES qu'elle a faites (`accessScopeDerivation.ts`), puis la capture d'ingestion, contrôlée contre ce périmètre.
-   * L'ancien lecteur s'arrêtait dès que l'union atteignait le total : la validation de 16:56 avait trouvé les offres
-   * manquantes dès la page 0 en anglais (périmètre `/en/job-finder` avec `page=0` FIXE, aucune autre langue),
-   * l'ingestion de 16:58 a dû lire la page 1 en anglais : hors périmètre, source arrêtée (ACCESS_SCOPE).
-   *
-   * Désormais, dès que le pager donne une dernière page dans le budget, CHAQUE langue de réconciliation est lue en
-   * entier, pages 0 à la dernière, quel que soit le résultat. Seules les lectures faites tant que la preuve se
-   * construit comptent, exactement comme avant (même union, même verdict) ; les suivantes sont archivées sans compter
-   * (`role=STABILITY_NOT_COUNTED`) : ajoutées à l'union, elles la feraient dépasser le total à la moindre différence de
-   * cache entre langues (le 30/09 à 18:30, quatre langues lues à la même minute annonçaient 350, 350, 360 et 348). Le
-   * prix : trois langues de 35 pages à chaque capture, soit 105 requêtes de listing après la lecture française, là où
-   * l'arrêt anticipé en faisait de 1 à 175. Une capture sans lien « Dernier », ou au-delà du budget de pages, ne relit
-   * aucune autre langue, comme avant : ces deux gabarits ne sont jamais prouvés.
+   * La preuve, donc, sans aucune relecture dans une autre langue :
+   *  - chaque lecture (complète, puis chaque valeur du filtre) a sa forme : pages pleines sauf la dernière, la suivante
+   *    vide, et chaque page qui porte un lien « Dernier » annonce la même dernière page que la page 0 de sa lecture
+   *    (une page servie d'un autre état du listing n'a pas le même total) ;
+   *  - la somme des totaux des partitions égale le total du listing complet : deux lectures du même ensemble, prises à
+   *    quelques secondes d'écart, doivent se recouper (une offre ajoutée ou retirée entre elles les fait diverger) ;
+   *  - aucune offre n'appartient à deux partitions ;
+   *  - l'union de toutes les lectures compte exactement le total du listing complet.
+   * Chaque lecture est faite en entier quel que soit le résultat des précédentes : l'ensemble des requêtes de listing
+   * ne dépend que des pages 0 (leçon ACCESS_SCOPE du RUN du 30/09). Les champs du formulaire sont envoyés à leur valeur
+   * « Tout », comme le bouton Rechercher, et `time` prend « All » puis chaque valeur de la liste du formulaire.
    */
-  const first = await readPage(0, 1);
-  const lastIndex = Number(LAST_PAGE_LINK.exec(first.html)?.[1] ?? NaN);
-  const pageSize = first.count;
-  const shapeIssues: string[] = [];
-  let termination: string;
-  let publisherTotal: number | undefined;
-  let lastCount = 0;
-  if (!Number.isInteger(lastIndex) || lastIndex < 1) {
-    // Sans lien « Dernier », aucun total : on lit comme avant, jusqu'à une page sans lien nouveau, sans rien prouver.
-    shapeIssues.push('LAST_PAGE_LINK_ABSENT');
-    termination = 'PAGE_BUDGET_EXHAUSTED';
-    for (let page = 1; page < maxPages; page += 1) {
-      const before = seen.size;
-      const { count } = await readPage(page, 1);
-      if (seen.size === before) { termination = count ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break; }
+  const sweep = async (value: string): Promise<Sweep> => {
+    const result: Sweep = { value, ids: new Set(), pages: 0, shapeIssues: [], firstPage: '' };
+    const read = async (page: number) => {
+      const url = listUrl(value, page);
+      const html = await fetchText(url);
+      const inPage = new Map<string, string>();
+      // Chaque carte porte le lien 3 fois (image, titre, « En savoir plus ») ; le préfixe de langue varie d'une offre à
+      // l'autre (en, fr, de, it sur la même page) : on dédoublonne par l'identifiant de l'offre, jamais par l'adresse.
+      for (const m of html.matchAll(/href="(\/[a-z]{2}\/job\/(\d+))"/g)) if (!inPage.has(m[2])) inPage.set(m[2], `${origin}${m[1]}`);
+      const fresh = [...inPage].filter(([id]) => !seen.has(id));
+      for (const [id, link] of fresh) { seen.add(id); links.push(link); }
+      for (const id of inPage.keys()) result.ids.add(id);
+      pagesRead += 1; result.pages += 1;
+      const announced = LAST_PAGE_LINK.exec(html)?.[1];
+      pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
+        ids: [...inPage.keys()], publisherCounter: announced === undefined ? '' : `lastPage=${announced}`,
+        componentCounters: [`${PARTITION_FILTER}=${value}`, `links=${inPage.size}`, `fresh=${fresh.length}`, `uniqueLinks=${seen.size}`] });
+      return { html, count: inPage.size, announced: announced === undefined ? undefined : Number(announced) };
+    };
+    const first = await read(0);
+    result.firstPage = first.html;
+    if (value === 'All') pageSize = first.count;
+    const { lastIndex } = announcedLastPage(first.html);
+    if (lastIndex + 1 >= maxPages) {
+      result.shapeIssues.push('PAGE_BUDGET_EXHAUSTED');
+      for (let page = 1; page < maxPages; page += 1) await read(page);
+      return result;
     }
-  } else if (lastIndex + 1 >= maxPages) {
-    shapeIssues.push('PAGE_BUDGET_EXHAUSTED');
-    termination = 'PAGE_BUDGET_EXHAUSTED';
-    for (let page = 1; page < maxPages; page += 1) await readPage(page, 1);
-  } else {
-    let shapeHolds = true;
+    let lastCount = lastIndex === 0 ? first.count : 0;
+    let shapeHolds = lastIndex === 0 ? first.count <= pageSize : first.count === pageSize;
+    let sameAnnouncement = true;
     for (let page = 1; page <= lastIndex; page += 1) {
-      const { count } = await readPage(page, 1);
+      const { count, announced } = await read(page);
       if (page < lastIndex ? count !== pageSize : count < 1 || count > pageSize) shapeHolds = false;
+      if (announced !== undefined && announced !== lastIndex) sameAnnouncement = false;
       if (page === lastIndex) lastCount = count;
     }
-    const beyond = await readPage(lastIndex + 1, 1);
-    termination = beyond.count === 0 ? 'EMPTY_PAGE' : 'PAGE_BEYOND_LAST_NOT_EMPTY';
-    if (!shapeHolds) shapeIssues.push('PAGE_SIZE_INCONSISTENT');
-    if (beyond.count !== 0) shapeIssues.push('PAGE_BEYOND_LAST_NOT_EMPTY');
-    if (shapeHolds && beyond.count === 0) publisherTotal = lastIndex * pageSize + lastCount;
-  }
-  // Les relectures qui ont COMPTÉ (0 : la première lecture a suffi) ; les lectures de stabilité n'en sont pas.
-  let countingSweeps = 0;
-  if (Number.isInteger(lastIndex) && lastIndex >= 1 && lastIndex + 1 < maxPages) {
-    const configured = Array.isArray(config.reconcileLangs) ? config.reconcileLangs.map(String) : RECONCILIATION_LANGS;
-    const others = configured.filter((l) => l !== lang);
-    const sweepLangs = others.length ? others : configured.slice(0, 1);
-    // La preuve se construit tant qu'un total existe, qu'aucune langue ne l'a contredit et que l'union ne l'atteint pas.
-    let counting = publisherTotal !== undefined;
-    const stillCounting = () => counting && seen.size < publisherTotal!;
-    for (const [index, sweepLang] of sweepLangs.entries()) {
-      const pass = index + 2;
-      if (stillCounting()) countingSweeps += 1;
-      for (let page = 0; page <= lastIndex; page += 1) {
-        if (!stillCounting()) { await readPage(page, pass, sweepLang, STABILITY); continue; }
-        // La page 0 d'une autre langue doit annoncer la même dernière page ; chaque page doit porter le nombre de liens
-        // attendu (celui de la première, ou de la dernière page lue) AVANT de compter : une page d'une autre forme est
-        // un listing changé, pas une relecture (audit adverse).
-        const expected = page < lastIndex ? pageSize : lastCount;
-        const read = await readPage(page, pass, sweepLang, page === 0
-          ? (html, count) => Number(LAST_PAGE_LINK.exec(html)?.[1] ?? NaN) === lastIndex && count === pageSize
-          : (_html, count) => count === expected);
-        if (!read.admitted) {
-          shapeIssues.push('PUBLISHER_TOTAL_CHANGED');
-          counting = false;
-        }
-      }
-    }
-    if (publisherTotal !== undefined) {
-      if (seen.size === publisherTotal) termination = countingSweeps === 0 ? 'PUBLISHER_TOTAL_REACHED' : 'SECOND_SWEEP_RECONCILED';
-      else shapeIssues.push(seen.size > publisherTotal ? 'UNION_ABOVE_PUBLISHER_TOTAL' : 'PUBLISHER_TOTAL_NOT_REACHED');
-    }
-  }
+    const beyond = await read(lastIndex + 1);
+    if (!shapeHolds) result.shapeIssues.push('PAGE_SIZE_INCONSISTENT');
+    if (!sameAnnouncement) result.shapeIssues.push('LAST_PAGE_ANNOUNCEMENT_CHANGED');
+    if (beyond.count !== 0) result.shapeIssues.push('PAGE_BEYOND_LAST_NOT_EMPTY');
+    if (result.shapeIssues.length === 0) result.total = lastIndex * pageSize + lastCount;
+    return result;
+  };
+
+  const full = await sweep('All');
   if (links.length === 0) throw new Error(`Swatch Group ${origin}/${lang}/job-finder: aucun lien /job/ — gabarit ou listing cassé`);
+  const partitionValues = selectOptionValues(full.firstPage, PARTITION_FILTER);
+  const partitions: Sweep[] = [];
+  for (const value of partitionValues) partitions.push(await sweep(value));
+
+  const shapeIssues = [...new Set([full, ...partitions].flatMap((s) => s.shapeIssues))];
+  const proofIssues: string[] = [];
+  const publisherTotal = full.total;
+  if (partitionValues.length === 0) proofIssues.push('PARTITION_FILTER_ABSENT');
+  const partitionSum = partitions.reduce((n, p) => n + (p.total ?? Number.NaN), 0);
+  if (partitionValues.length > 0 && publisherTotal !== undefined && partitionSum !== publisherTotal) proofIssues.push('PARTITION_TOTALS_DIFFER');
+  const owner = new Map<string, string>();
+  const overlaps = new Set<string>();
+  for (const p of partitions) for (const id of p.ids) { if (owner.has(id)) overlaps.add(id); else owner.set(id, p.value); }
+  if (overlaps.size) proofIssues.push('PARTITION_OVERLAP');
+  if (publisherTotal !== undefined && seen.size !== publisherTotal) proofIssues.push(seen.size > publisherTotal ? 'UNION_ABOVE_PUBLISHER_TOTAL' : 'PUBLISHER_TOTAL_NOT_REACHED');
+  const linksProven = publisherTotal !== undefined && shapeIssues.length === 0 && proofIssues.length === 0;
+  const termination = linksProven ? 'PARTITIONS_RECONCILED'
+    : shapeIssues.includes('PAGE_BUDGET_EXHAUSTED') ? 'PAGE_BUDGET_EXHAUSTED'
+    : full.shapeIssues.includes('PAGE_BEYOND_LAST_NOT_EMPTY') ? 'PAGE_BEYOND_LAST_NOT_EMPTY' : 'PARTITIONS_NOT_RECONCILED';
 
   /**
    * 2026-09-09 : 265 offres pour 267 liens, run après run, sans cause nommée.
@@ -448,16 +445,18 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
       }),
     ),
   );
-  const issues: string[] = [...shapeIssues];
-  if (countingSweeps > 0) issues.push('RECONCILED_BY_SECOND_SWEEP');
+  const issues: string[] = [...shapeIssues, ...proofIssues];
   if (rejectedRows.length) issues.push('DETAILS_REJECTED');
-  // The board is proven when the union of the reads reaches exactly the total the pager publishes, and every listed
-  // link was read into a posting.
-  const linksProven = publisherTotal !== undefined && seen.size === publisherTotal;
+  // The board is proven when every read holds its shape, the partitions add up to the full total, never share an
+  // offer, and the union of the reads reaches exactly that total; and every listed link was read into a posting.
   const complete = linksProven && rejectedRows.length === 0;
   if (!complete) issues.push('ENUMERATION_NOT_PROVEN');
   const declaredTotal = publisherTotal ?? links.length;
   return { jobs: jobs.filter((job): job is NormalizedJob => job !== null), declaredTotal, complete, truncated: shapeIssues.includes('PAGE_BUDGET_EXHAUSTED'), rejectedRows,
-    enumeration: { method: 'DRUPAL_PAGER_TOTAL_RECONCILED_THEN_EVERY_DETAIL', endpoint: `${origin}/${lang}/job-finder`, pages: pagesRead, rawCount: links.length, termination, issues,
-      scopes: [{ scope: 'links', declaredTotal, uniqueIds: links.length, pages: pagesRead, complete: linksProven }, { scope: 'details', declaredTotal: links.length, uniqueIds: links.length - rejectedRows.length, pages: links.length, complete: rejectedRows.length === 0 }], pageEvidence } };
+    enumeration: { method: 'DRUPAL_PAGER_TOTAL_PARTITIONED_THEN_EVERY_DETAIL', endpoint: `${origin}/${lang}/job-finder`, pages: pagesRead, rawCount: links.length, termination, issues,
+      scopes: [
+        { scope: 'links', declaredTotal, uniqueIds: links.length, pages: pagesRead, complete: linksProven },
+        ...[full, ...partitions].map((s) => ({ scope: `listing:${PARTITION_FILTER}=${s.value}`, declaredTotal: s.total ?? s.ids.size, uniqueIds: s.ids.size, pages: s.pages, complete: s.total !== undefined && s.ids.size === s.total })),
+        { scope: 'details', declaredTotal: links.length, uniqueIds: links.length - rejectedRows.length, pages: links.length, complete: rejectedRows.length === 0 },
+      ], pageEvidence } };
 }
