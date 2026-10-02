@@ -38,3 +38,11 @@ export function annonceComprehension(entetes: Pick<Headers, 'get'>): boolean {
 export function annonceFraicheur(entetes: Pick<Headers, 'get'>): boolean {
   return annonceProximite(entetes);
 }
+
+/**
+ * D-513, R-143 §6 : un filtre de contrat ou de temps de travail garde, après les offres reconnues, celles qui ne précisent
+ * pas la dimension, signalées (`correspondance`), au même client ; sans l'en-tête, le filtre strict d'avant, à l'identique.
+ */
+export function annonceNonPrecisees(entetes: Pick<Headers, 'get'>): boolean {
+  return annonceProximite(entetes);
+}

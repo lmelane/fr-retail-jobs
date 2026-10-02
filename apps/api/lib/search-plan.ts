@@ -45,7 +45,23 @@ export type CriteresRecherche = {
   comprendre?: boolean;
   /** D-510 : le tri par fraîcheur, au même client (`annonceFraicheur`) ; posé par la route, jamais lu dans l'URL. */
   fraicheur?: boolean;
+  /** D-513, R-143 §6 : les offres qui ne précisent pas un filtre d'emploi restent servies, après (`annonceNonPrecisees`). */
+  nonPrecisees?: boolean;
 };
+
+/**
+ * D-513, R-143 §6 (lecture D-492 du 02/10/2026) — LES FILTRES D'EMPLOI NE CACHENT PAS CE QU'ILS NE RECONNAISSENT PAS.
+ *
+ * Le contrat et le temps de travail ne sont renseignés que sur 37 % et 73 % des offres servies (mesure du 02/10,
+ * `audits/2026-10-02/r143-filtres-alertes/` de l'agrégateur) : un filtre strict « CDI » retirait les deux tiers des CDI.
+ * Au contrat 2, une offre qui ne dit rien de la dimension filtrée reste servie, APRÈS les offres reconnues, et signalée
+ * (« Type de contrat non précisé par la Maison ») ; une offre qui déclare autre chose (un CDD, un stage) reste écartée
+ * (exigence validée de [[D-433]] : « conserver l'accès aux offres non renseignées, sans les présenter comme des
+ * correspondances confirmées »). Une ALERTE, elle, n'envoie que les offres reconnues (R-143 §8) : l'examen n'en retient
+ * aucune autre (`examenNouveautes`).
+ */
+export const DIMENSIONS_NON_PRECISEES = ['contrat', 'temps'] as const satisfies readonly Dimension[];
+export type DimensionNonPrecisee = (typeof DIMENSIONS_NON_PRECISEES)[number];
 
 export type PlanRecherche = {
   perimetre: Perimetre;
@@ -79,6 +95,11 @@ export type PlanRecherche = {
    * et cercles). Absente : l'ordre d'avant, à l'identique (contrat 1).
    */
   fraicheur?: boolean;
+  /**
+   * D-513, R-143 §6 : les dimensions de `DIMENSIONS_NON_PRECISEES` filtrées gardent les offres qui ne les précisent pas,
+   * après les reconnues. Absente : le filtre strict d'avant, à l'identique (contrat 1).
+   */
+  nonPrecisees?: boolean;
 };
 
 export function planifierRecherche(perimetre: Perimetre, criteres: CriteresRecherche): PlanRecherche {
@@ -136,5 +157,6 @@ export function planifierRecherche(perimetre: Perimetre, criteres: CriteresReche
     prioritePays: criteres.prioritePays && perimetre.pays.includes(criteres.prioritePays) ? criteres.prioritePays : undefined,
     ...(criteres.comprendre ? { comprendre: true } : {}),
     ...(criteres.fraicheur ? { fraicheur: true } : {}),
+    ...(criteres.nonPrecisees ? { nonPrecisees: true } : {}),
   };
 }

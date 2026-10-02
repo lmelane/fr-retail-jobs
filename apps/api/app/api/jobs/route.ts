@@ -7,7 +7,7 @@ import { PerimetreRequisError } from '@/lib/perimetre';
 import { CurseurInvalideError } from '@/lib/curseur';
 import { refuserSiCleInvalide } from '@/lib/cle-api';
 import { paramsMultiples } from '@/lib/params-multiples';
-import { annonceComprehension, annonceFraicheur, annonceProximite } from '@/lib/contrat-client';
+import { annonceComprehension, annonceFraicheur, annonceNonPrecisees, annonceProximite } from '@/lib/contrat-client';
 
 /**
  * LA RECHERCHE, servie à catwalks.io (D-417, lot 6).
@@ -49,7 +49,9 @@ export async function GET(request: NextRequest) {
   // D-496 : la proximité au seul client qui l'annonce (`x-catwalks-client: 2`) ; sans lui, le contrat d'avant.
   // D-500 : la requête comprise, au même client. D-510 : le tri par fraîcheur, au même client.
   const filters = { ...parseFilters(paramsMultiples(request.nextUrl.searchParams)), proximite: annonceProximite(request.headers),
-    comprendre: annonceComprehension(request.headers), fraicheur: annonceFraicheur(request.headers) };
+    comprendre: annonceComprehension(request.headers), fraicheur: annonceFraicheur(request.headers),
+    // D-513 : un filtre de contrat ou de temps de travail garde, après les reconnues, les offres qui ne le précisent pas.
+    nonPrecisees: annonceNonPrecisees(request.headers) };
 
   try {
     const result = await getJobs(filters);

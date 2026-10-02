@@ -670,6 +670,8 @@ function empreintePlan(plan: ReturnType<typeof planifierRecherche>): string {
     ...(plan.comprendre ? { comprendre: 1 } : {}),
     // D-510 : le tri par fraîcheur change l'ordre et la forme de la clé ; sans lui, l'empreinte d'avant.
     ...(plan.fraicheur ? { tri: 'fraicheur' } : {}),
+    // D-513 : les offres non précisées retenues changent la recherche et la clé ; sans elles, l'empreinte d'avant.
+    ...(plan.nonPrecisees ? { nonPrecisees: 1 } : {}),
     ...(p ? { proximite: { lieu: p.lieu ? point(p.lieu) : null, villes: p.villes ? p.villes.resolues.map(point).sort((x, y) => String(x[0]).localeCompare(String(y[0]))) : null } } : {}),
   });
 }
@@ -760,7 +762,11 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
   try {
     const taxonomy = await getOptionalOccupationPresentation(langueDesLibelles(localeAffichage(filters.locale, perimetre)));
     const summary = await searchSummary(plan, curseur, PAGE_SIZE);
-    const jobs = (await lignesDansLOrdre(summary.ids, taxonomy)).map((ligne) => ({ ...ligne, correspondance: { statut: 'CONFIRMEE' as const } }));
+    // D-513 : une offre servie alors qu'elle ne précise pas une dimension filtrée (contrat 2) le dit sur sa carte.
+    const jobs = (await lignesDansLOrdre(summary.ids, taxonomy)).map((ligne): JobRow => {
+      const dimensions = summary.nonPrecisees[ligne.id];
+      return { ...ligne, correspondance: dimensions?.length ? { statut: 'NON_CONFIRMEE', dimensions: [...dimensions] } : { statut: 'CONFIRMEE' } };
+    });
     return {
       jobs,
       occupationEnrichmentAvailable: taxonomy.available,
