@@ -26,7 +26,7 @@ export type Dimension = CleFacette;
 
 export const DIMENSIONS: readonly Dimension[] = ['pays', 'metier', 'secteur', 'contrat', 'temps', 'programme', 'ville', 'maison', 'groupe', 'langue'];
 
-/** Les dimensions où « non renseigné » n'exclut pas (D-435) ; les autres sont structurelles ou choisies explicitement. */
+/** Un filtre que le périmètre n'honore pas, nommé dans la réponse (les dimensions tolérantes : `DIMENSIONS_NON_PRECISEES`). */
 export type FiltreRefuse = {
   cle: Dimension | 'lieu';
   valeurs: string[];

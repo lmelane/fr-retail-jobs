@@ -365,7 +365,7 @@ export async function examenNouveautes(
 ): Promise<ExamenNouveautes> {
   const asOf = new Date();
   const base = await sqlBase(plan, asOf);
-  // D-496 : l'alerte rejoue le cercle de la recherche ENTIÈRE (anneau retenu sur toutes ses offres), puis ses nouvelles
+  // D-496 : l'alerte rejoue le cercle de la recherche ENTIÈRE (anneau retenu sur ses offres reconnues, D-513), puis ses nouvelles
   // dans ce cercle. D-510 : au contrat 2, dans l'ordre de la page, Catwalks d'abord puis la plus fraîche ; au contrat 1,
   // l'ordre d'avant (la proximité n'y existe pas).
   const cs = cercles(plan);
@@ -402,7 +402,7 @@ export async function searchSummary(
   // (`nonPrecisees`, D-513) : une offre qui ne précise pas le contrat ou le temps de travail filtré reste servie, non
   // confirmée, après les confirmées (`nc` dans la clé), et la page dit lesquelles (`npr`).
   // D-419 §2 (contrat 1) : le pays du visiteur d'abord, à l'intérieur du périmètre. Jamais un filtre.
-  // D-496 : avec une ville cherchée, le cercle se choisit sur la recherche entière (`retenues`), et totaux, page et
+  // D-496 : avec une ville cherchée, le cercle se choisit sur la recherche entière, offres reconnues (D-513, `retenues`), et totaux, page et
   // curseur portent sur lui. D-510 (contrat 2) : l'ordre est l'origine, la fraîcheur, l'identifiant.
   const cs = cercles(plan);
   const prox = cs.length > 0;
