@@ -301,7 +301,7 @@ async function qualifier(c: Candidat): Promise<Verdict> {
   catch (error) { raisons.unshift(`promotion : ${message(error)}`); return rendre('COLLECTE_NON_VALIDEE', { revision, offres }); }
   const result = rendre('QUALIFIEE', { revision, offres });
   if (options.ingest) {
-    const run = await ingestChild(c.key);
+    const run = await ingestChild(c.key, validation.captureBatchId);
     const output = run.output.split('\n');
     const line = output.slice().reverse().find(l => l.includes('"event":"command.result"'));
     const data = line ? JSON.parse(line).data : null; const s = data?.sources?.[0];
@@ -333,8 +333,10 @@ async function qualifier(c: Candidat): Promise<Verdict> {
 }
 
 /** The child runs the normal ingestion CLI, preserves its logs and receives stop signals. */
-async function ingestChild(key: string): Promise<{ status: number; output: string }> {
-  const childEnv = ingestionChildEnvironment(process.env);
+async function ingestChild(key: string, qualifiedCaptureId: string): Promise<{ status: number; output: string }> {
+  // Lecture unique : l'enfant adopte la capture que cette campagne vient de qualifier au lieu de relire le site
+  // (Ralph Lauren, release r5 du 02/10/2026 : seconde lecture refusée par le 406 d'Avature 32 s après la première).
+  const childEnv: NodeJS.ProcessEnv = { ...ingestionChildEnvironment(process.env), INGEST_ADOPT_CAPTURE: qualifiedCaptureId, INGEST_ADOPT_RUN: log.runId() ?? '' };
   await log.info('source.ingestion_child', { sourceKey: key, childRunId: childEnv.CATWALKS_RUN_ID ?? null });
   return new Promise((resolve, reject) => {
     const child = spawn(process.execPath, ['--import', 'tsx', 'apps/aggregator/src/cli.ts', 'ingest', `--source=${key}`, '--no-geocode'], { stdio: ['ignore', 'pipe', 'pipe'], env: childEnv });

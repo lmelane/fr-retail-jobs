@@ -6,7 +6,7 @@ import { summarizeOrchestration } from './lib/runSummary.js';
 import type { CompletionStatus, RunCompletion } from './lib/runCompletion.js';
 import { PrismaClient } from '@prisma/client';
 import { runIngest } from './pipeline/ingest.js';
-import { ingestAllBySource, ingestCommandVerdict, runQualifiedIngest } from './pipeline/ingestOrchestrator.js';
+import { captureHandoffFromEnv, ingestAllBySource, ingestCommandVerdict, runQualifiedIngest } from './pipeline/ingestOrchestrator.js';
 import { checkSourceHealth } from './pipeline/health.js';
 import { sendHealthAlert } from './pipeline/alert.js';
 import { submitOfferChanges } from './pipeline/googleIndexing.js';
@@ -87,7 +87,7 @@ try {
     // skipGeocode passé AUSSI à runIngest : sans lui, une passe de géocodage
     // suivait chaque source (7 775 offres en attente = minutes) même avec le
     // flag, qui ne sautait que la passe finale.
-    const stats = only ? await runQualifiedIngest(prisma, only, skipGeocode) : await runIngest(prisma, { skipGeocode });
+    const stats = only ? await runQualifiedIngest(prisma, only, skipGeocode, undefined, captureHandoffFromEnv()) : await runIngest(prisma, { skipGeocode });
     const geo = skipGeocode
       ? { pending: 0, lookedUp: 0, jobsLocated: 0, remaining: 0 }
       : await runGeocode(prisma);

@@ -274,6 +274,7 @@ async function ingestApiSource(
   catalogue?: CompiledOccupationTaxonomy,
   /** La capture de qualification que ce tour vient de valider : adoptée si elle remplit toutes les conditions (lecture unique). */
   adoptCaptureId?: string,
+  adoptCaptureRunId?: string | null,
 ): Promise<IngestStats> {
   const stats: IngestStats = {
     source: source.key,
@@ -307,7 +308,8 @@ async function ingestApiSource(
    * Refusée, la source relit le site sous sa décision d'accès, exactement comme avant.
    */
   const adoption = adoptCaptureId
-    ? await adoptQualificationCapture(prisma, { key: source.key, revisionId: source.revisionId, config }, type as AtsType, adoptCaptureId)
+    ? await adoptQualificationCapture(prisma, { key: source.key, revisionId: source.revisionId, config }, type as AtsType, adoptCaptureId,
+      adoptCaptureRunId === undefined ? {} : { runId: adoptCaptureRunId })
     : null;
   const adopted = adoption && 'adopted' in adoption ? adoption.adopted : null;
   const extraction = adopted ?? await captureExtraction(
@@ -595,6 +597,8 @@ export type IngestOptions = {
    * ingestion adopts it instead of reading the site again when every condition holds (lecture unique).
    */
   adoptCaptureId?: string;
+  /** The run that collected `adoptCaptureId` when a campaign parent handed it over; default: the current run. */
+  adoptCaptureRunId?: string | null;
 };
 
 export async function runIngest(
@@ -662,7 +666,7 @@ export async function runIngest(
       // No closure happens here: the refresh reads the sealed proof of this admitted
       // collection and decides absence under its own locks and manifest.
       const stats = await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => ingestApiSource(prisma, source, trust, occupationTaxonomy,
-        options.only === source.key ? options.adoptCaptureId : undefined));
+        options.only === source.key ? options.adoptCaptureId : undefined, options.only === source.key ? options.adoptCaptureRunId : undefined));
       results.push(stats);
       await geocodeQuietly();
     } catch (error) {

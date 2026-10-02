@@ -4,7 +4,8 @@ import { gunzipSync } from 'node:zlib';
 import { randomUUID } from 'node:crypto';
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PrismaClient, type Prisma, type Source } from '@prisma/client';
-import { runQualifiedIngest } from './ingestOrchestrator.js';
+import { captureHandoffFromEnv, runQualifiedIngest } from './ingestOrchestrator.js';
+import { maintainSourceAccess } from '../connectors/sourceAccessQualification.js';
 import { CAPTURE_ADOPTION_POLICY } from '../connectors/sourceAdmission.js';
 import { setWafPrimer, clearWafTokens } from '../lib/wafToken.js';
 import { BROWSER_USER_AGENT, type BootstrapObserver } from '../lib/browser.js';
@@ -180,3 +181,63 @@ describe('Ralph Lauren (Avature, portail, défi AWS WAF amorcé et inscrit, D-48
   });
 });
 
+/*
+ * La réouverture passe par une campagne (`source-campaign --ingest`) : qualification et décision d'accès dans le run de la
+ * campagne, PUIS une ingestion enfant dans un autre run (release r5 du 02/10/2026, Ralph Lauren : `da424ede` puis
+ * `c81e14a5`, 406 à la 9e requête). La validation est alors fraîche : l'enfant ne requalifie rien et relisait le site.
+ * La campagne lui remet désormais sa capture (`INGEST_ADOPT_CAPTURE`, `INGEST_ADOPT_RUN`).
+ */
+describe('réouverture par campagne : la capture qualifiée est remise à l’ingestion enfant', { timeout: 120_000 }, () => {
+  const LISTING = 'https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0';
+  const config = { origin: 'https://careers.loreal.com', listingUrl: LISTING, employerFromDataLayer: true };
+  const page0 = '<script>var searchJobsAJAXPage = "https://careers.loreal.com/en_US/jobs/SearchJobsAJAX";</script>' + fixture('g6-loreal-listing-card.html');
+  const network = () => avature(url => {
+    if (url.pathname.endsWith('/SearchJobs/')) return html(page0);
+    if (url.pathname.endsWith('/SearchJobsAJAX/')) return html(fixture('loreal-terminal-page.html'));
+    if (url.pathname.includes('JobDetail')) return html(fixture('g6-loreal-jobdetail.html'));
+    return null;
+  }, url => url.pathname.endsWith('/SearchJobs/') && url.searchParams.get('jobOffset') === '0');
+  /** Le temps de la campagne : qualification native et décision d'accès, sans ingestion. */
+  const campaign = async (key: string) => {
+    await activeSource(key, config); const since = await mark();
+    const seen = network();
+    const access = await maintainSourceAccess(db, key, 60_000);
+    const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: access.qualificationCaptureId! } });
+    return { seen, since, handoff: { captureId: batch.id, runId: batch.runId } };
+  };
+
+  it('l’environnement remis par la campagne est lu, et absent partout ailleurs', () => {
+    expect(captureHandoffFromEnv({})).toBeUndefined();
+    expect(captureHandoffFromEnv({ INGEST_ADOPT_CAPTURE: 'lot', INGEST_ADOPT_RUN: 'run' })).toEqual({ captureId: 'lot', runId: 'run' });
+    expect(captureHandoffFromEnv({ INGEST_ADOPT_CAPTURE: 'lot', INGEST_ADOPT_RUN: '' })).toEqual({ captureId: 'lot', runId: null });
+  });
+
+  it('avant (sans remise) : l’ingestion enfant relit le site et reçoit le 406', async () => {
+    const key = `l-oreal-professionnel-campagne-${randomUUID()}`;
+    const { seen, since } = await campaign(key);
+    const [stats] = await runQualifiedIngest(db, key, true, 120_000);
+    expect(seen.reads).toBeGreaterThanOrEqual(2); expect(seen.refused).toBeGreaterThan(0);
+    expect(stats.errorNote).toMatch(/406/);
+    expect((await jobBatches(key, since)).map(b => b.outcome?.status)).toEqual(['EXTRACTED', 'FAILED']);
+  });
+
+  it('après : la capture remise est adoptée, une seule lecture, publiée', async () => {
+    const key = `l-oreal-professionnel-campagne-${randomUUID()}`;
+    const { seen, since, handoff } = await campaign(key);
+    const [stats] = await runQualifiedIngest(db, key, true, 120_000, handoff);
+    expect(seen).toMatchObject({ reads: 1, refused: 0 });
+    expect(stats.errorNote).toBeUndefined();
+    const batches = await jobBatches(key, since);
+    expect(batches).toHaveLength(1);
+    expect(batches[0]).toMatchObject({ id: handoff.captureId, ingestionAdmission: { policyVersion: CAPTURE_ADOPTION_POLICY } });
+    expect(batches[0].ingestionCompletion).not.toBeNull();
+  });
+
+  it('une remise qui nomme un autre run est refusée : l’enfant relit le site', async () => {
+    const key = `l-oreal-professionnel-campagne-${randomUUID()}`;
+    const { seen, handoff } = await campaign(key);
+    const [stats] = await runQualifiedIngest(db, key, true, 120_000, { ...handoff, runId: `autre-${randomUUID()}` });
+    expect(seen.reads).toBeGreaterThanOrEqual(2);
+    expect(stats.errorNote).toMatch(/406/);
+  });
+});

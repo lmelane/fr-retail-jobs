@@ -255,14 +255,31 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
   }
 }
 
+/**
+ * The qualification capture a campaign (`source-campaign --ingest`) collected, validated and qualified access from, handed
+ * to its ingestion child, which runs as a distinct run (`ingestionChildEnvironment`). Ralph Lauren, release r5 of 02/10/2026:
+ * the campaign read 1 362 requests, then the child read the site again 32 s later and got the Avature 406. The capture
+ * is adopted only if it belongs to the named run and meets every other condition (`capture/adoption.ts`).
+ */
+export type CaptureHandoff = { captureId: string; runId: string | null };
+
+/** Read from the environment the campaign parent gives its child; absent anywhere else (RUN, light pass, CLI). */
+export function captureHandoffFromEnv(env: NodeJS.ProcessEnv = process.env): CaptureHandoff | undefined {
+  const captureId = env.INGEST_ADOPT_CAPTURE?.trim();
+  return captureId ? { captureId, runId: env.INGEST_ADOPT_RUN?.trim() || null } : undefined;
+}
+
 /** Normal and explicitly scoped runs maintain the same admission prerequisite. When that maintenance had to collect a
  * native qualification capture, the ingestion adopts it instead of reading the site a second time (lecture unique,
  * `capture/adoption.ts`), or reads the site under its decision when the capture does not qualify. */
-export async function runQualifiedIngest(prisma: PrismaClient, key: string, skipGeocode = true, timeoutMs?: number) {
+export async function runQualifiedIngest(prisma: PrismaClient, key: string, skipGeocode = true, timeoutMs?: number, handoff?: CaptureHandoff) {
   const budget = timeoutMs ?? await sourceTimeoutFor(prisma, key);
   return withSourceBudget(async () => {
     const access = await maintainSourceAccess(prisma, key, budget);
-    return runIngest(prisma, { only: key, skipGeocode, ...(access.qualificationCaptureId ? { adoptCaptureId: access.qualificationCaptureId } : {}) });
+    // This turn's own qualification first; otherwise the capture a campaign parent qualified and handed over explicitly.
+    const adoption = access.qualificationCaptureId ? { adoptCaptureId: access.qualificationCaptureId }
+      : handoff ? { adoptCaptureId: handoff.captureId, adoptCaptureRunId: handoff.runId } : {};
+    return runIngest(prisma, { only: key, skipGeocode, ...adoption });
   }, budget, key,
   { softTimeoutMs: Math.floor(budget - Math.min(SOFT_DEADLINE_MARGIN_MS, budget / 10)) });
 }

@@ -21,9 +21,9 @@
 
 | # | Critère | Où le lire |
 |---|---|---|
-| 1 | Deux collectes `JOBS` du jour — qualification puis ingestion — `EXTRACTED`, `transportCoverage = HTTP_WITH_WAF_BOOTSTRAP`, chacune `VALIDATED` (rejeu exact) | `CaptureOutcome`, `SourceValidation` |
+| 1 | Deux collectes `JOBS` du jour — qualification puis ingestion — `EXTRACTED`, `transportCoverage = HTTP_WITH_WAF_BOOTSTRAP`, chacune `VALIDATED` (rejeu exact). *Amendé le 02/10/2026 (lecture unique, lecture D-492 sous D-516 §1 et D-517 §3 ; branche `feat/lecture-unique` puis `development`, non livré) : quand l'ingestion adopte la capture de qualification, il n'y a qu'**une** collecte, `EXTRACTED`, `HTTP_WITH_WAF_BOOTSTRAP`, `VALIDATED`, dont l'admission porte `native-ingestion-adoption/1` ; sans adoption, deux collectes comme ci-dessus.* | `CaptureOutcome`, `SourceValidation`, `SourceIngestionAdmission` |
 | 2 | Une décision d'accès `ALLOWED` courante dont le document porte `bootstraps = [{ vendor: AWS_WAF_CHALLENGE, origin: https://careers.ralphlauren.com, challengeHosts: [https://…token.awswaf.com] }]` et dont `report.bootstrapRequestCount` égale le nombre de lignes `BROWSER_RESPONSE` de la collecte de qualification | `SourceAccessDecision` |
-| 3 | La collecte d'ingestion est liée à cette décision (`accessDecisionId`) | `CaptureBatch` |
+| 3 | La collecte d'ingestion est liée à cette décision (`accessDecisionId`). *Amendé le 02/10/2026 (lecture unique) : une capture adoptée est collectée sans décision (`accessDecisionId` nul) ; elle est liée à cette décision par `SourceCaptureAdoption.accessDecisionId`, que la porte de publication relit.* | `CaptureBatch`, `SourceCaptureAdoption` |
 | 4 | Lignes `BROWSER_RESPONSE` par collecte : la page défiée et les hôtes `*.awswaf.com` seulement, **5 par amorçage** (mesuré le 30/09 : 5 ; au plus 2 amorçages depuis D-516 §1, donc 5 ou 10) ; aucune autre origine | `RawCapture` + enveloppes |
 | 5 | Aucun corps archivé pour `inputs` / `mp_verify` (`failure = CredentialNotArchived`) : le jeton n'entre pas dans l'archive | `RawCapture` |
 | 6 | *Amendé le 02/10/2026 (D-516 §1).* **0** réponse 403, 406 ou 202 sur les pages de liste et de détail **après le dernier amorçage** ; avant lui, au plus un refus, suivi de `waf.bootstrap_renewed` | `RawCapture.status` |

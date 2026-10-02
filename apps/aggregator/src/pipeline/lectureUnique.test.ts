@@ -7,7 +7,11 @@ import { readAttestingCapture } from './attestingCapture.js';
 import * as certification from '../connectors/sourceCertification.js';
 import { maintainSourceAccess } from '../connectors/sourceAccessQualification.js';
 import { captureSourceForValidation } from '../connectors/sourceValidation.js';
+import * as accessModule from '../connectors/sourceAccess.js';
 import { requireSourceAccess } from '../connectors/sourceAccess.js';
+import { qualifySourceAccess } from '../connectors/sourceAccessQualification.js';
+import { validateCapturedSource } from '../connectors/sourceValidation.js';
+import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
 import { effectiveSourceConfig } from '../connectors/sourceConfig.js';
 import { CAPTURE_ADOPTION_POLICY, SOURCE_ADMISSION_POLICY } from '../connectors/sourceAdmission.js';
 import { adoptQualificationCapture, CAPTURE_ADOPTION_MAX_AGE_MS, singleReadEnabled } from '../capture/adoption.js';
@@ -266,6 +270,53 @@ describe('chaque refus de rejeu relit le site', () => {
     const { source, captureId } = await qualified();
     vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('Adoption tried to use the network'); }));
     expect(await adoptQualificationCapture(db, adoptionSource(source), 'ASHBY', captureId)).toHaveProperty('adopted');
+  });
+});
+
+describe('la porte de publication d’une capture adoptée (audit du lot)', () => {
+  const adopted = async () => {
+    const source = await create(); network(() => syntheticFeed(POSTINGS));
+    const access = await maintainSourceAccess(db, source.key, 60_000);
+    const captureId = access.qualificationCaptureId!;
+    expect(await adoptQualificationCapture(db, adoptionSource(source), 'ASHBY', captureId)).toHaveProperty('adopted');
+    const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: captureId } });
+    // Prémisse : adoptée, la capture passe la porte de publication sous la décision liée par son adoption.
+    await expect(db.$transaction(tx => requireCurrentCaptureRevision(tx, batch))).resolves.toBeUndefined();
+    return { source, captureId, batch };
+  };
+
+  it('une décision d’accès remplacée après l’adoption bloque la publication (ACCESS_SUPERSEDED), comme pour une collecte gouvernée', async () => {
+    const { source, captureId, batch } = await adopted();
+    // Une nouvelle décision valide, redérivée de la même capture : seule la décision change (ni tentative ni validation).
+    network(() => syntheticFeed(POSTINGS));
+    const previous = await requireSourceAccess(db, source);
+    expect(await qualifySourceAccess(db, source, source.currentRevisionId, captureId, 'temoin-lecture-unique', {}, undefined, previous.decision.id))
+      .toEqual({ allowed: true, reason: null });
+    expect((await requireSourceAccess(db, source)).decision.id).not.toBe(previous.decision.id);
+    await expect(db.$transaction(tx => requireCurrentCaptureRevision(tx, batch))).rejects.toMatchObject({ code: 'ACCESS_SUPERSEDED' });
+  });
+
+  it('une nouvelle validation de la même capture après l’adoption bloque la publication (CAPTURE_NOT_VALIDATED)', async () => {
+    const { captureId, batch } = await adopted();
+    vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('Validation tried to use the network'); }));
+    expect(await validateCapturedSource(db, captureId)).toMatchObject({ verdict: 'VALIDATED' });
+    await expect(db.$transaction(tx => requireCurrentCaptureRevision(tx, batch))).rejects.toMatchObject({ code: 'CAPTURE_NOT_VALIDATED' });
+  });
+
+  it('une décision remplacée entre le rejeu et la transaction d’adoption fait relire le site (ACCESS_NOT_COVERING)', async () => {
+    const source = await create(); network(() => syntheticFeed(POSTINGS));
+    const { qualificationCaptureId } = await maintainSourceAccess(db, source.key, 60_000);
+    const real = accessModule.requireSourceAccess;
+    let calls = 0;
+    vi.spyOn(accessModule, 'requireSourceAccess').mockImplementation(async (...args: Parameters<typeof real>) => {
+      const result = await real(...args);
+      // Le premier appel (couverture du journal) voit la décision courante ; le second, sous verrou, une autre.
+      return ++calls === 1 ? result : { ...result, decision: { ...result.decision, id: `access-review:${'0'.repeat(64)}` } };
+    });
+    const outcome = await adoptQualificationCapture(db, adoptionSource(source), 'ASHBY', qualificationCaptureId!);
+    expect(calls).toBe(2);
+    expect(outcome).toMatchObject({ refused: 'ACCESS_NOT_COVERING', detail: expect.stringMatching(/remplacée pendant l’adoption/) });
+    expect(await db.sourceIngestionAdmission.findUnique({ where: { batchId: qualificationCaptureId! } })).toBeNull();
   });
 });
 
