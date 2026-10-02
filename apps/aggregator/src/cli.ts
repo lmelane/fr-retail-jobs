@@ -273,6 +273,20 @@ try {
       store: objectStoreConfigured() ? objectStoreFromEnv() : undefined });
     await log.info('command.result', { ok: report.refused.length === 0, command, apply: process.argv.includes('--apply'), ...report,
       refused: report.refused.length, refusedSample: report.refused.slice(0, 20) });
+  } else if (command === 'attach-maisons') {
+    /**
+     * R-143 §5 (D-513) : rattache chaque entité juridique prouvée à sa Maison (registre des sources + nom), une décision
+     * relue par Maison (`identity/maisonPlan.ts`). Sans `--apply`, rien n'est écrit ; `--output=<fichier>` garde la
+     * prévisualisation complète. L'application exige l'image déployée (son commit signe chaque correction).
+     */
+    const { attachMaisons } = await import('./identity/maisonPlan.js');
+    const { deployedCommitHash } = await import('./capture/revision.js');
+    const apply = process.argv.includes('--apply');
+    const output = process.argv.find((a) => a.startsWith('--output='))?.slice(9);
+    const report = await attachMaisons(prisma, { apply, commitHash: apply ? deployedCommitHash() : undefined });
+    if (output) { const { writeFile } = await import('node:fs/promises'); await writeFile(output, JSON.stringify(report, null, 2) + '\n', { flag: 'wx' }); }
+    await log.info('command.result', { ok: report.refused.length === 0, command, apply, maisons: report.maisons, entities: report.entities,
+      toCreate: report.toCreate, uncertain: report.uncertain.length, applied: report.applied, movedJobs: report.movedJobs, refused: report.refused.slice(0, 20) });
   } else if (command === 'resolve-domains') {
     /**
      * Pose Company.domain (le logo) sur les Maisons actives qui n'en ont pas :
@@ -379,7 +393,7 @@ try {
   try {
     try { await closeBrowser(); }
     catch (error) { fatalFailure = true; process.exitCode = 1; await log.error('browser.cleanup_failed', { error }); }
-    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'consolidate-publications'].includes(command)) {
+    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'consolidate-publications', 'attach-maisons'].includes(command)) {
       const heartbeat = await pingHeartbeat(!fatalFailure && !process.exitCode);
       await log.info('pipeline.heartbeat', { heartbeat, command });
       if (heartbeat === 'failed') { fatalFailure = true; process.exitCode = 1; }

@@ -11,6 +11,7 @@ const COMMANDS: Record<string, CommandOptions> = {
   'retire-source': { positional: 'required', values: ['external-prefix'] },
   'resolve-domains': { values: ['limit'], flags: ['dry-run'] },
   'consolidate-publications': { values: ['limit'], flags: ['apply'] },
+  'attach-maisons': { values: ['output'], flags: ['apply'] },
   'occupation-review-queue': { values: ['output','limit'] },
   'occupation-preview': { values: ['file','output'] },
   'occupation-activate': { values: ['file','output','review','commit'], flags: ['apply'] },
