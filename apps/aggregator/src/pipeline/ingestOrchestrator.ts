@@ -16,6 +16,8 @@ import { ingestionIssue, isDecidedKnownFailure, isNonBlockingIssue, isProvenSour
 import { failureLine } from '../lib/runSummary.js';
 import { SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { incrementalPassActive } from '../lib/incrementalReading.js';
+import { inRunWindow, LIGHT_PASS_HOURS_UTC } from '@catwalks/runtime';
+import { WAF_BOOTSTRAP_SOURCES } from '../connectors/wafBootstrap.js';
 import { causeOf, remediationLine, remediationNote, remediationOf, retriesInRun, type Cause, type Remediation } from './ordinaryCauses.js';
 
 /**
@@ -74,18 +76,45 @@ export type OrchestratorResult = {
 /**
  * D-520 — LA REPRISE UNIQUE DES ÉCHECS PASSAGERS DANS LE RUN.
  *
- * Mesuré sur les 8 RUN du 24/09 au 01/10/2026 (`audits/2026-10-02/remediation-auto/`) : 16 sources sont tombées pour
- * une capture native indisponible ou une transaction de base close, jusqu'à 14 dans un même RUN (29/09), et 15 sur 15
- * sont revenues seules au RUN suivant. Chacune rendait le RUN rouge et demandait une enquête. Ces sources sont donc
- * relues UNE fois, après toutes les autres, par l'étape exacte du RUN (`ingestOne` : accès, qualification, collecte
- * scellée, écriture) ; la première tentative reste au journal (`source.issue_classified`, `SourceRun` en erreur), la
- * reprise est inscrite (`source.retry_started`, `source.retry_completed`) et le bilan la nomme.
+ * Seules les pannes passagères par leur CLASSE d'erreur (base Prisma, transport : `ordinaryCauses.ts`, `retriesInRun`),
+ * à leur première occurrence, sont relues UNE fois, après toutes les autres sources, par l'étape exacte du RUN
+ * (`ingestOne` : accès, qualification, collecte scellée, écriture). Mesuré sur les 8 RUN du 24/09 au 01/10/2026
+ * (`audits/2026-10-02/remediation-auto/`) : peu nombreuses (browns-shoes et diptyque-workday le 01/10, une connexion
+ * de Rolex le 24/09), mais chacune rendait le RUN rouge. La première tentative reste au journal (`source.issue_classified`
+ * et sa ligne `SourceRun` en erreur, que les lecteurs ne prennent pas pour référence : ils lisent la dernière ligne ou
+ * la dernière collecte productive) ; la reprise est inscrite (`source.retry_started`, `source.retry_completed`).
  *
- * Bornes : seules les causes passagères à leur première occurrence (`retriesInRun`) ; jamais un refus de l'éditeur ni
- * un délai dépassé ; au plus `RUN_RETRY_MAX_SOURCES` sources, sinon aucune (une panne de masse n'est pas ordinaire,
- * elle reste rouge) ; jamais dans une passe de découverte. Interrupteur : `RUN_TRANSIENT_RETRY=off`.
+ * Bornes : jamais un refus, un délai, une capture refusée ; jamais Avature ni une source à amorçage anti-robot
+ * (lecture D-492 de D-516 §1, D-483) ; au plus `RUN_RETRY_MAX_SOURCES` sources, sinon aucune (une panne de masse n'est
+ * pas ordinaire, elle reste rouge) ; chaque reprise bornée par `retryDeadline` (fin de la fenêtre du RUN, prochaine
+ * passe de découverte) ; jamais dans une passe. Interrupteur : `RUN_TRANSIENT_RETRY=off`.
  */
 export const RUN_RETRY_MAX_SOURCES = 20;
+/** En deçà, une reprise n'est pas commencée : elle serait coupée avant d'écrire. */
+export const RUN_RETRY_MIN_MS = 2 * 60_000;
+const RUN_WINDOW_END_UTC_MINUTES = 18 * 60 + 30;
+
+/**
+ * L'instant avant lequel toute reprise doit finir : la fin de la fenêtre du RUN (18:30 UTC) quand on y est, et toujours
+ * l'heure de la prochaine passe de découverte (`LIGHT_PASS_HOURS_UTC`). Pure.
+ */
+export function retryDeadline(now: Date, passHours: readonly number[] = LIGHT_PASS_HOURS_UTC): number {
+  const candidates: number[] = [];
+  if (inRunWindow(now)) {
+    const end = new Date(now); end.setUTCHours(0, RUN_WINDOW_END_UTC_MINUTES, 0, 0); candidates.push(end.getTime());
+  }
+  for (const hour of passHours) {
+    const at = new Date(now); at.setUTCHours(hour, 0, 0, 0);
+    if (at.getTime() <= now.getTime()) at.setUTCDate(at.getUTCDate() + 1);
+    candidates.push(at.getTime());
+  }
+  return Math.min(...candidates, now.getTime() + 24 * 3_600_000);
+}
+
+/** Les sources jamais reprises : Avature (relire tôt après une lecture complète est refusé) et l'amorçage anti-robot. */
+export function retryExcluded(key: string, kind: string): boolean {
+  return kind === 'avature' || Object.hasOwn(WAF_BOOTSTRAP_SOURCES, key);
+}
 export function transientRetryEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
   return env.RUN_TRANSIENT_RETRY?.trim().toLowerCase() !== 'off';
 }
@@ -98,7 +127,7 @@ function withdrawFirstAttempt(result: OrchestratorResult, key: string) {
   result.failed--;
 }
 
-export async function retryTransientFailures(prisma: PrismaClient, result: OrchestratorResult): Promise<void> {
+export async function retryTransientFailures(prisma: PrismaClient, result: OrchestratorResult, now: () => Date = () => new Date()): Promise<void> {
   const pending = result.pendingRetry ?? [];
   result.pendingRetry = [];
   if (!pending.length) return;
@@ -109,13 +138,18 @@ export async function retryTransientFailures(prisma: PrismaClient, result: Orche
     return;
   }
   const retries: NonNullable<OrchestratorResult['retries']> = [];
+  const deadline = retryDeadline(now());
   const limit = pLimit(SOURCE_CONCURRENCY);
   const settled = await Promise.allSettled(pending.map(({ source: key, cause }) => limit(() => log.withContext({ sourceKey: key }, async () => {
     assertPipelineRunning(); log.assertHealthy();
-    withdrawFirstAttempt(result, key);
-    await log.info('source.retry_started', { sourceKey: key, cause });
     const kind = (await prisma.source.findUniqueOrThrow({ where: { key }, select: { kind: true } })).kind;
-    await log.withContext({ connectorId: kind }, () => ingestOne(prisma, key, result, Infinity, 'retry'));
+    const left = deadline - now().getTime();
+    const skipped = retryExcluded(key, kind) ? 'EXCLUDED_SOURCE' : left < RUN_RETRY_MIN_MS ? 'DEADLINE' : null;
+    // Non reprise : la première tentative reste telle quelle au bilan.
+    if (skipped) { await log.info('source.retry_skipped', { sourceKey: key, cause, reason: skipped }); return; }
+    withdrawFirstAttempt(result, key);
+    await log.info('source.retry_started', { sourceKey: key, cause, budgetMs: left });
+    await log.withContext({ connectorId: kind }, () => ingestOne(prisma, key, result, left, 'retry'));
     const absorbed = !(result.issues ?? []).some(issue => issue.source === key && !isNonBlockingIssue(key, issue));
     retries.push({ source: key, cause, absorbed });
     await log.info('source.retry_completed', { sourceKey: key, cause, absorbed });
@@ -161,9 +195,10 @@ export async function previousRunCauses(prisma: PrismaClient, key: string, curre
 }
 
 /** La trajectoire de chaque issue d'une source, pour le journal et la ligne du bilan. */
-async function remediationsOf(prisma: PrismaClient, key: string, issues: readonly IngestionIssue[], message = ''): Promise<Remediation[]> {
+async function remediationsOf(prisma: PrismaClient, key: string, issues: readonly IngestionIssue[], message = '', errorCode?: string,
+  retried = false): Promise<Remediation[]> {
   const previous = await previousRunCauses(prisma, key);
-  return issues.map(issue => remediationOf(key, issue, message, previous));
+  return issues.map(issue => remediationOf(key, issue, message, previous, errorCode, retried));
 }
 const notes = (remediations: readonly Remediation[]) => [...new Set(remediations.map(remediationNote))].join(' ; ');
 const alertLines = (remediations: readonly Remediation[]) => [...new Set(remediations.map(remediationLine))];
@@ -292,7 +327,8 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
     const { issues, incidents } = classifySourceRun(stats, health.incidents);
     result.incidents.push(...incidents);
     result.issues!.push(...issues.map(issue => ({ ...issue, source: key })));
-    const remediation = issues.length ? await remediationsOf(prisma, key, issues) : [];
+    // L'erreur de collecte est absorbée par `runIngest` (`source.ingest_failed`) : son message est la note de la source.
+    const remediation = issues.length ? await remediationsOf(prisma, key, issues, stats[0].errorNote ?? '', undefined, attempt === 'retry') : [];
     if (remediation.length) incidents.forEach(incident => { incident.remediation = alertLines(remediation); });
     if (issues.length) await log.warn('source.issue_classified', { sourceKey: key, issues, acceptedNativeOnly: issues.every(isProvenSourceIssue),
       knownFailure: issues.some(issue => isDecidedKnownFailure(key, issue)), remediation, attempt });
@@ -301,6 +337,9 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
       // A retention decided on native evidence stays counted and listed (D-453 §1); its line says it does not block.
       result.failed++;
       result.failures.push(failureLine(key, issues, `erreurs d’ingestion · ${notes(remediation)}`));
+      // D-520 : une source dont TOUTES les issues sont passagères à leur première occurrence est reprise une fois.
+      if (attempt === 'first' && !incrementalPassActive() && remediation.every(retriesInRun))
+        (result.pendingRetry ??= []).push({ source: key, cause: remediation[0].cause });
     } else result.ok++;
   } catch (error) {
     log.assertHealthy();
@@ -315,7 +354,8 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
      */
     const challenged = error instanceof WafChallengeError;
     const issue = ingestionIssue(error);
-    const remediation = await remediationsOf(prisma, key, [issue], message);
+    const errorCode = typeof (error as { code?: unknown })?.code === 'string' ? (error as { code: string }).code : undefined;
+    const remediation = await remediationsOf(prisma, key, [issue], message, errorCode, attempt === 'retry');
     result.issues!.push({ ...issue, source: key });
     // D-520 : un échec passager à sa première occurrence est repris une fois en fin de RUN (jamais dans une passe).
     if (attempt === 'first' && !timedOut && !challenged && !incrementalPassActive() && retriesInRun(remediation[0]))
