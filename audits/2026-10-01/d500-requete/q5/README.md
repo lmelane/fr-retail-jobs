@@ -29,6 +29,27 @@ Référence de la v3 (D-487, métiers lus) : 0 % selon l'assistant, 3,0 % selon 
 rejouer `a-blanc.mts` sur les offres arrivées depuis (nouvel échantillon, verdicts committés avant le juge), et ne
 promouvoir que si le taux de faux ne dépasse pas celui de la v3.
 
+## Tour 3 : l'échantillon neuf (02/10/2026, 05:04 UTC, production en lecture seule)
+
+Population neuve = toute offre qu'aucun tour précédent n'a lue, définie par son **identifiant**, jamais par son intitulé
+(`a-blanc.mts`, populations `neuves` et `fusionnees`, garde qui échoue si une offre déjà jugée y entre ; graine
+`d500-q5-2026-10-02-tour3`) :
+
+| Population | Offres lues | Offres qui gagnent un métier | Couples à juger |
+|---|---|---|---|
+| `neuves` : créées après le début du tour 1 (01/10, 18:58 UTC), actives ou fermées | 75 | 0 | 0 |
+| `fusionnees` : offres fusionnées dans une autre | 0 | 0 | 0 |
+
+**Aucun couple neuf n'existe** : la justesse sur un échantillon neuf n'est pas mesurable aujourd'hui, il n'y a donc ni
+verdict de l'assistant ni juge. Rythme mesuré : de l'ordre de 2 000 offres créées par jour (24/09 au 01/10, hors reprise du
+23/09) ; au taux des tours précédents (157 gains pour 89 775 offres actives, 0,17 %), environ 3 à 4 couples neufs par jour.
+Sans aucun faux, il faut 124 couples pour borner le taux de faux sous 3 % (borne de Wilson à 95 %, la référence du juge sur la v3) :
+de l'ordre d'un mois de collectes.
+
+Couverture remesurée le même jour (`tour3-couverture/`) : la liste des offres françaises trouvées par le texte hors de
+`metier=sales-advisor` est **identique** à celle du 01/10 (136 offres, mêmes identifiants) ; 84 rattachées (61,8 %), 84 des
+94 qui nomment le métier (89,4 %). **Critère de 90 % non tenu : pas de GO d'activation.**
+
 ## Couverture (les 136 offres françaises que le texte trouve et que `metier=sales-advisor` ne retient pas)
 
 - 84 rattachées (61,8 %) ; parmi les 94 dont l'intitulé nomme le métier au pluriel ou en écriture inclusive, 84 (89,4 %).

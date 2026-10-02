@@ -1,0 +1,1368 @@
+{
+ "q": "conseillère de vente",
+ "metier": "sales-advisor",
+ "marche": "FR",
+ "mesureA": "2026-10-02T05:04:58.314Z",
+ "lignes": [
+  {
+   "id": "cmu6xmcbo000apobi24wbdjr4",
+   "title": "Conseiller de vente expert beauté H/F Grands Magasins [CDI/CDD]",
+   "rawTitle": "Conseiller de vente expert beauté H/F Grands Magasins [CDI/CDD]",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmu87uw5g008vpg6hyt5su4p7",
+   "title": "Responsable de Corner MELLOW YELLOW Printemps Paris, H/F",
+   "rawTitle": "Responsable de Corner MELLOW YELLOW Printemps Paris, H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-store-management",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmu8c9re100x5mn48u50zx4wz",
+   "title": "Magasinier(ère) Boutique",
+   "rawTitle": "Magasinier(ère) Boutique",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-operations",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmu8ca3xi02oqmn480nfwvrr7",
+   "title": "Responsable de Secteur Off Trade – Dijon (F/H/X)",
+   "rawTitle": "Responsable de Secteur Off Trade – Dijon (F/H/X)",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-area-management",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmu8ca6wa034vmn48yc8wi8bu",
+   "title": "Assistant Digital Client Advisor - Internship F/H",
+   "rawTitle": "Assistant Digital Client Advisor - Internship F/H",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmu8cbh1o09mgmn48gz9qakad",
+   "title": "CHEF DE SECTEUR PARIS/Région Parisienne",
+   "rawTitle": "CHEF DE SECTEUR PARIS/Région Parisienne",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-store-management",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmu8ccb230dqsmn48mz0v4etn",
+   "title": "Berluti Stage - Assistant Développement Clients EMEA (F/H)",
+   "rawTitle": "Berluti Stage - Assistant Développement Clients EMEA (F/H)",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmu8ccqxz0g36mn48n9v91qrq",
+   "title": "Digital Client Advisor - Dutch Speaker",
+   "rawTitle": "Digital Client Advisor - Dutch Speaker",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmu8ce6op0n0nmn480sohn2je",
+   "title": "Digital Client Advisor - Italian Speaker",
+   "rawTitle": "Digital Client Advisor - Italian Speaker",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmu8cecbw0nuzmn48y53hu500",
+   "title": "Stage - Vente - Décembre Janvier - MARNE-LA-VALLEE (H/F)",
+   "rawTitle": "Stage - Vente - Décembre Janvier - MARNE-LA-VALLEE (H/F)",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmu8cecd10nv6mn48d08i3fti",
+   "title": "Stage - Vente - Décembre Janvier - PARIS (H/F)",
+   "rawTitle": "Stage - Vente - Décembre Janvier - PARIS (H/F)",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmu8cei0c0oqvmn4809v2ko6z",
+   "title": "Digital Client Advisor - Polish Speaker",
+   "rawTitle": "Digital Client Advisor - Polish Speaker",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmu9fjqby00a0of8ljzc08m57",
+   "title": "CDI - Boutique Assistant - Monaco",
+   "rawTitle": "CDI - Boutique Assistant - Monaco",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmu9fjsop00muof8l4zeujqyl",
+   "title": "CDD - Boutique Assistant - Paris",
+   "rawTitle": "CDD - Boutique Assistant - Paris",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmu9fjt1b00olof8l8dh3zsn4",
+   "title": "STAGE - Boutique Assistant - Paris",
+   "rawTitle": "STAGE - Boutique Assistant - Paris",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmu9fk2il024pof8l7u2tqwk8",
+   "title": "STAGE LONG - Assistant Boutique - Cannes, Septembre 2026",
+   "rawTitle": "STAGE LONG - Assistant Boutique - Cannes, Septembre 2026",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-store-management",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmu9fxxrx016jofadmnxau3a4",
+   "title": "Head of Sales France & Belux H/F",
+   "rawTitle": "Head of Sales France & Belux H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmu9fymj703xvofadvx0f038s",
+   "title": "CDI - Conseiller de Ventes H/F",
+   "rawTitle": "CDI - Conseiller de Ventes H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmu9mlkfv03whmb9zp9sll2uk",
+   "title": "Vendeurs polyvalents (CDI 35h)",
+   "rawTitle": "Vendeurs polyvalents (CDI 35h)",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmudt3vwn0444oa34748vnue2",
+   "title": "V H/F/MONTESSON/CDI",
+   "rawTitle": "V H/F/MONTESSON/CDI",
+   "occupationCode": null,
+   "occupationStatus": "NO_RULE",
+   "titleRoles": [],
+   "jobFunction": null,
+   "dansIntitule": false
+  },
+  {
+   "id": "cmudu7s3t1cspoa34nn4t7zq5",
+   "title": "TECHNICIEN CYCLE",
+   "rawTitle": "TECHNICIEN CYCLE",
+   "occupationCode": null,
+   "occupationStatus": "NO_RULE",
+   "titleRoles": [],
+   "jobFunction": null,
+   "dansIntitule": false
+  },
+  {
+   "id": "cmudu7sfn1cv3oa34noc50kz2",
+   "title": "Animateur(trice) de Rayons",
+   "rawTitle": "Animateur(trice) de Rayons",
+   "occupationCode": null,
+   "occupationStatus": "NO_RULE",
+   "titleRoles": [],
+   "jobFunction": null,
+   "dansIntitule": false
+  },
+  {
+   "id": "cmudu83ga1exkoa349bzf584p",
+   "title": "Skiman H/F",
+   "rawTitle": "Skiman H/F",
+   "occupationCode": null,
+   "occupationStatus": "NO_RULE",
+   "titleRoles": [],
+   "jobFunction": null,
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue4zwhh030vo234cnnwk1sj",
+   "title": "CDD - Chargé d'expérience client H/F - Magasins de Cannes / Saint Tropez / Monaco",
+   "rawTitle": "CDD - Chargé d'expérience client H/F - Magasins de Cannes / Saint Tropez / Monaco",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "crm-clienteling",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue4zx4q033lo234p0arhzyt",
+   "title": "CDD - Chargé(e) Support Commercial & SAV - Cannes",
+   "rawTitle": "CDD - Chargé(e) Support Commercial & SAV - Cannes",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "customer-service",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue5012a03hso234hwg6v3tq",
+   "title": "CDD (novembre - janvier) - chargé expérience client H/F - Paris",
+   "rawTitle": "CDD (novembre - janvier) - chargé expérience client  H/F - Paris",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "crm-clienteling",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue50dut04s9o2344q0cll94",
+   "title": "CDD - Chargé d'Expérience Client H/F - Magasin de Sèvres",
+   "rawTitle": "CDD - Chargé d'Expérience Client H/F - Magasin de Sèvres",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "crm-clienteling",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue50dwo04sgo234z72h0yn4",
+   "title": "CDD - Chargé d'accueil H/F - octobre à janvier",
+   "rawTitle": "CDD - Chargé d'accueil H/F - octobre à janvier",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "admin-facilities",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue50k5705cvo234nh15vvkc",
+   "title": "CDD (Juin - Août) - Chargé d'expérience client H/F - Magasin George V",
+   "rawTitle": "CDD (Juin - Août) - Chargé d'expérience client H/F - Magasin George V",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "crm-clienteling",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue50ln705hqo2348m0htz41",
+   "title": "CDD - Chargé(e) Service Après-Vente H/F - magasin du Faubourg St-Honoré",
+   "rawTitle": "CDD - Chargé(e) Service Après-Vente H/F - magasin du Faubourg St-Honoré",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "customer-service",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue50mw205lto234mskixtl7",
+   "title": "CDD - chargé expérience client H/F - magasin du Faubourg St. Honoré",
+   "rawTitle": "CDD - chargé expérience client H/F - magasin du Faubourg St. Honoré",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "crm-clienteling",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue5233209wko234hqtcm5ok",
+   "title": "Adjoint·e Responsable de Boutique – Expert·e Spiritueux Senior (H/F)",
+   "rawTitle": "Adjoint·e Responsable de Boutique – Expert·e Spiritueux Senior (H/F)",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-store-management",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue7w15r00d8qf6es1hmazoa",
+   "title": "[Fashion] - Conseiller.e de ventes CDI 21h - La Défense - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes CDI 21h - La Défense - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue7w2es00g0qf6eoj8886e8",
+   "title": "[Fashion] - Conseiller.e de ventes CDD 35h - Nice Cap 3000 - H/F",
+   "rawTitle": "[Fashion] - Conseiller.e de ventes CDD 35h - Nice Cap 3000 - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue7w60f00o9qf6esvgu7xrg",
+   "title": "[Fashion] - Conseiller.e de ventes CDD 35h - Nice Cap 3000 - H/F",
+   "rawTitle": "[Fashion] - Conseiller.e de ventes CDD 35h - Nice Cap 3000 - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue7w7ik00ryqf6eitprv8e2",
+   "title": "[Fashion] - Conseiller.e de ventes CDI 35h - Lyon Herriot - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes CDI 35h - Lyon Herriot - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8e603000aqy348un241zz",
+   "title": "[Fashion] - Conseiller.e de ventes - Lyon - CDI 35h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - Lyon - CDI 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8e78r006fqy34h37n8tqo",
+   "title": "[Job Dating Claudie Pierlot - 1er octobre 2026] - Conseiller.e de ventes CDI/CDD 35h - PARIS - H/F",
+   "rawTitle": "[Job Dating Claudie Pierlot - 1er octobre 2026] -  Conseiller.e de ventes CDI/CDD 35h - PARIS - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8e7n6008aqy34xtbxkhxz",
+   "title": "[Fashion] - Conseiller.e de ventes CDI 21h - Marseille Terrasses du port H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes CDI 21h - Marseille Terrasses du port H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8e7ot008hqy34t0xpqe72",
+   "title": "[Fashion] - Conseiller.e de ventes - Beaugrenelle - CDI 35h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - Beaugrenelle - CDI 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8e85c00ajqy34q05jsuvh",
+   "title": "[Fashion] - Conseiller.e de ventes CDI 35h - Lyon The Village Outlet - H/F",
+   "rawTitle": "[Fashion] - Conseiller.e de ventes CDI 35h - Lyon The Village Outlet - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8e88j00auqy34y4fo0sy7",
+   "title": "[Fashion] - Conseiller.e de ventes - Tours - CDI 30h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - Tours - CDI 30h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8ea2300guqy34tutes1ln",
+   "title": "[Fashion] - Conseiller.e de ventes - La Défense - CDI 35h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - La Défense - CDI 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8ea6p00hmqy344d82evze",
+   "title": "[Fashion] - Conseiller.e de ventes expérimenté.e - CDI 35h - Le Marais - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes expérimenté.e - CDI 35h - Le Marais - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8eapw00kuqy34was9re7b",
+   "title": "[Fashion] - Conseiller.e de ventes - Galeries Lafayette Nantes - CDI 35h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - Galeries Lafayette Nantes - CDI 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8eatu00lcqy34k3p47xwi",
+   "title": "[Job Dating Claudie Pierlot - 18 septembre 2026] - Conseiller.e de ventes CDI/CDD 35h - PARIS - H/F",
+   "rawTitle": "[Job Dating Claudie Pierlot - 18 septembre 2026] -  Conseiller.e de ventes CDI/CDD 35h - PARIS - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8eery015pqy34dtpv0dfz",
+   "title": "[Fashion] - Conseiller.e de ventes - Galeries Lafayette Tours - CDD 35h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - Galeries Lafayette Tours - CDD 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8eeud0163qy347d04kr27",
+   "title": "[Fashion] Conseiller.e de ventes Polyglotte - Pierre Charron - CDI 35h - H/F",
+   "rawTitle": "[Fashion] Conseiller.e de ventes Polyglotte - Pierre Charron - CDI 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8eg3p01cxqy34qipjb2zk",
+   "title": "[Fashion] - Conseiller.e de ventes - Galeries Lafayette Nice Massena - CDD 35h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - Galeries Lafayette Nice Massena - CDD 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8egar01e3qy349ycpbm9d",
+   "title": "[Fashion] - Conseiller.e de ventes - Bon Marché Paris - CDD 35h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - Bon Marché Paris - CDD 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8egbu01eaqy34opc1fnkx",
+   "title": "[Fashion] - Conseiller.e de ventes - Galeries Lafayette Haussmann Paris - CDD 35h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - Galeries Lafayette Haussmann Paris - CDD 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8ehtr01n1qy34p6co348t",
+   "title": "[Fashion] - Conseiller.e de ventes - Roubaix - CDI 35h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - Roubaix - CDI 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8eilr01rfqy34041csojn",
+   "title": "[Fashion] Conseiller.e de ventes CDI 35h - Outlet Mc Arthur Glen Troyes - H/F",
+   "rawTitle": "[Fashion] Conseiller.e de ventes CDI 35h - Outlet Mc Arthur Glen Troyes - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8eimw01rmqy34l3cfzjkw",
+   "title": "STAGE - Conseiller.e de ventes -La Vallée Village - H/F",
+   "rawTitle": "STAGE - Conseiller.e de ventes -La Vallée Village - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8eiwk01szqy347gm43zis",
+   "title": "[Fashion] - Conseiller.e de ventes CDI 15h - Marseille Paradis - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes CDI 15h - Marseille Paradis - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8ejc101urqy34kh9gzcmw",
+   "title": "[Fashion] - Conseiller.e de ventes CDD 35h - Parly 2 - H/F",
+   "rawTitle": "[Fashion] - Conseiller.e de ventes CDD 35h - Parly 2 - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8ejdo01uyqy34e3ngqf10",
+   "title": "[Fashion] - Conseiller.e de ventes CDD 35h - Parly 2 - H/F",
+   "rawTitle": "[Fashion] - Conseiller.e de ventes CDD 35h - Parly 2 - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8ejkz01vxqy34msplw57v",
+   "title": "STAGE - Conseiller.e de ventes - Nice - H/F",
+   "rawTitle": "STAGE - Conseiller.e de ventes - Nice - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8ejmk01w4qy349ixzxkrq",
+   "title": "STAGE - Conseiller.e de ventes - Paris - H/F",
+   "rawTitle": "STAGE - Conseiller.e de ventes - Paris - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8ejvp01xaqy34r97ajgum",
+   "title": "[Fashion] Conseiller.e de ventes CDD 35h - Pierre Charron - H/F",
+   "rawTitle": "[Fashion] Conseiller.e de ventes CDD 35h - Pierre Charron - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8ejx301xhqy34zw6olfic",
+   "title": "[Fashion] - Conseiller.e de ventes CDD 35h - Victor Hugo - H/F",
+   "rawTitle": "[Fashion] - Conseiller.e de ventes CDD 35h - Victor Hugo - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8ejyl01xoqy3416ysk0na",
+   "title": "Conseiller.e de ventes Anglophone CDD 35h - Saint Germain des Près - H/F",
+   "rawTitle": "Conseiller.e de ventes Anglophone CDD 35h - Saint Germain des Près - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8ekbv01zmqy34h5962p1g",
+   "title": "[Fashion] - Conseiller.e de ventes CDD 35h - Galeries Lafayette Nimes- H/F",
+   "rawTitle": "[Fashion] - Conseiller.e de ventes CDD 35h - Galeries Lafayette Nimes- H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8ekyh022hqy34eo5c7ebk",
+   "title": "STAGE - Conseiller.e de ventes - Lyon - H/F",
+   "rawTitle": "STAGE - Conseiller.e de ventes - Lyon - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8ekzu022oqy345ua7a0lf",
+   "title": "STAGE - Conseiller.e de ventes - Toulouse - H/F",
+   "rawTitle": "STAGE - Conseiller.e de ventes - Toulouse - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8el11022vqy34rxprs843",
+   "title": "STAGE - Conseiller.e de ventes - Lille - H/F",
+   "rawTitle": "STAGE - Conseiller.e de ventes - Lille - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmue8el4s023gqy34k0xcnq9y",
+   "title": "Conseiller.e de ventes senior - Flagship Parisien - CDI 35h - H/F",
+   "rawTitle": "Conseiller.e de ventes senior - Flagship Parisien - CDI 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueaseys0e3roi35om1tqe0x",
+   "title": "CDD TP- CONSEILLER DE VENTE PARFUMERIE F/H",
+   "rawTitle": "CDD TP- CONSEILLER DE VENTE PARFUMERIE  F/H",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmueaskqf0etooi35p7c4oj0l",
+   "title": "Stage Hôte d'accueil - Rolex Haussmann H/F",
+   "rawTitle": "Stage Hôte d'accueil - Rolex Haussmann H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "admin-facilities",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueazxx20i1moi35074dod3u",
+   "title": "Vendeurs (f/h) - CDI 25h/8h - Euralille",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h/8h - Euralille",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb012v0ihdoi3583b4jqhp",
+   "title": "Vendeurs (f/h) - CDI 16h/8h - Cergy Pontoise",
+   "rawTitle": "Vendeurs (f/h) - CDI 16h/8h - Cergy Pontoise",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb016n0ihyoi358uv6e2wv",
+   "title": "Vendeurs (f/h) - CDI 25h - Rennes St Gregoire",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - Rennes St Gregoire ",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb01g40ijboi351szrom03",
+   "title": "Vendeurs (f/h) - CDI 25h/8h - Aeroville",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h/8h - Aeroville",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb05go0j2koi35as3an6qu",
+   "title": "Vendeurs (f/h) - CDI 25h/16h -Niort Centre",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h/16h -Niort Centre",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb0amj0jq3oi359wg8gjz4",
+   "title": "Vendeurs (f/h) - CDI 25h - Caen Mondeville",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - Caen Mondeville",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb0b010jruoi35dd42fktd",
+   "title": "Vendeurs (f/h) - CDI 16h/8h - Auxerre",
+   "rawTitle": "Vendeurs (f/h) - CDI 16h/8h - Auxerre",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb0e5c0k6moi35s6zfpz5x",
+   "title": "Vendeurs (f/h) - CDI 25h - Vannes",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - Vannes",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb0ifb0kssoi35oltg40w3",
+   "title": "Alternance - Vendeurs (f/h) - Mont St Martin",
+   "rawTitle": "Alternance - Vendeurs (f/h) - Mont St Martin",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb0l6a0l7doi35xs1ga6an",
+   "title": "Responsable de département (concession) h/f/x 39h",
+   "rawTitle": "Responsable de département (concession) h/f/x 39h ",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-store-management",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb0mdo0ld7oi35n3xmtcp8",
+   "title": "Vendeurs (f/h) - CDI 25h/16h - Val Thoiry",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h/16h - Val Thoiry",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb0mjs0ldloi35br1l7ned",
+   "title": "Responsable de département h/f/x 39h",
+   "rawTitle": "Responsable de département h/f/x 39h ",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-store-management",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb0x5d0mlcoi35fkngqx0y",
+   "title": "Vendeurs (f/h) - CDI 16h - La Rochelle",
+   "rawTitle": "Vendeurs (f/h) - CDI 16h - La Rochelle",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb18vg0o28oi35d1zgpo2z",
+   "title": "Vendeurs (f/h) - CDI 25h - Anglet",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - Anglet",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb18yk0o2moi35g3wyugl3",
+   "title": "Vendeurs (f/h) - CDI 25h - Cholet",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - Cholet",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb1bge0odboi35e4747e4d",
+   "title": "Vendeurs (f/h) - CDI 25h - La Roche sur Yon",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - La Roche sur Yon",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb1is10p79oi3556vwh1sq",
+   "title": "Responsable Commercial de département h/f/x 39h",
+   "rawTitle": "Responsable Commercial de département h/f/x 39h",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "wholesale-b2b",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueb1kwn0pfmoi3560sy2f79",
+   "title": "Vendeurs (f/h) - CDD 35h - 3 mois - Ajaccio",
+   "rawTitle": "Vendeurs (f/h) - CDD 35h - 3 mois - Ajaccio",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueg8b99022dld34n4do3e9y",
+   "title": "CDD - Hôte d'accueil et Hospitalité clients - Grand Montaigne - H/F/X",
+   "rawTitle": "CDD - Hôte d'accueil et Hospitalité clients - Grand Montaigne - H/F/X",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "admin-facilities",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmueg8uow037zld344ethov31",
+   "title": "CDD - Hôte d'accueil et Hospitalité clients - Paris - H/F/X",
+   "rawTitle": "CDD - Hôte d'accueil et Hospitalité clients - Paris - H/F/X",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "admin-facilities",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuega6nv05vuld347oke5u5y",
+   "title": "Stage Renfort Eté - Conseiller de Vente Parfum Beauté",
+   "rawTitle": "Stage Renfort Eté - Conseiller de Vente Parfum Beauté",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmuekvnwa000pnw5o1p2jmc3b",
+   "title": "Hôte/Hôtesse d'Accueil en joaillerie",
+   "rawTitle": "Hôte/Hôtesse d&apos;Accueil en joaillerie",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "admin-facilities",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmufuk8dt3qghmy33tx0kbw50",
+   "title": "Vendeurs (f/h) - CDI 35h/16h/8h - Nancy",
+   "rawTitle": "Vendeurs (f/h) - CDI 35h/16h/8h - Nancy",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmufukaad3qk5my3372lxesjz",
+   "title": "Vendeurs (f/h) - CDI 35h - Tolbiac",
+   "rawTitle": "Vendeurs (f/h) - CDI 35h - Tolbiac",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmufukay53qlomy3378itrlly",
+   "title": "Vendeurs (f/h) - CDI 25h - Rouen les Docks",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - Rouen les Docks",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmufukdns3qrwmy336ojn5fsn",
+   "title": "Vendeurs (f/h) - CDI 35h/8h - Chambourcy",
+   "rawTitle": "Vendeurs (f/h) - CDI 35h/8h - Chambourcy",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuh8rwz53wuvp4340uw604vb",
+   "title": "Vendeurs (f/h) - CDI 25h - Rouen les Docks",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - Rouen les Docks",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuh8rx0q3wv2p434a8of0wm3",
+   "title": "Vendeurs (f/h) - CDI 25h - La Roche sur Yon",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - La Roche sur Yon",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuh8rx403wvgp434dfp0n3gq",
+   "title": "Vendeurs (f/h) - CDI 25h - Carré Sénart",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - Carré Sénart",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuh8rxyf3wykp434crnhs3us",
+   "title": "Vendeurs (f/h) - CDI 35h/25h - Toulouse Labège",
+   "rawTitle": "Vendeurs (f/h) - CDI 35h/25h - Toulouse Labège",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuh8ryv73x2np43470avmmm9",
+   "title": "Vendeurs (f/h) - CDI 35h/25h - Creteil",
+   "rawTitle": "Vendeurs (f/h) - CDI 35h/25h -  Creteil",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuh8ryyr3x38p434hilooyr5",
+   "title": "Alternance - Vendeurs (f/h) - Saint Nazaire",
+   "rawTitle": "Alternance - Vendeurs (f/h) - Saint Nazaire",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuiny6jc3nb0mt34gj6ak8rz",
+   "title": "Vendeurs (f/h) - CDI 25h/8h - Bourg en Bresse",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h/8h - Bourg en Bresse",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuliw5sy1wcjt234bxlsa08l",
+   "title": "[Fashion] - Conseiller.e de ventes CDI 20h - Bon Marché - H/F (Anglais et Espagnol courant)",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes CDI 20h - Bon Marché - H/F (Anglais et Espagnol courant)",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmullmzmn3njst234cj6990zp",
+   "title": "Vendeurs (f/h) - CDI 8h - Charleville Mezières",
+   "rawTitle": "Vendeurs (f/h) - CDI 8h - Charleville Mezières",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmulln01f3nk6t234uk2z4mxh",
+   "title": "Vendeurs (f/h) - CDI 35h - Nice Massena",
+   "rawTitle": "Vendeurs (f/h) - CDI 35h - Nice Massena",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmulln7543nrrt234fujkkbw8",
+   "title": "Vendeurs (f/h) - CDI 16h/8h - Le Havre",
+   "rawTitle": "Vendeurs (f/h) - CDI 16h/8h - Le Havre ",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmullnekj3o04t234uffhqfy6",
+   "title": "Vendeurs (f/h) - CDD 35h - Reims",
+   "rawTitle": "Vendeurs (f/h) - CDD 35h - Reims",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmullnirb3o56t234eoi45yzq",
+   "title": "Vendeurs (f/h) - CDI 35h - Villeneuve la Garenne",
+   "rawTitle": "Vendeurs (f/h) - CDI 35h - Villeneuve la Garenne",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmullnjsy3o6jt2345dfpe4up",
+   "title": "Vendeurs (f/h) - CDI 16h - Sarcelles",
+   "rawTitle": "Vendeurs (f/h) - CDI 16h - Sarcelles",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmulmyloh4c44t234afmgj4jj",
+   "title": "CDD - chargé expérience client H/F - magasin du Faubourg St. Honoré",
+   "rawTitle": "CDD - chargé expérience client H/F - magasin du Faubourg St. Honoré",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "crm-clienteling",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmumx6n392oektj35saxncn2z",
+   "title": "[Fashion] - Conseiller.e de ventes - Outlet Giverny - CDD 35h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - Outlet Giverny - CDD 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmumx6n642ofctj359gi2uh65",
+   "title": "[Fashion] - Conseiller.e de ventes - Strasbourg - CDI 7h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - Strasbourg - CDI 7h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmumx6n9v2og5tj35uf0ybfa0",
+   "title": "[Fashion] - Conseiller.e de ventes CDI 35h - Sévigné - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes CDI 35h - Sévigné  - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmumx6nbp2ogktj35pobqlip9",
+   "title": "[Fashion] - Conseiller.e de ventes - Cannes - CDD 35h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - Cannes - CDD 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmumy2fsw4g2vtj3544u4r9hs",
+   "title": "Vendeurs (f/h) - CDI 35h - Carré Sénart",
+   "rawTitle": "Vendeurs (f/h) - CDI 35h - Carré Sénart",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmumy2h2g4g84tj35n99rdzz8",
+   "title": "Vendeurs (f/h) - CDI 8h - Dijon Quétigny",
+   "rawTitle": "Vendeurs (f/h) - CDI 8h - Dijon Quétigny",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmumy2h3t4g8btj352095vnk4",
+   "title": "Vendeurs (f/h) - CDI 35h - Lafayette",
+   "rawTitle": "Vendeurs (f/h) - CDI 35h - Lafayette",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmumy2h9a4g93tj351g9fiir9",
+   "title": "Vendeurs (f/h) - CDI 25h - La Roche sur Yon",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - La Roche sur Yon",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmumybazr57titj35bydfj4hy",
+   "title": "CDD - Chargé(e) Service Après-Vente H/F - magasin du Faubourg St-Honoré",
+   "rawTitle": "CDD - Chargé(e) Service Après-Vente H/F - magasin du Faubourg St-Honoré",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "customer-service",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmunq9knd04y7qd34b832mblt",
+   "title": "SAINT LAURENT Department Manager H/F - Nice",
+   "rawTitle": "SAINT LAURENT Department Manager H/F - Nice",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-store-management",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmunq9rua05l5qd340wrt5qcd",
+   "title": "KERING BEAUTE _ Creed Vendeur",
+   "rawTitle": "KERING BEAUTE _ Creed Vendeur",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmunqzf8x007vle35hk2vom2t",
+   "title": "CONSEILLERE VENDEUSE EN PARFUMERIE SELECTIVE H/F",
+   "rawTitle": "CONSEILLERE VENDEUSE EN PARFUMERIE SELECTIVE H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmunqzh6b00e3le35c6fowr95",
+   "title": "CONSEILLERE VENDEUSE H/F EN PARFUMERIE SELECTIVE",
+   "rawTitle": "CONSEILLERE VENDEUSE H/F EN PARFUMERIE SELECTIVE",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmuod0sf41u4gof3468ebmmfv",
+   "title": "[Fashion] - Conseiller.e de ventes - Vavin - CDI 35h - H/F",
+   "rawTitle": " [Fashion] - Conseiller.e de ventes - Vavin - CDI 35h - H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuoe13nj2kx2of34bao6la3h",
+   "title": "Manager Rayon Cycle/ Vendeur expert cycle profil évolutif H/F",
+   "rawTitle": "Manager Rayon Cycle/ Vendeur expert cycle profil évolutif H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmuogdl3k41xrof346zmkcsm6",
+   "title": "Vendeurs (f/h) - CDI 25h - Lorient Lanester",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - Lorient Lanester",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuohfao44quzof34tjbut1u2",
+   "title": "CDD (Juin - Août) - Chargé d'expérience client H/F - Magasin George V",
+   "rawTitle": "CDD (Juin - Août) - Chargé d'expérience client H/F - Magasin George V",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "crm-clienteling",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmupqn1qg0lpnl734x56lawib",
+   "title": "CONSEILLERE VENDEUSE EN PARFUMERIE SELECTIVE H/F",
+   "rawTitle": "CONSEILLERE VENDEUSE EN PARFUMERIE SELECTIVE H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmupqn2060lq8l734c2kw8qhp",
+   "title": "CONSEILLERE VENDEUSE EN PARFUMERIE SELECTIVE H/F",
+   "rawTitle": "CONSEILLERE VENDEUSE EN PARFUMERIE SELECTIVE H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmupqn28j0lqtl7343vuqqyz9",
+   "title": "CONSEILLERE VENDEUSE EN PARFUMERIE SELECTIVE H/F",
+   "rawTitle": "CONSEILLERE VENDEUSE EN PARFUMERIE SELECTIVE H/F",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": true
+  },
+  {
+   "id": "cmuprg69g1rc7l734s9gjfe5n",
+   "title": "CDD - Boutique Assistant, Paris",
+   "rawTitle": "CDD - Boutique Assistant, Paris",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuptgiu23zx2l734x5puvs20",
+   "title": "Vendeurs (f/h) - CDI 25h - Ormesson",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - Ormesson",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuptgk21403al7348x8nu6bs",
+   "title": "Vendeurs (f/h) - CDI 8h - Strasbourg Rivetoile",
+   "rawTitle": "Vendeurs (f/h) - CDI 8h - Strasbourg Rivetoile",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuptgpx540rsl734za1ljnvg",
+   "title": "Vendeurs (f/h) - CDI 25h / CDD 35h - H&M Home - Paris",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h / CDD 35h - H&M Home - Paris",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmuptgty7418pl734eyzxc4dm",
+   "title": "Vendeurs (f/h) - CDI 25h - Poitiers",
+   "rawTitle": "Vendeurs (f/h) - CDI 25h - Poitiers",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "retail-client-advisor",
+   "dansIntitule": false
+  },
+  {
+   "id": "cmupu3eok4oc8l734kidj7s2a",
+   "title": "CDD ( mi novembre à mi janvier) - Chargé(e) d'Expérience Client H/F - Magasin de Lyon",
+   "rawTitle": "CDD ( mi novembre à mi janvier) - Chargé(e) d'Expérience Client H/F - Magasin de Lyon",
+   "occupationCode": null,
+   "occupationStatus": "FAMILY_ONLY",
+   "titleRoles": [],
+   "jobFunction": "crm-clienteling",
+   "dansIntitule": false
+  }
+ ]
+}

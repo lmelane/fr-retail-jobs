@@ -1,0 +1,13 @@
+# Q5 à blanc — 2026-10-02T05:04:32.789Z — catwalks-occupations-20260929-v3 → catwalks-occupations-20261001-v3-1
+Offres neuves lues : 75 (créées après 2026-10-01T18:58:08.346Z) ; graine « d500-q5-2026-10-02-tour3 »
+Contrôle : titleRoles stockés (version catwalks-occupations-20260929-v3) = recalculés ici : 75 ; différents : 0
+Offres qui gagnent au moins un métier lu : 0 ; offres qui en perdent un : 0
+Par métier gagné : 
+Par pays : 
+
+Offres françaises que le texte trouve et que metier=sales-advisor ne retient pas : 136
+  rattachées au Conseiller de vente par la v3.1 : 0 (0.0 %)
+  dont l'intitulé nomme le métier au pluriel ou en écriture inclusive : 94 ; rattachées : 0 (0.0 %)
+  non rattachées parmi elles : Conseiller de vente expert beauté H/F Grands Magasins [CDI/CDD] ‖ CDI - Conseiller de Ventes H/F ‖ Vendeurs polyvalents (CDI 35h) ‖ [Fashion] - Conseiller.e de ventes CDI 21h - La Défense - H/F ‖ [Fashion] - Conseiller.e de ventes CDD 35h - Nice Cap 3000 - H/F ‖ [Fashion] - Conseiller.e de ventes CDD 35h - Nice Cap 3000 - H/F ‖ [Fashion] - Conseiller.e de ventes CDI 35h - Lyon Herriot - H/F ‖ [Fashion] - Conseiller.e de ventes - Lyon - CDI 35h - H/F ‖ [Job Dating Claudie Pierlot - 1er octobre 2026] - Conseiller.e de ventes CDI/CDD 35h - PARIS - H/F ‖ [Fashion] - Conseiller.e de ventes CDI 21h - Marseille Terrasses du port H/F ‖ [Fashion] - Conseiller.e de ventes - Beaugrenelle - CDI 35h - H/F ‖ [Fashion] - Conseiller.e de ventes CDI 35h - Lyon The Village Outlet - H/F ‖ [Fashion] - Conseiller.e de ventes - Tours - CDI 30h - H/F ‖ [Fashion] - Conseiller.e de ventes - La Défense - CDI 35h - H/F ‖ [Fashion] - Conseiller.e de ventes expérimenté.e - CDI 35h - Le Marais - H/F
+
+Échantillon de justesse : 0 couples, graine « d500-q5-2026-10-02-tour3 » (echantillon.json, sans verdict)

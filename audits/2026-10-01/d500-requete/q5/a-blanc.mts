@@ -15,6 +15,10 @@
  *   CATWALKS_DB_ACCESS=<accès> npx tsx audits/2026-10-01/d500-requete/q5/a-blanc.mts <dossier de sortie> [taille] [actives|fermees]
  * `fermees` : les offres FERMÉES du stock (jamais lues par le tour précédent), pour un échantillon neuf ; le reclassement
  * (`classify-jobs`) les relit aussi.
+ * `neuves` (tour 3, 02/10/2026) : toute offre, active ou fermée, hors fusion, dont l'identifiant n'a été lu par AUCUN tour
+ * précédent (`tour1`, `tour2`, `apres-gardes` : `gains.json` ne liste que les gagnantes, la population lue est donc bornée
+ * par la date du tour 1, `Q5_DEPUIS`) ; `fusionnees` : les offres fusionnées dans une autre (`mergedIntoId`), qu'aucun tour
+ * n'a lues. Aucune exclusion par intitulé. Graine : `Q5_GRAINE` (défaut : celle des tours 1 et 2).
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -26,8 +30,18 @@ const ICI = new URL('.', import.meta.url).pathname;
 const SORTIE = join(ICI, process.argv[2] ?? 'resultats');
 mkdirSync(SORTIE, { recursive: true });
 const TAILLE = Number(process.argv[3] ?? 200);
-const POPULATION = process.argv[4] === 'fermees' ? 'fermees' : 'actives';
-const GRAINE = `d500-q5-2026-10-01-${POPULATION}`;
+const POPULATIONS = ['actives', 'fermees', 'neuves', 'fusionnees'] as const;
+const POPULATION = (POPULATIONS as readonly string[]).includes(process.argv[4] ?? '') ? process.argv[4] as typeof POPULATIONS[number] : 'actives';
+const GRAINE = process.env.Q5_GRAINE ?? `d500-q5-2026-10-01-${POPULATION}`;
+// Début du tour 1 (bilan-a-blanc.txt de `tour1`) : toute offre créée après n'a été lue par aucun tour précédent.
+const DEPUIS = process.env.Q5_DEPUIS ?? '2026-10-01T18:58:08.346Z';
+if (Number.isNaN(Date.parse(DEPUIS))) throw new Error(`Q5_DEPUIS illisible : ${DEPUIS}`);
+const FILTRE = {
+  actives: 'j."isActive" AND j."mergedIntoId" IS NULL',
+  fermees: 'NOT j."isActive" AND j."mergedIntoId" IS NULL',
+  neuves: `j."mergedIntoId" IS NULL AND j."createdAt" > '${new Date(DEPUIS).toISOString()}'`,
+  fusionnees: 'j."mergedIntoId" IS NOT NULL',
+}[POPULATION];
 const lire = (f: string) => JSON.parse(readFileSync(f, 'utf8'));
 const v3 = compileOccupationManifest(lire(join(ICI, '..', '..', '..', '2026-09-28', 'curation-v3', '6-manifeste-v3.json')));
 const v31 = compileOccupationManifest(lire(join(ICI, 'manifeste-v3-1.json')));
@@ -37,7 +51,12 @@ type Offre = { id: string; pays: string | null; title: string; code: string | nu
 const offres = executer(`SELECT j.id, j."countryCode" AS pays, j.title, j."occupationCode" AS code, j."occupationStatus" AS statut,
     j."occupationEvidence"->'candidates' AS candidates, j."occupationEvidence"->'matchedRules' AS regles, j."titleRoles" AS stockes,
     j."titleRolesReleaseId" AS release
-  FROM "Job" j WHERE ${POPULATION === 'actives' ? 'j."isActive"' : 'NOT j."isActive"'} AND j."mergedIntoId" IS NULL`).lignes as Offre[];
+  FROM "Job" j WHERE ${FILTRE}`).lignes as Offre[];
+// Garde de fraîcheur : aucune offre déjà jugée (par IDENTIFIANT, jamais par intitulé) n'entre dans un tour neuf.
+const dejaJugees = new Set<string>();
+for (const tour of ['tour1', 'tour2', 'apres-gardes']) for (const g of lire(join(ICI, tour, 'gains.json')) as { id: string }[]) dejaJugees.add(g.id);
+const relues = POPULATION === 'neuves' || POPULATION === 'fusionnees' ? offres.filter((o) => dejaJugees.has(o.id)).length : 0;
+if (relues) throw new Error(`${relues} offre(s) déjà jugée(s) dans la population ${POPULATION}`);
 const decision = (o: Offre) => ({ occupationCode: o.code, occupationStatus: o.statut,
   occupationEvidence: { candidates: o.candidates ?? [], matchedRules: o.regles ?? [] } });
 
@@ -58,7 +77,7 @@ for (const o of offres) {
 }
 
 // Couverture des offres françaises trouvées par le texte et pas par le métier (mesure de ce lot).
-const horsMetier = lire(join(ICI, '..', 'resultats', 'q5-hors-metier-sales-advisor-FR.json')) as { lignes: { id: string; title: string }[] };
+const horsMetier = lire(process.env.Q5_HORS_METIER ?? join(ICI, '..', 'resultats', 'q5-hors-metier-sales-advisor-FR.json')) as { lignes: { id: string; title: string }[] };
 const parId = new Map(gains.map((g) => [g.id, g]));
 const rattachees = horsMetier.lignes.filter((l) => parId.get(l.id)?.gagnes.includes('sales-advisor'));
 // Les offres de ce lot dont l'intitulé nomme le métier au pluriel ou en écriture inclusive (« Vendeurs », « Conseiller.e de
@@ -83,7 +102,7 @@ for (const g of gains) {
 const tri = (m: Map<string, number>) => [...m].sort((a, b) => b[1] - a[1]);
 const lecture = [
   `# Q5 à blanc — ${new Date().toISOString()} — ${v3.manifest.id} → ${v31.manifest.id}`,
-  `Offres ${POPULATION} lues : ${offres.length}`,
+  `Offres ${POPULATION} lues : ${offres.length}${POPULATION === 'neuves' ? ` (créées après ${DEPUIS})` : ''} ; graine « ${GRAINE} »`,
   `Contrôle : titleRoles stockés (version ${v3.manifest.id}) = recalculés ici : ${controleOk} ; différents : ${controleKo}${exemplesKo.length ? ` (${exemplesKo.join(' ‖ ')})` : ''}`,
   `Offres qui gagnent au moins un métier lu : ${gains.length} ; offres qui en perdent un : ${perdus}`,
   `Par métier gagné : ${tri(parMetier).slice(0, 25).map(([k, n]) => `${k} ${n}`).join(', ')}`,
