@@ -467,8 +467,10 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
     publisherTotal = first.total ?? 0;
     const facet = first.facets?.find((f) => f.facetParameter === partitionFacet);
     const values = (facet?.values ?? []).filter((v): v is Required<WorkdayFacetValue> => Boolean(v.id && v.descriptor));
+    // `canonicalIds: []` : l'inventaire ne nomme aucune offre. Sans la propriété, le contrat canonique devenait PARTIEL et
+    // la preuve tombait au normaliseur (tapestry au RUN du 02/10 : CANONICAL_ID_CONTRACT_BROKEN, D-522 §6).
     pageEvidence.push({ url: `${endpoint}#facets`, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(first)).digest('hex'), offset: 0, pagination: null,
-      ids: [], publisherCounter: publisherTotal ? `total=${publisherTotal}` : '', componentCounters: values.map((v) => `${partitionFacet}=${v.descriptor}:${v.count ?? ''}`) });
+      ids: [], canonicalIds: [], publisherCounter: publisherTotal ? `total=${publisherTotal}` : '', componentCounters: values.map((v) => `${partitionFacet}=${v.descriptor}:${v.count ?? ''}`) });
     // The site itself is read last: a posting that carries no value of the facet belongs to no partition
     // (Tapestry: 6 postings, career-fair and corporate rows without a brand) and keeps the detail-based attribution.
     if (values.length) boards = [...values.map((v): Board => ({ appliedFacets: { [partitionFacet]: [v.id] }, scope: `${partitionFacet}=${v.descriptor}`, partition: { parameter: partitionFacet, value: v.descriptor, id: v.id } })), { appliedFacets: {}, scope: 'jobs:unpartitioned', remainder: true }];

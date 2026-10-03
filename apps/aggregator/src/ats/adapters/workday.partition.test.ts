@@ -2,8 +2,9 @@ import { readFileSync } from 'node:fs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mockJson = vi.fn();
-vi.mock('../../lib/http.js', () => ({ fetchJson: (...args: unknown[]) => mockJson(...args) }));
+vi.mock('../../lib/http.js', () => ({ fetchJson: (...args: unknown[]) => mockJson(...args), fetchText: vi.fn() }));
 import { attachWorkdayDescriptions, fetchWorkdayJobs } from './workday.js';
+import { normalizeAdapterResult } from '../index.js';
 
 const fixture = (name: string) => JSON.parse(readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8'));
 /** Real Tapestry responses of 2026-09-10: site page 1 (total 2 000, facet Brand), page 1 of each Brand value, the full id list per value (2 085 ids). */
@@ -74,6 +75,27 @@ describe('Workday partition by facet — Tapestry, 2026-09-10 (site total capped
     expect(result.complete).toBe(true); expect(result.enumeration!.termination).toBe('PARTITIONS_RECONCILED');
     expect(result.enumeration!.issues).toEqual(expect.arrayContaining(['PUBLISHER_TOTAL_CAPPED']));
     expect(result.enumeration!.issues).not.toContain('ENUMERATION_NOT_PROVEN');
+  });
+
+  /**
+   * D-522 §6 (03/10/2026), tapestry au RUN du 02/10 : `CANONICAL_ID_CONTRACT_BROKEN`, `canonicalContractDeclared: false`.
+   * La page d'inventaire des facettes (`#facets`) était archivée SANS la propriété `canonicalIds` alors que toutes les
+   * pages de liste la portent : le normaliseur lit un contrat PARTIEL (`ats/index.ts`) et fait tomber la preuve. Une
+   * partition entièrement lue n'aurait donc jamais été prouvée en production, quoi qu'en dise l'adaptateur.
+   */
+  it('keeps the canonical id contract whole: a fully partitioned board stays proven through the normalizer', async () => {
+    const all = [...BRAND_IDS.Coach!, ...BRAND_IDS['Kate Spade']!, ...BRAND_IDS.Tapestry!];
+    server({ site: all.slice(0, 2000), siteTotal: 2000, boards: { [idOf('Coach')]: BRAND_IDS.Coach!, [idOf('Kate Spade')]: BRAND_IDS['Kate Spade']!, [idOf('Tapestry')]: BRAND_IDS.Tapestry! } });
+    const raw = await fetchWorkdayJobs(CONFIG);
+    // Prémisse : l'adaptateur démontre le parcours, et l'inventaire des facettes est bien archivé à côté des pages de liste.
+    expect(raw.complete).toBe(true);
+    expect(raw.enumeration!.pageEvidence!.some((p) => p.url.endsWith('#facets'))).toBe(true);
+    expect(raw.enumeration!.pageEvidence!.filter((p) => !p.url.endsWith('#facets')).every((p) => Object.hasOwn(p, 'canonicalIds'))).toBe(true);
+    const normalized = normalizeAdapterResult(raw);
+    expect(normalized.enumeration!.issues).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+    expect(normalized.enumeration!.pageEvidence!.every((p) => Object.hasOwn(p, 'canonicalIds'))).toBe(true);
+    expect(normalized.complete).toBe(true);
+    expect(normalized.enumerationVerdict).toBe('PROVEN');
   });
 
   it('refuses a posting served under two facet values (its employer would be a coin toss) and names the overlap', async () => {
