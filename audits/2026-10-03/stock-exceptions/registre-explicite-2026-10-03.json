@@ -573,7 +573,7 @@
    "basis": "PREUVE",
    "decision": "Aucune décision CEO : pause de la revue du 23/09",
    "reason": "Le HTTP 500 venait du dialecte /api/jobs ; le dialecte CareerConnect déclaré par le site lit 260 offres (fichier relu prêt) ; titancompany.in/careers lie le portail. 6 fiches sont des gabarits vides chez l'éditeur : la validation refuse la SOURCE au-delà de 2 (apps/aggregator/src/connectors/sourceValidation.ts:183-185), défaut du code au regard de D-523 (l'offre est retenue, pas la source).",
-   "nextAction": "Appliquer audits/2026-10-03/stock-exceptions/fastrack/registre-relu-fastrack.csv ; après la correction D-523 de la validation, source-add --key=fastrack --registered-revision=<révision créée> --official-domain=titancompany.in.",
+   "nextAction": "1) Retirer les 15 offres de l'homonyme espagnol (révision 1, teamtailor:fastrack.teamtailor.com) : plan-homonym-representations --spec audits/2026-10-03/stock-exceptions/fastrack/retrait-homonyme-spec.json, inspection puis application sur GO ; 2) appliquer audits/2026-10-03/stock-exceptions/fastrack/registre-relu-fastrack.csv ; 3) après la correction D-523 de la validation, source-add --key=fastrack --registered-revision=<révision créée> --official-domain=titancompany.in --reviewer=assistant-d522.",
    "reviewAt": "2026-10-09",
    "question": null
   },
@@ -1119,7 +1119,7 @@
    "basis": "REGLE",
    "decision": "R-142 §3 (D-478, D-479)",
    "reason": "Le BROKEN du 23/09 (181 PORTAL_OWNER_NOT_CERTIFIED) date du code r5 et du libellé Markham ; en r6 un portail relu MULTI_BRAND publie sous le groupe (TFG). 03/10 : 189 offres, 0 fiche vide ; tfglimited.co.za lie le site CX_1.",
-   "nextAction": "source-add --key=markham --registered-revision=efe81032-e274-4511-9187-5c0e817c3032 --official-domain=tfglimited.co.za --reviewer=<id>.",
+   "nextAction": "source-add --key=markham --registered-revision=efe81032-e274-4511-9187-5c0e817c3032 --official-domain=tfglimited.co.za --reviewer=assistant-d522.",
    "reviewAt": "2026-10-09",
    "question": null
   },

@@ -51,5 +51,5 @@
  },
  "tolerance": "unqualifiedAllowanceFor(260) = 2 (sourceCertification.ts) : 6 fiches vides chez l'éditeur (« We are fetching job description for you... ») font rejeter la validation",
  "identiteOfficielle": "https://www.titancompany.in/careers lie https://careers.titan.in/in/en/search-results",
- "offresHeritees": "15 offres actives sous Company Fastrack, identifiants Teamtailor (18/09), absentes de la nouvelle énumération"
+ "offresHeritees": "15 offres actives sous Company Fastrack (cmtlyi0bf04ggqf5kii03oitb), lues par la révision 1 (0ff7f4b3, teamtailor, tenant teamtailor:fastrack.teamtailor.com, captures JOBS c101e650 et 25a23c79 du 18/09) : postes de vente B2B à Madrid, Séville, Levante. fastrack.teamtailor.com (robots autorise /) se présente comme « La primera agencia de representación de perfiles comerciales » et lie fastrack.es : homonyme espagnol, pas la marque Fastrack de Titan. Retrait préparé : retrait-homonyme-spec.json, inspection-retrait-homonyme.txt (15 JobSource + 15 Job, IDENTITY_CONTRADICTED). Ordre : retrait, puis correction de configuration, puis requalification."
 }
