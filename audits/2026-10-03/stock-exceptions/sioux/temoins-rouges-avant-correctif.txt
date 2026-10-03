@@ -30,3 +30,9 @@ AssertionError: expected { …(9) } to match object { verdict: 'VALIDATED', …(
      × une iframe d'un fournisseur inconnu sur la page de départ empêche la preuve (offres possibles en JavaScript) 1ms
 ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
       Tests  3 failed | 15 passed (18)
+
+# Retrait des offres homonymes (homonym-representations-repair.test.ts), filtre de révision retiré le temps du test :
+   × retire seulement les offres de la révision homonyme, garde la source et la Société, et se rejoue sans nouvelle correction 76ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+Error: Reviewed count changed: 4 active representations from the homonym revision, 3 reviewed
+     43|       throw new Error(`Reviewed count changed: ${homonymEntries.length…

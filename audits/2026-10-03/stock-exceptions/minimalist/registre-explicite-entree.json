@@ -1,14 +1,14 @@
 {
  "currentStatus": "PAUSED",
  "targetStatus": "PAUSED",
- "key": "minimalist",
- "maison": "Minimalist",
  "intention": "COLLECTER",
  "trajectory": "A_REPARER",
  "basis": "PREUVE",
- "decision": "Aucune décision CEO : pause de la revue du 23/09 (audits/2026-09-23/post-run-source-review.json)",
- "reason": "La page officielle (beminimalist.co/pages/about) ne liste aucune offre : sa rubrique Careers renvoie à un formulaire Zoho Recruit de candidature spontanée (jamais publiée, D-511). Le portail public du même compte, beminimalist.zohorecruit.in/jobs/Careers (société déclarée « Minimalist »), liste 4 offres publiées en Inde (lu le 03/10/2026), en JSON dans la page, sans JSON-LD ; ses flux RSS et plan exigent une clé (renvoi vers la connexion Zoho). L'agrégateur n'a aucun lecteur Zoho Recruit.",
- "nextAction": "Écrire un lecteur Zoho Recruit (liste JSON embarquée + fiche, contrat de portail du compte reconnaissant le lien /forms/ du site officiel), puis corriger la source par corriger-sources-relues et la requalifier par source-add --official-domain=beminimalist.co.",
- "reviewAt": "2026-10-09",
- "question": null
+ "question": null,
+ "key": "minimalist",
+ "maison": "Minimalist",
+ "decision": "Arbitrage du CTO (D-519, D-522 §6, 03/10/2026) : lecteur à développer ; pause de la revue du 23/09 (audits/2026-09-23/post-run-source-review.json)",
+ "reason": "Lecteur à développer (famille Zoho Recruit) : les offres sont publiées sur le portail public du compte, beminimalist.zohorecruit.in/jobs/Careers (société déclarée « Minimalist »), en JSON intégré à la page, sans JSON-LD ; flux RSS et plan exigent une clé. L'agrégateur n'a pas de famille Zoho Recruit ; la page officielle ne renvoie qu'au formulaire /forms/ du même compte. Une famille neuve demande une valeur d'AtsType (migration), le contrat de portail, le périmètre d'accès, la relecture hors réseau et la preuve d'énumération ; portée mesurée le 03/10/2026 : une seule source du catalogue sur Zoho Recruit.",
+ "nextAction": "File SourceOps : écrire la famille Zoho Recruit (liste JSON intégrée + fiche, contrat de portail reconnaissant /forms/ et /jobs/ du compte), puis corriger la source et la requalifier par source-add --official-domain=beminimalist.co.",
+ "reviewAt": "2026-10-09"
 }

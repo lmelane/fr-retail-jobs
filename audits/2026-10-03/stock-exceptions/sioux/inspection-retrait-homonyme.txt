@@ -1,0 +1,12 @@
+{
+  "batchId": "20261003-D522-SIOUX-HOMONYME-v1",
+  "hash": "efabd56d4c2ade67d6cf6c3d1d1d640581127249b197a0521e596b8fe7162602",
+  "operations": 38,
+  "sourceKeys": [
+    "sioux"
+  ],
+  "finding": "HOMONYM_REVISION_REPRESENTATIONS"
+}
+Counter({('JobSource', ('isActive',)): 19, ('Job', ('closedAt', 'isActive', 'withdrawalReason', 'withdrawnAt')): 19})
+['cmtlyhz0u04bgqf5kswsphz11'] ['lifecycle']
+['https://jobs.sioux.asia/o/business-devel', 'https://jobs.sioux.asia/o/dn-hr-operatio', 'https://jobs.sioux.asia/o/hcmdn-software', 'https://jobs.sioux.asia/o/lead-electrica', 'https://jobs.sioux.asia/o/mechanical-arc', 'https://jobs.sioux.asia/o/mechanical-lea', 'https://jobs.sioux.asia/o/net-engineer', 'https://jobs.sioux.asia/o/plc-software-e', 'https://jobs.sioux.asia/o/senior-backend', 'https://jobs.sioux.asia/o/senior-mechani', 'https://jobs.sioux.asia/o/senior-mechatr', 'https://jobs.sioux.asia/o/senior-platfor', 'https://jobs.sioux.asia/o/senior-plc-sof', 'https://jobs.sioux.asia/o/senior-softwar', 'https://jobs.sioux.asia/o/seniorlead-sof', 'https://jobs.sioux.asia/o/seniormiddle-a', 'https://jobs.sioux.asia/o/singapore-soft', 'https://jobs.sioux.asia/o/software-engin']

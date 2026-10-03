@@ -1,14 +1,14 @@
 {
  "currentStatus": "PAUSED",
  "targetStatus": "PAUSED",
+ "intention": "COLLECTER",
+ "trajectory": "A_REPARER",
+ "basis": "PREUVE",
+ "question": null,
  "key": "nimble",
  "maison": "Nimble",
- "intention": "A_TRANCHER",
- "trajectory": "REVUE_HUMAINE",
- "basis": "PREUVE",
- "decision": "Aucune décision CEO : pause de la revue du 23/09 (audits/2026-09-23/post-run-source-review.json)",
- "reason": "La page carrières (lue le 03/10/2026) ne liste qu'une offre, « Product Developer - February 2026 », vers une page Shopify (/pages/product-developer) sans JobPosting, sans lieu ni date de publication : le lecteur générique, qui lit les offres structurées, ne peut pas la lire ; une lecture dédiée publierait une offre sans lieu, datée de février.",
- "nextAction": "Arbitrage du CEO ; selon la réponse, lecteur dédié de la page, pause assumée relue au réexamen, ou retrait.",
- "reviewAt": "2026-10-09",
- "question": "Nimble ne publie qu'une offre (« Product Developer - February 2026 ») sur une page sans données structurées, sans lieu ni date de publication. La collecter quand même ?"
+ "decision": "Arbitrage du CTO (D-519, D-523, 03/10/2026) : réouverture visée en ACTIVE, l'offre qu'on ne peut servir est retenue, pas la source ; pause de la revue du 23/09 (audits/2026-09-23/post-run-source-review.json)",
+ "reason": "Lecteur à développer (page d'offre HTML sans données structurées) : la page carrières lie l'offre /pages/product-developer, une page Shopify sans JobPosting. Le lecteur générique ne suit pas ce lien (motif de chemin, genericJsonLd.ts:523) et ne lit que des JobPosting (parseJobPostings, :50) ; la collecte ne voit donc aucune offre, et la validation refuse un résultat vide non prouvé (sourceValidation.ts:166, verdict :186). Une fois lue, l'offre ne bloque pas la source : la qualification n'exige que sa description (recovery.ts:618), l'absence de lieu la retient à l'exposition.",
+ "nextAction": "File SourceOps : lecteur HTML par sélecteurs relus (même besoin que ROTATE), puis configuration relue et source-add --official-domain=nimbleactivewear.com ; ACTIVE dès la lecture qualifiée.",
+ "reviewAt": "2026-10-09"
 }

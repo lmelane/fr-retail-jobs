@@ -1,14 +1,14 @@
 {
  "currentStatus": "PAUSED",
  "targetStatus": "PAUSED",
- "key": "ghost",
- "maison": "Ghost",
  "intention": "COLLECTER",
  "trajectory": "A_REPARER",
  "basis": "PREUVE",
- "decision": "Aucune décision CEO : pause de la revue du 23/09 (audits/2026-09-23/post-run-source-review.json) ; zéro natif lisible depuis le correctif D-522 §6 (commit c53a704, branche d522-6-generic)",
- "reason": "La page carrières officielle affiche « Although we do not have current openings » (lue le 03/10/2026, aucune offre, ghost.co.uk/careers renvoie à /the-brand) : le lecteur générique en fait désormais une preuve (emptyListingText, rejeu de la cassette : PUBLISHER_DECLARES_NO_OPENING, PROVEN). Aucune offre servie.",
- "nextAction": "Appliquer audits/2026-10-03/stock-exceptions/ghost/registre-relu-ghost.csv (corriger-sources-relues), puis source-add --key=ghost --registered-revision=<révision v4 relue après le CSV> --official-domain=ghostfashion.com ; la source devient ACTIVE à zéro et sort de ce registre.",
- "reviewAt": "2026-10-06",
- "question": null
+ "question": null,
+ "key": "ghost",
+ "maison": "Ghost",
+ "decision": "Arbitrage du CTO (D-519, D-522 §6, 03/10/2026) : rouvrir en ACTIVE (D-523) ; pause de la revue du 23/09 (audits/2026-09-23/post-run-source-review.json)",
+ "reason": "Lecture suspendue jusqu'à la configuration relue qui porte la phrase d'absence de la page officielle (lecteur générique, correctif D-522 §6 sur la branche d522-6-generic) ; l'ancienne lecture ne savait pas prouver une page carrières sans offre.",
+ "nextAction": "Après le RUN d'acceptation et l'image portant le correctif : corriger-sources-relues (ghost/registre-relu-ghost.csv), puis source-add --key=ghost --registered-revision=<révision v4 relue> --official-domain=ghostfashion.com (ghost/requalification.sh).",
+ "reviewAt": "2026-10-06"
 }

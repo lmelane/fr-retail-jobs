@@ -1,14 +1,14 @@
 {
  "currentStatus": "PAUSED",
  "targetStatus": "PAUSED",
- "key": "sioux",
- "maison": "Sioux",
  "intention": "COLLECTER",
  "trajectory": "A_REPARER",
  "basis": "PREUVE",
- "decision": "Aucune décision CEO : pause de la revue du 23/09 (audits/2026-09-23/post-run-source-review.json) ; zéro natif lisible depuis le correctif D-522 §6 (commit c53a704, branche d522-6-generic)",
- "reason": "La page carrières officielle affiche « Derzeit haben wir keine offenen Stellen. » (lue le 03/10/2026, aucune offre) : le lecteur générique en fait désormais une preuve (emptyListingText, rejeu de la cassette : PUBLISHER_DECLARES_NO_OPENING, PROVEN). Les 19 offres servies viennent de la révision v1 (Recruitee « sioux » = Sioux Technologies, ingénierie en Asie, jobs.sioux.asia) : un homonyme, actif en base depuis le 19/09 ; la garde de masse R-143 §2 interdit au zéro de les fermer (19 sur 19).",
- "nextAction": "Appliquer audits/2026-10-03/stock-exceptions/sioux/registre-relu-sioux.csv (corriger-sources-relues), retirer les 19 offres homonymes selon l'arbitrage du CEO, puis source-add --key=sioux --registered-revision=<révision v4 relue après le CSV> --official-domain=sioux.de.",
- "reviewAt": "2026-10-06",
- "question": "Les 19 offres servies sous Sioux (chaussures) sont celles de Sioux Technologies (ingénierie, Asie), lues par l'ancienne configuration Recruitee ; la page Sioux annonce zéro offre. Les retirer comme homonymes avant de rouvrir Sioux sur sa preuve de zéro ?"
+ "question": null,
+ "key": "sioux",
+ "maison": "Sioux",
+ "decision": "Arbitrage du CTO (D-519, D-522 §6, 03/10/2026) : retirer les offres de l'homonyme puis rouvrir en ACTIVE (D-523) ; pause de la revue du 23/09 (audits/2026-09-23/post-run-source-review.json)",
+ "reason": "Lecture suspendue jusqu'à deux gestes préparés : la configuration relue qui porte la phrase d'absence de la page officielle (lecteur générique, correctif D-522 §6 sur la branche d522-6-generic), et le retrait de 19 offres de Sioux Technologies, homonyme lu par la révision v1 (Recruitee « sioux », jobs.sioux.asia), publiées sous la mauvaise Maison.",
+ "nextAction": "Après le RUN d'acceptation et l'image portant le correctif : corriger-sources-relues (sioux/registre-relu-sioux.csv), plan-homonym-representations puis apply (sioux/retrait-homonyme-spec.json), puis source-add --key=sioux --registered-revision=<révision v4 relue> --official-domain=sioux.de (sioux/requalification.sh).",
+ "reviewAt": "2026-10-06"
 }

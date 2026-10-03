@@ -14,12 +14,19 @@ python3 apps/aggregator/scripts/ops/db.py production npx tsx apps/aggregator/scr
 python3 apps/aggregator/scripts/ops/db.py readonly sh -c 'psql "$DATABASE_URL" -XAt -c "select id, version, payload->'"'"'config'"'"'->>'"'"'emptyListingText'"'"' from \"SourceRevision\" where \"sourceKey\"='"'"'sioux'"'"' order by version desc limit 1"'
 #      attendu : <UUID_V4> | 4 | Derzeit haben wir keine offenen Stellen.
 
-# 3. AVANT la réouverture : les 19 offres homonymes (Sioux Technologies, jobs.sioux.asia, révision v1 Recruitee) selon
-#    l'arbitrage du CEO (question dans registre-explicite-entree.json). Sans retrait, la preuve de zéro est refusée par la
-#    garde de masse (19 sur 19, R-143 §2) et Sioux reste en anomalie à chaque RUN.
+# 3. AVANT la réouverture, retrait des 19 offres homonymes (Sioux Technologies, révision v1 Recruitee) : arbitrage du CTO,
+#    D-522 §6. Plan relu, tout ou rien, sans suppression : JobSource inactives, Job retirées IDENTITY_CONTRADICTED (événement
+#    WITHDRAWN, aucune fermeture d'employeur), source et Société de la Maison intactes. Le plan se RÉGÉNÈRE juste avant
+#    d'appliquer (images avant à jour) ; inspection du 03/10/2026 : 38 opérations (19 JobSource + 19 Job), une Société
+#    (cmtlyhz0u04bgqf5kswsphz11, Sioux, sioux.de) seulement verrouillée, inspection-retrait-homonyme.txt.
+python3 apps/aggregator/scripts/ops/db.py readonly npx tsx apps/aggregator/src/remediation/cli.ts plan-homonym-representations \
+  --spec audits/2026-10-03/stock-exceptions/sioux/retrait-homonyme-spec.json --out /tmp/plan-sioux-homonyme.json
+#    puis, GO requis, depuis le checkout committé et ancêtre d'origin/main (garde de `cli.ts apply`) :
+# python3 apps/aggregator/scripts/ops/db.py production npx tsx apps/aggregator/src/remediation/cli.ts apply \
+#   --plan /tmp/plan-sioux-homonyme.json --sha <hash imprimé à la génération> --commit <SHA du checkout>
 python3 apps/aggregator/scripts/ops/db.py readonly sh -c 'psql "$DATABASE_URL" -XAt -c "select count(*) filter (where js.\"isActive\"), count(*) from \"JobSource\" js where js.\"sourceKey\"='"'"'sioux'"'"' and js.url like '"'"'https://jobs.sioux.asia/%'"'"'"'
-#      attendu le 03/10/2026 : 19|19
+#      attendu avant : 19|19 ; après : 0|19
 
-# 4. Réouverture (qualification native, décision d'accès, promotion, ingestion), mode `reouvrir` de release.py :
+# 4. Réouverture en ACTIVE sur le zéro prouvé (D-523 : zéro offre est un état normal), mode `reouvrir` de release.py :
 #    source-add --key=sioux --registered-revision=<UUID_V4> --official-domain=sioux.de --reviewer=<relecteur>
 # Attendu : validation VALIDATED, report.nativeEmpty = true, observed 0 ; collecte OK « éditeur : zéro annoncé ».

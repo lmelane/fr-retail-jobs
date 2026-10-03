@@ -14,7 +14,7 @@ python3 apps/aggregator/scripts/ops/db.py production npx tsx apps/aggregator/scr
 python3 apps/aggregator/scripts/ops/db.py readonly sh -c 'psql "$DATABASE_URL" -XAt -c "select id, version, payload->'"'"'config'"'"'->>'"'"'emptyListingText'"'"' from \"SourceRevision\" where \"sourceKey\"='"'"'ghost'"'"' order by version desc limit 1"'
 #      attendu : <UUID_V4> | 4 | Although we do not have current openings
 
-# 3. Réouverture (qualification native, décision d'accès, promotion, ingestion), mode `reouvrir` de release.py :
+# 3. Réouverture en ACTIVE sur le zéro prouvé (D-523 : zéro offre est un état normal) (qualification native, décision d'accès, promotion, ingestion), mode `reouvrir` de release.py :
 #    source-add --key=ghost --registered-revision=<UUID_V4> --official-domain=ghostfashion.com --reviewer=<relecteur>
 # Attendu : validation VALIDATED, report.nativeEmpty = true, observed 0 ; collecte OK « éditeur : zéro annoncé » ;
 # aucune offre servie, rien à fermer.

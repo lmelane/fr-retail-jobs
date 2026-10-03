@@ -1,14 +1,14 @@
 {
  "currentStatus": "PAUSED",
  "targetStatus": "PAUSED",
+ "intention": "COLLECTER",
+ "trajectory": "A_REPARER",
+ "basis": "PREUVE",
+ "question": null,
  "key": "rotate",
  "maison": "ROTATE",
- "intention": "A_TRANCHER",
- "trajectory": "REVUE_HUMAINE",
- "basis": "PREUVE",
- "decision": "Aucune décision CEO : pause de la revue du 23/09 (audits/2026-09-23/post-run-source-review.json)",
- "reason": "La page carrières (lue le 03/10/2026) publie 5 stages non rémunérés à Copenhague en accordéon : aucune page ni adresse par offre, aucun JobPosting, candidature par e-mail ; un stage annonce un début en juin 2026. Le lecteur générique ne lit pas d'offre sans page propre.",
- "nextAction": "Arbitrage du CEO ; si oui, lecteur par sélecteurs relus (titre et texte de chaque stage, lien de la page carrières commune), puis requalification par source-add --official-domain=rotatebirgerchristensen.com.",
- "reviewAt": "2026-10-09",
- "question": "ROTATE publie 5 stages non rémunérés sur une seule page, sans page par offre, candidature par e-mail. Les publier, chacun avec le lien de la page carrières commune ?"
+ "decision": "Arbitrage du CTO (D-519, D-523, 03/10/2026) : publier les stages avec le lien de la page carrières commune dès qu'on sait les lire ; pause de la revue du 23/09 (audits/2026-09-23/post-run-source-review.json)",
+ "reason": "Lecteur à développer (offres en accordéon sans page propre) : la page carrières porte les stages dans des éléments accordion-item (Magento), sans JobPosting ni adresse par offre, candidature par e-mail. Le lecteur générique n'accepte aucun sélecteur en configuration (startUrl, listingUrl/linkPattern, sitemapUrl, feedUrl ou lecteur dédié seulement) : il faut du code neuf.",
+ "nextAction": "File SourceOps : lecteur HTML par sélecteurs relus (titre et texte de chaque élément, identité par la page et l'intitulé, lien de la page carrières commune), puis configuration relue et source-add --official-domain=rotatebirgerchristensen.com.",
+ "reviewAt": "2026-10-09"
 }
