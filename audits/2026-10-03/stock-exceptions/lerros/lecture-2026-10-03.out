@@ -1,0 +1,14 @@
+== 2026-10-03T06:30:29Z
+-- robots lerros.jobs.personio.de :
+User-agent: *
+Allow: /
+-- xml?language=de : 1 position(s) ; intitulés : <name>Initiativbewerbung</name>
+-- xml?language=en : 1 position(s) ; intitulés : <name>Initiativbewerbung</name>
+-- page publique : liens d'offre href="/job/2440253 
+-- robots company.lerros.com (Disallow) :
+Disallow: /*?id=*
+Disallow: /*&id=*
+Disallow: /*?L=0*
+Disallow: /*&L=0*
+Disallow: /*?type=98*
+-- page carrières officielle : liens vers un ATS href="https://lerros.jobs.personio.de/" 

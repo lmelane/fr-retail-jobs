@@ -243,6 +243,66 @@ describe('D-512: spontaneous applications and talent pools without a post are wi
   });
 });
 
+/**
+ * D-522 §6 (03/10/2026) — lerros, RUN du 02/10 16:02 : BROKEN « ne rend aucune offre, 1 au dernier run productif ·
+ * 1 annonce retenue : 1 sur preuve de la source (NATIVE_SPONTANEOUS_APPLICATION=1) », classé SOURCE_HEALTH_REGRESSION
+ * et bloquant. Le portail Personio et la page carrières officielle de la Maison ne listent qu'une « Initiativbewerbung »
+ * (lu le 03/10, `audits/2026-10-03/stock-exceptions/lerros/`). La veille, ce n'était pas une offre perdue : c'était la
+ * même candidature spontanée, publiée avant D-511. Zéro offre réelle, liste prouvée : un état normal, pas une panne.
+ */
+describe('D-522 §6: a source whose only postings are spontaneous applications has not regressed (lerros)', () => {
+  // La forme réelle : Personio ne déclare aucun total ; le run du 01/10 avait publié la candidature spontanée.
+  const lerros = (extra: Partial<IngestStats> = {}) => retaining('lerros', 0, { NATIVE_SPONTANEOUS_APPLICATION: 1 }, { declaredTotal: undefined, ...extra });
+  const yesterday: PastRun[] = [{ jobs: 1, fetched: 1, accepted: 1 }];
+
+  it('lerros as collected on 02/10: zero published, its one posting withdrawn on native evidence, proven list: OK, nothing blocks', async () => {
+    const s = lerros();
+    // Premise: the defect's shape — the previous run published one, this one publishes none, the one read is held as spontaneous.
+    expect([yesterday[0].jobs, s.inSector, s.fetched, s.held, s.complete, s.declaredTotal]).toEqual([1, 0, 1, 1, true, undefined]);
+    const { issues, incidents, summary, sourceRun } = await runOne(s, yesterday);
+    expect(sourceRun).toMatchObject({ status: 'OK', jobs: 0, previousJobs: 1, fetched: 1, accepted: 0 });
+    expect(String(sourceRun.note)).toContain('1 annonce retenue : 1 sur preuve de la source (NATIVE_SPONTANEOUS_APPLICATION=1)');
+    expect(String(sourceRun.note)).toContain('D-511');
+    expect(String(sourceRun.note)).not.toContain('ne rend aucune offre');
+    expect(incidents).toEqual([]);
+    expect(issues).toEqual([]);
+    expect(summary.outcome).toBe('COMPLETED');
+  });
+
+  it('ten days later, with no productive run left in the history, still OK', async () => {
+    expect((await runOne(lerros(), [{ jobs: 0, fetched: 1, accepted: 0 }])).sourceRun).toMatchObject({ status: 'OK' });
+  });
+
+  it('real offers that vanish behind one spontaneous application stay the blocking regression', async () => {
+    // 5 real offers published yesterday; today only the spontaneous application is read: 4 disappear without any proof.
+    const { issues, summary, sourceRun } = await runOne(lerros(), [{ jobs: 5, fetched: 6, accepted: 5 }]);
+    expect(sourceRun).toMatchObject({ status: 'BROKEN' });
+    expect(issues.map(issue => issue.code)).toEqual(['SOURCE_HEALTH_REGRESSION']);
+    expect(summary.outcome).toBe('FAILED');
+  });
+
+  it('an unproven list, a truncation or a rejected row is not a proven zero: still blocking', async () => {
+    for (const extra of [{ complete: false, enumerationReading: 'NOT_PROVEN' as const }, { truncated: true }, { rejected: 1, rejectedReasons: { X: 1 } }]) {
+      const { summary, sourceRun } = await runOne(lerros(extra), yesterday);
+      expect(sourceRun.status).not.toBe('OK');
+      expect(summary.outcome).toBe('FAILED');
+    }
+  });
+
+  it('only for spontaneous applications: a whole catalogue of another native withdrawal stays refused (D-514 §4)', async () => {
+    const { sourceRun, summary } = await runOne(retaining('ganni-talentrecruiter', 0, { NATIVE_ADVERTISEMENT_WITHDRAWN: 1 }), [{ jobs: 1, fetched: 1, accepted: 1 }]);
+    expect(sourceRun.status).toBe('BROKEN');
+    expect(summary.outcome).toBe('FAILED');
+  });
+
+  it('beyond the mass guard (25 of 25 read are spontaneous applications), the source still blocks', async () => {
+    const s = retaining('viviers-seuls', 0, { NATIVE_SPONTANEOUS_APPLICATION: 25 }, { declaredTotal: undefined });
+    const { summary, sourceRun } = await runOne(s, [{ jobs: 25, fetched: 25, accepted: 25 }]);
+    expect(sourceRun.status).not.toBe('OK');
+    expect(summary.outcome).toBe('FAILED');
+  });
+});
+
 describe('D-484 §1: a Workday detail the publisher refuses by name (403 S22) is a posting it withdraws, under a mass guard', () => {
   it('swarovski as collected on 29/09 (2 refused S22, 30 without employer): non-blocking, attributed to the source, named in the note', async () => {
     const swarovski = retaining('swarovski', 660, { WORKDAY_EMPLOYER_ABSENT_IN_DETAIL: 30, WORKDAY_DETAIL_PERMISSION_DENIED: 2 });

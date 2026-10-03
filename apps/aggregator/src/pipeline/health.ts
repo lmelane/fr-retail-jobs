@@ -7,6 +7,7 @@ import { ADVERTISEMENT_WITHDRAWN_RETENTION, GUARDED_NEGATIVE_PROOFS, MASS_GUARDE
   type RetentionClass } from './publicationDisposition.js';
 import { FULL_RUN_MARKER } from './fullRunMarker.js';
 import { lightPassRunIds } from './referenceRuns.js';
+import { SPONTANEOUS_APPLICATION_HOLD } from './spontaneousApplication.js';
 
 /**
  * Source health, run after every ingest.
@@ -276,6 +277,10 @@ export function evaluateSourceHealth(stat: IngestStats, before: number | null, r
     // The error blocks; a retention next to it stays named, never hidden behind it.
     return { ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN', note: retention ? `${errors} · ${retention.note}` : errors,
       ...(notCollected ? { notCollected: true } : {}) };
+  }
+  if (retention && spontaneousOnlyZero(stat, jobs, before, retention)) {
+    return { ...base, status: 'OK',
+      note: `aucune offre : ${retention.note} ; ${enumerationLabel(stat)} ; zéro réel, pas une régression (D-511)` };
   }
   const collection = collectionHealth(stat, base, jobs, before, previousDeclaredTotal);
   if (!retention) return collection;
@@ -610,6 +615,30 @@ function advertisementWithdrawalDrop(stat: IngestStats, disappeared: number): nu
     .filter(([reason]) => isNativeEvidenceRetention(reason) && publicationDisposition(reason)?.kind === 'WITHDRAWN')
     .reduce((total, [, n]) => total + n, 0);
   return disappeared <= nativeWithdrawals ? withdrawn : 0;
+}
+
+/**
+ * D-511 et D-522 §6 (03/10/2026) : UNE SOURCE QUI NE LISTE QUE DES CANDIDATURES SPONTANÉES N'A PAS RÉGRESSÉ.
+ *
+ * lerros, RUN du 02/10 : son portail Personio ne liste qu'une « Initiativbewerbung », publiée jusqu'au 01/10, retenue et
+ * retirée depuis D-511. La règle « ne rend aucune offre » la disait BROKEN et bloquante (SOURCE_HEALTH_REGRESSION), alors
+ * que la collecte avait tout lu et que la seule annonce lue n'est pas une offre. Ce zéro est réel quand, à la fois :
+ *   · la liste est prouvée complète, sans erreur, troncature ni ligne rejetée ;
+ *   · TOUT ce qui a été lu est retenu comme candidature spontanée ou vivier sans poste, preuve positive de l'intitulé ou du
+ *     champ de l'éditeur (jamais une autre retenue : un catalogue entier « sans annonce » reste refusé, D-514 §4) ;
+ *   · la garde de masse de ce motif ne se déclenche pas (au-delà, un changement d'intitulés chez l'éditeur, D-512) ;
+ *   · chaque offre publiée au dernier run productif est couverte par une de ces retenues : de vraies offres qui
+ *     disparaissent derrière une candidature spontanée restent la régression bloquante.
+ * Elle n'atteste aucune absence (`recordRun`) : la candidature déjà publiée sort par sa disposition (OUT_OF_SCOPE).
+ */
+function spontaneousOnlyZero(stat: IngestStats, jobs: number, before: number | null, retention: { nonBlocking: boolean }): boolean {
+  if (jobs !== 0 || !retention.nonBlocking || stat.fetched <= 0 || stat.errors > 0 || stat.rejected) return false;
+  if (stat.complete !== true || stat.truncated === true) return false;
+  const reasons = Object.entries(countedReasons(stat));
+  const spontaneous = stat.heldReasons?.[SPONTANEOUS_APPLICATION_HOLD] ?? 0;
+  if (reasons.length !== 1 || reasons[0][0] !== SPONTANEOUS_APPLICATION_HOLD || stat.held !== stat.fetched || spontaneous !== stat.fetched) return false;
+  if (refusalMassGuard(stat)) return false;
+  return (before ?? 0) <= spontaneous;
 }
 
 function coverageOf(stat: IngestStats): string | undefined {
