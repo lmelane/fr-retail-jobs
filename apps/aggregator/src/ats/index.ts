@@ -51,6 +51,7 @@ import { fetchRivoliTypesenseJobs } from './adapters/rivoliTypesense.js';
 import { fetchJibeJobs } from './adapters/jibe.js';
 import { fetchVolcanicJobs } from './adapters/volcanic.js';
 import { fetchSwatchGroupJobs } from './adapters/swatchgroup.js';
+import { applyContentRetention } from '../pipeline/contentRetention.js';
 
 /**
  * Adapters answer either the legacy array or an AdapterResult (F-04); the
@@ -71,7 +72,8 @@ export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown
   const observedAt = captureObservedAt();
   // D-517 : dans une lecture incrémentale, seul le neuf sort, scellé comme jamais complet ni attestant ; hors d'elle, rien ne change.
   return finishIncrementalReading(normalizeAdapterResult({ ...result,
-    jobs: result.jobs.map(job => applySpontaneousApplicationRule(applyNativeEmployerRules(job, rules), observedAt)) }));
+    // D-523 §3 : une fiche sans contenu est retenue avec sa cause, jamais publiée ni motif de refus de la source.
+    jobs: result.jobs.map(job => applyContentRetention(applySpontaneousApplicationRule(applyNativeEmployerRules(job, rules), observedAt))) }));
 }
 
 export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult): AdapterResult {

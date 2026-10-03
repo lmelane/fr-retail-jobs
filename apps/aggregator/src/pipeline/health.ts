@@ -3,7 +3,8 @@ import type { PrismaClient } from '@prisma/client';
 import type { IngestStats } from './ingest.js';
 import { isTrustedForAttestation, isDeclaredEmptyEnumeration, isCompleteEmptyListing, isPublisherConfirmedDrop } from './attestation.js';
 import { recordSourceRunSummary } from '../connectors/sourceStore.js';
-import { ADVERTISEMENT_WITHDRAWN_RETENTION, GUARDED_NEGATIVE_PROOFS, MASS_GUARDED_RETENTIONS, isNativeEvidenceRetention, publicationDisposition, retentionClass,
+import { unqualifiedAllowanceFor } from '../connectors/sourceCertification.js';
+import { ADVERTISEMENT_WITHDRAWN_RETENTION, DETAIL_CONTENT_MISSING, GUARDED_NEGATIVE_PROOFS, MASS_GUARDED_RETENTIONS, isNativeEvidenceRetention, publicationDisposition, retentionClass,
   type RetentionClass } from './publicationDisposition.js';
 import { FULL_RUN_MARKER } from './fullRunMarker.js';
 import { lightPassRunIds } from './referenceRuns.js';
@@ -138,10 +139,13 @@ export type SourceHealth = {
  *     jamais un volume ; il ne touche ni l'intention de la source ni sa cadence. Un zéro PROUVÉ n'est pas un incident ;
  *   · `ZERO_ANNOUNCED_TO_CONFIRM` (D-523) : zéro annoncé après au moins `ZERO_TO_CONFIRM_MIN` offres, en attente de la
  *     confirmation de l'éditeur au RUN complet suivant ;
+ *   · `DETAIL_READABILITY_COLLAPSE` (D-523 §3) : la quasi-totalité des fiches lues sont sans contenu alors qu'elles étaient
+ *     lisibles au RUN complet de référence (ou qu'aucune n'est publiable) : soupçon de lecture, classé « lecteur » ;
  *   · `SOURCE_HEALTH_REGRESSION` ne nomme plus que le volume : chute non confirmée par l'éditeur, couverture d'URL, et une
  *     collecte dont tout ce qui a été lu est retenu (le lecteur a vu des offres, aucune n'est publiée). */
 export type HealthFinding = 'ENUMERATION_NOT_PROVEN' | 'ENUMERATION_REFUTED' | 'NATIVE_RETENTION_JUMP' | 'DESCRIPTION_COVERAGE_BELOW_FLOOR' | 'NATIVE_REFUSAL_MASS'
-  | 'ENUMERATION_TRUNCATED' | 'RETENTION_TO_INSTRUCT' | 'ENUMERATION_UNPROVABLE' | 'ZERO_NOT_PROVEN' | 'ZERO_ANNOUNCED_TO_CONFIRM';
+  | 'ENUMERATION_TRUNCATED' | 'RETENTION_TO_INSTRUCT' | 'ENUMERATION_UNPROVABLE' | 'ZERO_NOT_PROVEN' | 'ZERO_ANNOUNCED_TO_CONFIRM'
+  | 'DETAIL_READABILITY_COLLAPSE';
 /** Les incidents qui ne portent que sur la LISTE : à côté d'une retenue à instruire, c'est la retenue qui est nommée (D-480 §1 : tout autre défaut reste bloquant). */
 const LIST_FINDINGS: ReadonlySet<HealthFinding> = new Set(['ENUMERATION_NOT_PROVEN', 'ENUMERATION_REFUTED', 'ENUMERATION_TRUNCATED', 'ENUMERATION_UNPROVABLE']);
 
@@ -173,6 +177,10 @@ const LIST_FINDINGS: ReadonlySet<HealthFinding> = new Set(['ENUMERATION_NOT_PROV
  * SourceRun ne garde que `HISTORY` jours, au-delà la garde est sans référence.
  */
 export const RETENTION_JUMP_POINTS = 0.1;
+/** D-523 §3 : au-delà de cette part de fiches sans contenu, la lecture est en doute (classée « lecteur »). */
+export const READABILITY_COLLAPSE_SHARE = 0.8;
+/** … quand le RUN complet de référence publiait au moins cette part de ce qu'il lisait. */
+const READABLE_BEFORE_SHARE = 0.5;
 export const RETENTION_JUMP_MIN_POSTINGS = 10;
 export { FULL_RUN_MARKER };
 /** La référence : ce qu'un RUN complet a collecté (`fetched`) et publié (`accepted`, SourceRun) pour la source. */
@@ -294,6 +302,13 @@ export function evaluateSourceHealth(stat: IngestStats, before: number | null, r
     return { ...base, status: 'OK',
       note: `aucune offre : ${retention.note} ; ${enumerationLabel(stat)} ; zéro réel, pas une régression (D-511)` };
   }
+  // D-523 §3 : une fiche sans contenu est retenue ; la quasi-totalité sans contenu est un soupçon de lecture, pas une source refusée.
+  const unreadable = stat.heldReasons?.[DETAIL_CONTENT_MISSING] ?? 0;
+  if (unreadable > 0 && unreadable >= READABILITY_COLLAPSE_SHARE * stat.fetched
+    && (jobs === 0 || (retentionBaseline != null && retentionBaseline.fetched > 0 && retentionBaseline.accepted / retentionBaseline.fetched >= READABLE_BEFORE_SHARE))) {
+    return { ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN', finding: 'DETAIL_READABILITY_COLLAPSE',
+      note: `${unreadable} fiche(s) sans contenu sur ${stat.fetched} lue(s), retenues${jobs > 0 ? ' alors qu’elles étaient lisibles au RUN complet de référence' : ', aucune publiable'} : soupçon de lecture (D-523 §3)${retention ? ` · ${retention.note}` : ''}` };
+  }
   const collection = collectionHealth(stat, base, jobs, before, previousDeclaredTotal, memory);
   if (!retention) return collection;
   /**
@@ -380,18 +395,26 @@ function describeRetention(stat: IngestStats): { note: string; nonBlocking: bool
   const sum = (list: [string, number][]) => list.reduce((total, [, n]) => total + n, 0);
   const named = (list: [string, number][]) => list.map(([reason, n]) => `${reason}=${n}`).join(', ');
   const of = (kind: RetentionClass) => reasons.filter(([reason]) => retentionClass(reason) === kind);
-  const native = of('NATIVE'), team = of('TEAM_DECISION'), toInstruct = of('TO_INSTRUCT');
+  /*
+   * D-523 §3 : les fiches sans contenu restent retenues ; sous le seuil de tolérance du 19/09 (`unqualifiedAllowanceFor`,
+   * qui refusait jusqu'ici la source entière au-delà), elles ne font pas un défaut de la source ; au-delà, à instruire.
+   */
+  const unreadable = stat.heldReasons?.[DETAIL_CONTENT_MISSING] ?? 0;
+  const tolerated = unreadable > 0 && unreadable <= unqualifiedAllowanceFor(stat.fetched) ? unreadable : 0;
+  const native = of('NATIVE'), team = of('TEAM_DECISION');
+  const toInstruct = of('TO_INSTRUCT').filter(([reason]) => !(tolerated && reason === DETAIL_CONTENT_MISSING));
   const uncounted = (stat.held ?? 0) - sum(reasons);
   const parts = [
     native.length ? `${sum(native)} sur preuve de la source (${named(native)})` : '',
     team.length ? `${plural(sum(team), 'écartée', 'écartées')} par l’équipe (${named(team)})` : '',
+    tolerated ? `${plural(tolerated, 'fiche sans contenu retenue', 'fiches sans contenu retenues')} sous le seuil de tolérance (D-523 §3)` : '',
     toInstruct.length ? `${sum(toInstruct)} à instruire (${named(toInstruct)})` : '',
     // A retention whose reason was not counted proves nothing: it is to be instructed like any other.
     uncounted !== 0 ? `${uncounted} sans motif compté, à instruire` : '',
   ].filter(Boolean);
-  const nonBlocking = native.length + team.length > 0 && !toInstruct.length && uncounted === 0;
+  const nonBlocking = native.length + team.length + (tolerated ? 1 : 0) > 0 && !toInstruct.length && uncounted === 0;
   return { note: `${plural(stat.held ?? 0, 'annonce retenue', 'annonces retenues')} : ${parts.join(' · ')}`,
-    nonBlocking, teamOnly: nonBlocking && !native.length };
+    nonBlocking, teamOnly: nonBlocking && !native.length && !tolerated };
 }
 
 function enumerationLabel(stat: IngestStats): string {

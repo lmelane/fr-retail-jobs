@@ -205,14 +205,27 @@ describe('native source validation', () => {
     expect(validation).toMatchObject({ verdict: 'REJECTED', report: { nativeEmpty: false, reasons: expect.objectContaining({ EMPTY_FEED_NOT_NATIVELY_PROVEN: 1 }) } });
   });
 
+  // D-523 §3 : une fiche sans contenu n'est plus un refus de la source (témoins plus bas) ; une publication non listée, si.
   it.each([
-    { job: { ...nativeJob, descriptionPlain: undefined }, reason: 'CONTENT_MISSING' },
     { job: { ...nativeJob, isListed: false }, reason: 'NO_QUALIFIED_PUBLICATION' },
   ])('rejects unqualified or entirely held publications: $reason', async ({ job, reason }) => {
     const { source, batch } = await capture([job]);
     const validation = await validateCapturedSource(db, batch.id);
     expect(validation).toMatchObject({ verdict: 'REJECTED', report: { reasons: { [reason]: 1 } } });
     await expect(requireSourceValidation(db, source.currentRevisionId)).rejects.toMatchObject({ name: 'SourceValidationGateError', code: 'VALIDATION_MISSING' });
+  });
+
+  it('D-523 §3 : fiches sans contenu au-delà de la tolérance (cotton-on) : retenues une par une, la source reste validée ; toutes vides : validée sans rien de publiable', async () => {
+    const empty = { ...nativeJob, descriptionPlain: undefined };
+    const jobs = [...Array(4).fill(empty), ...Array(6).fill(nativeJob)];
+    const { batch } = await capture(jobs);
+    // Prémisse : 4 fiches vides dépassent la tolérance d'un lot de 10 (2), ce qui refusait la source entière avant.
+    expect(4).toBeGreaterThan(unqualifiedAllowanceFor(10));
+    expect(await validateCapturedSource(db, batch.id)).toMatchObject({ verdict: 'VALIDATED',
+      report: { observed: 10, qualified: 6, held: 4, contentMissing: 4, rejected: 0, reasons: {} } });
+    const allEmpty = await capture([empty, empty]);
+    expect(await validateCapturedSource(db, allEmpty.batch.id)).toMatchObject({ verdict: 'VALIDATED',
+      report: { observed: 2, qualified: 0, held: 2, contentMissing: 2, rejected: 0 } });
   });
 
   it('D-511 : validates a collection made only of spontaneous applications, so that their publications are withdrawn (lerros)', async () => {
@@ -265,9 +278,11 @@ describe('native source validation', () => {
     expect(withdrawn.length).toBeGreaterThan(unqualifiedAllowanceFor(4));
     expect(await validateCapturedSource(db, batch.id)).toMatchObject({ verdict: 'VALIDATED',
       report: { observed: 4, qualified: 1, held: 3, rejected: 0, reasons: {}, allowance: { applied: 2 } } });
-    // A published advertisement whose text is empty is still an unreadable publication, counted against the allowance.
+    // A published advertisement whose text is empty is never published: since D-523 §3 it is retained, and the source keeps
+    // its qualification (before, beyond the allowance, the whole source was rejected).
     const unreadable = await captureTalentRecruiter([...[1, 2, 3].map(id => item(id, [{ Id: id, Content: '' }])), ...published]);
-    expect(await validateCapturedSource(db, unreadable.id)).toMatchObject({ verdict: 'REJECTED', report: { rejected: 3, reasons: { CONTENT_MISSING: 3 } } });
+    expect(await validateCapturedSource(db, unreadable.id)).toMatchObject({ verdict: 'VALIDATED',
+      report: { qualified: 1, rejected: 0, held: 3, contentMissing: 3, reasons: {} } });
     // A whole catalogue without advertisements (a publisher format change) is refused: no qualified publication, nothing withdrawn.
     const emptied = await captureTalentRecruiter([...withdrawn, item(144697, [])]);
     expect(await validateCapturedSource(db, emptied.id)).toMatchObject({ verdict: 'REJECTED', report: { qualified: 0, held: 4, reasons: { NO_QUALIFIED_PUBLICATION: 1 } } });

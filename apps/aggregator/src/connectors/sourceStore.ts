@@ -183,13 +183,15 @@ export async function promoteSource(prisma: PrismaClient, key: string, expectedR
  * qualification d'une source déjà ACTIVE). Mais une source qui n'a jamais montré qu'on sait la lire n'est pas encore prouvée
  * valide : un mauvais identifiant de board ou un mauvais chemin rendent une réponse vide bien formée. À la promotion
  * (première qualification, campagne, réouverture), l'une de deux preuves est exigée sur la révision courante :
- *   · au moins une offre réellement lue par une tentative de qualification (`observed` ou publications connues relues) ;
+ *   · au moins une offre réellement lue par une tentative de qualification (offre qualifiée, ou publications connues relues) ;
  *   · un zéro natif prouvé (`nativeEmpty` : la source déclare l'absence ou sa liste complète est vide, protocole existant).
  * Sinon la source ne passe pas ACTIVE : elle reste en qualification, cause « lecteur à vérifier ».
  */
-type ReaderEvidence = { observed?: number; incrementalKnown?: number; nativeEmpty?: boolean };
+type ReaderEvidence = { qualified?: number; incrementalKnown?: number; nativeEmpty?: boolean };
+// Une offre « réellement lue » est une offre qualifiée (lisible et publiable) : des fiches toutes vides ne prouvent pas
+// qu'on sait lire la source (D-523 §3).
 const proves = (report: unknown) => { const r = (report ?? {}) as ReaderEvidence;
-  return (r.observed ?? 0) > 0 || (r.incrementalKnown ?? 0) > 0 || r.nativeEmpty === true; };
+  return (r.qualified ?? 0) > 0 || (r.incrementalKnown ?? 0) > 0 || r.nativeEmpty === true; };
 async function requireReaderProof(tx: Prisma.TransactionClient, revisionId: string, current: unknown): Promise<void> {
   if (proves(current)) return;
   const attempts = await tx.sourceValidation.findMany({ where: { sourceRevisionId: revisionId }, select: { report: true } });

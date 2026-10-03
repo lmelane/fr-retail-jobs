@@ -62,3 +62,11 @@ Aucune source n'est RETIRED pour seul volume nul (`le-slip-francais` : canal WTT
   validation v3 à la collecte suivante (les passes laissent ces sources au RUN jusque-là, `READER_STALE`).
 - Cherry-pick des lots D-522 §6 : zéro natif de la page carrières générique (`emptyListingText`, Ghost, Sioux) et
   lerros (candidature spontanée seule).
+- **Fiches sans contenu (D-523 §3, audit du lot d'exceptions)** : une fiche dont la description est vide une fois réduite
+  à son texte est retenue (`DETAIL_CONTENT_MISSING`, posée avant le scellement de la capture), jamais publiée ; la
+  validation ne refuse plus la source entière au-delà de la tolérance du 19/09 (cotton-on 9 fiches, Nike à la limite de
+  5). Sous la tolérance : aucune incidence sur l'état ; au-delà : retenue à instruire ; la quasi-totalité des fiches (80 %)
+  sans contenu alors que le RUN de référence publiait, ou aucune publiable : « lecteur ». Mesure à blanc : 21 offres
+  servies sur 91 635 n'ont aucune description (elles seraient retenues) ; 11 sources ACTIVE portent 1 à 5 fiches vides
+  dans leur dernière validation (adidas, bloomingdales-oracle, burberry, dr-martens-tf, hm-group, kiabi,
+  l-oreal-professionnel, nike, rivoli-typesense, selfridges, uniqlo-au-stores), toutes sous la tolérance.

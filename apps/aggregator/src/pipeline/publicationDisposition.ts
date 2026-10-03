@@ -107,6 +107,16 @@ export const MASS_GUARDED_RETENTIONS: Readonly<Record<string, { label: string; f
    */
   NATIVE_ADVERTISEMENT_WITHDRAWN: { label: 'postes listés sans annonce (TalentRecruiter)', floor: 5, share: 0.6 },
 };
+/**
+ * D-523 §3 (03/10/2026) : une offre dont la fiche n'a pas de contenu exploitable (vide ou illisible pour notre lecteur) est
+ * RETENUE, avec cette cause ; la source n'est plus refusée pour elle. Ce n'est pas une preuve de la source (D-481 §3 réserve
+ * la description vide chez l'éditeur à une fiche LUE et reconnue comme telle) : motif à instruire, sans disposition (une
+ * publication antérieure reste en ligne). Sous le seuil de tolérance du 19/09 (`unqualifiedAllowanceFor`), la retenue ne fait
+ * pas un défaut de la source ; au-delà, elle est à instruire ; la quasi-totalité des fiches sans contenu est un soupçon de
+ * lecture (`health.ts`, DETAIL_READABILITY_COLLAPSE, classé « lecteur »).
+ */
+export const DETAIL_CONTENT_MISSING = 'DETAIL_CONTENT_MISSING';
+
 /** D-514 §4 : le motif de la retenue d'un poste TalentRecruiter listé sans annonce (`talentRecruiter.ts`). */
 export const ADVERTISEMENT_WITHDRAWN_RETENTION = 'NATIVE_ADVERTISEMENT_WITHDRAWN';
 
@@ -138,6 +148,7 @@ const RETENTION_TEXT: Readonly<Record<string, string>> = {
   SCOPE_OUT_OF_PERIMETER: 'écartée par l’équipe (hors périmètre)',
   NATIVE_SPONTANEOUS_APPLICATION: 'candidature spontanée ou vivier sans poste publié par la source parmi ses offres',
   NATIVE_ADVERTISEMENT_WITHDRAWN: 'listée par la source sans annonce publiée (offre retirée)',
+  DETAIL_CONTENT_MISSING: 'fiche sans contenu exploitable (vide ou illisible pour notre lecteur), retenue (D-523 §3)',
 };
 /**
  * The standing of each non-blocking reason, with the decision that settles it. Every non-blocking reason is now

@@ -157,6 +157,8 @@ const BY_NAME: Readonly<Record<string, CauseClass>> = {
   SOURCE_HEALTH_REGRESSION: 'ANOMALIE_VOLUME', NATIVE_RETENTION_JUMP: 'ANOMALIE_VOLUME',
   // D-523 : le lecteur ne voit rien et la source ne déclare pas l'absence ; jamais un volume, jamais un motif de pause.
   ZERO_NOT_PROVEN: 'LECTEUR', ZERO_ANNOUNCED_TO_CONFIRM: 'ZERO_A_CONFIRMER',
+  // D-523 §3 : la quasi-totalité des fiches sans contenu, après des fiches lisibles : soupçon de lecture, jamais un refus.
+  DETAIL_READABILITY_COLLAPSE: 'LECTEUR',
   Error: 'LECTEUR', UNCLASSIFIED_FAILURE: 'LECTEUR', SyntaxError: 'LECTEUR', BlockedUrlError: 'LECTEUR', ChainCompletionRefused: 'CERTIFICAT_TLS',
   UNCLASSIFIED_INGEST_ERRORS: 'DEFAUT_INTERNE', PipelinePausedError: 'NON_COLLECTEE',
 };

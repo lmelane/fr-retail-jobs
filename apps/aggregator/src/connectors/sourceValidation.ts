@@ -9,6 +9,7 @@ import { captureReaderRevision } from '../capture/revision.js';
 import { captureConfig } from '../capture/config.js';
 import { readRawBlob } from '../capture/store.js';
 import { SPONTANEOUS_APPLICATION_HOLD } from '../pipeline/spontaneousApplication.js';
+import { DETAIL_CONTENT_MISSING } from '../pipeline/publicationDisposition.js';
 import { recoverRetainedPublication, PER_PUBLICATION_REASONS } from '../publication/recovery.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { effectiveSourceConfig } from './sourceConfig.js';
@@ -52,6 +53,8 @@ export type SourceValidationReport = {
    * se calcule sur toute la liste lue, comme au RUN, pas sur les seules nouveautés.
    */
   incrementalKnown?: number;
+  /** D-523 §3 : fiches sans contenu, retenues une par une par l'ingestion (comptées dans `held`), jamais un refus de la source. */
+  contentMissing?: number;
   reasons: Record<string, number>;
   /**
    * Le seuil appliqué à ce lot (politique v2) : la règle en vigueur, et le plafond qu'elle a
@@ -104,6 +107,14 @@ async function nativeEmptyFeed(db: PrismaClient, batchId: string, kind: string, 
 const onlySpontaneous = (report: SourceValidationReport) =>
   report.observed > 0 && report.held === report.observed && report.spontaneousWithdrawn === report.observed && report.rejected === 0;
 
+/**
+ * D-523 §3 : tout ce qui a été lu est retenu, au moins une fiche sans contenu et aucune ligne refusée : la source garde sa
+ * qualification (ses offres sont retenues, pas publiées) ; la santé de la collecte classe ce cas « lecteur »
+ * (`health.ts`, DETAIL_READABILITY_COLLAPSE). Une source jamais promue n'est pas promue pour autant (`sourceStore.ts`).
+ */
+const onlyRetainedContent = (report: SourceValidationReport) =>
+  report.observed > 0 && report.held === report.observed && (report.contentMissing ?? 0) > 0 && report.rejected === 0;
+
 /** Validate a recorded collector with today's reader. No count supplied by an
  * operator can create a validation. The record is independent of activation;
  * a later configuration transition leaves it as historical evidence only. */
@@ -143,6 +154,7 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
         const eligible = portal ? employerFromCertifiedScope(job, portal.ownerName, portal.scope) : job;
         if (eligible.publicationHold || eligible.publicationWithdrawnAt) {
           report.held++;
+          if (eligible.publicationHold === DETAIL_CONTENT_MISSING) report.contentMissing = (report.contentMissing ?? 0) + 1;
           if (eligible.publicationHold === SPONTANEOUS_APPLICATION_HOLD && eligible.publicationWithdrawnAt) report.spontaneousWithdrawn = (report.spontaneousWithdrawn ?? 0) + 1;
           continue;
         }
@@ -153,6 +165,9 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
           ...(registryResolved ? { certifiedPortal: portal! } : {}),
         });
         if (recovery.status === 'RECOVERABLE') report.qualified++;
+        // D-523 §3 : une fiche que la relecture qualifiée trouve sans contenu est retenue (`applyContentRetention`), jamais publiée ; elle ne
+        // refuse plus la source entière (cotton-on, 9 fiches vides au-delà de la tolérance). Nommée, comptée à part.
+        else if (recovery.reason === 'CONTENT_MISSING') { report.held++; report.contentMissing = (report.contentMissing ?? 0) + 1; reason(recovery.reason); }
         else { report.rejected++; reason(recovery.reason); }
       }
       // D-517 : une lecture incrémentale qui a reconnu la liste et n'a rien de neuf à publier (rien, ou seulement des
@@ -166,7 +181,7 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
           await nativeEmptyFeed(db, batch.id, revision.kind, config, store);
         if (!report.nativeEmpty) reason('EMPTY_FEED_NOT_NATIVELY_PROVEN');
       }
-      if (report.observed && !report.qualified && !onlySpontaneous(report) && !report.incrementalNothingNew) reason('NO_QUALIFIED_PUBLICATION');
+      if (report.observed && !report.qualified && !onlySpontaneous(report) && !onlyRetainedContent(report) && !report.incrementalNothingNew) reason('NO_QUALIFIED_PUBLICATION');
     }
   } catch {
     // Details remain in the capture. Do not copy exception messages containing
@@ -198,7 +213,7 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
   const allowance = unqualifiedAllowanceFor(report.observed + (report.incrementalKnown ?? 0) + (report.inputUnqualified ?? 0));
   report.allowance = { ...VALIDATION_UNQUALIFIED_ALLOWANCE, applied: allowance };
   const verdict = report.replayExact && unqualified <= allowance && batchReasons.length === 0 &&
-    (report.qualified > 0 || report.nativeEmpty || emptyReading || onlySpontaneous(report) || (report.incrementalNothingNew ?? 0) > 0) ? 'VALIDATED' : 'REJECTED';
+    (report.qualified > 0 || report.nativeEmpty || emptyReading || onlySpontaneous(report) || onlyRetainedContent(report) || (report.incrementalNothingNew ?? 0) > 0) ? 'VALIDATED' : 'REJECTED';
   return db.$transaction(async tx => {
     // Serialize completed decisions with promotion. The append sequence, not a
     // millisecond timestamp or UUID order, identifies the latest decision.
