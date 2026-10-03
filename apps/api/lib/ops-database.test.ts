@@ -145,7 +145,11 @@ describe.skipIf(!enabled)('routes de pilotage /api/ops/* (D-522 §5) sur la base
     expect(corps.fileIdentite.ouvertes).toBeGreaterThanOrEqual(1);
     expect(corps.fraicheur).toMatchObject({ fenetreHeures: 48 });
     expect(corps.fraicheur.offresActives).toBeGreaterThanOrEqual(1);
-    expect(corps.actions.map((a: { cle: string }) => a.cle)).toContain(K.bloquee);
+    expect(corps.systemeRepare.sources.map((a: { cle: string }) => a.cle)).toContain(K.bloquee);
+    expect(corps.systemeRepare.total).toBeGreaterThanOrEqual(1);
+    // Ce qui attend une personne est compté à part : la pause à trancher du registre, la question d'identité.
+    expect(corps.attend.registreATrancher).toBeGreaterThanOrEqual(1);
+    expect(corps.attend.identite.ouvertes).toBeGreaterThanOrEqual(1);
     expect(corps.sources.parEtat.map((e: { etat: string }) => e.etat)).toEqual(['NORMALE', 'DEGRADEE', 'EN_ATTENTE', 'BLOQUEE', 'EN_PAUSE', 'EXCLUE']);
   });
 
