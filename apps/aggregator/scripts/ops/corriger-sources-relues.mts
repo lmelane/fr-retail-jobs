@@ -81,6 +81,9 @@ function configPour(ats: string, portail: string): Record<string, unknown> | nul
       return { origin: u.origin };
     case 'personio':
       return { host: u.hostname };
+    // SuccessFactors (D-522 §6) : l'origine du portail ; ses réglages relus (allLocales, publisherFeed) via config_relue.
+    case 'successfactors':
+      return u.pathname.replace(/\/+$/, '') ? null : { origin: u.origin };
     case 'phenom':
       return { origin: u.origin, ...(u.pathname.replace(/\/+$/, '') ? { localePath: u.pathname.replace(/\/+$/, '') } : {}) };
     case 'oraclehcm': {
@@ -109,6 +112,9 @@ function completer(kind: string, config: Record<string, unknown>, relue: string)
   if (kind === 'phenom') {
     try { if (phenomDialect(complete) === 'CAREER_CONNECT_WIDGETS') careerConnectOptions(complete); } catch (error) { return `réglages Phenom refusés par le lecteur : ${(error as Error).message}`; }
   }
+  // Le flux de l'éditeur SuccessFactors (D-522 §6) : un booléen relu, seulement en mode multilingue (`publisherFeedPath`).
+  if (kind === 'successfactors' && Object.hasOwn(complete, 'publisherFeed') && (complete.publisherFeed !== true || complete.allLocales !== true))
+    return 'publisherFeed exige la valeur true et allLocales true';
   // Un lecteur dédié choisi dans la même famille (Marc O'Polo, D-485) : ses réglages passent par le parseur du lecteur.
   if ((kind === 'generic-listing' || kind === 'generic-jsonld') && complete.reader !== undefined) {
     if (complete.reader === MARC_O_POLO_READER) {

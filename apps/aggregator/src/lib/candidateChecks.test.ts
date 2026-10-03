@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createHash } from 'node:crypto';
 import { CRAWLER_IDENTITY, CRAWLER_PRODUCT_TOKEN } from './crawlerIdentity.js';
-import { CATALOGUE_LABEL, classifyLabel, readRobots, requestTarget, robotsReading, scopeEvidence } from './candidateChecks.js';
+import { additionalRequestPaths, CATALOGUE_LABEL, classifyLabel, readRobots, requestTarget, robotsReading, scopeEvidence } from './candidateChecks.js';
 
 describe('explicit robots verdict', () => {
   const robots = 'User-agent: *\nDisallow: /private\nAllow: /v1/boards/';
@@ -120,5 +120,18 @@ describe('native labels against the catalogued Maison', () => {
     expect(scopeEvidence(new Map([['UNIQLO USA LLC', 13], ['GU USA LLC', 1]]), 'Uniqlo')).toMatchObject({ verdict: 'LABELS_OUTSIDE_OWNER', other: ['GU USA LLC (1)'] });
     expect(scopeEvidence(new Map([['UNIQLO USA LLC', 225], ['UNIQLO Massachusetts LLC', 32]]), 'Uniqlo').verdict).toBe('SINGLE_BRAND_CONSISTENT');
     expect(scopeEvidence(new Map([[CATALOGUE_LABEL, 309]]), 'On').verdict).toBe('NO_NATIVE_LABEL');
+  });
+});
+
+/** D-522 §6 : le flux SuccessFactors n'est demandé que sur réglage relu, et son chemin passe au robots.txt. */
+describe('autres chemins demandés par une configuration', () => {
+  it('le flux SuccessFactors seulement sur réglage relu, et le robots.txt réel de Sephora le permet', () => {
+    expect(additionalRequestPaths('successfactors', { origin: 'https://jobs.sephora.com', allLocales: true, publisherFeed: true })).toEqual(['/sitemap.xml']);
+    expect(additionalRequestPaths('successfactors', { origin: 'https://jobs.sephora.com', allLocales: true })).toEqual([]);
+    expect(additionalRequestPaths('greenhouse', { board: 'onrunning', publisherFeed: true })).toEqual([]);
+    // robots.txt de jobs.sephora.com relu le 03/10/2026, tel quel.
+    const sephora = 'User-agent: *\nDisallow: /applybutton/\nDisallow: /talentcommunity/\nDisallow: /mobile/talentcommunity/\nDisallow: /emailsubscribe/\nDisallow: /email/image/\nDisallow: /services/\nDisallow: /preapply/\nDisallow: /error\nDisallow: /unsubscribe/\nDisallow: /reset/';
+    expect(robotsReading({ status: 200, text: sephora }, '/sitemap.xml').verdict).toBe('ALLOWED');
+    expect(robotsReading({ status: 200, text: sephora + '\nDisallow: /sitemap.xml' }, '/sitemap.xml').verdict).toBe('DISALLOWED');
   });
 });

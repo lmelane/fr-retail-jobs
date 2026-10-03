@@ -538,11 +538,13 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
     }
     let complete = issues.size === 0 && scopes.length === locales.length;
     /*
-     * Le flux est lu à CHAQUE collecte multilingue, qu'il serve ou non (D-522 §6) : lu seulement au besoin, il serait une
-     * adresse que la collecte de qualification n'a pas toujours observée, et la collecte sous décision refuse toute
-     * adresse hors du périmètre dérivé d'elle — refus qui annule la collecte entière (`capture/batch.ts`).
+     * Le flux n'est lu que sur RÉGLAGE RELU (`publisherFeed: true`, D-522 §6) : une adresse de plus chez l'éditeur, dont le
+     * relecteur vérifie le robots.txt (`publisherFeedPath`, lu par record-cassette) avant de la poser. Avec ce réglage, il
+     * est lu à CHAQUE collecte multilingue, qu'il serve ou non : lu seulement au besoin, il serait une adresse que la
+     * collecte de qualification n'a pas toujours observée, et la collecte sous décision refuse toute adresse hors du
+     * périmètre dérivé d'elle — refus qui annule la collecte entière (`capture/batch.ts`).
      */
-    const feed = await readPublisherFeed(origin, evidence);
+    const feed: PublisherFeed = publisherFeedPath(config) ? await readPublisherFeed(origin, evidence) : { read: false, jobs: null, failure: FEED_NOT_CONFIGURED };
     if (feed.read) pages++;
     const byFeed = !complete && reconcileByPublisherFeed(feed, locales, scopes, issues, byId);
     if (byFeed) complete = true;
@@ -609,9 +611,18 @@ function listingJob(job: SuccessFactorsJob): NormalizedJob {
  * passe fraîche. Un flux absent, coupé ou incohérent ne prouve rien. La terminaison qui en résulte n'est pas probante
  * pour le refresh, comme celle de la passe fraîche : ses absences ne ferment rien ce jour-là.
  *
- * Le flux est lu à chaque collecte multilingue, à la même place (après les pages) : le rejeu hors réseau le relit.
+ * Sur réglage relu, le flux est lu à chaque collecte multilingue, à la même place (après les pages) : le rejeu le relit.
  */
 const FEED_OUTSIDE_ACCESS_SCOPE = 'PUBLISHER_FEED_OUTSIDE_ACCESS_SCOPE';
+const FEED_NOT_CONFIGURED = 'PUBLISHER_FEED_NOT_CONFIGURED';
+/**
+ * Le chemin du flux de l'éditeur que la source a le droit de lire : seulement en mode multilingue ET sur le réglage relu
+ * `publisherFeed: true` (sephora-france), jamais par défaut. Partagé avec les contrôles de candidat (`candidateChecks.ts`),
+ * qui en lisent le robots.txt.
+ */
+export function publisherFeedPath(config: Record<string, unknown>): string | null {
+  return config.allLocales === true && config.publisherFeed === true ? '/sitemap.xml' : null;
+}
 type PublisherFeed = { read: boolean; jobs: SuccessFactorsJob[] | null; failure?: string };
 
 /**
@@ -640,7 +651,7 @@ function reconcileByPublisherFeed(feed: PublisherFeed, locales: string[], scopes
     unproven.every(locale => issues.has(`${locale}:SOURCE_TOTAL_CHANGED`)) &&
     [...issues].every(issue => unproven.some(locale => issue === `HTML_LOCALE_INCOMPLETE:${locale}` || issue.startsWith(`${locale}:`)));
   if (!onlyTotalChanges) return false;
-  if (!feed.read) { issues.add(feed.failure === FEED_OUTSIDE_ACCESS_SCOPE ? FEED_OUTSIDE_ACCESS_SCOPE : `PUBLISHER_FEED_FAILED:${feed.failure ?? ''}`); return false; }
+  if (!feed.read) { issues.add(feed.failure === FEED_OUTSIDE_ACCESS_SCOPE || feed.failure === FEED_NOT_CONFIGURED ? feed.failure : `PUBLISHER_FEED_FAILED:${feed.failure ?? ''}`); return false; }
   if (!feed.jobs?.length) { issues.add('PUBLISHER_FEED_UNREADABLE'); return false; }
   const feedOnly = feed.jobs.filter(job => !byId.has(job.externalId));
   for (const job of feedOnly) byId.set(job.externalId, listingJob(job));

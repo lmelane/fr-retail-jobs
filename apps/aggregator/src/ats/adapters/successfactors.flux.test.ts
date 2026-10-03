@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('../../lib/http.js', () => ({ fetchText: vi.fn(), fetchJson: vi.fn() }));
 import { fetchText } from '../../lib/http.js';
-import { fetchSuccessFactorsResult, parseSuccessFactorsJobFeed } from './successfactors.js';
+import { fetchSuccessFactorsResult, parseSuccessFactorsJobFeed, publisherFeedPath } from './successfactors.js';
 import { PROVING_TERMINATIONS } from '../../pipeline/refreshPlan.js';
 import { readEnumeration } from '../../pipeline/enumerationReading.js';
 import { assertCaptureHealthy, withCaptureContext, type CaptureContext } from '../../capture/context.js';
@@ -46,7 +46,7 @@ function board(feedBody: string | (() => never)) {
   });
   return served;
 }
-const config = { origin: 'https://jobs.sephora.com', allLocales: true, withDescriptions: false };
+const config = { origin: 'https://jobs.sephora.com', allLocales: true, publisherFeed: true, withDescriptions: false };
 beforeEach(() => vi.resetAllMocks());
 
 describe('SuccessFactors — total HTML oscillant, réconciliation par le flux complet de l’éditeur (Sephora, 02/10/2026)', () => {
@@ -173,5 +173,27 @@ describe('SuccessFactors — le flux hors du périmètre d’accès accordé ne 
     const r = await withCaptureContext(context, () => fetchSuccessFactorsResult(config));
     expect(served.feed).toBe(0);
     expect(r.complete).toBe(false);
+  });
+});
+
+/**
+ * Lecture technique du lot (D-522 §6) : le flux est une adresse de plus chez l'éditeur. Il n'est lu que sur le réglage relu
+ * `publisherFeed: true` ; un site SuccessFactors multilingue sans ce réglage ne demande jamais `/sitemap.xml`, et son
+ * robots.txt n'a donc pas à le permettre.
+ */
+describe('SuccessFactors — le flux de l’éditeur n’est lu que sur réglage relu', () => {
+  it('sans publisherFeed, /sitemap.xml n’est jamais demandé, même quand le total oscille', async () => {
+    const served = board(feed([A, B, D, E]));
+    const r = await fetchSuccessFactorsResult({ origin: 'https://jobs.sephora.com', allLocales: true, withDescriptions: false });
+    expect(served.feed).toBe(0);
+    expect(vi.mocked(fetchText).mock.calls.some((call) => new URL(String(call[0])).pathname === '/sitemap.xml')).toBe(false);
+    expect(r.complete).toBe(false);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['PUBLISHER_FEED_NOT_CONFIGURED', 'en_US:SOURCE_TOTAL_CHANGED']));
+  });
+  it('le chemin du flux n’existe que pour le réglage relu en mode multilingue', () => {
+    expect(publisherFeedPath({ origin: 'https://jobs.sephora.com', allLocales: true, publisherFeed: true })).toBe('/sitemap.xml');
+    expect(publisherFeedPath({ origin: 'https://jobs.sephora.com', allLocales: true })).toBeNull();
+    expect(publisherFeedPath({ origin: 'https://jobs.sephora.com', publisherFeed: true })).toBeNull();
+    expect(publisherFeedPath({ origin: 'https://jobs.sephora.com', allLocales: true, publisherFeed: 'yes' })).toBeNull();
   });
 });

@@ -8,6 +8,7 @@ import { robotsVerdictFor } from './robotsVerdict.js';
 import { CRAWLER_IDENTITY } from './crawlerIdentity.js';
 import { resolveCompany, stripLegalSuffix } from '../normalize/company.js';
 import { normalizedEmployerName } from '../normalize/employerName.js';
+import { publisherFeedPath } from '../ats/adapters/successfactors.js';
 
 /** Host + first path the adapter requests, per kind — only what the adapters actually call. */
 export function requestTarget(kind: string, config: Record<string, unknown>): { origin: string; path: string } {
@@ -39,6 +40,15 @@ export function requestTarget(kind: string, config: Record<string, unknown>): { 
       const u = new URL(candidate); return { origin: u.origin, path: u.pathname || '/' };
     }
   }
+}
+
+/**
+ * Les AUTRES chemins qu'une configuration fait demander sur l'origine de départ, et dont le robots.txt doit être relu
+ * avant de la poser (D-522 §6) : le flux de l'éditeur de SuccessFactors sur réglage relu (`publisherFeed`).
+ */
+export function additionalRequestPaths(kind: string, config: Record<string, unknown>): string[] {
+  const feed = kind === 'successfactors' ? publisherFeedPath(config) : null;
+  return feed ? [feed] : [];
 }
 
 export type RobotsVerdict = 'ALLOWED' | 'DISALLOWED' | 'NO_ROBOTS' | 'UNREACHABLE';

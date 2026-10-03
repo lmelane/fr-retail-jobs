@@ -1,0 +1,11 @@
+Inspection en lecture seule (transaction READ ONLY), 03/10/2026, AVANT la correction de configuration :
+  python3 apps/aggregator/scripts/ops/db.py readonly npx tsx apps/aggregator/src/remediation/cli.ts plan-replaced-identity \
+    --spec audits/2026-10-03/stock-exceptions/kastner-ohler/retrait-identite-remplacee-spec.json --out <plan hors dépôt>
+Attendu : refus (la révision remplacée est encore la configuration courante). Ordre : 1) corriger-sources-relues
+(registre-relu-kastner-ohler.csv) ; 2) première collecte sous la nouvelle configuration ; 3) régénérer ce plan (12 remplacées,
+5 non listées attendues ; le plan refuse tant qu'aucune représentation de la nouvelle révision n'existe) ; 4) appliquer.
+Sortie :
+Error: The replaced revision is still the current configuration: correct the source first
+Production le 03/10 : représentations actives par révision :
+ f6df8672-ef85-43ca-a2f2-ddb5371f0366 |    17
+Partition attendue (témoin remediation/replacedIdentity.test.ts, lignes réelles + 12 billets de la cassette du 03/10) : 12 remplacées, 5 non listées (backoffice + ancres #top et #cookieeinstellungen, stilberaterin vue le 23/09, weihnachtsaushilfe vue le 30/09).

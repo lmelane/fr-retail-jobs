@@ -37,11 +37,19 @@ try {
   installOfflineTransport({ mode: 'record', dir });
   const { ADAPTERS } = await import('../../src/ats/index.js');
   const { KIND_TO_ATS } = await import('../../src/ats/catalogKinds.js');
-  const { readRobots, requestTarget } = await import('../../src/lib/candidateChecks.js');
+  const { readRobots, requestTarget, additionalRequestPaths } = await import('../../src/lib/candidateChecks.js');
 
   // The onboarding path reads robots.txt before it validates; it belongs in the same cassette.
   const target = requestTarget(kind as any, config);
   const robots = await readRobots(target.origin, target.path);
+  // D-522 §6 : chaque autre chemin que la configuration fait demander (flux SuccessFactors) est relu au robots.txt ; un
+  // chemin refusé arrête l'enregistrement avant toute collecte.
+  const extraRobots = [];
+  for (const path of additionalRequestPaths(kind as string, config)) {
+    const reading = await readRobots(target.origin, path);
+    if (reading.verdict === 'DISALLOWED') throw new Error(`robots.txt refuse ${target.origin}${path} : réglage à retirer`);
+    extraRobots.push({ path, verdict: reading.verdict });
+  }
 
   const type = KIND_TO_ATS[kind as string];
   const adapter = ADAPTERS[type];
@@ -50,7 +58,7 @@ try {
   const jobs = Array.isArray(result) ? result : result.jobs;
 
   console.log(JSON.stringify({
-    dir, kind, atsType: type, robotsVerdict: robots.verdict, robotsTarget: `${target.origin}${target.path}`,
+    dir, kind, atsType: type, robotsVerdict: robots.verdict, robotsTarget: `${target.origin}${target.path}`, ...(extraRobots.length ? { extraRobots } : {}),
     jobsRead: jobs.length, responsesRecorded: cassetteSize(dir),
     sample: jobs.slice(0, 2).map((j: any) => ({ title: j.title, company: j.company })),
   }, null, 1));

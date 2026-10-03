@@ -9,13 +9,15 @@ import { planSourceOwners } from './owners.js';
 import { planAdministrativeWithdrawals } from './withdrawal.js';
 import { planHomonymRepresentations } from './homonymRepresentations.js';
 import { planAnchorDuplicates } from './anchorDuplicates.js';
+import { planReplacedIdentity } from './replacedIdentity.js';
 
 const prisma = new PrismaClient();
 const [command, ...args] = process.argv.slice(2);
 const arg = (name: string) => { const i = args.indexOf(name); if (i < 0 || !args[i + 1]) throw new Error(`Missing ${name}`); return args[i + 1]; };
 try {
-  if (command === 'plan-smcp' || command === 'plan-identities' || command === 'plan-homonyms' || command === 'plan-owners' || command === 'plan-portal-owners' || command === 'plan-withdrawals' || command === 'plan-homonym-representations' || command === 'plan-anchor-duplicates') {
-    const plan = command === 'plan-anchor-duplicates' ? await planAnchorDuplicates(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8')))
+  if (command === 'plan-smcp' || command === 'plan-identities' || command === 'plan-homonyms' || command === 'plan-owners' || command === 'plan-portal-owners' || command === 'plan-withdrawals' || command === 'plan-homonym-representations' || command === 'plan-anchor-duplicates' || command === 'plan-replaced-identity') {
+    const plan = command === 'plan-replaced-identity' ? await planReplacedIdentity(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8')))
+      : command === 'plan-anchor-duplicates' ? await planAnchorDuplicates(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8')))
       : command === 'plan-homonym-representations' ? await planHomonymRepresentations(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8')))
       : command === 'plan-withdrawals' ? await planAdministrativeWithdrawals(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8'))) : command === 'plan-portal-owners' ? await planReviewedPortalOwners(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8')))
       : command === 'plan-smcp' ? await planSmcpRepair(prisma)
