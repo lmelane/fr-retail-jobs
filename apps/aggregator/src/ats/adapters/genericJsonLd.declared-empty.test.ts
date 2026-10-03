@@ -110,8 +110,14 @@ describe('D-522 §6 : une page carrières qui annonce elle-même l\'absence d\'o
   });
 
   it('une page liée illisible empêche la preuve : le zéro n\'est jamais déduit d\'un échec', async () => {
-    mockFetch.mockImplementation(async url => { if (String(url).endsWith('#')) throw new Error('HTTP 503 Service Unavailable'); return GHOST.html; });
+    // Depuis le correctif Lumentee (81eae5b), l'ancre `/careers#` de la page Ghost n'est plus relue : la page réelle ne lie
+    // plus aucune autre page. Le témoin lui ajoute donc un lien vers une AUTRE page carrières, qui échoue.
+    const linked = 'https://www.ghostfashion.com/careers/stylist';
+    const html = GHOST.html.replace('</body>', '<a href="/careers/stylist">Stylist</a></body>');
+    mockFetch.mockImplementation(async url => { if (String(url) === linked) throw new Error('HTTP 503 Service Unavailable'); return html; });
     const result = await fetchGenericJsonLdJobs({ startUrl: GHOST.url, emptyListingText: GHOST.text });
+    // Prémisse : la page liée a bien été demandée, et c'est elle qui a échoué.
+    expect(mockFetch.mock.calls.map(c => String(c[0]))).toContain(linked);
     expect(result.complete).toBe(false);
     expect(result.enumeration?.issues).toContain('LINKED_PAGE_FETCH_FAILURES=1');
   });
