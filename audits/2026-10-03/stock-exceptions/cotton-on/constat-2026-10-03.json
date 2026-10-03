@@ -1,0 +1,46 @@
+{
+ "observedAt": "2026-10-03",
+ "lectureDuJour": {
+  "robotsVerdict": "NO_ROBOTS",
+  "jobs": 452,
+  "descriptionsVides": 18,
+  "exemplesVides": [
+   [
+    "AUSPEAKREQ6921",
+    "Holiday Casual Team Member - Cotton On Busselton Mega",
+    "https://ekxm.fa.ap1.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/AUSPEAKREQ6921"
+   ],
+   [
+    "HK2026PEAKREQ03",
+    "Holiday Part Timer -  Cotton On Queen's Road Central Mega",
+    "https://ekxm.fa.ap1.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/HK2026PEAKREQ03"
+   ],
+   [
+    "HK2026PEAKREQ01",
+    "Holiday Part Timer - Cotton On Lee Theatre Plaza",
+    "https://ekxm.fa.ap1.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/HK2026PEAKREQ01"
+   ],
+   [
+    "USAPEAKREQ086",
+    "Seasonal Sales Associate - Cotton On Body University Mall",
+    "https://ekxm.fa.ap1.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/USAPEAKREQ086"
+   ],
+   [
+    "USAPEAKREQ125",
+    "Seasonal Sales Associate - Cotton On Kids Mission Viejo",
+    "https://ekxm.fa.ap1.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/USAPEAKREQ125"
+   ],
+   [
+    "SG2026PEAKREQ13",
+    "Holiday Part Timer - Cotton On Vivo City Shopping Centre",
+    "https://ekxm.fa.ap1.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/SG2026PEAKREQ13"
+   ]
+  ]
+ },
+ "preuveVide": "recruitingCEJobRequisitionDetails Id=AUSPEAKREQ2966 : ExternalDescriptionStr, ShortDescriptionStr, qualifications et responsabilités de longueur 0 chez l'éditeur",
+ "tolerance": "unqualifiedAllowanceFor(452) = 4 : 18 fiches vides => REJECTED (plafond inchangé)",
+ "employeurNatif": "aucun ; organizationsFacet nomme des entités (Cotton On Group 92, USA 153, Typo UK 18...) mais Organization est nul sur chaque offre",
+ "portalScope": "NULL en base : toute offre serait refusée PORTAL_OWNER_NOT_CERTIFIED",
+ "enseignesDansLesTitres": "Cotton On 216, Typo 50, Cotton On Kids 53, Factorie 20, Cotton On Body 15, Supré 11",
+ "domaine": "https://cottonongroup.com/join-the-team/ répond 200 sous cottonongroup.com (canonical cottonongroup.com.au) et lie ekxm.fa.ap1.oraclecloud.com/.../sites/CX : domaine officiel cottonongroup.com, aucune relation à instruire"
+}

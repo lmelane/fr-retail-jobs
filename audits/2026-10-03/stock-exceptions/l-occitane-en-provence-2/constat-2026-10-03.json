@@ -1,0 +1,9 @@
+{
+ "observedAt": "2026-10-03",
+ "refus": "RUN 9022fc4b, offre 1437472233 « Verkäuferin (m/w/d) - Bern » : PORTAL_OWNER_NOT_CERTIFIED raw « L’Occitane en Provence +2 » (origine SOURCE_CATALOGUE_LABEL), pile resolve.ts:55 = code r5",
+ "historique": "EmployerObservation 25/09 au 01/10 : microdata.hiringOrganization « L'Occitane » REVIEWED_ALIAS -> cmtp1xiqw03ngqq4zikinuk6e (L’Occitane, kind GROUP) ; le 02/10 la page ne nomme plus l'employeur ; l'offre reste sur L’Occitane",
+ "codeR6": "resolve.ts:57-61 + ordinaryIdentity.ts règle 1 : dernière déclaration native REVIEWED_ALIAS sur le même employeur => motif NATIVE_LABEL_OMITTED, offre gardée sans réécriture, NOT_QUEUED (reviewQueue.ts:40) ; témoin identity-queue.ingest.test.ts:78. Le motif reste compté dans writeFailures.",
+ "libelle": "Source.maison « L’Occitane en Provence +2 » ; Company 537f8411 (0 offre, 0 alias, resolved:L_OCCITANE_EN_PROVENCE_2, domaine group.loccitane.com) ; les 38 offres de la source sont sous Company L’Occitane (GROUP)",
+ "cheminRenommage": "aucun chemin relu n'écrit Source.maison (corriger-sources-relues : kind/config ; importer-registre-csv : domaine, portalScope, statut ; les libellés du 23/09 ont été posés hors script versionné). record-employer-alias sait fusionner des Company (mergedIntoId, avec preuve), pas renommer une source.",
+ "effetDuRenommage": "maison entre dans la révision (renommages du 23/09 : fastrack v4, markham v4, de-beers v3) et dans sourceIdentityHash : l'alias relu « l'occitane » (sourceHash 6eb1ff4f…) ne vaut plus (resolve.ts, ALIAS_SOURCE_OR_TENANT_CHANGED) tant qu'il n'est pas renouvelé par record-employer-alias ; preuves d'identité et validation à refaire sur la nouvelle révision"
+}

@@ -1,0 +1,6 @@
+{
+ "observedAt": "2026-10-03",
+ "lecture": "api.lever.co/robots.txt Allow / ; /v0/postings/hypebeast : 17 offres (Hypemaker agence, HBX e-commerce, Hypegolf, partenariats)",
+ "identite": "https://hypebeast.com/jobs (robots autorise) lie https://jobs.lever.co/hypebeast",
+ "blocage": "source-add d'une nouvelle clé calcule tenantKey lever:hypebeast, détenue par army-logic RETIRED : registerSourceCandidate (sourceCandidate.ts) lève « Tenant already registered: army-logic ». Aucun outil générique relu ne libère la clé d'une fiche RETIRED (seul precedent : declarer-portail-groupe.mts, codé en dur pour dr-jart-13) ; realigner-tenantkey refuse une clé déjà portée."
+}

@@ -1,0 +1,13 @@
+{
+ "observedAt": "2026-10-03",
+ "runDu23_09": "cmue70nq200a2ld6fnvfsw1qj BROKEN : 181 job.write_failed EmployerIdentityReviewRequired PORTAL_OWNER_NOT_CERTIFIED raw=Markham, code r5 et libellé d'avant 14:26",
+ "codeR6": "resolve.ts : portail relu MULTI_BRAND + libellé de registre => règle MULTI_BRAND_PORTAL_GROUP_OWNER, Company TFG créée sous la clé du registre ; témoin d'intégration identity-queue.ingest.test.ts:90",
+ "lectureDuJour": {
+  "robotsVerdict": "NO_ROBOTS",
+  "jobs": 189,
+  "descriptionsVides": 0,
+  "employeurNatif": "aucun (LegalEmployer/BusinessUnit/Organization nuls)"
+ },
+ "identiteOfficielle": "https://tfglimited.co.za/careers/opportunities/ lie https://fa-expc-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1",
+ "enseignesNommeesDansLesTitres": "Foschini 21, Totalsports 15, Prestige Clothing 15, JD Sports 11, @home ~35 (mobilier/maison), Sportscene 8, Jet 8, Markham 9, Volpes 6, American Swiss 7, Coricraft 3, Dial a Bed 2"
+}

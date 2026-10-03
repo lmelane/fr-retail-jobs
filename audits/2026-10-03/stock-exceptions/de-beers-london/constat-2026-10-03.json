@@ -1,0 +1,11 @@
+{
+ "observedAt": "2026-10-03",
+ "robotsApi": "api.smartrecruiters.com/robots.txt : User-agent * Disallow / (observé, accès fondé sur la décision du propriétaire D62, accessDecision.ts)",
+ "lecture": "GET /v1/companies/AngloAmericanDeBeersGroup/postings : 97 offres, company.name = « Anglo American / De Beers Group » pour 97/97",
+ "employeurNatifParPoste": "customField « Brands » présent sur 97/97 : Anglo American 62, Element Six 21, De Beers Group 13, Namdeb 1 ; Discipline Mining 21, Engineering 16",
+ "lectureParPosteDisponible": "config employerField=Brands (smartrecruiters.ts smartRecruitersEmployer) : chaque offre porte sa marque native",
+ "filtrePerimetre": "aucun filtre d'employeur à la collecte pour SmartRecruiters ; filterSector (classifySector) écarte aussi « De Beers Group » (absent de la liste de référence) ; PostingScopeDecision n'agit qu'après une première publication",
+ "corrigerSourcesRelues": "famille smartrecruiters-whitelabel absente de configPour : le CSV relu ne sait pas poser employerField",
+ "identite": "https://www.debeersgroup.com/robots.txt et https://www.angloamerican.com/robots.txt : HTTP 403 page Cloudflare « Attention Required » ; https://www.debeers.co.uk/en-gb/home (robots autorise) lie seulement https://www.debeersgroup.com/careers/current-vacancies?businessunit=de beers jewellers, pas le tenant SmartRecruiters",
+ "portailPropre": "le lien carrière de la marque passe par debeersgroup.com, inaccessible à CatwalksBot ; aucun portail De Beers distinct lisible"
+}

@@ -1,0 +1,55 @@
+{
+ "observedAt": "2026-10-03",
+ "robots": "careers.titan.in/robots.txt : /api et /widgets non interdits",
+ "configEnBase": "phenom dialecte par défaut FOOTLOCKER_API_JOBS",
+ "lectureConfigEnBase": "HTTP 500 sur https://careers.titan.in/api/jobs?limit=100&page=1 (record-cassette --key=fastrack)",
+ "pageRecherche": "careers.titan.in/in/en/search-results déclare widgetApiEndpoint https://careers.titan.in/widgets, locale en_in, country in, totalHits 260",
+ "configCandidate": {
+  "origin": "https://careers.titan.in",
+  "localePath": "/in/en",
+  "dialect": "CAREER_CONNECT_WIDGETS",
+  "widgetsLang": "en_in",
+  "widgetsCountry": "in"
+ },
+ "lectureConfigCandidate": {
+  "robotsVerdict": "ALLOWED",
+  "jobs": 260,
+  "descriptionsVides": 6,
+  "exemplesVides": [
+   [
+    "TVPTITINP103429ENIN",
+    "NPD Lead-Daily wear Category, NPD- Mumbai",
+    "https://careers.titan.in/in/en/job/P-103429/npd-lead-daily-wear-category-npd-mumbai"
+   ],
+   [
+    "TVPTITINP104278ENIN",
+    "GET- Lens Manufacturing",
+    "https://careers.titan.in/in/en/job/P-104278/get-lens-manufacturing"
+   ],
+   [
+    "TVPTITINP104277ENIN",
+    "GET- Frames Manufacturing",
+    "https://careers.titan.in/in/en/job/P-104277/get-frames-manufacturing"
+   ],
+   [
+    "TVPTITINP107147ENIN",
+    "FE CFL Service Operations Associate",
+    "https://careers.titan.in/in/en/job/P-107147/fe-cfl-service-operations-associate"
+   ],
+   [
+    "TVPTITINP107292ENIN",
+    "Floor Manager",
+    "https://careers.titan.in/in/en/job/P-107292/floor-manager"
+   ],
+   [
+    "TVPTITINP106855ENIN",
+    "Retail Projects Executive-Retail Projects Design",
+    "https://careers.titan.in/in/en/job/P-106855/retail-projects-executive-retail-projects-design"
+   ]
+  ],
+  "employeurNatif": "aucun (portail de groupe : R-142 §3, publie sous le libellé Titan)"
+ },
+ "tolerance": "unqualifiedAllowanceFor(260) = 2 (sourceCertification.ts) : 6 fiches vides chez l'éditeur (« We are fetching job description for you... ») font rejeter la validation",
+ "identiteOfficielle": "https://www.titancompany.in/careers lie https://careers.titan.in/in/en/search-results",
+ "offresHeritees": "15 offres actives sous Company Fastrack, identifiants Teamtailor (18/09), absentes de la nouvelle énumération"
+}
