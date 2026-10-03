@@ -15,6 +15,19 @@ describe('Greenhouse country', () => {
     expect(greenhouseCountry({ location: { name: 'Zurich' }, offices: [{ name: 'Zürich', location: 'Förrlibuckstrasse 190, 8005 Zürich, Switzerland' }] })).toBe('CH');
     expect(greenhouseCountry({ location: { name: 'Ho Chi Minh City' }, offices: [{ name: 'HCMC', location: 'Hồ Chí Minh, Vietnam' }] })).toBe('VN');
   });
+  /**
+   * D-522 §6 (03/10/2026) — l'adresse du bureau de Tokyo d'On finit par « 150-0002 Japan » : code postal et pays dans le
+   * même segment, sans virgule. Relu le 03/10 sur boards-api.greenhouse.io (offre 8108450 et quatre autres) : ces offres
+   * restaient sans pays.
+   */
+  it('reads the country after a postal code in the last segment of the office address', () => {
+    const tokyo = { location: { name: 'Tokyo' }, offices: [{ id: 84316, name: 'HQ Tokyo', location: '3F Kanden Fudosan Shibuya Bldg, 26-20 Shibuya 3-chome, Shibuya-ku, Tokyo, 150-0002 Japan' }] };
+    expect(greenhouseCountry(tokyo)).toBe('JP');
+    expect(greenhouseCountry({ location: { name: 'Tokyo' }, offices: [{ name: 'HQ Tokyo', location: 'Tokyo, 150-0002 Japan' }] })).toBe('JP');
+    // Jamais un code ni un État : le code postal retiré, seul un nom de pays entier compte.
+    expect(greenhouseCountry({ location: { name: 'Portland' }, offices: [{ name: 'Portland', location: '123 Main St, Portland, 97201 OR' }] })).toBeUndefined();
+    expect(greenhouseCountry({ location: { name: 'Atlanta' }, offices: [{ name: 'Atlanta', location: '1 Peachtree St, Atlanta, 30303 Georgia' }] })).toBeUndefined();
+  });
   it('never infers a country from a city alone: an office without address leaves the country empty', () => {
     expect(greenhouseCountry({ location: { name: 'Melbourne' }, offices: [{ name: 'Melbourne', location: null }] })).toBeUndefined();
     expect(greenhouseCountry({ location: { name: 'Paris' }, offices: [] })).toBeUndefined();

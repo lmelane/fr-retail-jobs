@@ -20,10 +20,23 @@ type GreenhouseResponse = { jobs: GreenhouseJob[]; meta?: { total?: number } };
  */
 export function greenhouseCountry(job: Pick<GreenhouseJob, 'offices' | 'location'>): string | undefined {
   for (const office of job.offices ?? []) {
-    const country = countryFromLocation(office.location ?? undefined);
+    const country = countryFromLocation(office.location ?? undefined) ?? countryAfterPostalCode(office.location);
     if (country) return country;
   }
   return countryFromLocation(job.location?.name) ?? officeNamedCountry(job.offices);
+}
+
+/**
+ * D-522 §6 (03/10/2026) — UNE ADRESSE QUI FINIT PAR « code postal + pays » dans le même segment : le bureau de Tokyo d'On,
+ * « …, Tokyo, 150-0002 Japan » (cinq offres sans pays le 03/10). Le code postal est retiré du DERNIER segment ; ce qui
+ * reste ne vaut que s'il est un nom de pays entier, sous les mêmes gardes que le nom de bureau : jamais un code de deux ou
+ * trois lettres, jamais un nom qui est aussi un État ou une province (« Georgia »).
+ */
+function countryAfterPostalCode(address: string | null | undefined): string | undefined {
+  const last = address?.split(',').at(-1)?.trim();
+  const name = last?.match(/^\d[\d\s-]*\s+(\S.*)$/)?.[1]?.trim();
+  if (!name || /^[A-Za-z]{2,3}$/.test(name) || subdivisionCountryOf(name)) return undefined;
+  return normalizeCountry(name);
 }
 
 /**
