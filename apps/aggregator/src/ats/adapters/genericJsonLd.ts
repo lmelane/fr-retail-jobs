@@ -11,6 +11,7 @@ import { fetchRssJobs } from '../../connectors/generic/rssFeed.js';
 import { briefError } from '../../lib/normalize.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
+import { captureObservedAt } from '../../capture/context.js';
 import { fetchCaudalieJobs } from './caudalie.js';
 import { fetchMarcOPoloJobs, MARC_O_POLO_READER } from './marcOPolo.js';
 import { joinSpontaneousApplicationCards, joinUnreachableSpontaneousCard, SPONTANEOUS_APPLICATION_CARD } from './joinSpontaneousCard.js';
@@ -61,7 +62,71 @@ export function normalizeGenericPosting(node: Record<string, unknown>, pageUrl: 
 /** Signatures des pages de challenge (Cloudflare, Akamai, AWS WAF) servies à la place d'une liste. */
 const CHALLENGE_PAGE = /just a moment|cf-chl|cf_chl|challenge-platform|_Incapsula_|aws-waf|awswaf|Access Denied|Attention Required/i;
 
+/**
+ * D-522 §6 — LE ZÉRO NATIF D'UNE PAGE CARRIÈRES (03/10/2026, Sioux et Ghost).
+ *
+ * Une Maison sans ATS publie ses offres sur sa page carrières et, quand elle n'en a aucune, l'écrit sur cette même page
+ * (« Derzeit haben wir keine offenen Stellen. », « Although we do not have current openings »). Le lecteur générique ne
+ * savait pas en faire une preuve : la page lue en mode `startUrl` rendait toujours `complete: false`, et la validation
+ * refusait `EMPTY_FEED_NOT_NATIVELY_PROVEN` — une Maison sans offre restait en pause comme une source en panne.
+ *
+ * La preuve est STRICTE, et jamais déduite d'un silence :
+ *   · la phrase est relue par un humain et configurée telle quelle (`emptyListingText`, littéral de 16 caractères au
+ *     moins — une donnée, jamais une expression) ; une phrase devinée ou générique ne prouve rien ;
+ *   · elle figure dans le TEXTE VISIBLE de la page (scripts, styles, gabarits, `noscript` et commentaires retirés) : un
+ *     message « aucune offre » gardé dans le code d'une application ne dit rien de ce que la page affiche ;
+ *   · la page et toutes les pages liées lues ne portent AUCUNE offre : ni JobPosting lisible, ni même le mot
+ *     `JobPosting` (un JSON-LD cassé ou des microdonnées) ; une offre trouvée contredit la phrase et rien n'est prouvé ;
+ *   · toutes les pages liées ont été lues : un échec de lecture n'est jamais un zéro.
+ * Elle ne vaut qu'en mode page carrières (`startUrl`) : une liste paginée, un plan du site ou un flux ont leur propre
+ * preuve, et une phrase n'y remplacerait pas leur parcours.
+ *
+ * La phrase disparaît le jour où la Maison publie : la page redevient une lecture non prouvée, nommée
+ * `DECLARED_EMPTY_TEXT_ABSENT`, et le RUN la classe ; rien n'est fermé sur une page changée. Une preuve de zéro ne ferme
+ * pas non plus un stock significatif d'un coup (garde de masse, `refreshPlan.ts`, R-143 §2).
+ */
+export const DECLARED_EMPTY_TERMINATION = 'PUBLISHER_DECLARES_NO_OPENING';
+const EMPTY_LISTING_TEXT_MIN_LENGTH = 16;
+const collapse = (text: string) => text.replace(/[\s ]+/g, ' ').trim();
+
+/** Le texte qu'un visiteur lit sur la page : sans scripts, styles, gabarits, `noscript`, ni commentaires. */
+export function visiblePageText(html: string): string {
+  const $ = cheerio.load(html);
+  $('script,style,template,noscript,svg,iframe,object').remove();
+  return collapse($.root().text());
+}
+
+/** La phrase relue, ou null quand la source n'en déclare pas ; toute autre valeur est une configuration refusée. */
+function emptyListingText(config: Record<string, unknown>): string | null {
+  if (config.emptyListingText === undefined) return null;
+  const text = typeof config.emptyListingText === 'string' ? collapse(config.emptyListingText) : '';
+  if (text.length < EMPTY_LISTING_TEXT_MIN_LENGTH) throw new Error(`generic emptyListingText must be a reviewed literal of at least ${EMPTY_LISTING_TEXT_MIN_LENGTH} characters`);
+  if (config.feedUrl || config.listingUrl || config.sitemapUrl || config.reader || !config.startUrl) {
+    throw new Error('generic emptyListingText applies only to a careers page read by startUrl');
+  }
+  return text;
+}
+
+/** Une page qui porte une offre, même illisible : un JobPosting extrait, ou le type nommé ailleurs (JSON cassé, microdonnées). */
+const pageCarriesPosting = (html: string) => extractJobPostings(html).length > 0 || /JobPosting/.test(html);
+
+/** La page affiche la phrase relue et ne porte aucune offre. Partagée avec la validation, qui la rejoue sur les octets archivés. */
+export function startPageDeclaresNoOpening(html: string, text: string): boolean {
+  return !pageCarriesPosting(html) && visiblePageText(html).includes(collapse(text));
+}
+
+/** La relecture de la validation sur les réponses archivées d'une collecte de page carrières (`sourceValidation.ts`). */
+export function archivedStartPageDeclaresNoOpening(config: Record<string, unknown>,
+  pages: ReadonlyArray<{ url: string; status: number | null; complete: boolean; body: string | null }>): boolean {
+  let text: string | null;
+  try { text = emptyListingText(config); } catch { return false; }
+  if (!text || !pages.length || pages.some(page => page.status !== 200 || !page.complete || page.body === null)) return false;
+  const start = pages.filter(page => page.url === String(config.startUrl));
+  return start.length > 0 && start.every(page => startPageDeclaresNoOpening(page.body!, text!)) && pages.every(page => !pageCarriesPosting(page.body!));
+}
+
 export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): Promise<AdapterResult> {
+  const declaredEmptyText = emptyListingText(config);
   if (config.reader === 'caudalie-ajax') return fetchCaudalieJobs(config);
   // Marc O'Polo (D-485) : la liste entière vient de l'API que le site déclare, témoin : la page publiée (`marcOPolo.ts`).
   if (config.reader === MARC_O_POLO_READER) return fetchMarcOPoloJobs(config);
@@ -413,11 +478,32 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     } catch { /* ignore */ }
   });
   const limit = pLimit(3);
+  let linkFailures = 0, linkedPagesCarryingPosting = 0;
   const pages = await Promise.all([...links].slice(0, 150).map((url) => limit(async () => {
-    try { return parseJobPostings(await fetchText(url), url); } catch { return []; }
+    try {
+      const linked = await fetchText(url);
+      if (pageCarriesPosting(linked)) linkedPagesCarryingPosting++;
+      return parseJobPostings(linked, url);
+    } catch { linkFailures++; return []; }
   })));
   const byKey = new Map<string, NormalizedJob>();
   for (const job of [...direct, ...pages.flat()]) byKey.set(`${job.externalId}|${job.url}`, job);
+  // D-522 §6 : la page affiche la phrase relue, et ni elle ni aucune page liée, toutes lues, ne porte d'offre.
+  if (declaredEmptyText) {
+    const declared = visiblePageText(html).includes(declaredEmptyText);
+    if (declared && !pageCarriesPosting(html) && linkedPagesCarryingPosting === 0 && linkFailures === 0 && links.size <= 150 && byKey.size === 0) {
+      return { jobs: [], declaredTotal: 0, complete: true, truncated: false,
+        enumeration: { method: 'START_PAGE_PUBLISHER_DECLARES_NO_OPENING', endpoint: startUrl, pages: 1 + links.size, rawCount: links.size,
+          termination: DECLARED_EMPTY_TERMINATION, issues: [],
+          scopes: [{ scope: 'publisherDeclaredNoOpening', declaredTotal: 0, uniqueIds: 0, pages: 1 + links.size, complete: true }],
+          pageEvidence: [{ url: startUrl, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'),
+            offset: 0, pagination: null, ids: [], canonicalIds: [], publisherCounter: declaredEmptyText, componentCounters: [] }] } };
+    }
+    return { jobs: [...byKey.values()], complete: false, truncated: links.size > 150,
+      enumeration: { method: 'START_PAGE_LINK_CRAWL_NO_ENUMERATION_PROOF', endpoint: startUrl, pages: 1, rawCount: links.size, termination: links.size > 150 ? 'LINK_CAP_150' : 'LINKS_EXHAUSTED',
+        issues: [declared ? 'DECLARED_EMPTY_CONTRADICTED' : 'DECLARED_EMPTY_TEXT_ABSENT', ...(linkFailures ? [`LINKED_PAGE_FETCH_FAILURES=${linkFailures}`] : []),
+          'NO_PUBLISHER_LISTING_OR_SITEMAP', 'ENUMERATION_NOT_PROVEN'] } };
+  }
   // A start-page link crawl reads what ONE page links to (capped at 150): it
   // can never prove a board's extent. The evidence says so instead of staying silent.
   return { jobs: [...byKey.values()], complete: false, truncated: links.size > 150,

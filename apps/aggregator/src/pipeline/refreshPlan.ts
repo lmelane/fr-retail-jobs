@@ -155,6 +155,13 @@ export const PROVING_TERMINATIONS: ReadonlySet<string> = new Set([
    * posée que si les trois conditions de `facetProof` (`workday.ts`) tiennent ; sinon `COVERING_FACET_UNPROVEN`.
    */
   'COVERING_FACET_RECONCILED',
+  /**
+   * Page carrières qui annonce elle-même l'absence d'offres (D-522 §6, 03/10/2026, Sioux et Ghost ; choix de preuve
+   * de l'assistant sous D-519 §4 et D-520) : posée seulement quand la phrase relue est dans le texte visible, qu'aucune
+   * page lue ne porte d'offre et que toutes ont été lues (`genericJsonLd.ts`). Le contrat canonique est déclaré, vide ;
+   * la garde de masse ci-dessous s'applique comme à tout zéro annoncé.
+   */
+  'PUBLISHER_DECLARES_NO_OPENING',
 ]);
 
 /**

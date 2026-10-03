@@ -159,6 +159,28 @@ describe('native source validation', () => {
     expect(await captureSourceForValidation(db, key, 30_000)).toMatchObject({ verdict: 'VALIDATED', report: { nativeEmpty: true, absenceAttestation: false } });
   });
 
+  it('D-522 §6 : validates a careers page that shows its reviewed no-opening sentence, replayed on its archived bytes (Sioux)', async () => {
+    const html = readFileSync(new URL('../ats/adapters/__fixtures__/generic-sioux-stellenangebote-20261003.html', import.meta.url), 'utf8');
+    const startUrl = 'https://www.sioux.de/pages/stellenangebote';
+    const page = async (served: string, emptyListingText?: string) => {
+      const key = `source-validation-${randomUUID()}`; keys.push(key);
+      await db.source.create({ data: { key, tenantKey: key, maison: 'Sioux', kind: 'generic-listing',
+        config: { startUrl, ...(emptyListingText ? { emptyListingText } : {}) }, tier: 'EMPLOYER_DIRECT' } });
+      vi.stubGlobal('fetch', vi.fn(async () => new Response(served, { headers: { 'content-type': 'text/html; charset=utf-8' } })));
+      return captureSourceForValidation(db, key, 30_000);
+    };
+    // Prémisse : la page réelle affiche la phrase ; sans elle configurée, le même zéro reste non prouvé.
+    expect(html).toContain('Derzeit haben wir keine offenen Stellen.');
+    expect(await page(html, 'Derzeit haben wir keine offenen Stellen.')).toMatchObject({ verdict: 'VALIDATED',
+      report: { replayExact: true, observed: 0, qualified: 0, nativeEmpty: true, enumerationClaim: 'COMPLETE', absenceAttestation: false } });
+    // D-523 : non prouvé ne veut plus dire refusé ; la lecture vide est validée, nommée, et ne prouve rien (pas de promotion).
+    expect(await page(html)).toMatchObject({ verdict: 'VALIDATED', report: { nativeEmpty: false, reasons: expect.objectContaining({ EMPTY_FEED_NOT_NATIVELY_PROVEN: 1 }) } });
+    // La page change (la phrase n'y est plus) : rien n'est prouvé, même phrase configurée.
+    const changed = html.replace('Derzeit haben wir keine offenen Stellen.', 'Unsere Stellen finden Sie bald hier.');
+    expect(await page(changed, 'Derzeit haben wir keine offenen Stellen.')).toMatchObject({ verdict: 'VALIDATED',
+      report: { nativeEmpty: false, reasons: expect.objectContaining({ EMPTY_FEED_NOT_NATIVELY_PROVEN: 1 }) } });
+  });
+
   /*
    * D-523 (03/10/2026) : « le nombre d'offres ne détermine jamais l'état de la source ». Avant, ce flux vide sans protocole
    * de zéro était REJETÉ : la source perdait sa qualification, donc sa collecte (qualification refusée, escalade) et son

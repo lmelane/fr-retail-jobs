@@ -17,6 +17,7 @@ import { withSourceBudget } from '../lib/sourceBudget.js';
 import { certifiedPortalIdentity, type CertifiedPortalIdentity } from './sourceIdentity.js';
 import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
 import { isIncrementalResult } from '../lib/incrementalReading.js';
+import { archivedStartPageDeclaresNoOpening } from '../ats/adapters/genericJsonLd.js';
 
 import { SOURCE_VALIDATION_POLICY, VALIDATION_UNQUALIFIED_ALLOWANCE, unqualifiedAllowanceFor } from './sourceCertification.js';
 type RevisionPayload = { version: number; key: string; kind: string; config: Record<string, unknown> };
@@ -72,7 +73,17 @@ export const EXPLAINED_NATIVE_ROWS: ReadonlySet<string> = new Set(['LISTED_PAGE_
  * Greenhouse additionally requires meta.total=0, as observed in the production RAW on 2026-09-23. Since D-523
  * (03/10/2026) an empty reading without this proof is no longer refused: it stays named (`EMPTY_FEED_NOT_NATIVELY_PROVEN`)
  * and the collection's health classes it as a reader suspicion (`health.ts`, ZERO_NOT_PROVEN). */
-async function nativeEmptyFeed(db: PrismaClient, batchId: string, kind: string, store?: ObjectStore) {
+async function nativeEmptyFeed(db: PrismaClient, batchId: string, kind: string, config: Record<string, unknown>, store?: ObjectStore) {
+  // D-522 §6 : une page carrières qui affiche la phrase relue, relue ici sur ses octets archivés — la page et chaque page
+  // liée, toutes en 200 et complètes, sans aucune offre (`archivedStartPageDeclaresNoOpening`, `genericJsonLd.ts`).
+  if (kind === 'generic-listing' || kind === 'generic-jsonld') {
+    if (config.emptyListingText === undefined) return false;
+    const rows = await db.rawCapture.findMany({ where: { batchId }, orderBy: { sequence: 'asc' }, take: 160 });
+    if (rows.length > 151) return false;
+    const pages = await Promise.all(rows.map(async row => ({ url: row.requestUrl, status: row.status, complete: row.complete,
+      body: row.blobHash ? (await readRawBlob(db, row.blobHash, store)).toString('utf8') : null })));
+    return archivedStartPageDeclaresNoOpening(config, pages);
+  }
   if (!['ashby', 'teamtailor', 'greenhouse'].includes(kind)) return false;
   const rows = await db.rawCapture.findMany({ where: { batchId }, take: 2 });
   if (rows.length !== 1 || rows[0].status !== 200 || !rows[0].complete || !rows[0].blobHash) return false;
@@ -151,7 +162,7 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
       else if (!report.observed) {
         // A JSON Feed declares no total: a complete enumeration that read nothing is judged on its single archived response.
         report.nativeEmpty = replayed.complete === true && (replayed.declaredTotal === 0 || replayed.declaredTotal === undefined && replayed.jobs.length === 0) &&
-          await nativeEmptyFeed(db, batch.id, revision.kind, store);
+          await nativeEmptyFeed(db, batch.id, revision.kind, config, store);
         if (!report.nativeEmpty) reason('EMPTY_FEED_NOT_NATIVELY_PROVEN');
       }
       if (report.observed && !report.qualified && !onlySpontaneous(report) && !report.incrementalNothingNew) reason('NO_QUALIFIED_PUBLICATION');
