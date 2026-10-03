@@ -1,0 +1,29 @@
+{
+ "candidatesPrefiltre": 23,
+ "bascule": 2,
+ "parSource": {
+  "lvmh": 1,
+  "tiffany-oracle": 1
+ },
+ "restentPubliees": 21,
+ "detail": [
+  {
+   "source": "lvmh",
+   "titre": "Banco de Talentos | Tiffany&Co. Brasil",
+   "preuve": {
+    "kind": "TALENT_POOL",
+    "label": "banco de talentos",
+    "remainder": "tiffany&co. brasil"
+   }
+  },
+  {
+   "source": "tiffany-oracle",
+   "titre": "Banco de Talentos | Tiffany&Co. Brasil",
+   "preuve": {
+    "kind": "TALENT_POOL",
+    "label": "banco de talentos",
+    "remainder": "tiffany&co. brasil"
+   }
+  }
+ ]
+}

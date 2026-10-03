@@ -164,3 +164,40 @@ describe('D-512 : un vivier sans poste est retenu, tout autre mot le garde publi
     expect(Date.now() - started).toBeLessThan(1_500);
   });
 });
+
+/**
+ * D-522 §6 (03/10/2026) — variantes MESURÉES sur les offres que la levée des retenues Workday et le portail L'Oréal feraient
+ * publier (`audits/2026-10-03/stock-exceptions/workday-marques/vocabulaire-d511-d512.md`), et sur les offres actives.
+ */
+describe('D-522 §6 : variantes mesurées de D-511 et D-512', () => {
+  it('candidature spontanée : « Send us your CV », « Inviaci il tuo curriculum » (Brunello Cucinelli, 02/10/2026)', () => {
+    for (const title of ['Inviaci il tuo curriculum - Send us your CV', 'Send us your CV', 'Send us your resume', 'Send Us Your Résumé']) {
+      expect(spontaneousApplicationProof(job(title)), title).toMatchObject({ kind: 'TITLE_LABEL', label: 'send us your CV' });
+    }
+  });
+  it('vivier pur : « Banco de Talentos | Tiffany&Co. Brasil » (lvmh, tiffany-oracle), « Base / Comunidad de Talentos » seuls', () => {
+    for (const offre of [at('Banco de Talentos | Tiffany&Co. Brasil', 'Tiffany & Co.', 'São Paulo', 'BR'), at('Base de Talentos', "L'Oréal", 'Buenos Aires', 'AR'),
+      at('Comunidad de Talentos - Bogotá', "L'Oréal", 'Bogotá', 'CO')]) {
+      expect(spontaneousApplicationProof(job(offre.title, offre)), offre.title).toMatchObject({ kind: 'TALENT_POOL', label: 'banco de talentos' });
+    }
+  });
+  it('vivier qui nomme un poste : publié (D-512), intitulés réels Swarovski, L’Oréal, MECCA, Banco de Talentos actifs', () => {
+    for (const offre of [
+      at('Banco de Talentos | Swarovski Brasil | Vendedores', 'Swarovski', 'Sao Paulo, BRA', 'BR'),
+      at('Banco de Talentos | Swarovski Brasil | Gerentes de Loja', 'Swarovski', 'Sao Paulo, BRA', 'BR'),
+      at('Base de Talentos: Data', "L'Oréal", 'Buenos Aires', 'AR'), at('Base de Talentos: Medical', "L'Oréal", 'Buenos Aires', 'AR'),
+      at('Comunidad de talentos - FINANCE', "L'Oréal", 'Bogotá', 'CO'), at('Comunidad De Talentos - Comercial', "L'Oréal", 'Bogotá', 'CO'),
+      at('MECCA BRANDS Expressions of Interest - Colour Specialists - New South Wales 2026', 'MECCA'),
+      at('Banco de Talentos | Client Advisor São Paulo', 'Tiffany & Co.', 'São Paulo', 'BR'), at('Banco de Talentos - Estágio', 'CHANEL', 'São Paulo', 'BR'),
+      at('Supervisor de Vendas - São Paulo - Banco de Talentos', 'Sephora', 'São Paulo', 'BR'),
+    ]) {
+      expect(spontaneousApplicationProof(job(offre.title, offre)), offre.title).toBeNull();
+    }
+  });
+  it('pièges : « CV Specialist », « Talent Bank Manager », « Banco de Talentos Coordinator », « Send us your CV Reviewer » restent publiés', () => {
+    for (const title of ['CV Specialist', 'Talent Bank Manager', 'Banco de Talentos Coordinator', 'Send us your CV Reviewer', 'Database Talent Analyst',
+      'Curriculum Developer', 'Inviaci il tuo curriculum vitae manager']) {
+      expect(spontaneousApplicationProof(job(title)), title).toBeNull();
+    }
+  });
+});

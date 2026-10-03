@@ -62,6 +62,9 @@ const LABELS: readonly { name: string; one: string; many?: string; ambiguous?: b
   { name: 'spontaneous application', one: '(?:spontaneous|unsolicited|speculative)\\s+application', many: '(?:spontaneous|unsolicited|speculative)\\s+applications' },
   // « open / general application » peut aussi nommer un logiciel : jamais suivi d'un mot technique.
   { name: 'open application', one: '(?:open|general)\\s+application', many: '(?:open|general)\\s+applications', ambiguous: true },
+  // D-522 §6 (03/10/2026), mesuré : « Inviaci il tuo curriculum - Send us your CV » (Brunello Cucinelli, retenue Workday levée).
+  // « curriculum » seul refuse d'être lu devant « vitae » : sans quoi le retour en arrière lirait « curriculum » puis « vitae manager ».
+  { name: 'send us your CV', one: '(?:send\\s+us\\s+your|inviaci\\s+il\\s+tuo)\\s+(?:cv|resume|curriculum(?!\\s+vitae)|curriculum\\s+vitae)' },
 ];
 /** Les mots de fonction : après un libellé, ils en font l'intitulé d'un poste (« Spontaneous Applications Coordinator »,
  * « Talent Pool Coordinator », « Talent Community Manager »). */
@@ -114,7 +117,7 @@ function titleSegments(normalized: string): { head: string; segments: string[] }
  * d'un mot de fonction ou d'équipe (« Talent Pool Coordinator »). Les formes sont celles que la production publie le
  * 02/10/2026 (`audits/2026-10-02/d512-viviers/decouverte.sql`) : au-delà des cinq libellés de la décision, leurs
  * variantes « Talent Community / Network », « Talentpool », « Expressions of Interest », « Express Interest »,
- * « Opportunités futures », « Bolsa de Talentos ».
+ * « Opportunités futures », « Bolsa de Talentos » ; puis « Banco / Base / Comunidad de Talentos » (D-522 §6, 03/10/2026).
  */
 const TALENT_POOL_LABELS: readonly { name: string; pattern: string }[] = [
   { name: 'talent pool', pattern: 'talent[- ]?(?:pool|community|network)s?' },
@@ -123,6 +126,9 @@ const TALENT_POOL_LABELS: readonly { name: string; pattern: string }[] = [
   { name: 'register your interest', pattern: 'register\\s+(?:your\\s+)?interest' },
   { name: 'vivier', pattern: '(?<!roger[\\s-])vivier(?:\\s+de\\s+(?:candidats|talents))?' },
   { name: 'bolsa de talentos', pattern: 'bolsa\\s+de\\s+talentos?' },
+  // D-522 §6 (03/10/2026), mesuré : « Banco de Talentos | Tiffany&Co. Brasil » (lvmh, tiffany-oracle), « Banco de Talentos |
+  // Swarovski Brasil | Vendedores », « Base de Talentos: Data », « Comunidad de talentos - FINANCE » (L'Oréal).
+  { name: 'banco de talentos', pattern: '(?:banco|base|comunidad)\\s+de\\s+talentos?' },
 ];
 const TALENT_POOL_PATTERNS = TALENT_POOL_LABELS.map(({ name, pattern }) => ({ name,
   regex: new RegExp(`(?<![\\p{L}\\p{N}])(?:${pattern})(?![\\p{L}\\p{N}])(?![\\s/&+]*(?:${FOLLOWERS})s?(?![\\p{L}\\p{N}]))`, 'gu') }));

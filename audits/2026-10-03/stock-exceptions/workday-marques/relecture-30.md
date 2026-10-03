@@ -43,6 +43,7 @@ Aucune annonce n'est attribuée à une Maison d'un autre groupe ni à une marque
 
 Les deux réserves ont la même cause : la règle publie le groupe sous le nom de la Maison au registre de la source (R-142 §3,
 D-479 §3), et ce nom est « Levi's » pour `levis`, « Movado » pour `movado`, « Nike » pour `nike`/`nike-nke2` — pas « Levi Strauss &
-Co. », « Movado Group », « Nike, Inc. ». Le faux vient du lecteur D-511 (`spontaneousApplicationProof`), qui ne reconnaît ni
-« Send us your CV », ni « Banco de Talentos » (Swarovski, 2 annonces), ni « Expressions of Interest » (MECCA, 1) : ces quatre annonces
-publieraient. Voir le README du dossier.
+Co. », « Movado Group », « Nike, Inc. ». Le faux vient du lecteur D-511 (`spontaneousApplicationProof`), qui ne reconnaissait pas
+« Send us your CV » : corrigé (`vocabulaire-d511-d512.md`). *Correction du 03/10 : j'avais aussi signalé « Banco de Talentos »
+(Swarovski, 2) et « Expressions of Interest » (MECCA, 1) ; ces trois intitulés nomment un poste et restent publiés par D-512,
+ce qui est voulu.*
