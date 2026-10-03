@@ -34,6 +34,8 @@ import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
  */
 const PAGE_SIZE = 10;
 const MAX_PAGES = Number(process.env.EIGHTFOLD_MAX_PAGES ?? 300);
+/** Relectures complètes de la liste après les pages ciblées, quand une répétition a caché une position (voir plus bas). */
+const RECONCILIATION_SWEEPS = 1;
 
 /**
  * LA FENÊTRE DU PARE-FEU D'EIGHTFOLD (mesurée le 30/09/2026 sur le RUN du 29/09, lecture seule).
@@ -371,14 +373,20 @@ export async function fetchEightfoldJobs(
   const observed = new Set<string>();
   let anonymousRows = 0;
   let pagesRead = 0, rawCount = 0, repeatedIds = 0, unmapped = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
+  /** Les pages de la première lecture où une position déjà servie est revenue : là que le tri a bougé. */
+  const repeatPages: number[] = [];
 
-  for (let page = 0; page < MAX_PAGES; page++) {
+  /**
+   * Lit UNE page de liste. La première lecture (`pass` 1) compte tout ; une relecture de réconciliation n'ajoute que
+   * les positions encore jamais observées — une position déjà vue y est attendue, ni comptée ni redéclarée.
+   */
+  const readPage = async (page: number, pass: number) => {
     const url = `${origin}/api/pcsx/search?domain=${encodeURIComponent(domain)}&query=&location=&start=${page * PAGE_SIZE}&num=${PAGE_SIZE}`;
     const response = await readAfterWafWindow(() => fetchJson<SearchResponse>(url, { headers }), `page de liste start=${page * PAGE_SIZE}`);
 
     const positions = response.data?.positions ?? [];
-    pagesRead += 1; rawCount += positions.length;
-    let fresh = 0;
+    pagesRead += 1; if (pass === 1) rawCount += positions.length;
+    let fresh = 0, repeatedHere = 0;
     const pageIds: string[] = [];
     const pageCanonicalIds: string[] = [];
 
@@ -388,6 +396,7 @@ export async function fetchEightfoldJobs(
        * une page précédente n'est pas redéclarée : l'ensemble observé est un ensemble.
        */
       const canonicalId = eightfoldCanonicalId(position);
+      if (pass > 1 && (!canonicalId || observed.has(canonicalId))) continue;
       if (canonicalId) { if (!observed.has(canonicalId)) { observed.add(canonicalId); pageCanonicalIds.push(canonicalId); } }
       else anonymousRows += 1;
 
@@ -399,11 +408,12 @@ export async function fetchEightfoldJobs(
         continue;
       }
       pageIds.push(job.externalId);
-      if (seen.has(job.externalId)) { repeatedIds += 1; continue; }
+      if (seen.has(job.externalId)) { repeatedIds += 1; repeatedHere += 1; continue; }
       seen.add(job.externalId);
       jobs.push(job);
       fresh++;
     }
+    if (repeatedHere) repeatPages.push(page);
 
     const count = response.data?.count;
     if (count !== undefined) {
@@ -412,12 +422,46 @@ export async function fetchEightfoldJobs(
     }
     pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: page * PAGE_SIZE, pagination: null,
       ids: pageIds, canonicalIds: pageCanonicalIds, publisherCounter: count === undefined ? '' : `count=${count}`,
-      componentCounters: [`positions=${positions.length}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `unmapped=${unmapped}`, `canonicalIds=${observed.size}`, `anonymousRows=${anonymousRows}`] });
-    if (positions.length === 0) { termination = 'EMPTY_PAGE'; break; }
+      componentCounters: [`positions=${positions.length}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `unmapped=${unmapped}`, `canonicalIds=${observed.size}`, `anonymousRows=${anonymousRows}`,
+        ...(pass > 1 ? [`pass=${pass}`, `fresh=${fresh}`] : [])] });
+    return { positions: positions.length, count, fresh };
+  };
+
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const { positions, count, fresh } = await readPage(page, 1);
+    if (positions === 0) { termination = 'EMPTY_PAGE'; break; }
     if (count !== undefined && seen.size >= count) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
     if (fresh === 0) { termination = 'REPEATED_PAGE'; break; }
     // A short page ends the board only when the publisher announces nothing more.
-    if (positions.length < PAGE_SIZE && (count === undefined || rawCount >= count)) { termination = rawCount >= (count ?? 0) && count !== undefined ? 'PUBLISHER_TOTAL_ROWS_READ' : 'SHORT_PAGE'; break; }
+    if (positions < PAGE_SIZE && (count === undefined || rawCount >= count)) { termination = rawCount >= (count ?? 0) && count !== undefined ? 'PUBLISHER_TOTAL_ROWS_READ' : 'SHORT_PAGE'; break; }
+  }
+
+  /**
+   * RELECTURE DE RÉCONCILIATION (D-522 §6, 03/10/2026), sur le modèle de Phenom et de Workday.
+   *
+   * Le tri par défaut du portail (`sortBy: "hot"`) n'est pas stable entre positions de même date : au RUN du 02/10, Kering
+   * a servi 563705892206374 en fin de start=600 puis de nouveau en tête de start=610, à la place de 563705887980440, à total
+   * inchangé (1 099) — 1 098 lues, liste réfutée. Aucun autre tri n'offre d'ordre garanti (`timestamp`, `relevance` : égalités
+   * sans ordre, relu en ligne le 03/10). Quand une répétition laisse le total annoncé non atteint, on relit d'abord la page de
+   * chaque répétition puis la précédente (là où l'égalité chevauche la coupure), puis, s'il manque encore des positions, la
+   * liste entière, au plus `RECONCILIATION_SWEEPS` fois, en s'arrêtant dès que le total est atteint. La liste n'est prouvée que
+   * si l'union atteint exactement le total annoncé et qu'il n'a pas changé. La répétition reste nommée.
+   *
+   * Le choix des pages relues ne dépend que des réponses : le rejeu hors réseau, qui sert les réponses d'une même adresse
+   * dans l'ordre de leur capture, relit exactement les mêmes pages.
+   */
+  if (repeatedIds && declaredTotal !== undefined && seen.size < declaredTotal && termination !== 'PAGE_BUDGET_EXHAUSTED' && !issues.has('SOURCE_TOTAL_CHANGED')) {
+    const total = declaredTotal;
+    const lastPage = Math.ceil(total / PAGE_SIZE) - 1;
+    const targeted = [...new Set(repeatPages.flatMap((page) => [page, page - 1]))].filter((page) => page >= 0 && page <= lastPage);
+    const missing = () => seen.size < total && !issues.has('SOURCE_TOTAL_CHANGED');
+    for (const page of targeted) { if (!missing()) break; await readPage(page, 2); }
+    for (let sweep = 0; sweep < RECONCILIATION_SWEEPS && missing(); sweep++) {
+      for (let page = 0; page <= lastPage && missing(); page++) {
+        if ((await readPage(page, 3 + sweep)).positions === 0) break;
+      }
+    }
+    if (seen.size === total && !issues.has('SOURCE_TOTAL_CHANGED')) { termination = 'SECOND_SWEEP_RECONCILED'; issues.add('RECONCILED_BY_SECOND_SWEEP'); }
   }
   if (repeatedIds) issues.add('REPEATED_IDS_ACROSS_PAGES');
   if (unmapped) issues.add('POSITIONS_WITHOUT_ID_OR_TITLE');
