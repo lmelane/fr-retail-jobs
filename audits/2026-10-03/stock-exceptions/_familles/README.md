@@ -51,3 +51,17 @@ Sources ACTIVE dégradées au RUN `9022fc4b-1b96-431d-bee9-86ed244ef4f1` (02/10,
 environ 3 493 offres actives dont la seule représentation lvmh ou SmartRecruiters n'est plus revue depuis plus de
 48 h seraient fermées, sur 90 739 offres actives (3,9 %, sous le frein de 5 % du refresh, mais il s'additionne aux
 fermetures des autres lots du même RUN).
+
+## Garde globale du refresh et mise en route (arbitrage du CTO du 03/10)
+
+- **La garde** : `apps/aggregator/src/pipeline/refresh.ts:167`, `refused = wouldClose >= 50 && wouldClose / liveTotal > 5 %`
+  (`REFRESH_LIMITS`, `refreshManifest.ts:6`). Portée : le refresh ENTIER du RUN (`cli.ts:178`, `onlyKeys` = toutes les sources
+  ACTIVE), jamais par source. Refusée, elle ne ferme RIEN, et le RUN est rouge (`cli.ts:180`, `REFRESH_REFUSED`).
+- **Le cumul** (`cumul-premier-refresh.sql` → `.out`) : 4 445 offres fermables par ces familles (lvmh 1 640, hm-group 975,
+  primark 749, wttj-sector 513, 15 autres SmartRecruiters 568) sur 91 367 actives = 4,87 %, seuil 4 568. Fermetures
+  ordinaires d'un RUN du 23/09 au 02/10 (`fermetures-refresh-23-09-02-10.out`) : 54 à 1 512. Leur somme dépasse 5 % dès
+  123 fermetures ordinaires : la garde se déclencherait.
+- **La mise en route** (`ATTESTATION_WARMUP_BY_KIND`, `attestingCapture.ts`) : lvmh, wttj et wttj-sector attestent
+  après une collecte prouvée, SmartRecruiters après deux. RUN de la release : aucune (preuve observée) ; RUN suivant :
+  environ 2 153 ; encore suivant : environ 2 292 (avec au plus 1 512 ordinaires : 3 665 et 3 804, sous le seuil). Témoin :
+  `attestationWarmup.test.ts`.

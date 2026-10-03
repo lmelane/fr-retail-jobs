@@ -52,6 +52,33 @@ export const INCREMENTAL_READING_REASON = 'lecture incrémentale : ne rend que l
 const COLLAPSE_SHARE = HALF;
 
 /**
+ * LA MISE EN ROUTE DES FAMILLES NOUVELLEMENT PROBANTES (D-522 §6, arbitrage du CTO du 03/10/2026). Le nombre de collectes
+ * PROUVÉES consécutives (manifeste scellé `complete: true`) qui doivent précéder celle qui atteste. Mesuré en lecture seule
+ * le 03/10 : les quatre familles dont le lecteur prouve sa liste depuis ce lot fermeraient d'un coup 4 445 offres absentes
+ * de leur collecte du 02/10 (lvmh 1 640, SmartRecruiters 2 292, wttj-sector 513) sur 91 367 actives ; avec les fermetures
+ * ordinaires d'un RUN (54 à 1 512 du 23/09 au 02/10), la garde globale du refresh (`refresh.ts`, plus de 5 % et au moins
+ * 50 fermetures, sur tout le périmètre du RUN) refuserait TOUT le refresh et rendrait le RUN rouge. Sans relever la garde :
+ * RUN de la release, aucune n'atteste (première preuve observée) ; RUN suivant, lvmh et WTTJ (environ 2 150) ; encore
+ * suivant, SmartRecruiters (environ 2 290). Après une collecte non prouvée, la série repart : la reprise reste étalée.
+ * Toute autre famille : aucune mise en route, comportement inchangé.
+ */
+export const ATTESTATION_WARMUP_BY_KIND: Readonly<Record<string, number>> = Object.freeze({
+  lvmh_algolia: 1, wttj: 1, 'wttj-sector': 1, 'smartrecruiters-whitelabel': 2,
+});
+
+/** Les collectes prouvées consécutives, de la plus récente à la plus ancienne ; la série s'arrête au premier manque. Pure. */
+export function provenStreak(completes: ReadonlyArray<boolean | null | undefined>): number {
+  const gap = completes.findIndex((complete) => complete !== true);
+  return gap === -1 ? completes.length : gap;
+}
+
+/** Le `complete` scellé d'une collecte précédente ; illisible : null, et la série s'arrête (le refus est le sens sûr). */
+async function sealedComplete(db: Prisma.TransactionClient, batchId: string, store?: ObjectStore): Promise<boolean | null> {
+  try { return (await readExtractionManifest(db, batchId, store)).metadata.complete === true; }
+  catch { return null; }
+}
+
+/**
  * Les faits d'attestation dérivés de la preuve scellée. Pure, pour être contre-éprouvée sans base.
  *
  * `status` est la projection, pertinente pour le droit d'attester, de la classification de santé : un run
@@ -65,6 +92,8 @@ export function attestationFacts(input: {
   unreadableRows: number; previousPublished: number | null;
   /** Le total annoncé dans le manifeste scellé de la collecte de `previousPublished` ; null s'il n'y en avait pas. */
   previousDeclaredTotal?: number | null;
+  /** La mise en route de la famille (D-522 §6) : collectes prouvées consécutives requises avant celle-ci, et observées. */
+  warmup?: { required: number; provenBefore: number };
 }): AttestationFacts {
   const { counts, previousPublished: previous } = input;
   const previousDeclaredTotal = input.previousDeclaredTotal ?? null;
@@ -85,12 +114,16 @@ export function attestationFacts(input: {
   const confirmedDrop = isPublisherConfirmedDrop({ previous, previousDeclaredTotal, published: counts.published, fetched,
     declaredTotal: declaredTotal ?? undefined, complete: complete ?? undefined, truncated, errors });
   const collapsed = !declaredEmpty && !confirmedDrop && previous !== null && previous > 0 && counts.published < previous * COLLAPSE_SHARE;
-  const canAttestAbsence = (previous !== null || declaredEmpty) && !collapsed && (counts.published > 0 || declaredEmpty) && isTrustedForAttestation({
+  const trusted = (previous !== null || declaredEmpty) && !collapsed && (counts.published > 0 || declaredEmpty) && isTrustedForAttestation({
     status, complete: complete ?? undefined, errors, truncated, declaredTotal: declaredTotal ?? undefined, fetched, previous,
     published: counts.published, previousDeclaredTotal,
   });
+  // D-522 §6 : une collecte qui atteste mais dont la série prouvée est trop courte observe sa preuve sans la consommer.
+  const warming = trusted && input.warmup !== undefined && input.warmup.provenBefore < input.warmup.required;
+  const canAttestAbsence = trusted && !warming;
   return { sourceKey: input.sourceKey, captureBatchId: input.captureBatchId, startedAt: input.startedAt, status, errors, truncated,
     complete, declaredTotal, fetched, published: counts.published, previous, canAttestAbsence,
+    ...(warming ? { attestationWarmup: { required: input.warmup!.required, provenBefore: input.warmup!.provenBefore } } : {}),
     // Only on a confirmed drop: the facts then say why a collapse attests; every other source keeps its exact facts.
     ...(confirmedDrop ? { confirmedDrop: { previousDeclaredTotal: previousDeclaredTotal! } } : {}) };
 }
@@ -117,8 +150,8 @@ function gateReason(error: unknown): string {
 
 /** Lit la capture attestante d'une source, ou explique pourquoi elle n'en a aucune. Aucune écriture. */
 export async function readAttestingCapture(db: Prisma.TransactionClient, sourceKey: string, now: Date, store?: ObjectStore): Promise<AttestingCaptureResult> {
-  const [registry] = await db.$queryRaw<{ status: string; currentRevisionId: string }[]>`
-    SELECT status, "currentRevisionId" FROM "Source" WHERE key=${sourceKey}`;
+  const [registry] = await db.$queryRaw<{ status: string; currentRevisionId: string; kind: string }[]>`
+    SELECT status, "currentRevisionId", kind FROM "Source" WHERE key=${sourceKey}`;
   if (!registry) return { ok: false, captureBatchId: null, reasons: ['source absente du registre'] };
   if (registry.status !== 'ACTIVE') return { ok: false, captureBatchId: null, reasons: [`source ${registry.status} : aucune collecte admise possible`] };
   const batch = await db.captureBatch.findFirst({
@@ -153,11 +186,23 @@ export async function readAttestingCapture(db: Prisma.TransactionClient, sourceK
     where: { batch: { sourceKey, OR: [{ runId: null }, { runId: { notIn: lightPasses } }] }, published: { gt: 0 }, completedAt: { lt: completion.row.completedAt }, batchId: { not: batch.id } },
     orderBy: [{ completedAt: 'desc' }, { batchId: 'desc' }], select: { published: true, batchId: true },
   });
+  // D-522 §6 : la série prouvée qui précède cette collecte, lue dans les manifestes scellés des collectes précédentes.
+  const required = ATTESTATION_WARMUP_BY_KIND[registry.kind] ?? 0;
+  let warmup: { required: number; provenBefore: number } | undefined;
+  if (required > 0) {
+    const earlier = await db.sourceIngestionCompletion.findMany({
+      where: { batch: { sourceKey, OR: [{ runId: null }, { runId: { notIn: lightPasses } }] }, completedAt: { lt: completion.row.completedAt }, batchId: { not: batch.id } },
+      orderBy: [{ completedAt: 'desc' }, { batchId: 'desc' }], select: { batchId: true }, take: required,
+    });
+    const completes: Array<boolean | null> = [];
+    for (const row of earlier) completes.push(await sealedComplete(db, row.batchId, store));
+    warmup = { required, provenBefore: provenStreak(completes) };
+  }
   const rejectedRows = Array.isArray(manifest.metadata.rejectedRows) ? manifest.metadata.rejectedRows : [];
   const split = splitRejectedRows(rejectedRows);
   const facts = attestationFacts({ sourceKey, captureBatchId: batch.id, startedAt: batch.startedAt, metadata: manifest.metadata,
     outputs: manifest.outputs.length, counts: completion.row, unreadableRows: split.failures.length, previousPublished: previous?.published ?? null,
-    previousDeclaredTotal: previous ? await sealedDeclaredTotal(db, previous.batchId, store) : null });
+    previousDeclaredTotal: previous ? await sealedDeclaredTotal(db, previous.batchId, store) : null, ...(warmup ? { warmup } : {}) });
   const evidence = enumerationEvidence(sourceKey, batch.id, manifest.metadata);
   const fateByOrdinal = new Map(completion.report.fates.map(fate => [fate.ordinal, fate]));
   const ids = (disposition: string) => new Set(completion.report.fates.filter(fate => fate.disposition === disposition && fate.externalId).map(fate => fate.externalId!));

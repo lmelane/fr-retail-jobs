@@ -129,9 +129,42 @@ describe('wttj-sector — les organisations d’un secteur (2 144 lues sur 2 144
     expect(result.jobs).toHaveLength(176);
     expect(result.complete).toBe(true);
     expect(result.enumerationVerdict).toBe('PROVEN');
-    // Prouvé, mais pas probant pour le refresh tant que la terminaison n'est pas promue par une lecture écrite.
+    // Réconciliation complète : terminaison probante pour le refresh (arbitrage du CTO, lecture D-492, D-522 §6).
     expect(result.enumeration!.termination).toBe('ORGANIZATIONS_RECONCILED');
-    expect(PROVING_TERMINATIONS.has('ORGANIZATIONS_RECONCILED')).toBe(false);
+    expect(PROVING_TERMINATIONS.has('ORGANIZATIONS_RECONCILED')).toBe(true);
+  });
+  it.each([
+    ['un total qui varie', { nbHitsOnPage: (p: number) => (p === 1 ? 151 : 150) }],
+    ['une ligne manquante', { dropOnPage: 1 }],
+  ])('n’atteste rien quand une organisation n’est pas réconciliée : %s', async (_label, defect) => {
+    const byOrg = { hermes: algolia({ total: 150, template: WTTJ.hits.map((h: object) => ({ ...h, organization: { slug: 'hermes', name: 'Hermès' } })), idKey: 'reference', ...defect }),
+      diptyque: algolia({ total: 26, template: WTTJ.hits.map((h: object) => ({ ...h, organization: { slug: 'diptyque', name: 'Diptyque' } })), idKey: 'reference' }) };
+    mocked.mockImplementation((async (url: unknown, init: unknown) => {
+      const body = JSON.parse((init as { body: string }).body) as { filters: string; hitsPerPage: number };
+      if (body.hitsPerPage === 0) return { nbHits: 176, hits: [], exhaustiveFacetsCount: true, facets: { 'organization.slug': { hermes: 150, diptyque: 26 }, 'offices.country_code': { FR: 1 } } };
+      const slug = /organization\.slug:"([^"]+)"/.exec(body.filters)![1]! as 'hermes' | 'diptyque';
+      const served = await byOrg[slug](url, init) as { hits: Array<Record<string, unknown>> };
+      return { ...served, hits: served.hits.map((h) => ({ ...h, reference: `${slug}-${h.reference}`, slug: `${slug}-${h.slug}` })) };
+    }) as never);
+    const result = normalizeAdapterResult(await fetchWttjSectorJobs({ sectors: ['luxury-1'], withDescriptions: false }));
+    expect(result.complete).not.toBe(true);
+    expect(result.enumeration!.termination).not.toBe('ORGANIZATIONS_RECONCILED');
+    expect(PROVING_TERMINATIONS.has(result.enumeration!.termination)).toBe(false);
+    expect(result.enumeration!.issues!.some((i) => i.startsWith('ORGANIZATIONS_UNPROVEN=1:hermes'))).toBe(true);
+  });
+  it('n’atteste rien quand une ligne est servie deux fois dans une organisation', async () => {
+    const base = algolia({ total: 150, template: WTTJ.hits, idKey: 'reference' });
+    mocked.mockImplementation((async (url: unknown, init: unknown) => {
+      const body = JSON.parse((init as { body: string }).body) as { hitsPerPage: number; page?: number };
+      if (body.hitsPerPage === 0) return { nbHits: 150, hits: [], exhaustiveFacetsCount: true, facets: { 'organization.slug': { hermes: 150 }, 'offices.country_code': { FR: 1 } } };
+      const served = await base(url, init) as { hits: Array<Record<string, unknown>> };
+      // Page 1 : la dernière ligne ressert la première de la page 0 (tri instable), une offre n'est jamais servie.
+      return body.page === 1 ? { ...served, hits: [...served.hits.slice(0, -1), { ...served.hits[0], reference: 'id-0', slug: 'slug-0' }] } : served;
+    }) as never);
+    const result = normalizeAdapterResult(await fetchWttjSectorJobs({ sectors: ['luxury-1'], withDescriptions: false }));
+    expect(result.complete).not.toBe(true);
+    expect(result.enumeration!.termination).not.toBe('ORGANIZATIONS_RECONCILED');
+    expect(PROVING_TERMINATIONS.has(result.enumeration!.termination)).toBe(false);
   });
   it('ne prouve rien quand le compte des facettes est approché (la liste des organisations n’est pas démontrée)', async () => {
     mocked.mockImplementation(sectorServer({ hermes: 150, diptyque: 26 }, { exhaustive: false }) as never);

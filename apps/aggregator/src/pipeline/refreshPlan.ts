@@ -44,6 +44,11 @@ export type AttestationFacts = {
    * annonçait à la collecte de `previous`, lu dans son manifeste scellé. C'est ce qui permet d'attester malgré la chute.
    */
   confirmedDrop?: { previousDeclaredTotal: number };
+  /**
+   * Présent seulement quand la mise en route de la famille n'est pas atteinte (D-522 §6, `ATTESTATION_WARMUP_BY_KIND`) :
+   * la collecte est prouvée, mais trop peu de collectes prouvées consécutives la précèdent pour qu'elle atteste.
+   */
+  attestationWarmup?: { required: number; provenBefore: number };
 };
 
 /**
@@ -162,6 +167,13 @@ export const PROVING_TERMINATIONS: ReadonlySet<string> = new Set([
    * la garde de masse ci-dessous s'applique comme à tout zéro annoncé.
    */
   'PUBLISHER_DECLARES_NO_OPENING',
+  /**
+   * wttj-sector (D-522 §6, arbitrage du CTO du 03/10/2026, lecture D-492) : posée seulement quand la liste des
+   * organisations est exacte (une requête sous le plafond de valeurs, `exhaustiveFacetsCount`) et que CHAQUE organisation
+   * prouve sa liste par `listProof` (total exact et identique sur chaque page, pagination non plafonnée, pages contiguës,
+   * chaque ligne une fois) ; sinon `EVERY_ORGANIZATION_READ` ou `ORGANIZATION_SHORT_OF_DECLARED_TOTAL`, non probantes.
+   */
+  'ORGANIZATIONS_RECONCILED',
 ]);
 
 /**
@@ -181,9 +193,8 @@ export const PROVING_TERMINATIONS: ReadonlySet<string> = new Set([
  *   talentview   SHORT_PAGE_PER_WEBSITE
  *   taleo        NO_FRESH_ROW                    (assumé en commentaire dans l'adaptateur)
  *   volcanic     PAGE_COUNT_REACHED
- *   wttjSector   EVERY_ORGANIZATION_READ
- *   wttjSector   ORGANIZATIONS_RECONCILED        (D-522 §6, 03/10/2026 : liste des organisations exacte et chaque
- *                                                 organisation prouvée par `listProof` ; promotion non écrite)
+ *   wttjSector   EVERY_ORGANIZATION_READ         (sa forme réconciliée, ORGANIZATIONS_RECONCILED, est probante :
+ *                                                 D-522 §6, arbitrage du CTO du 03/10/2026)
  *
  * Ce n'est pas un défaut à corriger ici : promouvoir une terminaison, c'est décider qu'elle DÉMONTRE la fin
  * du parcours — un arbitrage sur ce qui fait preuve, qui appartient au propriétaire et passe par une décision
@@ -194,7 +205,7 @@ export const PROVING_TERMINATIONS: ReadonlySet<string> = new Set([
  */
 export const DECLARED_BUT_NOT_PROVING = Object.freeze([
   'NO_FRESH_ROWS_OR_TOTAL_REACHED', 'DECLARED_PAGE_COUNT_REACHED', 'CURSOR_EXHAUSTED',
-  'SHORT_PAGE_PER_WEBSITE', 'NO_FRESH_ROW', 'PAGE_COUNT_REACHED', 'EVERY_ORGANIZATION_READ', 'ORGANIZATIONS_RECONCILED',
+  'SHORT_PAGE_PER_WEBSITE', 'NO_FRESH_ROW', 'PAGE_COUNT_REACHED', 'EVERY_ORGANIZATION_READ',
 ] as const);
 
 /**
@@ -210,7 +221,9 @@ export function sourceEligibility(facts: AttestationFacts | undefined, evidence:
   if (facts.errors > 0) reasons.push(`errors = ${facts.errors}`);
   if (facts.truncated) reasons.push('truncated = true');
   if (facts.complete !== true) reasons.push(`complete = ${facts.complete}`);
-  if (facts.canAttestAbsence !== true) reasons.push(`canAttestAbsence = ${facts.canAttestAbsence}`);
+  if (facts.attestationWarmup) {
+    reasons.push(`mise en route : ${facts.attestationWarmup.provenBefore} collecte(s) prouvée(s) avant celle-ci sur ${facts.attestationWarmup.required} requises (D-522 §6)`);
+  } else if (facts.canAttestAbsence !== true) reasons.push(`canAttestAbsence = ${facts.canAttestAbsence}`);
   if (!evidence) reasons.push('aucune preuve d\'énumération scellée');
   else {
     if (evidence.sourceKey !== facts.sourceKey) reasons.push('preuve d’une autre source');
