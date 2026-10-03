@@ -32,8 +32,9 @@
  *    (`portalEmployer.ts`, décision du 09/09). `MULTI_BRAND` ne donne JAMAIS la marque d'une autre
  *    offre : l'annonce qui nomme sa Maison la garde, celle qui ne nomme pas son enseigne publie sous
  *    le GROUPE (R-142 §3, D-479 §2 ; Workday et marques nommées dans l'intitulé ou le lieu : D-522 §6,
- *    `identity/groupBrands.ts`). Une offre MAC n'est donc jamais attribuée à une autre marque ; sans
- *    nom de marque, elle l'est au groupe Estée Lauder.
+ *    `identity/groupBrands.ts`). Ce portail n'a PAS de liste de marques dans `groupBrands.ts` : une
+ *    offre qui nomme sa marque par son libellé natif la garde, toute autre publie sous le groupe Estée
+ *    Lauder — jamais sous une marque déduite de son intitulé tant qu'une liste relue n'est pas ajoutée.
  *
  *    [Note du 03/10/2026 : ce paragraphe disait auparavant que MULTI_BRAND « ne comble jamais » ;
  *    c'était faux depuis D-479 §2 pour les offres sans libellé (le résolveur publie sous le groupe).]
