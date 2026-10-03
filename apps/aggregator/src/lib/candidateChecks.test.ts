@@ -50,6 +50,11 @@ describe('request target per kind', () => {
     expect(requestTarget('workday', { origin: 'https://fastretailing.wd3.myworkdayjobs.com', tenant: 'fastretailing', site: 'retail_us_Uniqlo' })).toEqual({ origin: 'https://fastretailing.wd3.myworkdayjobs.com', path: '/wday/cxs/fastretailing/retail_us_Uniqlo/jobs' });
     expect(requestTarget('digitalrecruiters', { domainName: 'careers.am-vintage.com' })).toEqual({ origin: 'https://careers.am-vintage.com', path: '/' });
   });
+  // D-522 §6 : les sources génériques en production ne portent que `startUrl` (attaquer, lumentee, kastner-ohler) ;
+  // l'enregistrement d'une cassette refusait de les lire.
+  it('reads a generic source configured by its start page alone', () => {
+    expect(requestTarget('generic-listing', { startUrl: 'https://attaquercycling.com/pages/careers' })).toEqual({ origin: 'https://attaquercycling.com', path: '/pages/careers' });
+  });
   /**
    * Two kinds the default branch could not resolve, found by P9 on real catalogued sources:
    *

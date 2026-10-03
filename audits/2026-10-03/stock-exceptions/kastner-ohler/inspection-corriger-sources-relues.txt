@@ -1,0 +1,4 @@
+CORRECTIONS D'ATS ET DE PORTAIL — 1 source(s)
+   kastner-ohler              generic-listing    → generic-listing    https://www.kastner-oehler.at/job-karriere/offene-stel
+                              config : {"startUrl":"https://www.kastner-oehler.at/job-karriere/offene-stellen/","reader":"wordpress-post-type","postType":"jobangebot"}
+INSPECTION SEULEMENT — rien n'a été écrit. Ajouter --ecrire pour appliquer.

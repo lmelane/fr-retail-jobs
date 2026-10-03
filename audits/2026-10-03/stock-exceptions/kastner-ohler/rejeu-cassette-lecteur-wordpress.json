@@ -1,0 +1,56 @@
+{
+ "jobs": 12,
+ "declaredTotal": 12,
+ "complete": true,
+ "truncated": false,
+ "reading": {
+  "enumerationReading": "PROVEN"
+ },
+ "termination": "DECLARED_PAGE_COUNT_REACHED",
+ "issues": [],
+ "scopes": [
+  {
+   "scope": "jobangebot",
+   "declaredTotal": 12,
+   "uniqueIds": 12,
+   "pages": 1,
+   "complete": true
+  },
+  {
+   "scope": "detailJsonLd",
+   "declaredTotal": 12,
+   "uniqueIds": 12,
+   "pages": 1,
+   "complete": true
+  }
+ ],
+ "description200": "12/12",
+ "country": "12/12",
+ "location": "12/12",
+ "sample": [
+  {
+   "id": "285352",
+   "title": "Deko-Techniker*in, Graz, Vollzeit",
+   "country": "Österreich",
+   "location": "Graz, 8010",
+   "desc": 3555,
+   "url": "https://www.kastner-oehler.at/job-karriere/angebot/deko-technikerin-graz-vollzeit/"
+  },
+  {
+   "id": "427637",
+   "title": "Kassa Mitarbeiter*in, Spittal an der Drau, geringfügig samstags",
+   "country": "Österreich",
+   "location": "Spittal/Drau, 9800",
+   "desc": 2518,
+   "url": "https://www.kastner-oehler.at/job-karriere/angebot/mitarbeiterin-kassa-spittal-geringfugig-samstags/"
+  },
+  {
+   "id": "427631",
+   "title": "Modeberater*in Herren, Spittal, Vollzeit",
+   "country": "Österreich",
+   "location": "Spittal/Drau, 9800",
+   "desc": 2675,
+   "url": "https://www.kastner-oehler.at/job-karriere/angebot/modeberaterin-spittal-herren-vz/"
+  }
+ ]
+}
