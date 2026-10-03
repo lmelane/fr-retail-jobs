@@ -137,6 +137,25 @@ describe('normal run maintains its access prerequisite through the Golden Path',
     expect(await db.captureBatch.findUniqueOrThrow({ where: { id: collected.captureBatchId } })).toMatchObject({ accessDecisionId: renewed.decisionId });
   });
 
+  it('hors passe, une validation venue d\'une passe de découverte ne remplace pas la qualification du RUN (audit r6, F1)', async () => {
+    const source = await create(); const transport = native();
+    const first = await maintain(source); transport.mockClear();
+    // Prémisse : la validation courante est fraîche et vient d'une passe `ingest-light` (capture incrémentale).
+    const current = await certification.requireSourceValidation(db, source.currentRevisionId);
+    const passRun = randomUUID();
+    await db.pipelineRun.create({ data: { id: passRun, command: 'ingest-light', status: 'COMPLETED' } });
+    vi.spyOn(certification, 'requireSourceValidation').mockResolvedValueOnce({ ...current, captureBatch: { ...current.captureBatch, runId: passRun } });
+    const renewed = await maintain(source);
+    // Le RUN refait la qualification complète (donc le contrôle de périmètre du jour) et la remet à l'ingestion.
+    expect(renewed).toEqual({ renewed: false, decisionId: first.decisionId, qualificationCaptureId: expect.any(String) });
+    expect(transport).toHaveBeenCalledTimes(1);
+    // Contre-épreuve : une validation venue d'un RUN reste gardée, sans requête.
+    transport.mockClear();
+    expect(await maintain(source)).toEqual({ renewed: false, decisionId: first.decisionId });
+    expect(transport).not.toHaveBeenCalled();
+    await db.pipelineRun.delete({ where: { id: passRun } });
+  });
+
   it('renews stale reader evidence through capture/replay/robots without rewriting history', async () => {
     const source = await create(); native();
     const oldReader = vi.spyOn(revision, 'captureReaderRevision').mockReturnValue('git:' + '1'.repeat(40));

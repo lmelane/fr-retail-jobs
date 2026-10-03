@@ -109,6 +109,12 @@ describe('D-517 — une lecture incrémentale ne lit, n’écrit et ne rend que 
         ...publicationFixture({ sourceKey: other, externalId: 'ancienne', url: `https://x/${other}/ancienne`, title: 'Conseiller de vente' }) }] } } });
     expect(await served()).toEqual(['a', 'ancienne', 'b', 'manquee']);
     const seenBefore = await db.jobSource.findFirstOrThrow({ where: { sourceKey: key, externalId: 'a' }, select: { lastSeenAt: true } });
+    const missedBefore = await db.jobSource.findFirstOrThrow({ where: { sourceKey: key, externalId: 'manquee' }, select: { lastSeenAt: true } });
+    // Audit r6 (F2) : « b » porte une retenue du plafond posée avant la passe ; la passe la voit listée.
+    const heldAt = new Date(Date.now() - 60_000);
+    await db.jobSource.updateMany({ where: { sourceKey: key, externalId: 'b' }, data: { availabilityHold: 'NOT_RECONFIRMED', availabilityHoldAt: heldAt,
+      availabilityEvidence: { rule: 'CEILING_72H' }, lastSeenAt: new Date(heldAt.getTime() - 80 * 3_600_000) } });
+    expect(await served()).toEqual(['a', 'ancienne', 'manquee']);
 
     const transport = network([{ id: 'a' }, { id: 'b' }, { id: 'nouvelle', title: 'Visual Merchandiser' }]);
     const pass = await runLightPass(db, { runId: null, sources: [key], now: () => at(10) });
@@ -130,15 +136,22 @@ describe('D-517 — une lecture incrémentale ne lit, n’écrit et ne rend que 
     const latest = await readAttestingCapture(db, key, new Date());
     expect(latest).toMatchObject({ ok: false, captureBatchId: batch.id, reasons: [INCREMENTAL_READING_REASON] });
 
-    // La passe n'a rien fermé ni retenu, et n'a pas réécrit les connues (ni relues, ni « revues »).
+    // La passe n'a rien fermé ni retenu, et n'a pas relu les connues. Audit r6 (F2) : celles qu'elle a VUES listées sont
+    // reconfirmées (preuve positive) — « a » revue à l'instant de la capture, la retenue de « b » tombée ; « manquee »,
+    // absente de la liste, n'est ni revue ni retenue (une passe n'atteste aucune absence).
     expect(await db.jobSource.findFirstOrThrow({ where: { sourceKey: key, externalId: 'manquee' } }))
-      .toMatchObject({ isActive: true, availabilityHold: null, publisherClosedAt: null });
-    expect(await db.jobSource.findFirstOrThrow({ where: { sourceKey: key, externalId: 'a' }, select: { lastSeenAt: true } })).toEqual(seenBefore);
+      .toMatchObject({ isActive: true, availabilityHold: null, publisherClosedAt: null, lastSeenAt: missedBefore.lastSeenAt });
+    expect((await db.jobSource.findFirstOrThrow({ where: { sourceKey: key, externalId: 'a' }, select: { lastSeenAt: true } })).lastSeenAt)
+      .toEqual(batch.startedAt);
+    expect(batch.startedAt.getTime()).toBeGreaterThan(seenBefore.lastSeenAt.getTime());
+    expect(await db.jobSource.findFirstOrThrow({ where: { sourceKey: key, externalId: 'b' } }))
+      .toMatchObject({ availabilityHold: null, availabilityHoldAt: null, lastSeenAt: batch.startedAt });
     expect(await db.jobSource.findFirstOrThrow({ where: { sourceKey: other } })).toMatchObject({ isActive: true, availabilityHold: null });
     expect(await db.job.count({ where: { isActive: false } })).toBe(0);
     // La nouvelle offre est servie dès la fin de la passe, et mise en file d'indexation de la recherche.
     expect(await served()).toEqual(['a', 'ancienne', 'b', 'manquee', 'nouvelle']);
     expect(await servedSql()).toEqual(['a', 'ancienne', 'b', 'manquee', 'nouvelle']);
+    expect(pass.collected).toEqual([key]);
     const created = await db.job.findFirstOrThrow({ where: { externalId: 'nouvelle' } });
     expect(await db.$queryRaw<{ n: bigint }[]>`SELECT count(*) AS n FROM "SearchPending" WHERE version=${GENERATION} AND id=${created.id}`)
       .toEqual([{ n: 1n }]);

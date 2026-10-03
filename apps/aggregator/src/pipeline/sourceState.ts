@@ -334,7 +334,7 @@ export function ageState(state: SourceState, now: Date): SourceState {
     computedAt: now, missing: escalatedMissing(spec, waiting) };
 }
 
-export const VERDICT_REASONS = ['SOURCE_NON_CLASSEE', 'MOTIF_ABSENT', 'ECHEANCE_DEPASSEE', 'ANCIENNETE_DEPASSEE', 'PANNE_SYSTEME', 'COUVERTURE_INEXPLIQUEE'] as const;
+export const VERDICT_REASONS = ['SOURCE_NON_CLASSEE', 'MOTIF_ABSENT', 'REGISTRE_NON_APPLIQUE', 'ECHEANCE_DEPASSEE', 'ANCIENNETE_DEPASSEE', 'PANNE_SYSTEME', 'COUVERTURE_INEXPLIQUEE'] as const;
 export type VerdictReason = typeof VERDICT_REASONS[number];
 /**
  * Panne du système : au moins ce nombre de sources que CE RUN a laissées bloquées ou en attente de NOTRE côté (défaut
@@ -400,11 +400,21 @@ export function reconcileRun(input: { states: readonly SourceState[]; now: Date;
   /** Les pertes de couverture à vérifier (`coverageVerdictOf`) : dites, jamais rouges. */
   coverageToVerify?: readonly string[];
   /** Les sources dont le réexamen inscrit au registre explicite est passé (`ambiguousSources`, REVIEW_OVERDUE). */
-  registryOverdue?: readonly string[] }): RunVerdict {
+  registryOverdue?: readonly string[];
+  /**
+   * Audit r6 (F3) : aucune revue du registre explicite n'est appliquée (`SourceRegistryReview` vide). Les pauses et
+   * exclusions sans motif ne sont alors pas 131 défauts de source mais UN geste de release manquant : le verdict le dit
+   * une fois (`REGISTRE_NON_APPLIQUE`, rouge) au lieu de MOTIF_ABSENT par source. Absent : registre réputé appliqué.
+   */
+  registryApplied?: boolean }): RunVerdict {
   const reasons: RunVerdict['reasons'] = [];
   const add = (reason: VerdictReason, detail: string, sources: string[]) => { if (sources.length || reason === 'PANNE_SYSTEME') reasons.push({ reason, detail, sources }); };
   add('SOURCE_NON_CLASSEE', 'cause non classée ou absente', input.states.filter(s => s.state !== 'NORMALE' && (!s.cause || s.cause === 'NON_CLASSEE' || !s.trajectory)).map(s => s.sourceKey));
-  add('MOTIF_ABSENT', 'pause ou exclusion sans motif ni décision', input.states.filter(s => s.cause === 'MOTIF_ABSENT').map(s => s.sourceKey));
+  const unexplained = input.states.filter(s => s.cause === 'MOTIF_ABSENT').map(s => s.sourceKey);
+  if (input.registryApplied === false) {
+    if (unexplained.length) reasons.push({ reason: 'REGISTRE_NON_APPLIQUE',
+      detail: `registre non appliqué : aucune revue du registre explicite (registry-review --apply) ; ${unexplained.length} pauses ou exclusions sans motif lisible`, sources: [] });
+  } else add('MOTIF_ABSENT', 'pause ou exclusion sans motif ni décision', unexplained);
   add('ECHEANCE_DEPASSEE', 'état temporaire échu sans escalade', input.states.filter(s => s.trajectory === 'AUTO' && !s.escalated && s.deadline
     && s.deadline.getTime() <= input.now.getTime()).map(s => s.sourceKey));
   add('ECHEANCE_DEPASSEE', 'réexamen du registre échu', [...(input.registryOverdue ?? [])]);

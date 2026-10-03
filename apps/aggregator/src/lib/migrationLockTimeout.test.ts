@@ -36,3 +36,16 @@ describe('les migrations de r6 bornent l’attente de leur verrou', () => {
     expect(timeout).toBeLessThan(firstStatement);
   });
 });
+
+describe('les CHECK de JobSource ne parcourent pas la table sous le verrou exclusif (release r6)', () => {
+  it('20261002140000 les pose NOT VALID ; 20261002140100 les valide, borné, sans rien d’autre', () => {
+    const add = migration('20261002140000_r143_disponibilite_autorite');
+    const checks = add.match(/ADD CONSTRAINT "JobSource_availabilityHold[a-z_]*"[\s\S]*?;/g) ?? [];
+    expect(checks).toHaveLength(2);
+    for (const check of checks) expect(check).toMatch(/NOT VALID;$/);
+    const validate = migration('20261002140100_r143_valider_contraintes');
+    expect(validate).toMatch(/^SET lock_timeout = '10s';/m);
+    expect(validate.match(/VALIDATE CONSTRAINT "JobSource_availabilityHold(_instant)?_check"/g)).toHaveLength(2);
+    expect(validate).not.toMatch(/\b(UPDATE|DELETE|DROP|INSERT)\b/);
+  });
+});

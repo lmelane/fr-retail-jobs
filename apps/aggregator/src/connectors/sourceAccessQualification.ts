@@ -17,6 +17,8 @@ import { CRAWLER_IDENTITY } from '../lib/crawlerIdentity.js';
 import { requireSourceValidation, SourceValidationGateError } from './sourceCertification.js';
 import { SourceAdmissionGateError } from './sourceAdmission.js';
 import { isDatabaseFailure } from '../lib/ingestionIssue.js';
+import { incrementalPassActive } from '../lib/incrementalReading.js';
+import { lightPassRunIds } from '../pipeline/referenceRuns.js';
 
 const message = (error: unknown) => (error instanceof Error ? error.message : String(error)).replace(/\s+/g, ' ').replace(/(https?:\/\/[^\s'")?]+)\?[^\s'")]*/g, '$1?…').slice(0, 400);
 
@@ -111,8 +113,15 @@ export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, 
     const { decision, document } = assertSourceAccess(source, previous);
     // Access grants live up to 30 days; native qualification lasts 24 hours. A daily run renews
     // the latter and keeps a still-valid grant, unless that fresh capture outgrows its scope.
-    try { await requireSourceValidation(db, source.currentRevisionId); }
-    catch (error) {
+    try {
+      const current = await requireSourceValidation(db, source.currentRevisionId);
+      // Audit r6 (F1) : une passe de découverte (D-517) entretient la qualification par une capture INCRÉMENTALE, et le
+      // RUN la gardait : ni contrôle de périmètre du jour (`scopeOutgrown`, RUN du 29/09/2026), ni capture complète à
+      // adopter. Hors passe, une validation venue d'une passe ne remplace donc jamais la qualification du RUN ; la
+      // capture complète que celle-ci collecte est ensuite publiée par adoption (lecture unique) : aucune lecture de plus.
+      if (!incrementalPassActive() && current.captureBatch.runId && (await lightPassRunIds(db, [current.captureBatch.runId])).size > 0)
+        throw new SourceValidationGateError('PASS_VALIDATION', 'a discovery pass validation never replaces the RUN qualification');
+    } catch (error) {
       if (!(error instanceof SourceValidationGateError)) throw error;
       await log.info('source.native_qualification_started', { sourceKey, reason: error.code });
       const validation = await captureSourceForValidation(db, sourceKey, timeoutMs, store);

@@ -55,7 +55,7 @@ export function unqualifiedAllowanceFor(observed: number): number {
 }
 export const SOURCE_VALIDATION_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
-type GateCode = 'VALIDATION_MISSING' | 'READER_STALE' | 'CAPTURE_STALE' | 'ATTEMPT_ORDER_UNKNOWN' | 'CAPTURE_SUPERSEDED';
+type GateCode = 'VALIDATION_MISSING' | 'READER_STALE' | 'CAPTURE_STALE' | 'ATTEMPT_ORDER_UNKNOWN' | 'CAPTURE_SUPERSEDED' | 'PASS_VALIDATION';
 export class SourceValidationGateError extends Error {
   constructor(readonly code: GateCode, message: string) {
     super(message); this.name = 'SourceValidationGateError';

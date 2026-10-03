@@ -31,3 +31,11 @@ Scripts : `preuve.sh`, `reprise.sh` (refusent toute cible autre que la base jeta
 **Conséquence pour la release** (RUNBOOK r6 §2) : si `migrate` échoue sur la borne, rien n'est écrit ; relire
 `pg_stat_activity`, marquer la migration `prisma migrate resolve --rolled-back <nom>` et relancer `migrate`. Tant
 qu'une migration est marquée en échec, `migrate status` est rouge et le worker refuse de démarrer.
+
+## Contraintes de `JobSource` : `NOT VALID`, puis `VALIDATE` séparé (audit d'intégration, F5)
+
+Les deux CHECK de `20261002140000` sont posées `NOT VALID` : elles valent pour toute écriture dès le COMMIT, sans
+parcourir les 98 869 lignes sous le verrou exclusif. `20261002140100_r143_valider_contraintes` les valide ensuite sous un
+verrou SHARE UPDATE EXCLUSIVE (lectures et écritures continuent), `lock_timeout` 10 s. Témoin :
+`migrationLockTimeout.test.ts` (rouge sur la migration d'avant). Exécuté sur base jetable par `prisma migrate deploy` :
+les deux contraintes `convalidated = true` après `20261002140100`.

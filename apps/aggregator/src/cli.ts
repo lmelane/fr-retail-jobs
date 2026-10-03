@@ -63,6 +63,11 @@ async function maskingCommand<T>(step: () => Promise<T>, dryRun: boolean, probeO
   const { withCoverageReview } = await import('./coverage/coverageReview.js');
   const outcome = await withCoverageReview(prisma, step, probeOf);
   if (outcome.error) { log.assertHealthy(); await log.error('coverage.failed', { error: outcome.error }); }
+  // D-516 §2, audit r6 : sans bulletin, les retenues posées par cette commande tombent (jamais de masquage silencieux).
+  if (!outcome.sent) {
+    const { releaseHoldsOfRun } = await import('./pipeline/availability.js');
+    await log.error('availability.holds_released_without_bulletin', { released: await releaseHoldsOfRun(prisma, log.runId()) });
+  }
   await log.info('coverage.reviewed', { written: outcome.review?.written ?? 0, sent: outcome.sent, findings: outcome.review?.evaluation.findings.length ?? null });
   return { result: outcome.result, sent: outcome.sent };
 }
@@ -150,6 +155,10 @@ try {
     // D-520 §2 : un réexamen inscrit au registre explicite et passé est une échéance dépassée (la liste, elle, est dite
     // par la section « Registre des sources » du bulletin, `coverage/coverageReview.ts`).
     let registryOverdue: string[] = [];
+    // Audit r6 (F3) : sans revue du registre appliquée, le verdict dit « registre non appliqué », une fois.
+    let registryApplied: boolean | undefined;
+    try { registryApplied = (await prisma.sourceRegistryReview.count()) > 0; }
+    catch (error) { log.assertHealthy(); await log.error('registry.read_failed', { error }); }
     try {
       const { ambiguousSources, readRegistrySources } = await import('./registry/explicitRegistry.js');
       registryOverdue = ambiguousSources(await readRegistrySources(prisma), new Date().toISOString().slice(0, 10))
@@ -185,12 +194,12 @@ try {
     // R-143 §2 : la confiance avant le volume. Rien n'est fermé ; une offre non reconfirmée ou au lien mort quitte
     // l'expérience candidat et y revient dès que sa source la revoit.
     const { runAvailabilityReview } = await import('./pipeline/availability.js');
-    const availability = await runAvailabilityReview(prisma);
+    const availability = await runAvailabilityReview(prisma, { runId: log.runId() ?? null });
     await log.info('availability.reviewed', { released: availability.released, held: availability.held,
       notCredible: availability.sources.filter(source => !source.credible && source.missed > 0)
         .map(source => ({ sourceKey: source.sourceKey, missed: source.missed, reason: source.reason })) });
     const { runApplyLinkProbe } = await import('./pipeline/applyLinkProbe.js');
-    const probe = await runApplyLinkProbe(prisma, { limit: APPLY_LINK_PROBE_LIMIT, deadline: Date.now() + APPLY_LINK_PROBE_BUDGET_MS });
+    const probe = await runApplyLinkProbe(prisma, { limit: APPLY_LINK_PROBE_LIMIT, deadline: Date.now() + APPLY_LINK_PROBE_BUDGET_MS, runId: log.runId() ?? null });
     await log.info('availability.probed', { probed: probe.probed, held: probe.held, byVerdict: probe.byVerdict });
     // R-143 §11, D-516 §2 : l'alerte de couverture et le bulletin de la boucle candidat, juste après le masquage (les
     // retenues sont lues en direct par la recherche ; le bulletin part quelques minutes après). Le masquage ne part
@@ -201,7 +210,7 @@ try {
     let coverageVerdict: ReturnType<typeof coverageVerdictOf> = { unexplained: [], toVerify: [] };
     // La réconciliation telle qu'elle se lit au moment du bulletin ; le verdict final y ajoute la remise du bilan.
     const reconcile = (coverage: ReturnType<typeof coverageVerdictOf>, extra: { alertDeliveryFailed?: boolean; coverageFailed?: boolean } = {}) => reconcileRun({
-      states: sourceStates ?? [], now: new Date(), runStartedAt, unexplainedCoverage: coverage.unexplained, coverageToVerify: coverage.toVerify, registryOverdue,
+      states: sourceStates ?? [], now: new Date(), runStartedAt, unexplainedCoverage: coverage.unexplained, coverageToVerify: coverage.toVerify, registryOverdue, registryApplied,
       systemFailures: systemFailuresOf({ blockingReasons: summarizeOrchestration(orchestration).blockingReasons, refreshRefused: refresh.refused,
         stateFailures: orchestration.stateFailures, statesUnavailable: !sourceStates, ...extra }) });
     try {
@@ -219,6 +228,12 @@ try {
       coverageFailed = true;
       log.assertHealthy();
       await log.error('coverage.failed', { error });
+    }
+    // D-516 §2, audit r6 : le masquage ne part jamais sans l'alerte. Bulletin non calculé ou non remis : les retenues de
+    // CE RUN tombent (le RUN reste rouge, COVERAGE_FAILED), les offres restent servies jusqu'au RUN suivant.
+    if (coverageFailed) {
+      const { releaseHoldsOfRun } = await import('./pipeline/availability.js');
+      await log.error('availability.holds_released_without_bulletin', { released: await releaseHoldsOfRun(prisma, log.runId()) });
     }
     // One health digest per run: email the operator every degraded/broken source
     // so the catalogue stays clean (a source dying silently is the enemy).
@@ -296,7 +311,7 @@ try {
      * couverture part comme au RUN (D-516 §2) : une retenue posée hors RUN ne part jamais sans lui. */
     const dryRun = process.argv.includes('--dry-run');
     const { runAvailabilityReview } = await import('./pipeline/availability.js');
-    const { review, coverageSent } = await maskingCommand(() => runAvailabilityReview(prisma, { dryRun }), dryRun)
+    const { review, coverageSent } = await maskingCommand(() => runAvailabilityReview(prisma, { dryRun, runId: log.runId() ?? null }), dryRun)
       .then(({ result, sent }) => ({ review: result, coverageSent: sent }));
     await log.info('command.result', { ok: coverageSent, command, dryRun: review.dryRun, released: review.released, held: review.held, coverageSent,
       sources: review.sources.filter(source => source.missed > 0 || source.held > 0) });
@@ -316,7 +331,7 @@ try {
     const dryRun = process.argv.includes('--dry-run');
     const { runApplyLinkProbe } = await import('./pipeline/applyLinkProbe.js');
     const limit = Number(process.argv.find(arg => arg.startsWith('--limit='))?.slice('--limit='.length) ?? APPLY_LINK_PROBE_LIMIT);
-    const { probe, coverageSent } = await maskingCommand(() => runApplyLinkProbe(prisma, { limit, dryRun }), dryRun, result => result)
+    const { probe, coverageSent } = await maskingCommand(() => runApplyLinkProbe(prisma, { limit, dryRun, runId: log.runId() ?? null }), dryRun, result => result)
       .then(({ result, sent }) => ({ probe: result, coverageSent: sent }));
     await log.info('command.result', { ok: coverageSent, command, dryRun: probe.dryRun, probed: probe.probed, held: probe.held, byVerdict: probe.byVerdict,
       coverageSent, results: probe.results.map(result => ({ sourceKey: result.sourceKey, url: result.url, verdict: result.reading.verdict, reason: result.reading.reason })) });

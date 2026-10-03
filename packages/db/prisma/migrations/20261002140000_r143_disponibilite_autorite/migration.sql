@@ -24,10 +24,13 @@ ALTER TABLE "JobSource" ADD COLUMN "availabilityHold" TEXT;
 ALTER TABLE "JobSource" ADD COLUMN "availabilityHoldAt" TIMESTAMP(3);
 ALTER TABLE "JobSource" ADD COLUMN "availabilityEvidence" JSONB;
 ALTER TABLE "JobSource" ADD COLUMN "publisherClosedAt" TIMESTAMP(3);
+-- NOT VALID (release r6) : la contrainte vaut pour toute écriture dès le COMMIT, sans parcourir les 98 869 lignes
+-- sous le verrou exclusif ; la validation du stock (colonnes neuves, toutes NULL) est faite par la migration suivante,
+-- 20261002140100, sous un verrou qui laisse lire et écrire.
 ALTER TABLE "JobSource" ADD CONSTRAINT "JobSource_availabilityHold_check"
-  CHECK ("availabilityHold" IS NULL OR "availabilityHold" IN ('NOT_RECONFIRMED','APPLY_LINK_DEAD'));
+  CHECK ("availabilityHold" IS NULL OR "availabilityHold" IN ('NOT_RECONFIRMED','APPLY_LINK_DEAD')) NOT VALID;
 ALTER TABLE "JobSource" ADD CONSTRAINT "JobSource_availabilityHold_instant_check"
-  CHECK (("availabilityHold" IS NULL) = ("availabilityHoldAt" IS NULL));
+  CHECK (("availabilityHold" IS NULL) = ("availabilityHoldAt" IS NULL)) NOT VALID;
 
 UPDATE "JobSource" js SET "publisherClosedAt" = proof.at
 FROM (

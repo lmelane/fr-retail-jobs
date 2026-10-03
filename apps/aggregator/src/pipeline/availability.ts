@@ -67,6 +67,18 @@ async function hold(prisma: PrismaClient, ids: string[], at: Date, evidence: Rec
   })).count;
 }
 
+/**
+ * D-516 §2 (« le masquage automatique ne part jamais sans cette alerte »), audit r6 : quand le bulletin de couverture ne
+ * peut être calculé ni remis, les retenues posées par CE run (revue de disponibilité et sonde, qui portent son `runId`
+ * dans leur preuve) tombent : on ne masque pas en silence. Celles d'un run précédent, déjà annoncées, restent.
+ */
+export async function releaseHoldsOfRun(prisma: PrismaClient, runId: string | null | undefined): Promise<number> {
+  if (!runId) return 0;
+  return prisma.$executeRaw`
+    UPDATE "JobSource" SET "availabilityHold" = NULL, "availabilityHoldAt" = NULL, "availabilityEvidence" = NULL
+    WHERE "availabilityHold" IS NOT NULL AND "availabilityEvidence"->>'runId' = ${runId}`;
+}
+
 /** La collecte crédible, puis la garde par source sur la part du stock qu'elle retiendrait. Pure. */
 export function reconfirmationVerdict(input: { facts: AttestationFacts; stock: number; missed: number }): string | null {
   const collection = collectionReconfirms(input.facts);
@@ -88,7 +100,7 @@ export type AvailabilityReview = { released: number; held: number; sources: Sour
  * le même plan. `onlyKeys` borne les sources revues ; la levée des retenues dépassées est toujours globale (elle ne
  * peut que rendre des offres au candidat, et seulement celles que leur source a revues).
  */
-export async function runAvailabilityReview(prisma: PrismaClient, options: { dryRun?: boolean; onlyKeys?: string[] } = {}): Promise<AvailabilityReview> {
+export async function runAvailabilityReview(prisma: PrismaClient, options: { dryRun?: boolean; onlyKeys?: string[]; runId?: string | null } = {}): Promise<AvailabilityReview> {
   const dryRun = options.dryRun === true;
   if (!dryRun) assertPipelineRunning();
   const released = dryRun
@@ -100,6 +112,10 @@ export async function runAvailabilityReview(prisma: PrismaClient, options: { dry
   const keys = (await prisma.jobSource.groupBy({ by: ['sourceKey'], where: { isActive: true,
     ...(options.onlyKeys ? { sourceKey: { in: options.onlyKeys } } : {}) } })).map(row => row.sourceKey).sort();
   const store = objectStoreConfigured() ? objectStoreFromEnv() : undefined;
+  // Audit r6 (F3) : tant qu'aucune revue du registre explicite n'est appliquée, aucune pause ne porte de fondement lisible ;
+  // le plafond de 72 h épargnerait alors seulement les pauses « décidées »… c'est-à-dire aucune. Les sources PAUSED en
+  // sont exemptées jusqu'à la première revue appliquée (comportement d'avant r6), le verdict le dit (REGISTRE_NON_APPLIQUE).
+  const registryApplied = (await prisma.sourceRegistryReview.count()) > 0;
   const registry = new Map((await prisma.source.findMany({ where: { key: { in: keys } },
     select: { key: true, status: true, statusBasis: true, statusExplainedFor: true } })).map(source => [source.key, source]));
   const sources: SourceReview[] = [];
@@ -125,16 +141,16 @@ export async function runAvailabilityReview(prisma: PrismaClient, options: { dry
       reason = reconfirmationVerdict({ facts: capture.facts, stock: rows.length, missed: missed.length });
       const toHold = reason ? [] : missed.filter(row => !stillHeld(row));
       written = dryRun ? toHold.length : await hold(prisma, toHold.map(row => row.id), capture.startedAt, {
-        reader: RECONFIRMATION_READER, rule: 'MISSED_BY_CREDIBLE_COLLECTION', captureBatchId: capture.captureBatchId,
+        reader: RECONFIRMATION_READER, rule: 'MISSED_BY_CREDIBLE_COLLECTION', runId: options.runId ?? null, captureBatchId: capture.captureBatchId,
         collectionStartedAt: capture.startedAt.toISOString(), declaredTotal: capture.facts.declaredTotal,
         fetched: capture.facts.fetched, published: capture.facts.published });
     }
     // Le plafond : une source ACTIVE, ou en pause sans décision, qui n'a plus revu la représentation depuis 72 h.
     const ceiling = new Date(now.getTime() - CONFIRMATION_CEILING_HOURS * 3_600_000);
-    const ceilingApplies = status === 'ACTIVE' || (status === 'PAUSED' && !pauseDecided(source!));
+    const ceilingApplies = status === 'ACTIVE' || (status === 'PAUSED' && registryApplied && !pauseDecided(source!));
     const stale = ceilingApplies ? rows.filter(row => row.lastSeenAt < ceiling && !stillHeld(row) && !missed.includes(row)) : [];
     const ceilingHeld = dryRun ? stale.length : await hold(prisma, stale.map(row => row.id), now, {
-      reader: RECONFIRMATION_READER, rule: 'CEILING_72H', ceiling: ceiling.toISOString(), lastCollection: captureBatchId });
+      reader: RECONFIRMATION_READER, rule: 'CEILING_72H', runId: options.runId ?? null, ceiling: ceiling.toISOString(), lastCollection: captureBatchId });
     held += written + ceilingHeld;
     sources.push({ sourceKey, status, stock: rows.length, missed: missed.length, held: written, ceilingHeld, alreadyHeld,
       captureBatchId, credible: result.ok && !reason, reason });

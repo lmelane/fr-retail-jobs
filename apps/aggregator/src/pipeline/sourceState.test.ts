@@ -204,6 +204,21 @@ describe('D-520 — états, trajectoires, échéances', () => {
     expect(verdict.reasons.map(r => r.reason)).toEqual(['MOTIF_ABSENT']);
   });
 
+  it('registre explicite non appliqué : une seule raison « registre non appliqué », pas MOTIF_ABSENT par source (audit r6, F3)', () => {
+    // Prémisse : 131 sources sans motif, comme la production avant registry-review --apply (02/10/2026).
+    const silent = Array.from({ length: 131 }, (_, i) => computeSourceState({ source: { key: `s${i}`, status: i % 9 ? 'RETIRED' : 'PAUSED', note: null },
+      outcome: null, previous: null, now: T0 }));
+    expect(silent.every(s => s.cause === 'MOTIF_ABSENT')).toBe(true);
+    const before = reconcileRun({ states: silent, now: T0, runStartedAt: null, systemFailures: [], unexplainedCoverage: [], registryApplied: false });
+    expect(before.green).toBe(false);
+    expect(before.reasons).toHaveLength(1);
+    expect(before.reasons[0]).toMatchObject({ reason: 'REGISTRE_NON_APPLIQUE', sources: [] });
+    expect(before.reasons[0].detail).toMatch(/registre non appliqué.*131/);
+    // Une fois une revue appliquée, une source restée sans motif est un défaut nommé, source par source.
+    const after = reconcileRun({ states: silent.slice(0, 2), now: T0, runStartedAt: null, systemFailures: [], unexplainedCoverage: [], registryApplied: true });
+    expect(after.reasons.map(r => [r.reason, r.sources.length])).toEqual([['MOTIF_ABSENT', 2]]);
+  });
+
   it('une source active absente du RUN est NON_COLLECTEE, à réparer', () => {
     const s = computeSourceState({ source: active(), outcome: null, previous: null, now: T0 });
     expect([s.state, s.cause, s.trajectory]).toEqual(['BLOQUEE', 'NON_COLLECTEE', 'A_REPARER']);

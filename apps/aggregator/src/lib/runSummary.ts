@@ -79,7 +79,9 @@ export function summarizeOrchestration(result: OrchestratorResult) {
     ...(result.total > 0 && result.ok + retentionOnlySources === 0 ? ['ALL_SOURCES_FAILED'] : []),
     ...(internalSources.size ? ['INTERNAL_FAILURE'] : []),
     ...(unknownSources.size || unclassifiedSources || invalidNativeProof ? ['UNRESOLVED_FAILURE'] : []),
-    ...(newIdentitySources.size >= IDENTITY_MASS_SOURCES ? ['IDENTITY_MASS'] : []),
+    // Audit r6 (point 6) : seules les entrées NOUVELLES par rapport à la file du début du RUN comptent (`opened`), et
+    // jamais l'initialisation d'une file vide (premier RUN après la migration : 15 ouvertures au rejeu du 24/09).
+    ...(newIdentitySources.size >= IDENTITY_MASS_SOURCES && result.identityQueueAtStart !== 0 ? ['IDENTITY_MASS'] : []),
   ];
   const retainedPostings = new Map<string, number>();
   for (const issue of retentions) retainedPostings.set(issue.source, (retainedPostings.get(issue.source) ?? 0) + issue.count);

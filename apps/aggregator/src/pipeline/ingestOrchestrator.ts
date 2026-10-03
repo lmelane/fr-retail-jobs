@@ -79,6 +79,12 @@ export type OrchestratorResult = {
   stateFailures?: string[];
   /** D-520 : la nature de la collecte pour l'état ; par défaut RUN, ou PASSE sous une passe incrémentale. */
   collectionKind?: CollectionKind;
+  /**
+   * Audit r6 (point 6) : les entrées de la file d'identité qui existaient au début du RUN (toutes, ouvertes ou résolues).
+   * 0 = INITIALISATION de la file (premier RUN après la migration) : ses ouvertures ne disent pas une panne du système.
+   * Absent (lecture impossible) : la garde IDENTITY_MASS s'applique.
+   */
+  identityQueueAtStart?: number;
 };
 
 /**
@@ -173,6 +179,11 @@ export async function retryTransientFailures(prisma: PrismaClient, result: Orche
  * Les familles de panne passagère que la source portait au dernier RUN complet avant celui-ci : une panne qui revient
  * n'est plus reprise (`ordinaryCauses.ts`). Lues dans `source.issue_classified` (la famille inscrite depuis D-520, sinon
  * relue depuis l'issue). Le RUN complet de référence est lu une fois par run journalisé.
+ *
+ * VOULU (audit d'intégration r6, F4, arbitrage du CTO du 02/10/2026) : tous les `source.issue_classified` du RUN
+ * précédent comptent, y compris une première tentative que la reprise a ensuite absorbée. Une famille passagère vue
+ * deux RUN de suite n'est donc plus reprise le second jour : elle escalade « à réparer » (lecture D-492 « remédiation
+ * automatique » §2 : une reprise absorbée la veille compte comme présence). Ne pas filtrer les tentatives absorbées.
  */
 const previousCompleteRun = new Map<string, Promise<string | null>>();
 export async function previousRunTransient(prisma: PrismaClient, key: string, currentRunId: string | null = log.runId() ?? null): Promise<Set<TransientKind>> {
@@ -271,6 +282,8 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
   await log.info('run.sources_selected', { sources: keys.length, sourceKeys: keys, concurrency: SOURCE_CONCURRENCY, baseTimeoutMs: PER_SOURCE_TIMEOUT_MS });
 
   const result: OrchestratorResult = { total: keys.length, ok: 0, failed: 0, timedOut: 0, failures: [], incidents: [], issues: [] };
+  try { result.identityQueueAtStart = await prisma.employerIdentityQueue.count(); }
+  catch (error) { log.assertHealthy(); await log.warn('identity.queue_count_failed', { error: error instanceof Error ? error.message : String(error) }); }
 
   // Smallest-first order is preserved by the limiter: the giants are still
   // started last, and now run side by side instead of one after the other.

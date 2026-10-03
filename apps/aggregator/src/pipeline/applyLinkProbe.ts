@@ -204,7 +204,7 @@ async function witnessFor(prisma: PrismaClient, target: ProbeTarget, at: Date) {
  * Ne ferme jamais une offre : la retenue la sort de l'expérience, la source qui la revoit l'y remet.
  */
 export async function runApplyLinkProbe(prisma: PrismaClient, options: { limit?: number; dryRun?: boolean; targets?: ProbeTarget[];
-  fetcher?: Fetcher; deadline?: number; accessScopes?: (sourceKey: string) => Promise<Scopes | null> } = {}): Promise<ProbeRun> {
+  fetcher?: Fetcher; deadline?: number; accessScopes?: (sourceKey: string) => Promise<Scopes | null>; runId?: string | null } = {}): Promise<ProbeRun> {
   const dryRun = options.dryRun === true;
   const at = new Date();
   const targets = options.targets ?? await probeTargets(prisma, options.limit ?? 300, at);
@@ -239,7 +239,7 @@ export async function runApplyLinkProbe(prisma: PrismaClient, options: { limit?:
       // Only if its source has still not seen it: a re-observation during the pass wins.
       where: { id: target.jobSourceId, isActive: true, lastSeenAt: { lte: target.lastSeenAt } },
       data: { availabilityHold: 'APPLY_LINK_DEAD', availabilityHoldAt: probedAt,
-        availabilityEvidence: { reader: PROBE_READER, url: target.url, probedAt: probedAt.toISOString(), ...reading,
+        availabilityEvidence: { reader: PROBE_READER, runId: options.runId ?? null, url: target.url, probedAt: probedAt.toISOString(), ...reading,
           witness: witnessBy.get(key) ?? null } },
     })).count;
   }

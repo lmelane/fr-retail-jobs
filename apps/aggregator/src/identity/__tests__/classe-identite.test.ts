@@ -99,5 +99,21 @@ describe('la garde de masse de la file (IDENTITY_MASS) : une panne du système, 
     // Des entrées déjà ouvertes, revues chaque jour, ne sont pas une masse nouvelle.
     expect(run(40).blockingReasons).toEqual([]);
   });
+
+  it('le premier RUN, file vide, n’est pas une panne : rejeu du 24/09 (15 ouvertures à file vide) ; le RUN suivant l’est au seuil (audit r6, point 6)', () => {
+    // Les 15 entrées ouvertes au RUN du 24/09/2026 16:03 à file vide (`audits/2026-10-02/classe-identite/rejeu.out`).
+    const ouvertes24 = ['b-s-international', 'beauty-success-geodir', 'brown-thomas-taleo', 'browns', 'funky-buddha', 'groupe-printemps', 'hot-topic',
+      'lagardere-duty-free', 'lagardere-travel-retail', 'lagardere-travel-retail-de', 'luxe-talent', 'lvmh', 'rivoli-typesense', 'sephora-france', 'tiffany-oracle'];
+    expect(ouvertes24).toHaveLength(15);
+    expect(ouvertes24.length).toBeGreaterThanOrEqual(IDENTITY_MASS_SOURCES);
+    const rejeu = (identityQueueAtStart?: number) => summarizeOrchestration({ total: 411, ok: 411 - ouvertes24.length, failed: ouvertes24.length, timedOut: 0,
+      incidents: [], failures: [], ...(identityQueueAtStart === undefined ? {} : { identityQueueAtStart }),
+      issues: ouvertes24.map(source => ({ source, origin: 'UNKNOWN' as const, code: 'EmployerIdentityReviewRequired', count: 3, detail: 'NOUVELLE_ENTREE' })) });
+    // Initialisation : la file était vide au début du RUN.
+    expect(rejeu(0).blockingReasons).toEqual([]);
+    // La même masse d'ouvertures nouvelles sur une file déjà initialisée, ou de taille inconnue : panne du système.
+    expect(rejeu(15).blockingReasons).toEqual(['IDENTITY_MASS']);
+    expect(rejeu().blockingReasons).toEqual(['IDENTITY_MASS']);
+  });
 });
 

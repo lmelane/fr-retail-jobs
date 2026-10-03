@@ -33,7 +33,7 @@ import { fetchAtsJobs } from '../ats/index.js';
 import { captureExtraction } from '../capture/batch.js';
 import { adoptQualificationCapture } from '../capture/adoption.js';
 import { incrementalPassActive, withIncrementalReading } from '../lib/incrementalReading.js';
-import { knownPostings } from './knownPostings.js';
+import { knownPostings, reconfirmListed } from './knownPostings.js';
 import { recordIngestionCompletion, type OutputFate } from '../capture/completion.js';
 import { validateCapturedSource } from '../connectors/sourceValidation.js';
 import { SourceAdmissionGateError } from '../connectors/sourceAdmission.js';
@@ -130,7 +130,7 @@ export type IngestStats = {
   captureBatchId?: string;
   completionReportHash?: string;
   /** D-517 : une lecture incrémentale — `fetched` ne compte que le neuf ; `knownSkipped`, les publications connues laissées de côté. */
-  incremental?: { knownSkipped: number };
+  incremental?: { knownSkipped: number; reconfirmed?: number; released?: number };
   /**
    * D-520 : la file de revue d'identité après cette collecte (`identity/reviewQueue.ts`) — entrées ouvertes de la source,
    * ouvertes, escaladées et résolues par elle, offres retenues. Absente quand la collecte n'est pas allée au bout.
@@ -371,6 +371,14 @@ async function ingestApiSource(
   stats.declaredTotal = declaredTotal;
   stats.truncated = truncated;
   if (extraction.incremental) stats.incremental = { knownSkipped: extraction.incremental.knownSkipped.length };
+  // Audit r6 (F2, tranché par le CTO) : la passe relit la liste entière ; une offre connue qu'elle y voit (`knownSkipped`,
+  // scellé et rejoué par la validation ci-dessus) est une preuve POSITIVE qu'elle est encore listée. Elle vaut
+  // reconfirmation pour la disponibilité (R-143 §2 : « remise immédiatement si elle est confirmée de nouveau ») :
+  // `lastSeenAt` avance à l'instant de la capture, et une retenue posée avant cet instant tombe, par la même règle que
+  // la levée du RUN (`lastSeenAt >= availabilityHoldAt`). Une passe n'atteste toujours AUCUNE absence.
+  if (extraction.incremental?.knownSkipped.length && !adopted) {
+    Object.assign(stats.incremental!, await reconfirmListed(prisma, stats.source, captureBatchId, extraction.incremental.knownSkipped));
+  }
   // Une lecture incrémentale ne rend que le neuf : sa « troncature » est voulue, et elle n'atteste rien (D-517).
   if (truncated && !extraction.incremental) {
     await log.error('source.listing_truncated', `[ingest] ${stats.source}: TRUNCATED — ${jobs.length} collected of ${declaredTotal} declared`);
