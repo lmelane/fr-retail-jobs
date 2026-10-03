@@ -537,9 +537,14 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
       }
     }
     let complete = issues.size === 0 && scopes.length === locales.length;
-    const feed = complete ? undefined : await reconcileByPublisherFeed(origin, locales, scopes, issues, byId, evidence);
-    if (feed?.read) pages++;
-    const byFeed = feed?.reconciled === true;
+    /*
+     * Le flux est lu à CHAQUE collecte multilingue, qu'il serve ou non (D-522 §6) : lu seulement au besoin, il serait une
+     * adresse que la collecte de qualification n'a pas toujours observée, et la collecte sous décision refuse toute
+     * adresse hors du périmètre dérivé d'elle — refus qui annule la collecte entière (`capture/batch.ts`).
+     */
+    const feed = await readPublisherFeed(origin, evidence);
+    if (feed.read) pages++;
+    const byFeed = !complete && reconcileByPublisherFeed(feed, locales, scopes, issues, byId);
     if (byFeed) complete = true;
     return finish({ jobs: [...byId.values()], complete, truncated: !complete,
       enumeration: { method: 'PUBLISHER_HTML_PER_LOCALE_TOTALS', endpoint: firstUrl, pages, rawCount,
@@ -597,35 +602,44 @@ function listingJob(job: SuccessFactorsJob): NormalizedJob {
  * source passait en « troncature ».
  *
  * Réconciliation : quand les SEULES langues non prouvées le sont par un total changeant (aucun échec de lecture, aucune
- * langue manquante), le flux complet de l'éditeur est lu une fois, après les pages. Toute offre du flux que les pages
+ * langue manquante), le flux complet de l'éditeur, lu après les pages, est confronté à elles. Toute offre du flux que les pages
  * n'ont pas servie (publiée pendant la lecture, ou cachée par l'oscillation) est collectée depuis son lien, sous la même
  * forme qu'une offre de liste, et comptée (`PUBLISHER_FEED_ONLY:<n>`) ; la liste est alors complète : chaque offre publiée
  * à l'instant du flux a été collectée. Une offre lue puis retirée avant le flux reste collectée ce jour-là, comme avec la
  * passe fraîche. Un flux absent, coupé ou incohérent ne prouve rien. La terminaison qui en résulte n'est pas probante
  * pour le refresh, comme celle de la passe fraîche : ses absences ne ferment rien ce jour-là.
  *
- * Le choix de lire le flux ne dépend que des réponses déjà lues : le rejeu hors réseau le relit à la même place.
+ * Le flux est lu à chaque collecte multilingue, à la même place (après les pages) : le rejeu hors réseau le relit.
  */
-async function reconcileByPublisherFeed(origin: string, locales: string[], scopes: Array<{ scope: string; complete: boolean }>,
-  issues: Set<string>, byId: Map<string, NormalizedJob>, evidence: PageEvidence): Promise<{ read: boolean; reconciled: boolean }> {
+type PublisherFeed = { read: boolean; jobs: SuccessFactorsJob[] | null; failure?: string };
+
+/** Le flux lu une fois ; une lecture en échec est rendue nommée, jamais levée. */
+async function readPublisherFeed(origin: string, evidence: PageEvidence): Promise<PublisherFeed> {
+  const url = `${origin}/sitemap.xml`;
+  let xml: string;
+  try { xml = await fetchText(url, { headers: HEADERS }); }
+  catch (error) { assertSourceRunning(); return { read: false, jobs: null, failure: String(error).slice(0, 200) }; }
+  const jobs = parseSuccessFactorsJobFeed(xml, origin);
+  // Seul un flux lisible entre dans la preuve de la liste ; la réponse, elle, reste archivée comme toute requête.
+  if (jobs) evidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(xml).digest('hex'), offset: 0,
+    pagination: null, ids: jobs.map(job => job.externalId), publisherCounter: `items=${jobs.length}`, componentCounters: [] });
+  return { read: true, jobs };
+}
+
+function reconcileByPublisherFeed(feed: PublisherFeed, locales: string[], scopes: Array<{ scope: string; complete: boolean }>,
+  issues: Set<string>, byId: Map<string, NormalizedJob>): boolean {
   const unproven = scopes.filter(scope => !scope.complete).map(scope => scope.scope);
   const onlyTotalChanges = locales.length > 0 && scopes.length === locales.length && unproven.length > 0 &&
     unproven.every(locale => issues.has(`${locale}:SOURCE_TOTAL_CHANGED`)) &&
     [...issues].every(issue => unproven.some(locale => issue === `HTML_LOCALE_INCOMPLETE:${locale}` || issue.startsWith(`${locale}:`)));
-  if (!onlyTotalChanges) return { read: false, reconciled: false };
-  const url = `${origin}/sitemap.xml`;
-  let xml: string;
-  try { xml = await fetchText(url, { headers: HEADERS }); }
-  catch (error) { assertSourceRunning(); issues.add(`PUBLISHER_FEED_FAILED:${String(error).slice(0, 200)}`); return { read: false, reconciled: false }; }
-  const feed = parseSuccessFactorsJobFeed(xml, origin);
-  evidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(xml).digest('hex'), offset: 0,
-    pagination: null, ids: feed?.map(job => job.externalId) ?? [], publisherCounter: feed ? `items=${feed.length}` : '', componentCounters: [] });
-  if (!feed?.length) { issues.add('PUBLISHER_FEED_UNREADABLE'); return { read: true, reconciled: false }; }
-  const feedOnly = feed.filter(job => !byId.has(job.externalId));
+  if (!onlyTotalChanges) return false;
+  if (!feed.read) { issues.add(`PUBLISHER_FEED_FAILED:${feed.failure ?? ''}`); return false; }
+  if (!feed.jobs?.length) { issues.add('PUBLISHER_FEED_UNREADABLE'); return false; }
+  const feedOnly = feed.jobs.filter(job => !byId.has(job.externalId));
   for (const job of feedOnly) byId.set(job.externalId, listingJob(job));
   if (feedOnly.length) issues.add(`PUBLISHER_FEED_ONLY:${feedOnly.length}`);
   issues.add('PUBLISHER_FEED_RECONCILED');
-  return { read: true, reconciled: true };
+  return true;
 }
 
 type HtmlPass = { jobs: NormalizedJob[]; seenIds: Set<string>; declaredTotal?: number; totalChanged: boolean; pages: number; rawCount: number;

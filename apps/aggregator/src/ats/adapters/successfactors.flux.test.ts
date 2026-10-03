@@ -116,6 +116,23 @@ describe('SuccessFactors — total HTML oscillant, réconciliation par le flux c
     });
     const r = await fetchSuccessFactorsResult(config);
     expect(r.complete).toBe(false);
-    expect(served.feed).toBe(0);
+    // Le flux est lu à chaque collecte multilingue (périmètre d'accès stable), mais il ne rattrape jamais un échec de lecture.
+    expect(served.feed).toBe(1);
+    expect(r.enumeration?.issues).not.toContain('PUBLISHER_FEED_RECONCILED');
+  });
+
+  it('une liste déjà prouvée lit le flux sans rien en tirer', async () => {
+    const served = { feed: 0 };
+    text.mockImplementation(async (raw) => {
+      const u = new URL(String(raw));
+      if (u.pathname === '/sitemap.xml') { served.feed++; return feed([A, B]); }
+      if (u.pathname === '/') return '<a href="?locale=en_US">US</a>';
+      return listing(1, 1, [A]);
+    });
+    const r = await fetchSuccessFactorsResult(config);
+    expect(served.feed).toBe(1);
+    expect(r.complete).toBe(true);
+    expect(r.enumeration?.termination).toBe('ALL_LOCALE_TOTALS_REACHED');
+    expect(r.jobs.map((j) => j.externalId)).toEqual([A]);
   });
 });
