@@ -1,0 +1,79 @@
+{
+ "run": "9022fc4b-1b96-431d-bee9-86ed244ef4f1",
+ "hold": "WORKDAY_EMPLOYER_ABSENT_IN_DETAIL",
+ "sources": {
+  "aritzia": {
+   "lot": "d93af50d-e859-4ef1-8d69-be854d1e4ee5",
+   "retenues": 5
+  },
+  "brunello-cucinelli": {
+   "lot": "39586e02-2c1d-4df1-a5db-fdc86caef4ea",
+   "retenues": 1
+  },
+  "canada-goose": {
+   "lot": "55caf1e6-1c97-4c43-8966-e34ac9c93b5d",
+   "retenues": 23
+  },
+  "jansport": {
+   "lot": "538a6701-0157-4cd3-b5bc-55c1ea1e55f0",
+   "retenues": 3
+  },
+  "levis": {
+   "lot": "c7cb3ca3-e3c2-4da5-98a9-78fded7d9889",
+   "retenues": 1295
+  },
+  "mango": {
+   "lot": "c5f589a9-89ce-4203-86a4-50658165cf41",
+   "retenues": 31
+  },
+  "mecca": {
+   "lot": "08ab2c12-c895-4f6a-bce6-347423761a18",
+   "retenues": 6
+  },
+  "movado": {
+   "lot": "e63f3c8d-4d6b-4d9c-bbda-9af90742bc64",
+   "retenues": 1
+  },
+  "nike": {
+   "lot": "7dd14624-6642-482f-b939-0ebc27f80091",
+   "retenues": 9
+  },
+  "nike-nke2": {
+   "lot": "9df016b1-dc6f-4aba-8f28-03b183897f2c",
+   "retenues": 333
+  },
+  "nordstrom": {
+   "lot": "fa3527d2-eabf-47d0-ad36-f8e84efc9ae2",
+   "retenues": 4
+  },
+  "puma": {
+   "lot": "c4fc7d50-ca8f-473c-8ddd-1d9638cc9921",
+   "retenues": 11
+  },
+  "swarovski": {
+   "lot": "2f65fb9a-b5e0-4727-abf5-244df462806e",
+   "retenues": 30
+  },
+  "tapestry": {
+   "lot": "5a479340-4b14-4cf8-9aa9-4a5094a683e9",
+   "retenues": 2
+  },
+  "therealreal": {
+   "lot": "1e472b64-b11d-49ff-9b9c-2028b69749fa",
+   "retenues": 1
+  },
+  "uniqlo-hkm-headquarters": {
+   "lot": "ae2761ac-e0fc-4f73-b3f0-5781023220db",
+   "retenues": 4
+  },
+  "uniqlo-stores": {
+   "lot": "30c7174a-9da9-4a3c-bd25-7fcb8551c102",
+   "retenues": 1
+  },
+  "vf-corporation": {
+   "lot": "9b3077d9-4123-402f-a2d0-321484c78086",
+   "retenues": 485
+  }
+ },
+ "total": 2245
+}

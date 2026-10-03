@@ -19,7 +19,9 @@ describe('retained publication recovery', () => {
       observedAt: at, config: { origin: 'https://cc.wd3.myworkdayjobs.com', tenant: 'cc', site: 'ChanelCareers' } };
     const readWorkday = (value: unknown, extra = {}) => recoverRetainedPublication('workday', value, { ...context, ...extra });
     expect(readWorkday(raw)).toMatchObject({ reason: 'PUBLICATION_HELD' });
-    expect(readWorkday(raw, { certifiedPortal: { scope: 'MULTI_BRAND', ownerName: 'CHANEL' } })).toMatchObject({ reason: 'PUBLICATION_HELD' });
+    // R-142 §3 (D-522 §6) : sur un portail relu MULTI_BRAND, l'offre sans enseigne est reprise sous le groupe.
+    expect(readWorkday(raw, { certifiedPortal: { scope: 'MULTI_BRAND', ownerName: 'CHANEL' } })).toMatchObject({ status: 'RECOVERABLE', job: {
+      employerEvidence: { path: 'portal.certifiedScope', rawName: 'CHANEL', rule: 'GROUP_INFERRED_FROM_REVIEWED_MULTI_BRAND_PORTAL' } } });
     const certifiedPortal = { scope: 'SINGLE_BRAND' as const, ownerName: 'CHANEL' };
     expect(readWorkday(raw, { certifiedPortal })).toMatchObject({ status: 'RECOVERABLE', job: {
       employerEvidence: { path: 'portal.certifiedScope', rawName: 'CHANEL' }, raw } });

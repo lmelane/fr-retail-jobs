@@ -151,7 +151,7 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
       if (report.inputRejected) report.reasons.REJECTED_NATIVE_ROWS = report.inputRejected;
       report.inputUnqualified = (replayed.rejectedRows ?? []).filter(row => !EXPLAINED_NATIVE_ROWS.has(row.reason)).length;
       for (const job of replayed.jobs) {
-        const eligible = portal ? employerFromCertifiedScope(job, portal.ownerName, portal.scope) : job;
+        const eligible = portal ? employerFromCertifiedScope(job, portal.ownerName, portal.scope, portal.brands) : job;
         if (eligible.publicationHold || eligible.publicationWithdrawnAt) {
           report.held++;
           if (eligible.publicationHold === DETAIL_CONTENT_MISSING) report.contentMissing = (report.contentMissing ?? 0) + 1;

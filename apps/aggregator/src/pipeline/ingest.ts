@@ -13,7 +13,7 @@ import { applyScopeExclusion, loadScopeExclusions } from './scopeDecisions.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import type { PrismaClient, AtsType } from '@prisma/client';
 import type { SourceTier } from '@catwalks/db/publications';
-import { certifiedPortalScope } from '../connectors/sourceIdentity.js';
+import { certifiedPortalIdentity } from '../connectors/sourceIdentity.js';
 import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
 import { loadActiveSources, type RuntimeSource } from '../connectors/sourceStore.js';
 import { classifySector } from '../normalize/sector.js';
@@ -403,9 +403,9 @@ async function ingestApiSource(
    */
   const isBoard = config.filterSector === true;
   let skippedOutOfSector = 0;
-  // Postings whose page names no employer may take the portal owner only on a
-  // portal whose perimeter is certified SINGLE_BRAND for this configuration.
-  const scope = jobs.some(j => j.publicationHold === 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL') ? await certifiedPortalScope(prisma, stats.source) : null;
+  // Postings whose page names no employer take the portal owner on a portal certified SINGLE_BRAND; on a portal relu
+  // MULTI_BRAND, the brand they name (closed list of the group) or else the group (R-142 §3, `portalEmployer.ts`).
+  const portal = await certifiedPortalIdentity(prisma, stats.source);
   // Reviewed sector-perimeter exclusions (PostingScopeDecision OUT_OF_SCOPE): the posting is still
   // collected and archived, its publication is withheld and its representation withdrawn OUT_OF_SCOPE.
   const scopeExclusions = await loadScopeExclusions(prisma, stats.source);
@@ -420,7 +420,7 @@ async function ingestApiSource(
   const heldPostings: { externalId: string; reason: string }[] = [];
   // Group feeds carry the Maison per offer (LVMH: Sephora, Dior…); a single-house feed falls back to the catalogue label.
   const employerOf = (job: NormalizedJob) => job.company || sourceDef.company;
-  const prepared = jobs.map(rawJob => applyScopeExclusion(employerFromCertifiedScope(rawJob, sourceDef.company, scope), scopeExclusions));
+  const prepared = jobs.map(rawJob => applyScopeExclusion(employerFromCertifiedScope(rawJob, sourceDef.company, portal?.scope ?? null, portal?.brands), scopeExclusions));
   /**
    * D-506 §3 — the proof is frozen before the first write: when this collection started, and which native label the
    * publisher gives each publishable posting in it. « The source already publishes B » then reads the same for every

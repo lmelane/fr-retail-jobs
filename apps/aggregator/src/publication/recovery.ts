@@ -50,11 +50,12 @@ import { htmlToPlainText } from '../lib/html.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import type { NormalizedJob } from '../types.js';
 import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
+import type { GroupBrandList } from '../identity/groupBrands.js';
 import { applySpontaneousApplicationRule } from '../pipeline/spontaneousApplication.js';
 
 type Context = { externalId: string; url: string; observedAt: Date; config: Record<string, unknown>;
   /** Trusted registry context, never a field inferred from the publication or its settings. */
-  certifiedPortal?: { ownerName: string; scope: 'SINGLE_BRAND' | 'MULTI_BRAND' } };
+  certifiedPortal?: { ownerName: string; scope: 'SINGLE_BRAND' | 'MULTI_BRAND'; brands?: GroupBrandList } };
 /**
  * Les motifs de refus qui portent sur UNE publication, jamais sur le lot.
  *
@@ -628,7 +629,7 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
     if (job.externalId !== context.externalId || url.href !== new URL(context.url).href ||
       !['https:', 'http:'].includes(url.protocol) || url.username || url.password) return failure('IDENTITY_MISMATCH');
     job = applyNativeEmployerRules({ ...job, raw }, nativeEmployerRules(config));
-    if (context.certifiedPortal) job = employerFromCertifiedScope(job, context.certifiedPortal.ownerName, context.certifiedPortal.scope);
+    if (context.certifiedPortal) job = employerFromCertifiedScope(job, context.certifiedPortal.ownerName, context.certifiedPortal.scope, context.certifiedPortal.brands);
     // D-511, D-512 : la reprise du RAW lit la même règle que la collecte ; une candidature spontanée ou un vivier sans poste n'est jamais repris.
     job = applySpontaneousApplicationRule(job, context.observedAt);
     if (job.publicationHold || job.publicationWithdrawnAt) return failure('PUBLICATION_HELD');

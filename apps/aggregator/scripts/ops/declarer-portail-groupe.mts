@@ -29,12 +29,14 @@
  *
  *    ATTENTION à ne pas se tromper sur son sens. `SINGLE_BRAND` sert à COMBLER un manque : quand
  *    une annonce ne nomme aucun employeur, elle prend le propriétaire du portail
- *    (`portalEmployer.ts`, décision du 09/09). `MULTI_BRAND` dit l'INVERSE — ne comble jamais —
- *    parce qu'attribuer une offre MAC à « Estée Lauder » serait une fausse attribution.
+ *    (`portalEmployer.ts`, décision du 09/09). `MULTI_BRAND` ne donne JAMAIS la marque d'une autre
+ *    offre : l'annonce qui nomme sa Maison la garde, celle qui ne nomme pas son enseigne publie sous
+ *    le GROUPE (R-142 §3, D-479 §2 ; Workday et marques nommées dans l'intitulé ou le lieu : D-522 §6,
+ *    `identity/groupBrands.ts`). Une offre MAC n'est donc jamais attribuée à une autre marque ; sans
+ *    nom de marque, elle l'est au groupe Estée Lauder.
  *
- *    Ce geste n'ouvre donc AUCUNE vanne : il déclare la réalité du portail. Les offres seront
- *    attribuées d'après ce que l'annonce nomme ; celles qui ne nomment rien resteront en attente.
- *    C'est protecteur, et c'est voulu.
+ *    [Note du 03/10/2026 : ce paragraphe disait auparavant que MULTI_BRAND « ne comble jamais » ;
+ *    c'était faux depuis D-479 §2 pour les offres sans libellé (le résolveur publie sous le groupe).]
  *
  *    `portalScope` ne figure pas dans `source_revision_payload` (migration 20260918100000) :
  *    l'écrire ne crée pas de révision et n'invalide donc aucune preuve déjà acquise.

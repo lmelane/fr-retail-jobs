@@ -1,7 +1,7 @@
 import type { Prisma } from '@prisma/client';
 import type { NormalizedJob } from '../types.js';
 import type { readCapturedPublication } from './publication.js';
-import { certifiedPortalScope } from '../connectors/sourceIdentity.js';
+import { certifiedPortalIdentity } from '../connectors/sourceIdentity.js';
 import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { SCOPE_HOLD } from '../pipeline/scopeDecisions.js';
@@ -23,8 +23,9 @@ export async function enforcePublicationPolicy(tx: Prisma.TransactionClient, cap
     if (native.publicationWithdrawnAt) throw new Error('Captured publication is withdrawn');
     if (native.publicationHold) {
       const source = await tx.source.findUniqueOrThrow({ where: { key: input.sourceKey }, select: { maison: true } });
+      const portal = await certifiedPortalIdentity(tx, input.sourceKey);
       const qualified = employerFromCertifiedScope({ ...native, postedAt: undefined, validThrough: undefined,
-        publicationWithdrawnAt: undefined }, source.maison, await certifiedPortalScope(tx, input.sourceKey));
+        publicationWithdrawnAt: undefined }, source.maison, portal?.scope ?? null, portal?.brands);
       if (qualified.publicationHold) throw new Error('Captured publication is held');
     }
     return;

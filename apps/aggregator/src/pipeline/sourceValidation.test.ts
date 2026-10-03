@@ -46,11 +46,14 @@ describe('native source validation', () => {
       throw new Error('Unexpected Workday fixture URL');
     }));
     const result = await captureSourceForValidation(db, key, 30_000);
-    expect(result).toMatchObject({ verdict: portalScope === 'SINGLE_BRAND' ? 'VALIDATED' : 'REJECTED', report: {
-      replayExact: true, observed: 1, qualified: portalScope === 'SINGLE_BRAND' ? 1 : 0,
-      held: portalScope === 'SINGLE_BRAND' ? 0 : 1, absenceAttestation: false } });
-    if (portalScope === 'SINGLE_BRAND') expect(result.report).toMatchObject({ registryEmployer: {
-      scope: 'SINGLE_BRAND', ownerName: 'CHANEL', sourceRevisionId: source.currentRevisionId, reviewId: null } });
+    // R-142 §3 (D-522 §6) : un portail relu MULTI_BRAND qualifie aussi l'offre sans enseigne, sous le groupe ; seul un
+    // périmètre non relu la laisse retenue.
+    const reviewed = portalScope !== null;
+    expect(result).toMatchObject({ verdict: reviewed ? 'VALIDATED' : 'REJECTED', report: {
+      replayExact: true, observed: 1, qualified: reviewed ? 1 : 0,
+      held: reviewed ? 0 : 1, absenceAttestation: false } });
+    if (reviewed) expect(result.report).toMatchObject({ registryEmployer: {
+      scope: portalScope, ownerName: 'CHANEL', sourceRevisionId: source.currentRevisionId, reviewId: null } });
     else expect(result.report).not.toHaveProperty('registryEmployer');
     // The archived adapter output still states that the native employer is missing.
     const output = await db.sourceExtraction.findFirstOrThrow({ where: { batchId: result.captureBatchId } });

@@ -3,6 +3,7 @@ import { type Prisma, type Source, type SourceIdentityReview, type PrismaClient 
 import { resolveCompany } from '../normalize/company.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
+import { groupPortalBrands, type GroupBrandList } from '../identity/groupBrands.js';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { belongsToOfficialDomain, configuredPortal, reviewedOfficialDomain } from './sourcePortal.js';
 import { effectiveSourceConfig } from './sourceConfig.js';
@@ -156,7 +157,9 @@ export function portalScopeOf(source: RevisionIdentitySource, review: IdentityDe
   return review?.portalScope === 'SINGLE_BRAND' || review?.portalScope === 'MULTI_BRAND' ? review.portalScope : null;
 }
 
-export type CertifiedPortalIdentity = { scope: 'SINGLE_BRAND' | 'MULTI_BRAND'; ownerName: string; ownerKey: string; sourceRevisionId: string; reviewId: string | null };
+export type CertifiedPortalIdentity = { scope: 'SINGLE_BRAND' | 'MULTI_BRAND'; ownerName: string; ownerKey: string; sourceRevisionId: string; reviewId: string | null;
+  /** MULTI_BRAND seulement : la liste fermée et relue des marques du groupe (`identity/groupBrands.ts`, R-142 §3). */
+  brands?: GroupBrandList };
 
 /**
  * QUI RECRUTE, D'APRÈS LE REGISTRE (lot F5, 18/09/2026).
@@ -188,8 +191,9 @@ export async function certifiedPortalIdentity(db: Pick<Prisma.TransactionClient,
   // accepterait n'importe quelle chaîne ferait dépendre l'attribution d'employeur d'une faute de frappe.
   const scope = source.portalScope === 'SINGLE_BRAND' || source.portalScope === 'MULTI_BRAND' ? source.portalScope : null;
   if (!scope) return null;
+  const brands = scope === 'MULTI_BRAND' ? groupPortalBrands(source.key, source.maison) : undefined;
   return { scope, ownerName: source.maison.trim(), ownerKey: sourceSubjectKey(source),
-    sourceRevisionId: source.currentRevisionId, reviewId: null };
+    sourceRevisionId: source.currentRevisionId, reviewId: null, ...(brands ? { brands } : {}) };
 }
 
 export async function certifiedPortalScope(db: Pick<Prisma.TransactionClient, '$queryRaw'>, sourceKey: string, now = new Date()): Promise<'SINGLE_BRAND' | 'MULTI_BRAND' | null> {

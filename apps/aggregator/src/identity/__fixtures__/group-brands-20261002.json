@@ -1,0 +1,326 @@
+{
+ "beyondYoga": {
+  "source": "levis",
+  "externalId": "Seasonal-Sales-Stylist--Beyond-Yoga_R-0151058",
+  "title": "Seasonal Sales Stylist, Beyond Yoga",
+  "location": "Irvine, CA, USA",
+  "url": "https://levistraussandco.wd5.myworkdayjobs.com/External/job/Irvine-CA-USA/Seasonal-Sales-Stylist--Beyond-Yoga_R-0151058",
+  "publicationHold": "WORKDAY_EMPLOYER_ABSENT_IN_DETAIL",
+  "raw": {
+   "title": "Seasonal Sales Stylist, Beyond Yoga",
+   "bulletFields": [
+    "R-0151058",
+    "USA, Irvine, Beyond Yoga Spectrum (L702)",
+    "Irvine, CA, USA"
+   ],
+   "externalPath": "/job/Irvine-CA-USA/Seasonal-Sales-Stylist--Beyond-Yoga_R-0151058",
+   "detail": {
+    "jobPostingInfo": {
+     "location": "Irvine, CA, USA",
+     "jobRequisitionLocation": {
+      "descriptor": "Irvine, CA, USA"
+     }
+    },
+    "hiringOrganization": {
+     "name": "",
+     "url": ""
+    }
+   }
+  }
+ },
+ "levisStoreCode": {
+  "source": "levis",
+  "externalId": "Sales-Stylist_R-0155157",
+  "title": "Sales Stylist",
+  "location": "LS MUENSTER ARKADEN, Münster, Germany",
+  "url": "https://levistraussandco.wd5.myworkdayjobs.com/External/job/LS-MUENSTER-ARKADEN-Mnster-Germany/Sales-Stylist_R-0155157",
+  "publicationHold": "WORKDAY_EMPLOYER_ABSENT_IN_DETAIL",
+  "raw": {
+   "title": "Sales Stylist",
+   "bulletFields": [
+    "R-0155157",
+    "Spotlight Job",
+    "LS MUENSTER ARKADEN, Münster, Germany",
+    "Münster, Germany"
+   ],
+   "externalPath": "/job/LS-MUENSTER-ARKADEN-Mnster-Germany/Sales-Stylist_R-0155157",
+   "detail": {
+    "jobPostingInfo": {
+     "location": "LS MUENSTER ARKADEN, Münster, Germany",
+     "jobRequisitionLocation": {
+      "descriptor": "Münster, Germany"
+     }
+    },
+    "hiringOrganization": {
+     "name": "",
+     "url": ""
+    }
+   }
+  }
+ },
+ "converseTitle": {
+  "source": "nike-nke2",
+  "externalId": "Retail-Associate--SEAS---Converse-Jersey-Shore_R-93244",
+  "title": "Retail Associate, SEAS - Converse Jersey Shore",
+  "location": "Tinton Falls, New Jersey",
+  "url": "https://nike.wd1.myworkdayjobs.com/nke2/job/Tinton-Falls-New-Jersey/Retail-Associate--SEAS---Converse-Jersey-Shore_R-93244",
+  "publicationHold": "WORKDAY_EMPLOYER_ABSENT_IN_DETAIL",
+  "raw": {
+   "title": "Retail Associate, SEAS - Converse Jersey Shore",
+   "locationsText": "Tinton Falls, New Jersey",
+   "bulletFields": [
+    "R-93244"
+   ],
+   "externalPath": "/job/Tinton-Falls-New-Jersey/Retail-Associate--SEAS---Converse-Jersey-Shore_R-93244",
+   "detail": {
+    "jobPostingInfo": {
+     "location": "Tinton Falls, New Jersey",
+     "jobRequisitionLocation": {
+      "descriptor": "CFS US JERSEY SHORE"
+     }
+    },
+    "hiringOrganization": {
+     "name": "",
+     "url": ""
+    }
+   }
+  }
+ },
+ "westJordan": {
+  "source": "nike-nke2",
+  "externalId": "Retail-Associate--SEAS---Nike-West-Jordan_R-93183-1",
+  "title": "Retail Associate, SEAS - Nike West Jordan",
+  "location": "West Jordan, Utah",
+  "url": "https://nike.wd1.myworkdayjobs.com/nke2/job/West-Jordan-Utah/Retail-Associate--SEAS---Nike-West-Jordan_R-93183-1",
+  "publicationHold": "WORKDAY_EMPLOYER_ABSENT_IN_DETAIL",
+  "raw": {
+   "title": "Retail Associate, SEAS - Nike West Jordan",
+   "locationsText": "West Jordan, Utah",
+   "bulletFields": [
+    "R-93183"
+   ],
+   "externalPath": "/job/West-Jordan-Utah/Retail-Associate--SEAS---Nike-West-Jordan_R-93183-1",
+   "detail": {
+    "jobPostingInfo": {
+     "location": "West Jordan, Utah",
+     "jobRequisitionLocation": {
+      "descriptor": "NFS US WEST JORDAN"
+     }
+    },
+    "hiringOrganization": {
+     "name": "",
+     "url": ""
+    }
+   }
+  }
+ },
+ "twoBrands": {
+  "source": "vf-corporation",
+  "externalId": "Associate-Planner--eCommerce--Packs-Americas-_R-20260511-0064-2",
+  "title": "Jansport/Eastpak - Associate Planner, eCommerce",
+  "location": "USCA > USA > New Jersey > Jersey City - KIP",
+  "url": "https://vfc.wd5.myworkdayjobs.com/vfc_careers/job/USCA--USA--New-Jersey--Jersey-City---KIP/Associate-Planner--eCommerce--Packs-Americas-_R-20260511-0064-2",
+  "publicationHold": "WORKDAY_EMPLOYER_ABSENT_IN_DETAIL",
+  "raw": {
+   "title": "Jansport/Eastpak - Associate Planner, eCommerce",
+   "locationsText": "USCA > USA > New Jersey > Jersey City - KIP",
+   "bulletFields": [
+    "R-20260511-0064"
+   ],
+   "externalPath": "/job/USCA--USA--New-Jersey--Jersey-City---KIP/Associate-Planner--eCommerce--Packs-Americas-_R-20260511-0064-2",
+   "detail": {
+    "jobPostingInfo": {
+     "location": "USCA > USA > New Jersey > Jersey City - KIP",
+     "jobRequisitionLocation": {
+      "descriptor": "USCA > USA > New Jersey > Jersey City - KIP"
+     }
+    },
+    "hiringOrganization": {
+     "name": "",
+     "url": ""
+    }
+   }
+  }
+ },
+ "vfNoBrand": {
+  "source": "vf-corporation",
+  "externalId": "Senior-Analyst--GTM-Pricing--Costing-and-Margin--Temp-9-months-_R-20260922-0012-1",
+  "title": "Senior Analyst, GTM Pricing, Costing and Margin (Temp 9 months)",
+  "location": "EMEA > CHE > Stabio > VF Campus VF1",
+  "url": "https://vfc.wd5.myworkdayjobs.com/vfc_careers/job/EMEA--CHE--Stabio--VF-Campus-VF1/Senior-Analyst--GTM-Pricing--Costing-and-Margin--Temp-9-months-_R-20260922-0012-1",
+  "publicationHold": "WORKDAY_EMPLOYER_ABSENT_IN_DETAIL",
+  "raw": {
+   "title": "Senior Analyst, GTM Pricing, Costing and Margin (Temp 9 months)",
+   "locationsText": "EMEA > CHE > Stabio > VF Campus VF1",
+   "bulletFields": [
+    "R-20260922-0012"
+   ],
+   "externalPath": "/job/EMEA--CHE--Stabio--VF-Campus-VF1/Senior-Analyst--GTM-Pricing--Costing-and-Margin--Temp-9-months-_R-20260922-0012-1",
+   "detail": {
+    "jobPostingInfo": {
+     "location": "EMEA > CHE > Stabio > VF Campus VF1",
+     "jobRequisitionLocation": {
+      "descriptor": "EMEA > CHE > Stabio > VF Campus VF1"
+     }
+    },
+    "hiringOrganization": {
+     "name": "",
+     "url": ""
+    }
+   }
+  }
+ },
+ "movadoClerk": {
+  "source": "movado",
+  "externalId": "Temporary-Distribution-Clerk_JR00002857",
+  "title": "Temporary Distribution Clerk",
+  "location": "Moonachie, NJ",
+  "url": "https://movadogroup.wd1.myworkdayjobs.com/Careers/job/Moonachie-NJ/Temporary-Distribution-Clerk_JR00002857",
+  "publicationHold": "WORKDAY_EMPLOYER_ABSENT_IN_DETAIL",
+  "raw": {
+   "title": "Temporary Distribution Clerk",
+   "locationsText": "Moonachie, NJ",
+   "bulletFields": [
+    "JR00002857"
+   ],
+   "externalPath": "/job/Moonachie-NJ/Temporary-Distribution-Clerk_JR00002857",
+   "detail": {
+    "jobPostingInfo": {
+     "location": "Moonachie, NJ",
+     "jobRequisitionLocation": {
+      "descriptor": "US Distribution Center"
+     }
+    },
+    "hiringOrganization": {
+     "name": "",
+     "url": ""
+    }
+   }
+  }
+ },
+ "brunelloCv": {
+  "source": "brunello-cucinelli",
+  "externalId": "Inviaci-il-tuo-curriculum---Send-us-your-CV_JR100132",
+  "title": "Inviaci il tuo curriculum - Send us your CV",
+  "location": "0",
+  "url": "https://brunellocucinelli.wd3.myworkdayjobs.com/Cucinelli/job/0/Inviaci-il-tuo-curriculum---Send-us-your-CV_JR100132",
+  "publicationHold": "WORKDAY_EMPLOYER_ABSENT_IN_DETAIL",
+  "raw": {
+   "title": "Inviaci il tuo curriculum - Send us your CV",
+   "locationsText": "0",
+   "bulletFields": [
+    "JR100132"
+   ],
+   "externalPath": "/job/0/Inviaci-il-tuo-curriculum---Send-us-your-CV_JR100132",
+   "detail": {
+    "jobPostingInfo": {
+     "location": "0",
+     "jobRequisitionLocation": {
+      "descriptor": "0"
+     }
+    },
+    "hiringOrganization": {
+     "name": "",
+     "url": ""
+    }
+   }
+  }
+ },
+ "lorealKiehls": {
+  "source": "l-oreal-professionnel",
+  "externalId": "255073",
+  "title": "Kiehl's Skin Pro (Beauty Advisor Douglas) – Groningen, 32 uur",
+  "location": "Groningen",
+  "url": "https://careers.loreal.com/en_US/jobs/JobDetail/Kiehl-s-Skin-Pro-Beauty-Advisor-Douglas-Groningen-32-uur/255073",
+  "raw": {
+   "title": "Kiehl's Skin Pro (Beauty Advisor Douglas) – Groningen, 32 uur",
+   "location": "Groningen"
+  }
+ },
+ "lorealYsl": {
+  "source": "l-oreal-professionnel",
+  "externalId": "256775",
+  "title": "PRAKTIKUM M W D Product Marketing Brand Communication bei YSL Luxe Division Start Mai f r 6 Monate",
+  "url": "https://careers.loreal.com/en_US/jobs/JobDetail/PRAKTIKUM-M-W-D-Product-Marketing-Brand-Communication-bei-YSL-Luxe-Division-Start-Mai-f-r-6-Monate/256775",
+  "raw": {
+   "title": "PRAKTIKUM M W D Product Marketing Brand Communication bei YSL Luxe Division Start Mai f r 6 Monate"
+  }
+ },
+ "lorealGroup": {
+  "source": "l-oreal-professionnel",
+  "externalId": "256509",
+  "title": "[L'OREAL Taiwan] Commercial Controller",
+  "location": "Taipei",
+  "url": "https://careers.loreal.com/en_US/jobs/JobDetail/L-OREAL-Taiwan-Commercial-Controller/256509",
+  "raw": {
+   "title": "[L'OREAL Taiwan] Commercial Controller",
+   "location": "Taipei"
+  }
+ },
+ "vfOutdoorTnf": {
+  "source": "vf-corporation",
+  "externalId": "The-North-Face--Supervisor---Peabody_R-20260929-0027-1",
+  "title": "The North Face: Supervisor - Peabody",
+  "location": "USCA > USA > Massachusetts > Peabody 039 - TNF",
+  "url": "https://vfc.wd5.myworkdayjobs.com/vfc_careers/job/USCA--USA--Massachusetts--Peabody-039---TNF/The-North-Face--Supervisor---Peabody_R-20260929-0027-1",
+  "company": "VF Outdoor, LLC",
+  "employerEvidence": {
+   "rawName": "VF Outdoor, LLC",
+   "path": "detail.hiringOrganization.name",
+   "rule": "HIRING_ORGANIZATION_LABEL"
+  },
+  "raw": {
+   "title": "The North Face: Supervisor - Peabody",
+   "locationsText": "USCA > USA > Massachusetts > Peabody 039 - TNF",
+   "bulletFields": [
+    "R-20260929-0027"
+   ],
+   "externalPath": "/job/USCA--USA--Massachusetts--Peabody-039---TNF/The-North-Face--Supervisor---Peabody_R-20260929-0027-1",
+   "detail": {
+    "jobPostingInfo": {
+     "location": "USCA > USA > Massachusetts > Peabody 039 - TNF",
+     "jobRequisitionLocation": {
+      "descriptor": "USCA > USA > Massachusetts > Peabody 039 - TNF"
+     }
+    },
+    "hiringOrganization": {
+     "name": "VF Outdoor, LLC",
+     "url": ""
+    }
+   }
+  }
+ },
+ "vfOutdoorNoBrand": {
+  "source": "vf-corporation",
+  "externalId": "Customer-Service-Representative_R-20260913-0007-1",
+  "title": "Customer Service Representative",
+  "location": "USCA > USA > Wisconsin > Remote",
+  "url": "https://vfc.wd5.myworkdayjobs.com/vfc_careers/job/USCA--USA--Wisconsin--Remote/Customer-Service-Representative_R-20260913-0007-1",
+  "company": "VF Outdoor, LLC",
+  "employerEvidence": {
+   "rawName": "VF Outdoor, LLC",
+   "path": "detail.hiringOrganization.name",
+   "rule": "HIRING_ORGANIZATION_LABEL"
+  },
+  "raw": {
+   "title": "Customer Service Representative",
+   "locationsText": "USCA > USA > Wisconsin > Remote",
+   "bulletFields": [
+    "R-20260913-0007"
+   ],
+   "externalPath": "/job/USCA--USA--Wisconsin--Remote/Customer-Service-Representative_R-20260913-0007-1",
+   "detail": {
+    "jobPostingInfo": {
+     "location": "USCA > USA > Wisconsin > Remote",
+     "jobRequisitionLocation": {
+      "descriptor": "USCA > USA > Wisconsin > Remote"
+     }
+    },
+    "hiringOrganization": {
+     "name": "VF Outdoor, LLC",
+     "url": ""
+    }
+   }
+  }
+ }
+}

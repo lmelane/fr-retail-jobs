@@ -62,7 +62,7 @@ try {
     !['LISTED_PAGE_WITHOUT_JOBPOSTING', 'LISTED_POSTING_PREVIEW'].includes(row.reason)).length;
   if (replayed.rejectedRows?.length) reasons.REJECTED_NATIVE_ROWS = replayed.rejectedRows.length;
   for (const job of replayed.jobs) {
-    const eligible = portal ? employerFromCertifiedScope(job, portal.ownerName, portal.scope) : job;
+    const eligible = portal ? employerFromCertifiedScope(job, portal.ownerName, portal.scope, portal.brands) : job;
     if (eligible.publicationHold || eligible.publicationWithdrawnAt) {
       held++; const motif = eligible.publicationHold ?? 'WITHDRAWN'; retenues[motif] = (retenues[motif] ?? 0) + 1; continue;
     }

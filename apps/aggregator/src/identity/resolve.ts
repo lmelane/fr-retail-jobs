@@ -1,5 +1,7 @@
-import { isPortalEmployerOrigin } from './portalEmployer.js';
-import { sourceIdentityHash, certifiedPortalIdentity } from '../connectors/sourceIdentity.js';
+import { isGroupBrandOrigin, isPortalEmployerOrigin } from './portalEmployer.js';
+import { sourceIdentityHash, certifiedPortalIdentity, type CertifiedPortalIdentity } from '../connectors/sourceIdentity.js';
+import { provenGroupBrand } from './groupBrands.js';
+import { resolveCompany } from '../normalize/company.js';
 import { EmployerIdentityReviewRequired } from './errors.js';
 import { createHash } from 'node:crypto';
 import { Prisma } from '@prisma/client';
@@ -13,7 +15,7 @@ import { SAME_MAISON_RULE, employerKeptWhenLabelOmitted, sameRegistryMaison } fr
 type Company = Prisma.CompanyGetPayload<Record<string, never>>;
 export type EmployerResolution = {
   company: Company | null;
-  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'NATIVE_SOURCE_LABEL' | 'NATIVE_EMPLOYER_BRAND_RELATION' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE' | 'CERTIFIED_SINGLE_BRAND_PORTAL' | 'MULTI_BRAND_PORTAL_GROUP_OWNER' | 'PUBLISHER_FOLLOWED'
+  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'NATIVE_SOURCE_LABEL' | 'NATIVE_EMPLOYER_BRAND_RELATION' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE' | 'CERTIFIED_SINGLE_BRAND_PORTAL' | 'MULTI_BRAND_PORTAL_GROUP_OWNER' | 'MULTI_BRAND_PORTAL_GROUP_BRAND' | 'PUBLISHER_FOLLOWED'
     | typeof SAME_MAISON_RULE;
   rawEmployerName: string;
   normalizedEmployerName: string;
@@ -40,6 +42,23 @@ export async function canonicalEmployer(tx: Prisma.TransactionClient, company: C
   return company;
 }
 
+/**
+ * La Maison qu'une offre d'un portail relu MULTI_BRAND nomme (D-522 §6) : relue sur l'offre (intitulé natif, lieu),
+ * contre la liste fermée du portail, et égale au libellé porté — sinon refus, jamais une Maison devinée. La Maison est
+ * celle du registre sous sa clé (`resolveCompany`, comme le propriétaire d'un portail) ; absente, elle est créée sous cette clé.
+ */
+async function groupBrandEmployer(tx: Prisma.TransactionClient, candidate: CandidateJob, identity: CertifiedPortalIdentity, normalized: string) {
+  const brand = identity.scope === 'MULTI_BRAND'
+    ? provenGroupBrand({ title: candidate.rawTitle ?? candidate.title, location: candidate.location, city: candidate.city, raw: candidate.raw }, identity.brands)
+    : undefined;
+  if (!brand || normalizedEmployerName(brand.name) !== normalized) {
+    throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, candidate.rawEmployerName ?? candidate.company, 'PORTAL_OWNER_NOT_CERTIFIED', 'PORTAL_OWNER_NOT_CERTIFIED');
+  }
+  const key = resolveCompany(brand.name).companyId;
+  const row = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${key}` } });
+  return { company: row ? await canonicalEmployer(tx, row) : null, key, name: brand.name };
+}
+
 /** Reviewed, source-scoped decisions outrank every historical spelling heuristic. */
 export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: CandidateJob & { companyId: string },
   options: ResolveEmployerOptions = {}): Promise<EmployerResolution> {
@@ -51,8 +70,9 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
   if (isPortalEmployerOrigin(candidate.employerLabelOrigin)) {
     const identity = await certifiedPortalIdentity(tx, candidate.sourceKey);
     // D-479 §2 (R-142 §3) : sur un portail relu MULTI_BRAND, l'offre qui ne nomme pas son enseigne publie sous le
-    // groupe propriétaire ; celle qui la nomme n'arrive jamais ici (son libellé est natif). Un portail non relu
-    // (périmètre NULL) reste refusé.
+    // groupe propriétaire ; celle qui la nomme par son libellé natif n'arrive jamais ici. Celle qui la nomme dans son
+    // intitulé ou son lieu (liste fermée du groupe, `groupBrands.ts`, D-522 §6) publie sous cette Maison. Un portail non
+    // relu (périmètre NULL) reste refusé.
     if (!identity || !identity.ownerName) {
       // D-520 : l'éditeur a déjà nommé l'employeur de CETTE offre ; son silence d'aujourd'hui ne le défait pas. L'offre
       // n'est pas réécrite (ni reconfirmée, R-143 §2) : elle garde sa publication et son employeur, sans revue humaine.
@@ -62,16 +82,24 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
     }
     const owner = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${identity.ownerKey}` } });
     const root = owner ? await canonicalEmployer(tx, owner) : null;
+    // La marque n'est jamais crue sur parole : elle est relue sur l'offre même, contre la liste fermée du portail relu.
+    const brand = isGroupBrandOrigin(candidate.employerLabelOrigin) ? await groupBrandEmployer(tx, candidate, identity, normalized) : null;
+    const target = brand ? brand.company : root;
     const entry = await tx.jobSource.findUnique({ where: { sourceKey_externalId: { sourceKey: candidate.sourceKey, externalId: candidate.externalId } },
       select: { job: { select: { company: true } } } });
     const previous = entry?.job ? await canonicalEmployer(tx, entry.job.company) : null;
+    // Une offre publiée sous le groupe qui nomme désormais une marque du groupe la rejoint : c'est la précision que R-142 §3
+    // demande (« VF Outdoor, LLC », publiée sous VF Corporation, au magasin The North Face), pas un employeur contraire.
+    const refinesGroup = !!brand && !!previous && previous.id === root?.id;
     // Missing information cannot silently replace an already attributed employer — nor remove the one the publisher named.
     // D-479 §2, D-515 §1 : sur un portail relu, MULTI_BRAND compris, l'offre déjà nommée garde sa Maison quand sa page
     // ne la nomme plus ; elle n'est ni réécrite ni reconfirmée.
-    if (previous && previous.id !== root?.id && await employerKeptWhenLabelOmitted(tx, candidate)) {
+    if (previous && previous.id !== target?.id && !refinesGroup && await employerKeptWhenLabelOmitted(tx, candidate)) {
       throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, previous.name, 'NATIVE_LABEL_OMITTED');
     }
-    if (previous && previous.id !== root?.id) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, previous.name, 'PORTAL_OWNER_REPLACES_EMPLOYER');
+    if (previous && previous.id !== target?.id && !refinesGroup) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, previous.name, 'PORTAL_OWNER_REPLACES_EMPLOYER');
+    if (brand) return { company: brand.company, rule: 'MULTI_BRAND_PORTAL_GROUP_BRAND', rawEmployerName, normalizedEmployerName: normalized,
+      ...(!brand.company ? { newKey: brand.key, newName: brand.name } : {}) };
     return { company: root, rule: identity.scope === 'SINGLE_BRAND' ? 'CERTIFIED_SINGLE_BRAND_PORTAL' : 'MULTI_BRAND_PORTAL_GROUP_OWNER',
       rawEmployerName, normalizedEmployerName: normalized,
       // `reviewId` est nul quand l'employeur vient du registre relu (F5) : la traçabilité passe
