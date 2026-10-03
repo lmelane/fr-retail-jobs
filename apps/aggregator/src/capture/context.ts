@@ -120,6 +120,24 @@ export function assertRequestAccess(request: RequestDescription) {
   try { context?.requestAccess?.(request); }
   catch (error) { if (context) context.accessFailure = error as Error; throw error; }
 }
+/**
+ * UNE REQUÊTE FACULTATIVE n'est faite que si elle peut l'être sans risque pour la collecte (D-522 §6, 03/10/2026).
+ *
+ * Une preuve de plus (le flux complet de Sephora, `/sitemap.xml`), jamais une offre : sous une décision d'accès qui ne
+ * couvre pas son adresse, la lire déclencherait le refus COLLANT d'`assertRequestAccess`, qui annule la collecte entière.
+ * La politique est donc consultée SANS rien enregistrer ni envoyer ; au rejeu, la requête n'est faite que si la capture
+ * en porte la réponse, ce qui rejoue la décision de la collecte (et une capture antérieure, qui ne la porte pas, se
+ * relit sans elle). Hors collecte sous décision (qualification, test) : autorisée.
+ */
+export function optionalRequestAllowed(request: CaptureRequest): boolean {
+  const context = contexts.getStore();
+  if (!context) return true;
+  if (context.replay) return (context.replayPending?.(requestFingerprint(request)) ?? 0) > 0;
+  if (context.accessFailure || context.failure) return false;
+  if (!context.requestAccess) return true;
+  try { context.requestAccess(describeRequest(request)); return true; } catch { return false; }
+}
+
 export function noteUnsupportedTransport() {
   const context = contexts.getStore();
   if (!context || context.replay) return;

@@ -1,6 +1,6 @@
 import { isKnownPosting } from '../../lib/incrementalReading.js';
 import pLimit from 'p-limit';
-import { captureObservedAt } from '../../capture/context.js';
+import { captureObservedAt, optionalRequestAllowed } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
 import * as cheerio from 'cheerio';
 import { fetchJson, fetchText } from '../../lib/http.js';
@@ -611,11 +611,18 @@ function listingJob(job: SuccessFactorsJob): NormalizedJob {
  *
  * Le flux est lu à chaque collecte multilingue, à la même place (après les pages) : le rejeu hors réseau le relit.
  */
+const FEED_OUTSIDE_ACCESS_SCOPE = 'PUBLISHER_FEED_OUTSIDE_ACCESS_SCOPE';
 type PublisherFeed = { read: boolean; jobs: SuccessFactorsJob[] | null; failure?: string };
 
-/** Le flux lu une fois ; une lecture en échec est rendue nommée, jamais levée. */
+/**
+ * Le flux lu une fois ; une lecture en échec est rendue nommée, jamais levée. Sous une décision d'accès qui ne couvre
+ * pas `/sitemap.xml` (décision accordée avant ce lecteur, et pas encore redérivée d'une capture qui l'a lu), il n'est
+ * pas demandé du tout : la requête serait refusée et le refus annulerait la collecte entière (`optionalRequestAllowed`).
+ * La collecte continue alors exactement comme avant ce lecteur, sans réconciliation, la cause nommée.
+ */
 async function readPublisherFeed(origin: string, evidence: PageEvidence): Promise<PublisherFeed> {
   const url = `${origin}/sitemap.xml`;
+  if (!optionalRequestAllowed({ url, headers: HEADERS, format: 'HTTP_RESPONSE' })) return { read: false, jobs: null, failure: FEED_OUTSIDE_ACCESS_SCOPE };
   let xml: string;
   try { xml = await fetchText(url, { headers: HEADERS }); }
   catch (error) { assertSourceRunning(); return { read: false, jobs: null, failure: String(error).slice(0, 200) }; }
@@ -633,7 +640,7 @@ function reconcileByPublisherFeed(feed: PublisherFeed, locales: string[], scopes
     unproven.every(locale => issues.has(`${locale}:SOURCE_TOTAL_CHANGED`)) &&
     [...issues].every(issue => unproven.some(locale => issue === `HTML_LOCALE_INCOMPLETE:${locale}` || issue.startsWith(`${locale}:`)));
   if (!onlyTotalChanges) return false;
-  if (!feed.read) { issues.add(`PUBLISHER_FEED_FAILED:${feed.failure ?? ''}`); return false; }
+  if (!feed.read) { issues.add(feed.failure === FEED_OUTSIDE_ACCESS_SCOPE ? FEED_OUTSIDE_ACCESS_SCOPE : `PUBLISHER_FEED_FAILED:${feed.failure ?? ''}`); return false; }
   if (!feed.jobs?.length) { issues.add('PUBLISHER_FEED_UNREADABLE'); return false; }
   const feedOnly = feed.jobs.filter(job => !byId.has(job.externalId));
   for (const job of feedOnly) byId.set(job.externalId, listingJob(job));

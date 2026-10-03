@@ -5,6 +5,7 @@ import { fetchText } from '../../lib/http.js';
 import { fetchSuccessFactorsResult, parseSuccessFactorsJobFeed } from './successfactors.js';
 import { PROVING_TERMINATIONS } from '../../pipeline/refreshPlan.js';
 import { readEnumeration } from '../../pipeline/enumerationReading.js';
+import { assertCaptureHealthy, withCaptureContext, type CaptureContext } from '../../capture/context.js';
 
 /**
  * SEPHORA, RUN DU 02/10/2026 (D-522 §6) : « troncature : 2 069 collectées, total inconnu ».
@@ -134,5 +135,43 @@ describe('SuccessFactors — total HTML oscillant, réconciliation par le flux c
     expect(r.complete).toBe(true);
     expect(r.enumeration?.termination).toBe('ALL_LOCALE_TOTALS_REACHED');
     expect(r.jobs.map((j) => j.externalId)).toEqual([A]);
+  });
+});
+
+/**
+ * Revue adverse du lot (MEDIUM) : sous une décision d'accès accordée avant ce lecteur, `/sitemap.xml` est hors périmètre,
+ * et sa lecture déclencherait le refus collant qui annule la collecte entière. Le flux n'est alors pas demandé : la
+ * collecte réussit comme avant le lot, sans réconciliation, la cause nommée. Au rejeu, il n'est relu que si la capture
+ * le porte.
+ */
+describe('SuccessFactors — le flux hors du périmètre d’accès accordé ne casse jamais la collecte', () => {
+  const outsideFeed = (request: { url: string }) => { if (new URL(request.url).pathname === '/sitemap.xml') throw new Error('ACCESS_SCOPE: hors périmètre'); };
+
+  it('prémisse : la politique de la collecte refuse bien /sitemap.xml et accepte les pages', () => {
+    expect(() => outsideFeed({ url: 'https://jobs.sephora.com/sitemap.xml' })).toThrow();
+    expect(() => outsideFeed({ url: 'https://jobs.sephora.com/search/?locale=en_US' })).not.toThrow();
+  });
+
+  it('collecte sous décision sans /sitemap.xml : flux non demandé, aucun refus collant, cause nommée', async () => {
+    const served = board(feed([A, B, D, E]));
+    const context = { sequence: 0, requestAccess: outsideFeed } as CaptureContext;
+    const r = await withCaptureContext(context, async () => {
+      const result = await fetchSuccessFactorsResult(config);
+      assertCaptureHealthy();
+      return result;
+    });
+    expect(served.feed).toBe(0);
+    expect(context.accessFailure).toBeUndefined();
+    expect(r.complete).toBe(false);
+    expect(new Set(r.jobs.map((j) => j.externalId))).toEqual(new Set([A, B, C, D, E]));
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['PUBLISHER_FEED_OUTSIDE_ACCESS_SCOPE', 'en_US:SOURCE_TOTAL_CHANGED']));
+  });
+
+  it('rejeu d’une capture qui ne porte pas le flux : il n’est pas demandé', async () => {
+    const served = board(feed([A, B, D, E]));
+    const context = { sequence: 0, replay: async () => { throw new Error('absent'); }, replayPending: () => 0 } as unknown as CaptureContext;
+    const r = await withCaptureContext(context, () => fetchSuccessFactorsResult(config));
+    expect(served.feed).toBe(0);
+    expect(r.complete).toBe(false);
   });
 });
