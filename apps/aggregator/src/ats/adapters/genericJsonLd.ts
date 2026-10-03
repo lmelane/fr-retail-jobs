@@ -2,6 +2,7 @@ import { sourceDeadlineReached } from '../../lib/sourceBudget.js';
 import { detailRetryAllowed, waitBeforeDetailRetry } from '../../lib/detailRetry.js';
 import { log } from '../../observability/logger.js';
 import * as cheerio from 'cheerio';
+import { parse as parseDomain } from 'tldts';
 import pLimit from 'p-limit';
 import { createHash } from 'node:crypto';
 import { isKnownPosting } from '../../lib/incrementalReading.js';
@@ -80,9 +81,15 @@ const CHALLENGE_PAGE = /just a moment|cf-chl|cf_chl|challenge-platform|_Incapsul
  *   · la page ne charge aucun portail d'éditeur d'ATS (widget, iframe, script) qui pourrait afficher des offres absentes
  *     du HTML servi, et la phrase n'est pas dans un élément masqué ;
  *   · toutes les pages liées ont été lues : un échec de lecture n'est jamais un zéro.
- * Limite assumée : une offre publiée en HTML simple À CÔTÉ de la phrase conservée (sans lien d'offre, sans données
- * structurées) ne se distingue pas d'un texte de page ; la phrase est relue en contexte, et une Maison qui publie retire
- * en pratique sa phrase d'absence.
+ *   · la page de départ ne charge aucun script ni aucune iframe d'un hôte hors de la Maison (même domaine enregistrable)
+ *     et hors d'une liste FERMÉE d'hôtes neutres (`NEUTRAL_EMBED_HOSTS` : CDN de bibliothèques, Shopify, mesure,
+ *     paiement) : un fournisseur inconnu peut afficher des offres en JavaScript (revue adverse du 03/10/2026).
+ * Limites assumées, nommées :
+ *   · une offre publiée en HTML simple À CÔTÉ de la phrase conservée (sans lien d'offre, sans données structurées) ne
+ *     se distingue pas d'un texte de page ;
+ *   · un appel de données écrit dans un script EN LIGNE (`fetch`, XHR) vers une adresse calculée ou de la Maison n'est
+ *     pas analysé : un thème qui chargerait ses offres ainsi depuis sa propre origine, phrase conservée, passerait.
+ *   La phrase est relue en contexte, et une Maison qui publie retire en pratique sa phrase d'absence.
  * Elle ne vaut qu'en mode page carrières (`startUrl`) : une liste paginée, un plan du site ou un flux ont leur propre
  * preuve, et une phrase n'y remplacerait pas leur parcours.
  *
@@ -107,6 +114,24 @@ export function visiblePageText(html: string): string {
  * Un portail d'offres embarqué (widget, iframe ou script d'un éditeur d'ATS) peut afficher des offres que le HTML servi
  * ne porte pas : une page qui en charge un ne prouve jamais un zéro, quelle que soit sa phrase.
  */
+/** Hôtes neutres admis pour un script ou une iframe de la page de départ : bibliothèques, boutique, mesure, paiement. */
+const NEUTRAL_EMBED_HOSTS: ReadonlySet<string> = new Set(['cdn.shopify.com', 'shop.app', 'ajax.googleapis.com', 'cdnjs.cloudflare.com',
+  'www.googletagmanager.com', 'www.google-analytics.com', 'connect.facebook.net', 'x.klarnacdn.net', 'js.klarna.com', 'static.klaviyo.com',
+  'www.youtube.com', 'player.vimeo.com', 'www.google.com', 'www.gstatic.com', 'fonts.googleapis.com']);
+
+/** Un script ou une iframe chargé depuis un hôte qui n'est ni la Maison ni un hôte neutre de la liste fermée. */
+function loadsUnknownEmbed(html: string, pageUrl: string): boolean {
+  const page = new URL(pageUrl);
+  const own = parseDomain(page.hostname, { allowPrivateDomains: true }).domain;
+  const $ = cheerio.load(html);
+  return $('script[src],iframe[src],frame[src],embed[src]').toArray().some(element => {
+    let source: URL;
+    try { source = new URL($(element).attr('src')!, page); } catch { return true; }
+    if (!['https:', 'http:'].includes(source.protocol)) return source.protocol !== 'data:' && source.protocol !== 'about:';
+    return parseDomain(source.hostname, { allowPrivateDomains: true }).domain !== own && !NEUTRAL_EMBED_HOSTS.has(source.hostname);
+  });
+}
+
 const ATS_EMBED = /(?<![a-z0-9-])(?:greenhouse\.io|lever\.co|ashbyhq\.com|teamtailor|recruitee\.com|personio\.(?:de|com)|workable\.com|smartrecruiters\.com|join\.com|zohorecruit|bamboohr\.com|jobylon|softgarden|talent-?soft|myworkdayjobs|successfactors|icims\.com|taleo\.net|jobvite|breezy\.hr|homerun\.co|welcometothejungle|flatchr|digitalrecruiters|eightfold\.ai|phenompeople|avature\.net)/i;
 
 /** La phrase relue, ou null quand la source n'en déclare pas ; toute autre valeur est une configuration refusée. */
@@ -124,18 +149,26 @@ function emptyListingText(config: Record<string, unknown>): string | null {
 const pageCarriesPosting = (html: string) => extractJobPostings(html).length > 0 || /JobPosting/.test(html);
 
 /** La page affiche la phrase relue et ne porte aucune offre. Partagée avec la validation, qui la rejoue sur les octets archivés. */
-export function startPageDeclaresNoOpening(html: string, text: string): boolean {
-  return !pageCarriesPosting(html) && !ATS_EMBED.test(html) && visiblePageText(html).includes(collapse(text));
+export function startPageDeclaresNoOpening(html: string, text: string, pageUrl: string): boolean {
+  return !pageCarriesPosting(html) && !ATS_EMBED.test(html) && !loadsUnknownEmbed(html, pageUrl) && visiblePageText(html).includes(collapse(text));
 }
+
+/** Le lecteur lit au plus la page de départ et 150 pages liées. */
+const MAX_DECLARED_EMPTY_PAGES = 151;
 
 /** La relecture de la validation sur les réponses archivées d'une collecte de page carrières (`sourceValidation.ts`). */
 export function archivedStartPageDeclaresNoOpening(config: Record<string, unknown>,
   pages: ReadonlyArray<{ url: string; status: number | null; complete: boolean; body: string | null }>): boolean {
   let text: string | null;
   try { text = emptyListingText(config); } catch { return false; }
-  if (!text || !pages.length || pages.some(page => page.status !== 200 || !page.complete || page.body === null)) return false;
-  const start = pages.filter(page => page.url === String(config.startUrl));
-  return start.length > 0 && start.every(page => startPageDeclaresNoOpening(page.body!, text!)) && pages.every(page => !pageCarriesPosting(page.body!));
+  // Une réponse par ADRESSE, la dernière tentative (les reprises du transport archivent chaque tentative), dans l'ordre
+  // des réponses archivées.
+  const last = new Map(pages.map(page => [page.url, page]));
+  if (!text || !last.size || last.size > MAX_DECLARED_EMPTY_PAGES) return false;
+  const finals = [...last.values()];
+  if (finals.some(page => page.status !== 200 || !page.complete || page.body === null)) return false;
+  const start = last.get(String(config.startUrl));
+  return !!start && startPageDeclaresNoOpening(start.body!, text, String(config.startUrl)) && finals.every(page => !pageCarriesPosting(page.body!));
 }
 
 export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): Promise<AdapterResult> {
@@ -504,7 +537,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
   // D-522 §6 : la page affiche la phrase relue, et ni elle ni aucune page liée, toutes lues, ne porte d'offre.
   if (declaredEmptyText) {
     const declared = visiblePageText(html).includes(declaredEmptyText);
-    if (declared && startPageDeclaresNoOpening(html, declaredEmptyText) && linkedPagesCarryingPosting === 0 && linkFailures === 0 && links.size <= 150 && byKey.size === 0) {
+    if (declared && startPageDeclaresNoOpening(html, declaredEmptyText, startUrl) && linkedPagesCarryingPosting === 0 && linkFailures === 0 && links.size <= 150 && byKey.size === 0) {
       return { jobs: [], declaredTotal: 0, complete: true, truncated: false,
         enumeration: { method: 'START_PAGE_PUBLISHER_DECLARES_NO_OPENING', endpoint: startUrl, pages: 1 + links.size, rawCount: links.size,
           termination: DECLARED_EMPTY_TERMINATION, issues: [],

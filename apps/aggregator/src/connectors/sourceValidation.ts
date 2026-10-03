@@ -76,10 +76,11 @@ export const EXPLAINED_NATIVE_ROWS: ReadonlySet<string> = new Set(['LISTED_PAGE_
 async function nativeEmptyFeed(db: PrismaClient, batchId: string, kind: string, config: Record<string, unknown>, store?: ObjectStore) {
   // D-522 §6 : une page carrières qui affiche la phrase relue, relue ici sur ses octets archivés — la page et chaque page
   // liée, toutes en 200 et complètes, sans aucune offre (`archivedStartPageDeclaresNoOpening`, `genericJsonLd.ts`).
-  if (kind === 'generic-listing' || kind === 'generic-jsonld') {
+  if (kind === 'generic-listing') {
     if (config.emptyListingText === undefined) return false;
-    const rows = await db.rawCapture.findMany({ where: { batchId }, orderBy: { sequence: 'asc' }, take: 160 });
-    if (rows.length > 151) return false;
+    // Toutes les tentatives, dans l'ordre : la relecture garde la dernière par adresse et borne le nombre d'adresses.
+    const rows = await db.rawCapture.findMany({ where: { batchId }, orderBy: { sequence: 'asc' }, take: 1_001 });
+    if (rows.length > 1_000) return false;
     const pages = await Promise.all(rows.map(async row => ({ url: row.requestUrl, status: row.status, complete: row.complete,
       body: row.blobHash ? (await readRawBlob(db, row.blobHash, store)).toString('utf8') : null })));
     return archivedStartPageDeclaresNoOpening(config, pages);

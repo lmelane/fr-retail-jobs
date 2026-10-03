@@ -23,3 +23,10 @@ AssertionError: expected { …(9) } to match object { verdict: 'VALIDATED', …(
      × une page qui charge un portail d'éditeur d'ATS ne prouve jamais un zéro, même phrase visible 2ms
 ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
       Tests  3 failed | 12 passed (15)
+
+# Suites de la revue adverse (adresses distinctes, intégration inconnue), avant le correctif :
+     × la relecture compte les ADRESSES, pas les tentatives : 150 liens dont 5 lus après une reprise, la preuve tient 3ms
+     × un script d'un fournisseur inconnu sur la page de départ empêche la preuve (offres possibles en JavaScript) 2ms
+     × une iframe d'un fournisseur inconnu sur la page de départ empêche la preuve (offres possibles en JavaScript) 1ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  3 failed | 15 passed (18)

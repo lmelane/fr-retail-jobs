@@ -57,7 +57,7 @@ describe('D-522 §6 : une page carrières qui annonce elle-même l\'absence d\'o
     const result = await fetchGenericJsonLdJobs({ startUrl: SIOUX.url, emptyListingText: SIOUX.text });
     expect(result.complete).toBe(false);
     expect(result.enumeration?.issues).toContain('DECLARED_EMPTY_TEXT_ABSENT');
-    expect(startPageDeclaresNoOpening(hidden, SIOUX.text)).toBe(false);
+    expect(startPageDeclaresNoOpening(hidden, SIOUX.text, SIOUX.url)).toBe(false);
   });
 
   it.each([
@@ -83,7 +83,7 @@ describe('D-522 §6 : une page carrières qui annonce elle-même l\'absence d\'o
     expect(result.complete).toBe(false);
     expect(result.enumeration?.issues).toContain('DECLARED_EMPTY_CONTRADICTED');
     // Une marque voisine n'est pas un éditeur : « clever.com » ne contient pas lever.co.
-    expect(startPageDeclaresNoOpening(GHOST.html.replace('</body>', '<a href="https://clever.com">clever</a></body>'), GHOST.text)).toBe(true);
+    expect(startPageDeclaresNoOpening(GHOST.html.replace('</body>', '<a href="https://clever.com">clever</a></body>'), GHOST.text, GHOST.url)).toBe(true);
   });
 
   it('une offre trouvée sur une page liée contredit la phrase : rien n\'est prouvé, l\'offre est rendue', async () => {
@@ -106,7 +106,7 @@ describe('D-522 §6 : une page carrières qui annonce elle-même l\'absence d\'o
     const result = await fetchGenericJsonLdJobs({ startUrl: SIOUX.url, emptyListingText: SIOUX.text });
     expect(result.complete).toBe(false);
     expect(result.enumeration?.termination).not.toBe(DECLARED_EMPTY_TERMINATION);
-    expect(startPageDeclaresNoOpening(html, SIOUX.text)).toBe(false);
+    expect(startPageDeclaresNoOpening(html, SIOUX.text, SIOUX.url)).toBe(false);
   });
 
   it('une page liée illisible empêche la preuve : le zéro n\'est jamais déduit d\'un échec', async () => {
@@ -132,6 +132,36 @@ describe('D-522 §6 : une page carrières qui annonce elle-même l\'absence d\'o
     expect(archivedStartPageDeclaresNoOpening(config, [ok(GHOST.url), { ...ok(`${GHOST.url}#`), complete: false }])).toBe(false);
     expect(archivedStartPageDeclaresNoOpening(config, [ok(GHOST.url), ok('https://www.ghostfashion.com/careers/x', jobPosting('Store Manager'))])).toBe(false);
     expect(archivedStartPageDeclaresNoOpening(config, [ok(GHOST.url, GHOST.html.replace(GHOST.text, 'We are hiring'))])).toBe(false);
+  });
+
+  it('la relecture compte les ADRESSES, pas les tentatives : 150 liens dont 5 lus après une reprise, la preuve tient', () => {
+    const config = { startUrl: GHOST.url, emptyListingText: GHOST.text };
+    const ok = (url: string) => ({ url, status: 200, complete: true, body: GHOST.html.replace(GHOST.text, 'About us') });
+    const links = Array.from({ length: 150 }, (_, i) => `https://www.ghostfashion.com/careers/page-${i}`);
+    const rows = [{ url: GHOST.url, status: 200, complete: true, body: GHOST.html },
+      ...links.flatMap((url, i) => i < 5 ? [{ url, status: 503, complete: true, body: 'busy' }, ok(url)] : [ok(url)])];
+    // Prémisse : plus de lignes archivées que d'adresses, et des tentatives en échec parmi elles.
+    expect(rows.length).toBe(156);
+    expect(new Set(rows.map(row => row.url)).size).toBe(151);
+    expect(archivedStartPageDeclaresNoOpening(config, rows)).toBe(true);
+    // La DERNIÈRE tentative compte : une adresse dont la dernière lecture échoue ne prouve rien.
+    expect(archivedStartPageDeclaresNoOpening(config, [...rows, { url: links[7], status: 503, complete: true, body: 'busy' }])).toBe(false);
+    // Plus d'adresses que le lecteur n'en lit (1 + 150) : refusé.
+    expect(archivedStartPageDeclaresNoOpening(config, [...rows, ok('https://www.ghostfashion.com/careers/page-150')])).toBe(false);
+  });
+
+  it.each([
+    ['un script d\'un fournisseur inconnu', '<script src="https://widget.unknown-jobs.example/embed.js"></script>'],
+    ['une iframe d\'un fournisseur inconnu', '<iframe src="https://careers.unknown-host.example/board"></iframe>'],
+  ])('%s sur la page de départ empêche la preuve (offres possibles en JavaScript)', async (_label, tag) => {
+    const html = GHOST.html.replace('</body>', `${tag}</body>`);
+    expect(visiblePageText(html)).toContain(GHOST.text);
+    mockFetch.mockImplementation(async () => html);
+    expect((await fetchGenericJsonLdJobs({ startUrl: GHOST.url, emptyListingText: GHOST.text })).complete).toBe(false);
+    expect(startPageDeclaresNoOpening(html, GHOST.text, GHOST.url)).toBe(false);
+    // Les hôtes neutres de la liste fermée et l'origine de la Maison restent admis.
+    const neutral = GHOST.html.replace('</body>', '<script src="https://cdnjs.cloudflare.com/ajax/libs/x.js"></script><script src="https://www.ghostfashion.com/app.js"></script><script src="/rel.js"></script></body>');
+    expect(startPageDeclaresNoOpening(neutral, GHOST.text, GHOST.url)).toBe(true);
   });
 
   it('Sioux : le zéro prouvé ne ferme pas seul les 19 offres homonymes servies (garde de masse R-143 §2)', () => {
