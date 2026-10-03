@@ -1,0 +1,37 @@
+{
+ "at": "2026-10-03T07:16:09.815Z",
+ "seconds": 184,
+ "requests": 281,
+ "adapterComplete": true,
+ "normalizedComplete": true,
+ "verdict": "PROVEN",
+ "termination": "COVERING_FACET_RECONCILED",
+ "proving": true,
+ "declaredTotal": 3530,
+ "jobs": 3529,
+ "canonicalAbsenceProofUsable": false,
+ "issues": [
+  "PUBLISHER_TOTAL_CAPPED",
+  "FACETS_COUNT_BEYOND_TOTAL=3530",
+  "ROWS_WITHOUT_EXTERNAL_PATH",
+  "COVERED_BY_FACET=jobFamilyGroup",
+  "COVERING_FACET_PROOF_ADOPTED"
+ ],
+ "coveringFacet": [
+  "jobFamilyGroup=PBLB - Store Job Family Group:1765",
+  "jobFamilyGroup=FAS - Stores Job Family Group:1278",
+  "jobFamilyGroup=TLB - Stores:480",
+  "jobFamilyGroup=FAS - Field Leadership Job Family Group:3",
+  "jobFamilyGroup=PBLB - Store Leadership Job Family Group:3",
+  "jobFamilyGroup=Corporate Job Family Group:1",
+  "sum=3530",
+  "agreeing=4"
+ ],
+ "rowsWithoutPath": [
+  {
+   "bulletFields": [
+    "R-2029816"
+   ]
+  }
+ ]
+}

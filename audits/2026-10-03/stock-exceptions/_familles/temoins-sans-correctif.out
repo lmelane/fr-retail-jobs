@@ -1,0 +1,17 @@
+     × prouve le parcours quand chaque page annonce le même nbHits exact et que tout est lu 8ms
+     × ne prouve rien quand nbHits change pendant la lecture, ou n’est pas exact 3ms
+     × ne prouve rien quand une ligne manque sous un total inchangé 3ms
+     × prouve le parcours d’une organisation lue en entier 3ms
+     × prouve le secteur quand la liste des organisations est exacte et chaque organisation prouvée 1ms
+     × ne prouve rien quand le compte des facettes est approché (la liste des organisations n’est pas démontrée) 1ms
+     × prouve le parcours quand totalFound est atteint, stable, chaque identifiant une fois 1ms
+     × ne prouve rien quand totalFound change pendant la lecture ou qu’une ligne manque 0ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+AssertionError: expected 'UNKNOWN' to be 'PROVEN' // Object.is equality
+AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+AssertionError: expected undefined to be true // Object.is equality
+AssertionError: expected undefined to be true // Object.is equality
+AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+AssertionError: expected undefined to be true // Object.is equality
+ Test Files  1 failed (1)
+      Tests  8 failed | 3 passed (11)
