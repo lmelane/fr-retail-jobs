@@ -536,11 +536,16 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
         assertSourceRunning(); issues.add(`HTML_LOCALE_FAILED:${locale}:${String(error).slice(0, 300)}`);
       }
     }
-    const complete = issues.size === 0 && scopes.length === locales.length;
+    let complete = issues.size === 0 && scopes.length === locales.length;
+    const feed = complete ? undefined : await reconcileByPublisherFeed(origin, locales, scopes, issues, byId, evidence);
+    if (feed?.read) pages++;
+    const byFeed = feed?.reconciled === true;
+    if (byFeed) complete = true;
     return finish({ jobs: [...byId.values()], complete, truncated: !complete,
       enumeration: { method: 'PUBLISHER_HTML_PER_LOCALE_TOTALS', endpoint: firstUrl, pages, rawCount,
         // A reconciled locale closes nothing that day: the board's termination stays non-proving for the refresh.
-        termination: !complete ? 'INCOMPLETE_LOCALE_ENUMERATION' : reconciled.length ? 'ALL_LOCALE_TOTALS_RECONCILED_BY_FRESH_PASS' : 'ALL_LOCALE_TOTALS_REACHED',
+        termination: !complete ? 'INCOMPLETE_LOCALE_ENUMERATION' : byFeed ? 'ALL_LOCALE_TOTALS_RECONCILED_BY_PUBLISHER_FEED'
+          : reconciled.length ? 'ALL_LOCALE_TOTALS_RECONCILED_BY_FRESH_PASS' : 'ALL_LOCALE_TOTALS_REACHED',
         scopes, pageEvidence: evidence, issues: [...issues, ...reconciled.map(locale => `${locale}:RECONCILED_BY_FRESH_PASS`)] } });
   }
   const result = await fetchHtmlJobs(origin, firstUrl, firstHtml, brandProperty);
@@ -549,6 +554,80 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
 }
 
 type PageEvidence = NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']>;
+
+/**
+ * LE FLUX DE TOUTES LES OFFRES QUE L'ÉDITEUR PUBLIE SUR `/sitemap.xml` (D-522 §6, 03/10/2026) : un flux RSS « Google
+ * Base », un article par offre, l'identifiant natif dans `<g:id>` et le lien de l'offre dans `<link>`. Lu le 03/10 sur
+ * jobs.sephora.com : 2 090 articles, toutes langues, terminé par `</channel></rss>`. Rendu seulement pour un document
+ * ENTIER (en-tête XML, racine `<rss>`, fin `</channel></rss>`) dont chaque article porte exactement un identifiant
+ * numérique et un lien d'offre de ce portail (`JOB_LINK`) qui nomme ce même identifiant ; sinon `null`, jamais une liste
+ * plus courte. Le robots.txt de Sephora n'en interdit pas l'adresse.
+ */
+export function parseSuccessFactorsJobFeed(xml: string, origin: string): SuccessFactorsJob[] | null {
+  const body = xml.trim();
+  if (!/^<\?xml[^>]*\?>\s*<rss\b/.test(body) || !/<\/channel>\s*<\/rss>$/.test(body)) return null;
+  const items = body.match(/<item>[\s\S]*?<\/item>/g) ?? [];
+  if (items.length !== (body.match(/<item>/g)?.length ?? 0)) return null;
+  const host = new URL(origin).host;
+  const jobs: SuccessFactorsJob[] = [];
+  for (const item of items) {
+    const ids = [...item.matchAll(/<g:id>\s*(\d+)\s*<\/g:id>/g)];
+    const links = [...item.matchAll(/<link>\s*([^<\s]+)\s*<\/link>/g)];
+    if (ids.length !== 1 || links.length !== 1) return null;
+    let link: URL;
+    try { link = new URL(links[0]![1]!.replace(/&amp;/g, '&')); } catch { return null; }
+    const [job] = link.host === host ? parseListing(`href="${link.pathname}"`, origin) : [];
+    if (!job || job.externalId !== ids[0]![1]) return null;
+    jobs.push(job);
+  }
+  return jobs;
+}
+
+/** La forme d'une offre de liste SAP (`readHtmlPass`) : le même `raw`, relu à l'identique par le rejeu des publications. */
+function listingJob(job: SuccessFactorsJob): NormalizedJob {
+  const { city, title } = splitSlug(job.slug);
+  return { externalId: job.externalId, title, location: city, url: job.url,
+    raw: { slug: job.slug, id: job.externalId, path: new URL(job.url).pathname, source: 'successfactors' } };
+}
+
+/**
+ * UN TOTAL QUI OSCILLE D'UNE PAGE À L'AUTRE (Sephora en_US, RUN du 02/10/2026, capture 95470f67) : 1 673, 1 672, 1 673…
+ * huit bascules sur la première passe, quatre sur la passe fraîche. Deux états de l'index sont servis en alternance ;
+ * la passe fraîche, faite pour un total qui change une fois, oscille de même, et aucune passe ne se prouve seule — la
+ * source passait en « troncature ».
+ *
+ * Réconciliation : quand les SEULES langues non prouvées le sont par un total changeant (aucun échec de lecture, aucune
+ * langue manquante), le flux complet de l'éditeur est lu une fois, après les pages. Toute offre du flux que les pages
+ * n'ont pas servie (publiée pendant la lecture, ou cachée par l'oscillation) est collectée depuis son lien, sous la même
+ * forme qu'une offre de liste, et comptée (`PUBLISHER_FEED_ONLY:<n>`) ; la liste est alors complète : chaque offre publiée
+ * à l'instant du flux a été collectée. Une offre lue puis retirée avant le flux reste collectée ce jour-là, comme avec la
+ * passe fraîche. Un flux absent, coupé ou incohérent ne prouve rien. La terminaison qui en résulte n'est pas probante
+ * pour le refresh, comme celle de la passe fraîche : ses absences ne ferment rien ce jour-là.
+ *
+ * Le choix de lire le flux ne dépend que des réponses déjà lues : le rejeu hors réseau le relit à la même place.
+ */
+async function reconcileByPublisherFeed(origin: string, locales: string[], scopes: Array<{ scope: string; complete: boolean }>,
+  issues: Set<string>, byId: Map<string, NormalizedJob>, evidence: PageEvidence): Promise<{ read: boolean; reconciled: boolean }> {
+  const unproven = scopes.filter(scope => !scope.complete).map(scope => scope.scope);
+  const onlyTotalChanges = locales.length > 0 && scopes.length === locales.length && unproven.length > 0 &&
+    unproven.every(locale => issues.has(`${locale}:SOURCE_TOTAL_CHANGED`)) &&
+    [...issues].every(issue => unproven.some(locale => issue === `HTML_LOCALE_INCOMPLETE:${locale}` || issue.startsWith(`${locale}:`)));
+  if (!onlyTotalChanges) return { read: false, reconciled: false };
+  const url = `${origin}/sitemap.xml`;
+  let xml: string;
+  try { xml = await fetchText(url, { headers: HEADERS }); }
+  catch (error) { assertSourceRunning(); issues.add(`PUBLISHER_FEED_FAILED:${String(error).slice(0, 200)}`); return { read: false, reconciled: false }; }
+  const feed = parseSuccessFactorsJobFeed(xml, origin);
+  evidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(xml).digest('hex'), offset: 0,
+    pagination: null, ids: feed?.map(job => job.externalId) ?? [], publisherCounter: feed ? `items=${feed.length}` : '', componentCounters: [] });
+  if (!feed?.length) { issues.add('PUBLISHER_FEED_UNREADABLE'); return { read: true, reconciled: false }; }
+  const feedOnly = feed.filter(job => !byId.has(job.externalId));
+  for (const job of feedOnly) byId.set(job.externalId, listingJob(job));
+  if (feedOnly.length) issues.add(`PUBLISHER_FEED_ONLY:${feedOnly.length}`);
+  issues.add('PUBLISHER_FEED_RECONCILED');
+  return { read: true, reconciled: true };
+}
+
 type HtmlPass = { jobs: NormalizedJob[]; seenIds: Set<string>; declaredTotal?: number; totalChanged: boolean; pages: number; rawCount: number;
   termination: string; issues: Set<string>; pageEvidence: PageEvidence };
 
@@ -583,10 +662,8 @@ async function readHtmlPass(origin: string, firstUrl: string, firstHtml: string,
     const fresh = listing.filter(job => !seenIds.has(job.externalId));
     for (const job of fresh) {
       seenIds.add(job.externalId);
-      const { city, title } = splitSlug(job.slug);
       // The listing link is retained whole (id, path, slug, lot F3b): the retained-publication reader rebuilds the URL on the configured origin.
-      jobs.push(withListingBrand({ externalId: job.externalId, title, location: city, url: job.url, raw: { slug: job.slug, id: job.externalId, path: new URL(job.url).pathname, source: 'successfactors' } },
-        brandProperty, brands.get(job.externalId)));
+      jobs.push(withListingBrand(listingJob(job), brandProperty, brands.get(job.externalId)));
     }
     if (pagination && seenIds.size === pagination.total) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
     if (fresh.length === 0) {
