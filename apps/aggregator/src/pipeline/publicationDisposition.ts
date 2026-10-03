@@ -8,6 +8,8 @@ const dispositions: Readonly<Record<string, DeactivationDisposition>> = {
   SOURCE_UNLISTED: { kind: 'WITHDRAWN', reason: 'SOURCE_UNLISTED' },
   /** A reviewed PostingScopeDecision OUT_OF_SCOPE: published no more, never an employer closure, never re-opened by attestation. */
   SCOPE_OUT_OF_PERIMETER: { kind: 'WITHDRAWN', reason: 'OUT_OF_SCOPE' },
+  /** D-522 §6 : une marque du groupe hors périmètre Catwalks (Marchesi 1824, liste relue `groupBrands.ts`) : retirée, jamais fermée. */
+  GROUP_BRAND_OUT_OF_PERIMETER: { kind: 'WITHDRAWN', reason: 'OUT_OF_SCOPE' },
   /**
    * D-508 §4 puis D-511 (02/10/2026) : une candidature spontanée que la source publie dans sa liste d'offres n'est pas
    * une offre, quelle que soit la source (preuve native : champ de l'éditeur ou libellé, `spontaneousApplication.ts` ;
@@ -62,7 +64,7 @@ const NATIVE_EVIDENCE_RETENTIONS: ReadonlySet<string> = new Set([
   'SOURCE_UNLISTED', 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL', 'NATIVE_TEST_PUBLICATION', 'NATIVE_RECRUITMENT_EVENT',
   'NATIVE_DESCRIPTION_EMPTY', 'WORKDAY_DETAIL_PERMISSION_DENIED', 'NATIVE_SPONTANEOUS_APPLICATION', 'NATIVE_ADVERTISEMENT_WITHDRAWN',
 ]);
-const TEAM_DECISION_RETENTIONS: ReadonlySet<string> = new Set(['SCOPE_OUT_OF_PERIMETER']);
+const TEAM_DECISION_RETENTIONS: ReadonlySet<string> = new Set(['SCOPE_OUT_OF_PERIMETER', 'GROUP_BRAND_OUT_OF_PERIMETER']);
 /** The Workday NEGATIVE native proof: the page does not name its employer (its registry entry stays to instruct). */
 export const NEGATIVE_PROOF_RETENTION = 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL';
 /**
@@ -146,6 +148,7 @@ const RETENTION_TEXT: Readonly<Record<string, string>> = {
   NATIVE_DESCRIPTION_EMPTY: 'la source publie l’offre sans description (fiche lue, vide ou réduite à ses titres de rubrique)',
   WORKDAY_DETAIL_PERMISSION_DENIED: 'refusée par l’éditeur (Workday S22)',
   SCOPE_OUT_OF_PERIMETER: 'écartée par l’équipe (hors périmètre)',
+  GROUP_BRAND_OUT_OF_PERIMETER: 'écartée par l’équipe (marque du groupe hors périmètre)',
   NATIVE_SPONTANEOUS_APPLICATION: 'candidature spontanée ou vivier sans poste publié par la source parmi ses offres',
   NATIVE_ADVERTISEMENT_WITHDRAWN: 'listée par la source sans annonce publiée (offre retirée)',
   DETAIL_CONTENT_MISSING: 'fiche sans contenu exploitable (vide ou illisible pour notre lecteur), retenue (D-523 §3)',
@@ -164,6 +167,7 @@ const DECIDED: Readonly<Record<string, string>> = {
   APPLICATION_HTTP_404: 'D-456 §1',
   APPLICATION_TEMPLATE_EXPIRY_CONTRADICTION: 'D-456 §1',
   SCOPE_OUT_OF_PERIMETER: 'D-456 §2',
+  GROUP_BRAND_OUT_OF_PERIMETER: 'D-522 §6',
   APPLICATION_HTTP_410: 'D-462',
   SOURCE_UNLISTED: 'D-462',
   NATIVE_TEST_PUBLICATION: 'D-462',

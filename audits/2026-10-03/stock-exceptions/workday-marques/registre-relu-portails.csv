@@ -16,3 +16,4 @@ nike-nke2;MULTI_BRAND;portail Nike Inc. qui publie Nike et Converse (31 offres C
 movado;MULTI_BRAND;portail Movado Group (libelles US01 Movado Group Inc. MGI Luxury Group ...) marques detenues et licences R-142 §3 liste fermee groupBrands.ts
 vf-corporation;MULTI_BRAND;portail VF Corporation qui publie The North Face Vans Timberland Altra Icebreaker Kipling Napapijri Eastpak Smartwool JanSport R-142 §3 liste fermee groupBrands.ts
 l-oreal-professionnel;MULTI_BRAND;portail careers.loreal.com toutes Maisons du groupe L'Oreal (dataLayer jobBrand Multi Brand ou N/A sur 399 offres du 02/10) R-142 §3 liste fermee groupBrands.ts
+prada-group;MULTI_BRAND;portail jobs.pradagroup.com du groupe Prada (colonne Brand : Prada Miu Miu Versace Church's Marchesi 1824 Prada Group) R-142 §3 liste fermee groupBrands.ts, a appliquer apres brandProperty facility (registre-relu-prada-group.csv)

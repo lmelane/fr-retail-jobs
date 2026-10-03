@@ -1,0 +1,8 @@
+
+CORRECTIONS D'ATS ET DE PORTAIL — 1 source(s)
+
+   prada-group                successfactors     → successfactors     https://jobs.pradagroup.com
+                              config : {"origin":"https://jobs.pradagroup.com","brandProperty":"facility"}
+
+INSPECTION SEULEMENT — rien n'a été écrit. Ajouter --ecrire pour appliquer.
+

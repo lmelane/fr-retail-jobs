@@ -2,7 +2,7 @@ import type { Prisma } from '@prisma/client';
 import type { NormalizedJob } from '../types.js';
 import type { readCapturedPublication } from './publication.js';
 import { certifiedPortalIdentity } from '../connectors/sourceIdentity.js';
-import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
+import { employerFromCertifiedScope, GROUP_OUT_OF_PERIMETER_HOLD } from '../identity/portalEmployer.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { SCOPE_HOLD } from '../pipeline/scopeDecisions.js';
 import { deployedCommitHash } from './revision.js';
@@ -43,6 +43,14 @@ export async function enforcePublicationPolicy(tx: Prisma.TransactionClient, cap
       evidence: { sourceKey: input.sourceKey, externalId: input.externalId, captureBatchId: capture.batch.id,
         captureOutputHash: capture.outputHash, scopeDecisionText: scope.decisionText },
     }], skipDuplicates: true });
+  } else if (input.publicationHold === GROUP_OUT_OF_PERIMETER_HOLD && !native.publicationHold) {
+    // D-522 §6 : la retenue d'une marque hors périmètre du groupe n'est pas dans la sortie native ; elle se recalcule sur
+    // cette sortie, sous la liste relue et le périmètre COURANTS du portail, ou elle est refusée.
+    const source = await tx.source.findUniqueOrThrow({ where: { key: input.sourceKey }, select: { maison: true } });
+    const portal = await certifiedPortalIdentity(tx, input.sourceKey);
+    const replayed = employerFromCertifiedScope({ ...native, postedAt: undefined, validThrough: undefined, publicationWithdrawnAt: undefined },
+      source.maison, portal?.scope ?? null, portal?.brands, withdrawn);
+    if (replayed.publicationHold !== GROUP_OUT_OF_PERIMETER_HOLD) throw new Error('Group perimeter hold is no longer current');
   } else if (!native.publicationHold || native.publicationHold !== input.publicationHold ||
     (native.publicationWithdrawnAt ?? null) !== (withdrawn?.toISOString() ?? null)) {
     throw new Error('Publication lifecycle differs from the captured output');

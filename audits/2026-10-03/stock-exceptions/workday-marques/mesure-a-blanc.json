@@ -2,9 +2,26 @@
  "run": "9022fc4b-1b96-431d-bee9-86ed244ef4f1",
  "total": {
   "retenues": 2245,
-  "liberees": 2240,
-  "resteRetenues": 5,
-  "bloqueesParPrecedent": 0
+  "liberees": 2239,
+  "resteRetenues": 6,
+  "bloqueesParPrecedent": 0,
+  "vfChangentDeMaison": 750,
+  "lorealSansEmployeurAuGroupe": 1064,
+  "lorealLicencesAuGroupe": 24,
+  "maisonsACreer": 11,
+  "listeMaisonsACreer": [
+   "Altra",
+   "Beyond Yoga",
+   "Church's",
+   "Kipling",
+   "Levi Strauss & Co.",
+   "Napapijri",
+   "Puma",
+   "Smartwool",
+   "The North Face",
+   "Timberland",
+   "Vans"
+  ]
  },
  "sources": {
   "mango": {
@@ -12,7 +29,9 @@
    "offres": 31,
    "liberees": 31,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
     "Mango [PROPRIETAIRE]": 31
@@ -24,7 +43,9 @@
    "offres": 30,
    "liberees": 30,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
     "Swarovski [PROPRIETAIRE]": 30
@@ -36,7 +57,9 @@
    "offres": 23,
    "liberees": 23,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
     "Canada Goose [PROPRIETAIRE]": 23
@@ -48,10 +71,12 @@
    "offres": 11,
    "liberees": 11,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
-    "Puma [PROPRIETAIRE]": 11
+    "Puma [PROPRIETAIRE, à créer]": 11
    },
    "maisonsACreer": [
     "Puma"
@@ -62,7 +87,9 @@
    "offres": 6,
    "liberees": 6,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
     "MECCA [PROPRIETAIRE]": 6
@@ -74,7 +101,9 @@
    "offres": 5,
    "liberees": 5,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
     "Aritzia [PROPRIETAIRE]": 5
@@ -86,7 +115,9 @@
    "offres": 4,
    "liberees": 4,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
     "UNIQLO [PROPRIETAIRE]": 4
@@ -98,7 +129,9 @@
    "offres": 4,
    "liberees": 4,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
     "Nordstrom [PROPRIETAIRE]": 4
@@ -108,13 +141,13 @@
   "brunello-cucinelli": {
    "perimetre": "SINGLE_BRAND",
    "offres": 1,
-   "liberees": 1,
-   "resteRetenues": 0,
+   "liberees": 0,
+   "resteRetenues": 1,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
-   "parMaison": {
-    "BRUNELLO CUCINELLI [PROPRIETAIRE]": 1
-   },
+   "parMaison": {},
    "maisonsACreer": []
   },
   "therealreal": {
@@ -122,7 +155,9 @@
    "offres": 1,
    "liberees": 1,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
     "The RealReal [PROPRIETAIRE]": 1
@@ -134,7 +169,9 @@
    "offres": 1,
    "liberees": 1,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
     "UNIQLO [PROPRIETAIRE]": 1
@@ -146,14 +183,17 @@
    "offres": 1295,
    "liberees": 1295,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
-    "Levi's [GROUPE]": 655,
-    "Beyond Yoga [MARQUE]": 74,
+    "Levi Strauss & Co. [GROUPE, à créer]": 655,
+    "Beyond Yoga [MARQUE, à créer]": 74,
     "Levi's [MARQUE]": 566
    },
    "maisonsACreer": [
+    "Levi Strauss & Co.",
     "Beyond Yoga"
    ]
   },
@@ -162,11 +202,12 @@
    "offres": 9,
    "liberees": 9,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
-    "NIKE [GROUPE]": 3,
-    "NIKE [MARQUE]": 6
+    "NIKE [GROUPE]": 9
    },
    "maisonsACreer": []
   },
@@ -175,7 +216,9 @@
    "offres": 333,
    "liberees": 333,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
     "NIKE [MARQUE]": 302,
@@ -188,10 +231,12 @@
    "offres": 1,
    "liberees": 1,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
-    "Movado [GROUPE]": 1
+    "Movado Group [GROUPE]": 1
    },
    "maisonsACreer": []
   },
@@ -200,19 +245,21 @@
    "offres": 485,
    "liberees": 485,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
-    "VF Corporation [GROUPE]": 198,
-    "Vans [MARQUE]": 110,
-    "Timberland [MARQUE]": 21,
-    "Kipling [MARQUE]": 9,
-    "The North Face [MARQUE]": 112,
-    "Altra [MARQUE]": 8,
+    "VF Corporation [GROUPE]": 199,
+    "Vans [MARQUE, à créer]": 110,
+    "Timberland [MARQUE, à créer]": 20,
+    "Kipling [MARQUE, à créer]": 9,
+    "The North Face [MARQUE, à créer]": 112,
+    "Altra [MARQUE, à créer]": 8,
     "Eastpak [MARQUE]": 4,
     "Icebreaker [MARQUE]": 17,
-    "Napapijri [MARQUE]": 5,
-    "Smartwool [MARQUE]": 1
+    "Napapijri [MARQUE, à créer]": 5,
+    "Smartwool [MARQUE, à créer]": 1
    },
    "maisonsACreer": [
     "Vans",
@@ -229,7 +276,9 @@
    "offres": 3,
    "liberees": 0,
    "resteRetenues": 3,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {},
    "maisonsACreer": []
@@ -239,7 +288,9 @@
    "offres": 2,
    "liberees": 0,
    "resteRetenues": 2,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {},
    "maisonsACreer": []
@@ -249,16 +300,18 @@
    "offres": 847,
    "liberees": 750,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 97,
+   "changentDeMaison": 750,
    "bloqueesParPrecedent": 0,
    "parMaison": {
-    "Kipling [MARQUE]": 22,
-    "Vans [MARQUE]": 469,
-    "The North Face [MARQUE]": 162,
-    "Altra [MARQUE]": 7,
-    "Timberland [MARQUE]": 87,
-    "Smartwool [MARQUE]": 1,
-    "Napapijri [MARQUE]": 2
+    "Kipling [MARQUE, à créer]": 22,
+    "Vans [MARQUE, à créer]": 469,
+    "The North Face [MARQUE, à créer]": 162,
+    "Altra [MARQUE, à créer]": 7,
+    "Timberland [MARQUE, à créer]": 87,
+    "Smartwool [MARQUE, à créer]": 1,
+    "Napapijri [MARQUE, à créer]": 2
    },
    "maisonsACreer": [
     "Kipling",
@@ -275,36 +328,59 @@
    "offres": 1099,
    "liberees": 1099,
    "resteRetenues": 0,
+   "horsPerimetre": 0,
    "inchangees": 0,
+   "changentDeMaison": 0,
    "bloqueesParPrecedent": 0,
    "parMaison": {
-    "L'Oréal [GROUPE]": 1063,
+    "L'Oréal Groupe [GROUPE]": 1064,
     "Kérastase [MARQUE]": 2,
     "Kiehl's [MARQUE]": 10,
-    "Vichy [MARQUE]": 2,
+    "Vichy [MARQUE]": 1,
     "La Roche-Posay [MARQUE]": 1,
-    "SkinCeuticals [MARQUE]": 1,
+    "Skinceuticals [MARQUE]": 1,
     "Biotherm [MARQUE]": 3,
     "Garnier [MARQUE]": 2,
     "CeraVe [MARQUE]": 1,
-    "L’Oréal Professionnel [MARQUE]": 1,
+    "L'Oréal Professionnel [MARQUE]": 1,
     "Aesop [MARQUE]": 9,
-    "NYX Professional Makeup [MARQUE]": 1,
-    "Maybelline [MARQUE]": 1,
+    "NYX Prof. Make-up [MARQUE]": 1,
+    "Maybelline NY [MARQUE]": 1,
     "Takami [MARQUE]": 2
    },
+   "maisonsACreer": []
+  },
+  "l-oreal-professionnel (NATIF_LOREAL)": {
+   "perimetre": "MULTI_BRAND",
+   "offres": 550,
+   "liberees": 24,
+   "resteRetenues": 0,
+   "horsPerimetre": 0,
+   "inchangees": 526,
+   "changentDeMaison": 24,
+   "bloqueesParPrecedent": 0,
+   "parMaison": {
+    "L'Oréal Groupe [LICENCE_GROUPE]": 24
+   },
+   "maisonsACreer": []
+  },
+  "prada-group (LISTE_PRADA)": {
+   "perimetre": "MULTI_BRAND",
+   "offres": 243,
+   "liberees": 190,
+   "resteRetenues": 0,
+   "horsPerimetre": 10,
+   "inchangees": 43,
+   "changentDeMaison": 190,
+   "bloqueesParPrecedent": 0,
+   "parMaison": {
+    "PRADA [MARQUE]": 135,
+    "Miu Miu [MARQUE]": 38,
+    "Versace [MARQUE]": 13,
+    "Church's [MARQUE, à créer]": 4
+   },
    "maisonsACreer": [
-    "Kérastase",
-    "Kiehl's",
-    "Vichy",
-    "La Roche-Posay",
-    "SkinCeuticals",
-    "Biotherm",
-    "Garnier",
-    "CeraVe",
-    "Aesop",
-    "Maybelline",
-    "Takami"
+    "Church's"
    ]
   }
  }

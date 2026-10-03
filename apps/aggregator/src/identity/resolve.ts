@@ -1,7 +1,7 @@
-import { isGroupBrandOrigin, isPortalEmployerOrigin } from './portalEmployer.js';
+import { isGroupBrandOrigin, isGroupLicenceOrigin, isPortalEmployerOrigin } from './portalEmployer.js';
+import { existingMaison, MaisonAliasConflict } from './existingMaison.js';
 import { sourceIdentityHash, certifiedPortalIdentity, type CertifiedPortalIdentity } from '../connectors/sourceIdentity.js';
-import { provenGroupBrand } from './groupBrands.js';
-import { resolveCompany } from '../normalize/company.js';
+import { labelIsOneOf, provenGroupBrand } from './groupBrands.js';
 import { EmployerIdentityReviewRequired } from './errors.js';
 import { createHash } from 'node:crypto';
 import { Prisma } from '@prisma/client';
@@ -42,10 +42,24 @@ export async function canonicalEmployer(tx: Prisma.TransactionClient, company: C
   return company;
 }
 
+/** La Maison existante d'un nom désigné par la liste relue (`existingMaison`), ou la clé et le nom sous lesquels la créer. */
+async function listedMaison(tx: Prisma.TransactionClient, candidate: CandidateJob, name: string) {
+  try {
+    const found = await existingMaison(tx, candidate.sourceKey, name);
+    return found.company ? { company: found.company, key: null, name } : { company: null, key: found.key, name: found.name };
+  } catch (error) {
+    if (error instanceof MaisonAliasConflict) {
+      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, candidate.rawEmployerName ?? candidate.company, `CONFLICT: ${name}`, 'ALIAS_CONFLICT');
+    }
+    throw error;
+  }
+}
+
 /**
- * La Maison qu'une offre d'un portail relu MULTI_BRAND nomme (D-522 §6) : relue sur l'offre (intitulé natif, lieu),
- * contre la liste fermée du portail, et égale au libellé porté — sinon refus, jamais une Maison devinée. La Maison est
- * celle du registre sous sa clé (`resolveCompany`, comme le propriétaire d'un portail) ; absente, elle est créée sous cette clé.
+ * La Maison qu'une offre d'un portail relu MULTI_BRAND nomme (D-522 §6) : relue sur l'offre (intitulé natif, lieu, colonne
+ * de marque), contre la liste fermée du portail, et égale au libellé porté — sinon refus, jamais une Maison devinée. La Maison
+ * est celle qui existe déjà sous ce nom (`existingMaison` : alias relu, Maison du libellé de la source, clé du registre) ;
+ * absente, elle est créée sous la clé du registre.
  */
 async function groupBrandEmployer(tx: Prisma.TransactionClient, candidate: CandidateJob, identity: CertifiedPortalIdentity, normalized: string) {
   const brand = identity.scope === 'MULTI_BRAND'
@@ -54,9 +68,24 @@ async function groupBrandEmployer(tx: Prisma.TransactionClient, candidate: Candi
   if (!brand || normalizedEmployerName(brand.name) !== normalized) {
     throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, candidate.rawEmployerName ?? candidate.company, 'PORTAL_OWNER_NOT_CERTIFIED', 'PORTAL_OWNER_NOT_CERTIFIED');
   }
-  const key = resolveCompany(brand.name).companyId;
-  const row = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${key}` } });
-  return { company: row ? await canonicalEmployer(tx, row) : null, key, name: brand.name };
+  return listedMaison(tx, candidate, brand.maison ?? brand.name);
+}
+
+/**
+ * Le libellé natif nomme-t-il une marque de la liste du portail relu MULTI_BRAND, alors que l'offre est publiée sous le
+ * groupe (Maison du groupe de la liste, ou propriétaire du portail) ? Rend la Maison existante de la marque (null : à
+ * créer sous la clé de libellé de la source, comme tout libellé natif neuf), sinon null.
+ */
+async function nativeBrandRefinesGroup(tx: Prisma.TransactionClient, candidate: CandidateJob, current: Company, label: string) {
+  if (isPortalEmployerOrigin(candidate.employerLabelOrigin)) return null;
+  const identity = await certifiedPortalIdentity(tx, candidate.sourceKey);
+  const list = identity?.scope === 'MULTI_BRAND' ? identity.brands : undefined;
+  const brand = list?.brands.find(b => labelIsOneOf(label, [...(b.match ?? [b.name]), b.maison ?? b.name]));
+  if (!identity || !list || !brand) return null;
+  const owner = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${identity.ownerKey}` } });
+  const group = await listedMaison(tx, candidate, list.group);
+  const underGroup = current.id === group.company?.id || (!!owner && current.id === (await canonicalEmployer(tx, owner)).id);
+  return underGroup ? { company: (await listedMaison(tx, candidate, brand.maison ?? brand.name)).company } : null;
 }
 
 /** Reviewed, source-scoped decisions outrank every historical spelling heuristic. */
@@ -82,30 +111,37 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
     }
     const owner = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${identity.ownerKey}` } });
     const root = owner ? await canonicalEmployer(tx, owner) : null;
+    // Le groupe d'un portail relu MULTI_BRAND qui a sa liste : la Maison existante du groupe (« L'Oréal Groupe »,
+    // « Movado Group »), sinon créée sous sa clé ; sans liste, le propriétaire du portail, comme avant.
+    const list = identity.scope === 'MULTI_BRAND' ? identity.brands : undefined;
+    const group = list ? await listedMaison(tx, candidate, list.group) : { company: root, key: identity.ownerKey, name: identity.ownerName.split('(')[0].trim() || identity.ownerName };
     // La marque n'est jamais crue sur parole : elle est relue sur l'offre même, contre la liste fermée du portail relu.
     const brand = isGroupBrandOrigin(candidate.employerLabelOrigin) ? await groupBrandEmployer(tx, candidate, identity, normalized) : null;
-    const target = brand ? brand.company : root;
+    const target = brand ? brand.company : group.company;
     const entry = await tx.jobSource.findUnique({ where: { sourceKey_externalId: { sourceKey: candidate.sourceKey, externalId: candidate.externalId } },
       select: { job: { select: { company: true } } } });
     const previous = entry?.job ? await canonicalEmployer(tx, entry.job.company) : null;
     // Une offre publiée sous le groupe qui nomme désormais une marque du groupe la rejoint : c'est la précision que R-142 §3
     // demande (« VF Outdoor, LLC », publiée sous VF Corporation, au magasin The North Face), pas un employeur contraire.
-    const refinesGroup = !!brand && !!previous && previous.id === root?.id;
+    const refinesGroup = !!brand && !!previous && (previous.id === group.company?.id || previous.id === root?.id);
+    // Une offre publiée sous la Maison homonyme d'une marque SOUS LICENCE (« PRADA » sur le portail L'Oréal) rejoint le groupe.
+    const correctsLicence = isGroupLicenceOrigin(candidate.employerLabelOrigin) && !!previous && labelIsOneOf(previous.name, list?.licences);
+    const allowed = refinesGroup || correctsLicence;
     // Missing information cannot silently replace an already attributed employer — nor remove the one the publisher named.
     // D-479 §2, D-515 §1 : sur un portail relu, MULTI_BRAND compris, l'offre déjà nommée garde sa Maison quand sa page
     // ne la nomme plus ; elle n'est ni réécrite ni reconfirmée.
-    if (previous && previous.id !== target?.id && !refinesGroup && await employerKeptWhenLabelOmitted(tx, candidate)) {
+    if (previous && previous.id !== target?.id && !allowed && await employerKeptWhenLabelOmitted(tx, candidate)) {
       throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, previous.name, 'NATIVE_LABEL_OMITTED');
     }
-    if (previous && previous.id !== target?.id && !refinesGroup) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, previous.name, 'PORTAL_OWNER_REPLACES_EMPLOYER');
+    if (previous && previous.id !== target?.id && !allowed) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, previous.name, 'PORTAL_OWNER_REPLACES_EMPLOYER');
     if (brand) return { company: brand.company, rule: 'MULTI_BRAND_PORTAL_GROUP_BRAND', rawEmployerName, normalizedEmployerName: normalized,
-      ...(!brand.company ? { newKey: brand.key, newName: brand.name } : {}) };
-    return { company: root, rule: identity.scope === 'SINGLE_BRAND' ? 'CERTIFIED_SINGLE_BRAND_PORTAL' : 'MULTI_BRAND_PORTAL_GROUP_OWNER',
+      ...(!brand.company ? { newKey: brand.key!, newName: brand.name } : {}) };
+    return { company: group.company, rule: identity.scope === 'SINGLE_BRAND' ? 'CERTIFIED_SINGLE_BRAND_PORTAL' : 'MULTI_BRAND_PORTAL_GROUP_OWNER',
       rawEmployerName, normalizedEmployerName: normalized,
       // `reviewId` est nul quand l'employeur vient du registre relu (F5) : la traçabilité passe
       // alors par la révision de la source, portée par l'admission du lot.
       // Le nom créé suit la clé : sans la parenthèse du registre (« LVMH (toutes Maisons) » → « LVMH »).
-      reviewId: identity.reviewId ?? undefined, ...(!root ? { newKey: identity.ownerKey, newName: identity.ownerName.split('(')[0].trim() || identity.ownerName } : {}) };
+      reviewId: identity.reviewId ?? undefined, ...(!group.company ? { newKey: group.key!, newName: group.name } : {}) };
   }
   const aliases = await tx.companyAlias.findMany({
     where: { sourceKey: { in: [candidate.sourceKey, '*'] }, normalizedName: normalized, reviewId: { not: null } },
@@ -143,6 +179,14 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
     });
     const current = entry?.job ? await canonicalEmployer(tx, entry.job.company) : null;
     const target = company ? await canonicalEmployer(tx, company) : null;
+    // R-142 §3 (D-522 §6) : sur un portail relu MULTI_BRAND, une offre publiée sous le GROUPE dont la page nomme
+    // désormais une marque de la liste fermée (colonne « Brand » du portail Prada) rejoint cette Maison : une précision,
+    // pas un changement d'employeur. Toute autre transition garde les contrôles ci-dessous.
+    if (current && (!target || current.id !== target.id)) {
+      const refined = await nativeBrandRefinesGroup(tx, candidate, current, rawEmployerName);
+      if (refined) return { company: refined.company, rule: 'MULTI_BRAND_PORTAL_GROUP_BRAND', rawEmployerName, normalizedEmployerName: normalized,
+        ...(!refined.company ? { newKey: sourceScopedKey, newName: rawEmployerName.trim() } : {}) };
+    }
     if (current && target && current.id !== target.id) {
       // A response that OMITS the house and falls back to the group recorded for
       // it (Kering feed without `efcustomTextHouse`, 6 postings on 2026-09-09) is

@@ -33,3 +33,28 @@ Maison). `jansport` : non certifié (`jansport.md`). `tapestry` : hors arbitrage
 Hors stock retenu : 750 des 847 offres VF publiées sous une entité juridique (dont 712 « VF Outdoor, LLC ») passeraient de
 « VF Corporation » à leur marque ; L'Oréal : 1 099 offres sans employeur → 1 063 groupe, 36 marques.
 Relecture de 30 annonces : `relecture-30.md` (27 justes, 2 réserves sur le nom du groupe, 1 fausse : candidature spontanée).
+
+## Suite d'audit du 03/10/2026 (branche `d522-6-audit-identite`)
+- **Groupe nommé** : sans marque prouvée, l'offre publie sous le groupe de la liste, cherché comme une Maison existante
+  (`identity/existingMaison.ts` : alias relu, Maison du libellé de la source, clé du registre), sinon créé sous sa clé :
+  Levi's → « Levi Strauss & Co. » (à créer), Movado → « Movado Group » (existe), Nike → NIKE (alias relu « nike, inc. »,
+  clé NIKE), VF → « VF Corporation » (existe), L'Oréal → « L'Oréal Groupe » (existe, 67 offres ; la ligne GROUP « L'Oréal »
+  n'en porte aucune), Prada → « Prada Group » (existe). Aucun fichier de création n'est nécessaire : la création passe par
+  le chemin existant du résolveur (`newKey`), comme un propriétaire de portail.
+- **Doublons de Maisons** : une marque prouvée publie sous la Maison existante (Aesop, Kiehl's, Kérastase… de la source
+  L'Oréal ; « Maybelline NY », « NYX Prof. Make-up » nommées dans la liste).
+- **Lieux homonymes** : Vichy, Kipling, Converse, Timberland, Altra, Garnier, Takami ne se lisent que dans l'intitulé, et
+  jamais après un mot de lieu (« Usine de Vichy »).
+- **Licences** : L'Oréal Prada, YSL, Armani, Maison Margiela… publient sous L'Oréal Groupe (24 offres actives quittent PRADA 7,
+  Yves Saint Laurent 8, Giorgio Armani 8, Maison Margiela 1) ; réciproquement aucune offre Prada ne part sous une Maison L'Oréal.
+- **D-506 §3** : une marque déduite ne témoigne jamais (carte de collecte et requête filtrées sur les origines natives).
+- **Groupe Prada** : liste fermée, Marchesi 1824 retenue `GROUP_BRAND_OUT_OF_PERIMETER`, aucune Maison créée, pas de pause
+  (`../prada-group/preparation.md`).
+
+Mesure à blanc refaite (`mesure-a-blanc.json`) : 2 245 retenues → 2 239 libérées, 6 restent (jansport 3, tapestry 2,
+Brunello « Send us your CV » 1) ; VF : 750 offres changent de Maison (VF Corporation → leur marque) ; L'Oréal : 1 064 offres
+sans employeur au groupe, 35 à une marque existante, 24 licences au groupe ; Prada : 190 précisées (PRADA 135, Miu Miu 38,
+Versace 13, Church's 4), Marchesi 10 retenues ; 0 bloquée par un employeur déjà attribué. Maisons à créer : 11 (Altra,
+Beyond Yoga, Church's, Kipling, Levi Strauss & Co., Napapijri, Puma, Smartwool, The North Face, Timberland, Vans).
+« Puma » est le propriétaire du portail SINGLE_BRAND sous sa clé : la Maison que R-143 §5 attend pour y rattacher les
+entités « PUMA … » ; aucune ligne « Puma » n'existe aujourd'hui.

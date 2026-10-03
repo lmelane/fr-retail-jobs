@@ -45,6 +45,7 @@ import { careerConnectOptions, phenomDialect } from '../../src/ats/adapters/phen
 import { MARC_O_POLO_READER, marcOPoloSettings } from '../../src/ats/adapters/marcOPolo.js';
 import { WORDPRESS_POST_TYPE_READER, wordpressPostTypeSettings } from '../../src/ats/adapters/wordpressPostType.js';
 import { evidenceHash } from '../../src/lib/evidenceHash.js';
+import { brandPropertyOf } from '../../src/ats/adapters/successfactors.js';
 
 const ECRIRE = process.argv.includes('--ecrire');
 const fichier = process.argv.slice(2).find((a) => !a.startsWith('-'));
@@ -115,6 +116,11 @@ function completer(kind: string, config: Record<string, unknown>, relue: string)
   // Le flux de l'éditeur SuccessFactors (D-522 §6) : un booléen relu, seulement en mode multilingue (`publisherFeedPath`).
   if (kind === 'successfactors' && Object.hasOwn(complete, 'publisherFeed') && (complete.publisherFeed !== true || complete.allLocales !== true))
     return 'publisherFeed exige la valeur true et allLocales true';
+  // La propriété de marque SuccessFactors (`brandProperty`, colonne de liste ou propriété de fiche ; prada-group, D-522 §6)
+  // passe par le parseur du lecteur.
+  if (kind === 'successfactors') {
+    try { brandPropertyOf(complete); } catch (error) { return `réglages SuccessFactors refusés par le lecteur : ${(error as Error).message}`; }
+  }
   // Un lecteur dédié choisi dans la même famille (Marc O'Polo, D-485) : ses réglages passent par le parseur du lecteur.
   if ((kind === 'generic-listing' || kind === 'generic-jsonld') && complete.reader !== undefined) {
     if (complete.reader === MARC_O_POLO_READER) {

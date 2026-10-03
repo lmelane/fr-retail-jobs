@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { PORTAL_EMPLOYER_ORIGINS } from './portalEmployer.js';
 
 /**
  * UNE OFFRE SUIT L'ÉDITEUR VERS UN EMPLOYEUR DÉJÀ PUBLIÉ PAR SA SOURCE (D-506 §3, arbitrage CEO du 01/10/2026).
@@ -58,6 +59,9 @@ export function followsPublisherTier(tier: string | undefined): boolean {
  * Absent, la règle ne s'applique pas : revue humaine comme avant D-506. Seule l'ingestion, qui tient la garde de masse,
  * le renseigne pour écrire ; le rejeu en lecture seule (`rejouer-identite.mts`) s'en sert pour compter.
  */
+/** Les origines qui ne sont pas un libellé natif de la page (`ordinaryIdentity.ts`, `isNativeOrigin`). */
+const NON_NATIVE_ORIGINS = [...PORTAL_EMPLOYER_ORIGINS, 'LEGACY_UNSPECIFIED'];
+
 export type PublisherFollowMode = 'DEFER' | 'FOLLOW' | 'MASS_GUARDED';
 export type PublisherFollow = {
   mode: PublisherFollowMode;
@@ -104,6 +108,8 @@ export async function sourcePublishesEmployer(tx: Prisma.TransactionClient, sour
       SELECT 1 FROM "EmployerObservation" w
       WHERE w."sourceKey" = ${sourceKey} AND w."externalId" = ANY(${[...candidates]}::text[])
         AND w."canonicalEmployerId" = ${employerId} AND w."normalizedEmployerName" = ${normalized}
+        -- D-506 §3 : seul un libellé NATIF témoigne, jamais un employeur venu du registre ou de la liste du groupe (D-522 §6).
+        AND w."labelOrigin" <> ALL(${[...NON_NATIVE_ORIGINS]}::text[])
         AND w."observedAt" < (${witnessesBefore}::timestamptz AT TIME ZONE 'UTC')
         -- w est la dernière observation de sa publication avant la collecte (même ordre que le résolveur : date, puis id).
         AND NOT EXISTS (SELECT 1 FROM "EmployerObservation" later

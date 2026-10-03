@@ -186,7 +186,8 @@ export function classifyCollectionHold(hold: string, sourceKey: string | null, d
   switch (hold) {
     case 'NATIVE_SPONTANEOUS_APPLICATION': return verdict('RETENUE_PAR_REGLE', 'CANDIDATURE_SPONTANEE', sourceKey, detail);
     case 'NATIVE_ADVERTISEMENT_WITHDRAWN': return verdict('RETENUE_PAR_REGLE', 'POSTE_SANS_ANNONCE', sourceKey, detail);
-    case 'SCOPE_OUT_OF_PERIMETER': return verdict('RETENUE_PAR_REGLE', 'HORS_PERIMETRE', sourceKey, detail);
+    case 'SCOPE_OUT_OF_PERIMETER':
+    case 'GROUP_BRAND_OUT_OF_PERIMETER': return verdict('RETENUE_PAR_REGLE', 'HORS_PERIMETRE', sourceKey, detail);
     case 'SOURCE_UNLISTED': return verdict('RETENUE_PAR_REGLE', 'RETIREE_DU_LISTING', sourceKey, detail);
     case 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL': return verdict('NON_PUBLIABLE', 'IDENTITE_EN_REVUE', sourceKey, `${detail} : l’annonce ne nomme pas son employeur`);
   }

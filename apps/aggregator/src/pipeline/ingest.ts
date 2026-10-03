@@ -15,6 +15,7 @@ import type { PrismaClient, AtsType } from '@prisma/client';
 import type { SourceTier } from '@catwalks/db/publications';
 import { certifiedPortalIdentity } from '../connectors/sourceIdentity.js';
 import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
+import { isNativeOrigin } from '../identity/ordinaryIdentity.js';
 import { loadActiveSources, type RuntimeSource } from '../connectors/sourceStore.js';
 import { classifySector } from '../normalize/sector.js';
 import { resolveCompany } from '../normalize/company.js';
@@ -161,6 +162,11 @@ export function noteFieldCoverage(stats: IngestStats, job: NormalizedJob): void 
  * The employer label a posting carries into identity resolution: the native name the page gives, else the company the
  * feed or catalogue supplies. One definition for `toCandidate` and for the collection index of D-506 §3.
  */
+/** L'origine du libellé d'employeur d'une offre, telle que l'observation d'employeur la garde. */
+export function postingLabelOrigin(job: Pick<NormalizedJob, 'employerEvidence' | 'company'>): string {
+  return job.employerEvidence ? `${job.employerEvidence.path}:${job.employerEvidence.rule}` : job.company ? 'ADAPTER_COMPANY' : 'SOURCE_CATALOGUE_LABEL';
+}
+
 export function postingEmployerLabel(job: Pick<NormalizedJob, 'employerEvidence'>, companyName: string): string {
   return job.employerEvidence?.rawName ?? companyName;
 }
@@ -246,7 +252,7 @@ export function toCandidate(
       const identity = resolveCompany(companyName);
       return {
         rawEmployerName: postingEmployerLabel(job, companyName),
-        employerLabelOrigin: job.employerEvidence ? `${job.employerEvidence.path}:${job.employerEvidence.rule}` : job.company ? 'ADAPTER_COMPANY' : 'SOURCE_CATALOGUE_LABEL',
+        employerLabelOrigin: postingLabelOrigin(job),
         company: identity.displayName,
         companyId: identity.companyId,
         // The Maison's domain, for its logo — only when THIS source is the
@@ -420,7 +426,10 @@ async function ingestApiSource(
   const heldPostings: { externalId: string; reason: string }[] = [];
   // Group feeds carry the Maison per offer (LVMH: Sephora, Dior…); a single-house feed falls back to the catalogue label.
   const employerOf = (job: NormalizedJob) => job.company || sourceDef.company;
-  const prepared = jobs.map(rawJob => applyScopeExclusion(employerFromCertifiedScope(rawJob, sourceDef.company, portal?.scope ?? null, portal?.brands), scopeExclusions));
+  // Une marque hors périmètre (D-522 §6) est retirée à la date du début de la collecte, comme une décision de périmètre.
+  const collectionStartedAt = (await prisma.captureBatch.findUniqueOrThrow({ where: { id: captureBatchId }, select: { startedAt: true } })).startedAt;
+  const prepared = jobs.map(rawJob => applyScopeExclusion(employerFromCertifiedScope(rawJob, sourceDef.company, portal?.scope ?? null, portal?.brands,
+    collectionStartedAt), scopeExclusions));
   /**
    * D-506 §3 — the proof is frozen before the first write: when this collection started, and which native label the
    * publisher gives each publishable posting in it. « The source already publishes B » then reads the same for every
@@ -428,8 +437,9 @@ async function ingestApiSource(
    * their publisher are written after the count of the whole source, with the other employer changes the publisher
    * made in this collection (refused: never seen in the source): the mass guard counts both.
    */
-  const witnessesBefore = (await prisma.captureBatch.findUniqueOrThrow({ where: { id: captureBatchId }, select: { startedAt: true } })).startedAt;
-  const publishedUnder = collectionEmployerLabels(prepared.filter(job => !job.publicationHold)
+  const witnessesBefore = collectionStartedAt;
+  // D-506 §3 : seul un libellé NATIF témoigne ; une marque déduite par la liste du groupe ou le propriétaire du portail, jamais.
+  const publishedUnder = collectionEmployerLabels(prepared.filter(job => !job.publicationHold && isNativeOrigin(postingLabelOrigin(job)))
     .map(job => ({ externalId: job.externalId, label: normalizedEmployerName(postingEmployerLabel(job, employerOf(job))) })));
   const deferredFollows: { ordinal: number; job: NormalizedJob; employer: string }[] = [];
   let refusedEmployerChanges = 0;

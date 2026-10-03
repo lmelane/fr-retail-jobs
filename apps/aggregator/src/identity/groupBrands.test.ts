@@ -3,9 +3,10 @@ import { describe, expect, it } from 'vitest';
 import type { NormalizedJob } from '../types.js';
 import { groupPortalBrands, provenGroupBrand } from './groupBrands.js';
 import { employerFromCertifiedScope, isPortalEmployerOrigin, isGroupBrandOrigin, GROUP_BRAND_PATH, GROUP_BRAND_RULE, CERTIFIED_SCOPE_PATH,
-  GROUP_SCOPE_RULE } from './portalEmployer.js';
+  GROUP_SCOPE_RULE, GROUP_LICENCE_RULE, GROUP_OUT_OF_PERIMETER_HOLD } from './portalEmployer.js';
 import { isNativeOrigin } from './ordinaryIdentity.js';
 import { spontaneousApplicationProof } from '../pipeline/spontaneousApplication.js';
+import { publicationDisposition, retentionClass } from '../pipeline/publicationDisposition.js';
 
 /**
  * D-522 §6 — R-142 §3 SUR LES PORTAILS WORKDAY MULTI-MARQUES. Avant ce lot, `employerFromCertifiedScope` ne levait la
@@ -16,7 +17,8 @@ import { spontaneousApplicationProof } from '../pipeline/spontaneousApplication.
 type Fixture = Record<string, NormalizedJob & { source: string }>;
 const real: Fixture = JSON.parse(readFileSync(new URL('./__fixtures__/group-brands-20261002.json', import.meta.url), 'utf8'));
 const portal = (source: string) => {
-  const owner = { levis: "Levi's", 'nike-nke2': 'Nike', 'vf-corporation': 'VF Corporation', movado: 'Movado', 'l-oreal-professionnel': "L'Oréal (toutes Maisons)" }[source]!;
+  const owner = { levis: "Levi's", 'nike-nke2': 'Nike', 'vf-corporation': 'VF Corporation', movado: 'Movado', 'l-oreal-professionnel': "L'Oréal (toutes Maisons)",
+    'prada-group': 'Prada Group' }[source]!;
   return { owner, brands: groupPortalBrands(source, owner) };
 };
 const lift = (job: NormalizedJob & { source: string }, scope: 'SINGLE_BRAND' | 'MULTI_BRAND' | null = 'MULTI_BRAND') => {
@@ -48,12 +50,14 @@ describe('portail relu MULTI_BRAND : la marque prouvée, sinon le groupe (R-142 
       expect(job.company, key).toBe(brand);
     }
   });
-  it('groupe par défaut : l’offre qui ne nomme aucune marque publie sous le propriétaire du portail', () => {
-    for (const key of ['levisStoreCode', 'vfNoBrand', 'movadoClerk']) {
+  it('groupe par défaut : l’offre qui ne nomme aucune marque publie sous le NOM DU GROUPE de la liste, pas sous la Maison du registre', () => {
+    for (const [key, group] of [['levisStoreCode', 'Levi Strauss & Co.'], ['vfNoBrand', 'VF Corporation'], ['movadoClerk', 'Movado Group']] as const) {
       const job = lift(real[key]);
       expect(job.publicationHold, key).toBeUndefined();
-      expect(job.employerEvidence, key).toEqual({ rawName: portal(real[key].source).owner, path: CERTIFIED_SCOPE_PATH, rule: GROUP_SCOPE_RULE, role: 'GROUP' });
+      expect(job.employerEvidence, key).toEqual({ rawName: group, path: CERTIFIED_SCOPE_PATH, rule: GROUP_SCOPE_RULE, role: 'GROUP' });
     }
+    // Prémisse : la Maison au registre de la source n'est pas le groupe (« Levi's », « Movado »).
+    expect(portal('levis').owner).toBe("Levi's"); expect(portal('movado').owner).toBe('Movado');
   });
   it('deux marques du groupe nommées : le groupe, jamais l’une des deux', () => {
     const job = lift(real.twoBrands);
@@ -63,7 +67,7 @@ describe('portail relu MULTI_BRAND : la marque prouvée, sinon le groupe (R-142 
   it('marque hors liste : jamais une autre Maison (une montre Coach de Movado reste au groupe)', () => {
     const job = lift({ ...real.movadoClerk, title: 'Coach Watches Sales Associate', raw: { ...(real.movadoClerk.raw as object), title: 'Coach Watches Sales Associate' } });
     expect(brandOf(job)).toBeUndefined();
-    expect(job.employerEvidence?.rawName).toBe('Movado');
+    expect(job.employerEvidence?.rawName).toBe('Movado Group');
   });
   it('sous-chaîne piège : « Vansittart », « Nikesha », « Conversely » ne nomment aucune marque ; West Jordan n’est pas Jordan', () => {
     const traps = ['Store Manager - Vansittart Road', 'Nikesha Team Lead', 'Conversely, Analyst', 'Timberlands Grounds Keeper'];
@@ -143,5 +147,71 @@ describe('provenance à part, jamais un libellé natif', () => {
     }
     expect(isGroupBrandOrigin(`${GROUP_BRAND_PATH}:${GROUP_BRAND_RULE}`)).toBe(true);
     expect(isPortalEmployerOrigin('detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL')).toBe(false);
+  });
+});
+
+/**
+ * Suite d'audit D-522 §6 (03/10/2026) : groupe nommé, lieux homonymes, licences, groupe Prada. Offres réelles réduites
+ * (`__fixtures__/group-brands-20261002.json`) : cassette Prada du 03/10, offres actives L'Oréal du 03/10, sans-employeur du 02/10.
+ */
+describe('une marque homonyme d’un lieu n’est lue ni dans le lieu, ni après un mot de lieu', () => {
+  it('« Usine de Vichy » est un lieu ; « Marketing Intern VICHY » nomme la marque', () => {
+    expect(real.lorealVichyPlace.title).toMatch(/Usine de Vichy/);
+    expect(lift(real.lorealVichyPlace)).toBe(real.lorealVichyPlace);
+    expect(brandOf(lift(real.lorealVichyBrand))).toBe('Vichy');
+  });
+  it('un lieu « Vichy, France » ou « Kipling Ave, Toronto » ne nomme aucune marque', () => {
+    const vichy = { ...real.lorealVichyBrand, title: 'Supply Chain Engineer', location: 'Vichy, Auvergne-Rhône-Alpes, France', raw: { title: 'Supply Chain Engineer', location: 'Vichy' } };
+    expect(lift(vichy)).toBe(vichy);
+    const kipling = { ...real.vfNoBrand, location: 'Kipling Ave, Toronto', raw: { ...(real.vfNoBrand.raw as object), locationsText: 'USCA > CAN > Ontario > 30 Kipling Ave' } } as NormalizedJob & { source: string };
+    expect(brandOf(lift(kipling))).toBeUndefined();
+  });
+});
+
+describe('marque sous licence : jamais la Maison homonyme', () => {
+  it('prémisse : l’offre L’Oréal porte le libellé natif « Prada » (dataLayer), aujourd’hui publiée sous PRADA', () => {
+    expect(real.lorealPradaLicence.employerEvidence).toMatchObject({ rawName: 'Prada', path: 'dataLayer.jobBrand' });
+  });
+  it('sur le portail L’Oréal relu, « Prada » et « Maison Margiela » (licences) publient sous L’Oréal Groupe, provenance à part', () => {
+    for (const [key, label] of [['lorealPradaLicence', 'Prada'], ['lorealMargielaLicence', 'Maison Margiela']] as const) {
+      expect(lift(real[key]).employerEvidence, key).toEqual({ rawName: "L'Oréal Groupe", path: CERTIFIED_SCOPE_PATH, rule: GROUP_LICENCE_RULE, role: 'GROUP', brands: [label] });
+    }
+    expect(isPortalEmployerOrigin(`${CERTIFIED_SCOPE_PATH}:${GROUP_LICENCE_RULE}`)).toBe(true);
+  });
+  it('une offre L’Oréal qui nomme Prada dans son intitulé, sans libellé, n’est jamais attribuée à PRADA', () => {
+    const job = { ...real.lorealVichyBrand, title: 'Prada Beauté Advisor - Galeries Lafayette', raw: { title: 'Prada Beauté Advisor - Galeries Lafayette' } };
+    expect(lift(job)).toBe(job);
+  });
+  it('réciproque : sur le portail Prada, une offre qui nomme L’Oréal ne part jamais sous une Maison L’Oréal', () => {
+    const job = { ...real.pradaGroupNoBrand, title: "L'Oréal Luxe Partnership Manager", raw: { ...(real.pradaGroupNoBrand.raw as object), title: "L'Oréal Luxe Partnership Manager" } } as NormalizedJob & { source: string };
+    expect(lift(job)).toBe(job);
+  });
+  it('un libellé natif de marque détenue (« Aesop ») reste natif : il mène déjà à sa Maison', () => {
+    expect(lift(real.lorealAesopNative)).toBe(real.lorealAesopNative);
+  });
+});
+
+describe('groupe Prada (colonne « Brand » de la liste, `brandProperty: facility`)', () => {
+  it('Marchesi 1824 (hors périmètre, décision CEO en attente) : retenue avec retrait daté, jamais attribuée', () => {
+    const at = new Date('2026-10-03T16:00:00Z');
+    for (const key of ['pradaMarchesiTitle', 'pradaMarchesiColumn']) {
+      const job = employerFromCertifiedScope(real[key], 'Prada Group', 'MULTI_BRAND', groupPortalBrands('prada-group', 'Prada Group'), at);
+      expect(job.publicationHold, key).toBe(GROUP_OUT_OF_PERIMETER_HOLD);
+      expect(job.publicationWithdrawnAt, key).toEqual(at);
+      expect(job.employerEvidence?.rawName, key).toBe('Marchesi 1824');
+    }
+    expect(publicationDisposition(GROUP_OUT_OF_PERIMETER_HOLD)).toEqual({ kind: 'WITHDRAWN', reason: 'OUT_OF_SCOPE' });
+    expect(retentionClass(GROUP_OUT_OF_PERIMETER_HOLD)).toBe('TEAM_DECISION');
+  });
+  it('marque prouvée : « ミュウミュウ » est Miu Miu ; « Prada Group » avec « PRADA » dans l’intitulé est Prada', () => {
+    expect(brandOf(lift(real.pradaMiuMiuJa))).toBe('Miu Miu');
+    expect(brandOf(lift(real.pradaGroupTitlePrada))).toBe('Prada');
+  });
+  it('sans marque : « Prada Group » reste (son libellé natif mène au groupe) ; « Prada » natif reste natif', () => {
+    expect(lift(real.pradaGroupNoBrand)).toBe(real.pradaGroupNoBrand);
+    expect(lift(real.pradaColumnPrada)).toBe(real.pradaColumnPrada);
+  });
+  it('portail non relu : rien ne change, Marchesi comprise', () => {
+    expect(lift(real.pradaMarchesiColumn, null)).toBe(real.pradaMarchesiColumn);
   });
 });

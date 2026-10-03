@@ -1,0 +1,17 @@
+{
+  "batchId": "20261003-D522-PRADA-GROUPE-JA-v1",
+  "reviewedBy": "Claude (CTO produit) : exécution de D-522 §6 (arbitrage du CTO, 03/10/2026)",
+  "reviewedAt": "2026-10-03T08:00:00Z",
+  "statement": "D-522 §6 : la colonne « Brand » de la liste du portail jobs.pradagroup.com (lue par brandProperty: facility) nomme « プラダ・グループ » pour 2 offres de Tokyo ; c'est l'écriture japonaise de « Prada Group », que la même colonne porte pour 50 autres offres. Le libellé natif exact « プラダ・グループ » de la source prada-group désigne la Maison Prada Group. Alias limité à la source, libellé exact, aucune fusion. Les écritures japonaises de Prada (プラダ) et Miu Miu (ミュウミュウ) sont lues par la liste fermée du groupe (groupBrands.ts), sans alias.",
+  "aliases": [
+    { "sourceKey": "prada-group", "rawName": "プラダ・グループ", "targetCompany": "Prada Group" }
+  ],
+  "merges": [],
+  "evidence": [
+    {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=114",
+      "artifactFile": "audits/2026-10-03/stock-exceptions/prada-group/liste-startrow-114-20261003.html",
+      "explanation": "Page de liste du portail officiel du groupe Prada, cassette du 03/10/2026 (CatwalksBot) : colonne Brand (td.colFacility) « プラダ・グループ » sur les offres 1289800901 et 1369360733 (Tokyo)."
+    }
+  ]
+}

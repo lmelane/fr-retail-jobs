@@ -1,7 +1,7 @@
 
-IMPORT DU TABLEAU — 17 ligne(s) lue(s), 543 source(s) en base
+IMPORT DU TABLEAU — 18 ligne(s) lue(s), 543 source(s) en base
 
-   17 portalScope à écrire
+   18 portalScope à écrire
    0 source(s) à RETIRER  ← seul changement destructif
    0 source(s) à mettre en PAUSE (réversible)
    0 Maison(s) avec un domaine officiel déclaré

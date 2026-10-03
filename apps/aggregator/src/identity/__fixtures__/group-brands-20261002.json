@@ -322,5 +322,198 @@
     }
    }
   }
+ },
+ "pradaMarchesiTitle": {
+  "source": "prada-group",
+  "externalId": "1248522301",
+  "title": "MARCHESI 1824 CHEF DE PARTIE",
+  "location": "Milano, IT",
+  "url": "https://jobs.pradagroup.com/job/1248522301/",
+  "company": "Marchesi 1824",
+  "employerEvidence": {
+   "rawName": "Marchesi 1824",
+   "path": "listing.facility",
+   "rule": "CONFIGURED_BRAND_PROPERTY"
+  },
+  "raw": {
+   "title": "MARCHESI 1824 CHEF DE PARTIE",
+   "listingBrand": {
+    "property": "facility",
+    "value": "Marchesi 1824"
+   }
+  }
+ },
+ "pradaMarchesiColumn": {
+  "source": "prada-group",
+  "externalId": "1433362133",
+  "title": "Catering Supervisor",
+  "location": "Milano, IT",
+  "url": "https://jobs.pradagroup.com/job/1433362133/",
+  "company": "Marchesi 1824",
+  "employerEvidence": {
+   "rawName": "Marchesi 1824",
+   "path": "listing.facility",
+   "rule": "CONFIGURED_BRAND_PROPERTY"
+  },
+  "raw": {
+   "title": "Catering Supervisor",
+   "listingBrand": {
+    "property": "facility",
+    "value": "Marchesi 1824"
+   }
+  }
+ },
+ "pradaMiuMiuJa": {
+  "source": "prada-group",
+  "externalId": "1266507801",
+  "title": "MIU MIU Field Retail Trainer",
+  "location": "Tokyo, JP",
+  "url": "https://jobs.pradagroup.com/job/1266507801/",
+  "company": "ミュウミュウ",
+  "employerEvidence": {
+   "rawName": "ミュウミュウ",
+   "path": "listing.facility",
+   "rule": "CONFIGURED_BRAND_PROPERTY"
+  },
+  "raw": {
+   "title": "MIU MIU Field Retail Trainer",
+   "listingBrand": {
+    "property": "facility",
+    "value": "ミュウミュウ"
+   }
+  }
+ },
+ "pradaGroupTitlePrada": {
+  "source": "prada-group",
+  "externalId": "1416113733",
+  "title": "PRADA Stock Assistant CDD (h/f) Paris",
+  "location": "Paris, FR",
+  "url": "https://jobs.pradagroup.com/job/1416113733/",
+  "company": "Prada Group",
+  "employerEvidence": {
+   "rawName": "Prada Group",
+   "path": "listing.facility",
+   "rule": "CONFIGURED_BRAND_PROPERTY"
+  },
+  "raw": {
+   "title": "PRADA Stock Assistant CDD (h/f) Paris",
+   "listingBrand": {
+    "property": "facility",
+    "value": "Prada Group"
+   }
+  }
+ },
+ "pradaGroupNoBrand": {
+  "source": "prada-group",
+  "externalId": "1423263733",
+  "title": "Facility Specialist (m/f/d)",
+  "location": "Munich, DE",
+  "url": "https://jobs.pradagroup.com/job/1423263733/",
+  "company": "Prada Group",
+  "employerEvidence": {
+   "rawName": "Prada Group",
+   "path": "listing.facility",
+   "rule": "CONFIGURED_BRAND_PROPERTY"
+  },
+  "raw": {
+   "title": "Facility Specialist (m/f/d)",
+   "listingBrand": {
+    "property": "facility",
+    "value": "Prada Group"
+   }
+  }
+ },
+ "pradaColumnPrada": {
+  "source": "prada-group",
+  "externalId": "1393467533",
+  "title": "Hostess, Milan",
+  "location": "Milano, IT",
+  "url": "https://jobs.pradagroup.com/job/1393467533/",
+  "company": "Prada",
+  "employerEvidence": {
+   "rawName": "Prada",
+   "path": "listing.facility",
+   "rule": "CONFIGURED_BRAND_PROPERTY"
+  },
+  "raw": {
+   "title": "Hostess, Milan",
+   "listingBrand": {
+    "property": "facility",
+    "value": "Prada"
+   }
+  }
+ },
+ "lorealPradaLicence": {
+  "source": "l-oreal-professionnel",
+  "externalId": "245918",
+  "title": "Prada Beauty Advisor, Harrods London (37.5 Hours)",
+  "location": "London",
+  "url": "https://careers.loreal.com/en_US/jobs/JobDetail/245918",
+  "company": "Prada",
+  "employerEvidence": {
+   "rawName": "Prada",
+   "path": "dataLayer.jobBrand",
+   "rule": "EXPLICIT_JOB_BRAND"
+  },
+  "raw": {
+   "title": "Prada Beauty Advisor, Harrods London (37.5 Hours)",
+   "location": "London"
+  }
+ },
+ "lorealMargielaLicence": {
+  "source": "l-oreal-professionnel",
+  "externalId": "252982",
+  "title": "Communication Manager, LUXE MM",
+  "location": null,
+  "url": "https://careers.loreal.com/en_US/jobs/JobDetail/252982",
+  "company": "Maison Margiela",
+  "employerEvidence": {
+   "rawName": "Maison Margiela",
+   "path": "dataLayer.jobBrand",
+   "rule": "EXPLICIT_JOB_BRAND"
+  },
+  "raw": {
+   "title": "Communication Manager, LUXE MM",
+   "location": null
+  }
+ },
+ "lorealAesopNative": {
+  "source": "l-oreal-professionnel",
+  "externalId": "252879",
+  "title": "Aesop Store Manager | Leeds | Full Time",
+  "location": "Leeds",
+  "url": "https://careers.loreal.com/en_US/jobs/JobDetail/252879",
+  "company": "Aesop",
+  "employerEvidence": {
+   "rawName": "Aesop",
+   "path": "dataLayer.jobBrand",
+   "rule": "EXPLICIT_JOB_BRAND"
+  },
+  "raw": {
+   "title": "Aesop Store Manager | Leeds | Full Time",
+   "location": "Leeds"
+  }
+ },
+ "lorealVichyBrand": {
+  "source": "l-oreal-professionnel",
+  "externalId": "255439",
+  "title": "Marketing Intern VICHY",
+  "location": "Bucharest",
+  "url": "https://careers.loreal.com/en_US/jobs/JobDetail/255439",
+  "raw": {
+   "title": "Marketing Intern VICHY",
+   "location": "Bucharest"
+  }
+ },
+ "lorealVichyPlace": {
+  "source": "l-oreal-professionnel",
+  "externalId": "249291",
+  "title": "Bac 5 S1 2027 Stage de 6 mois Ing nieur Projet Supply Chain H F Usine de Vichy",
+  "location": null,
+  "url": "https://careers.loreal.com/en_US/jobs/JobDetail/249291",
+  "raw": {
+   "title": "Bac 5 S1 2027 Stage de 6 mois Ing nieur Projet Supply Chain H F Usine de Vichy",
+   "location": null
+  }
  }
 }

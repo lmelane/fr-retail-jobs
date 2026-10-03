@@ -5,9 +5,14 @@ import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { resolveEmployer } from '../identity/resolve.js';
 import { EmployerIdentityReviewRequired } from '../identity/errors.js';
-import { CERTIFIED_SCOPE_PATH, GROUP_BRAND_PATH, GROUP_BRAND_RULE, GROUP_SCOPE_RULE, employerFromCertifiedScope } from '../identity/portalEmployer.js';
+import { CERTIFIED_SCOPE_PATH, GROUP_BRAND_PATH, GROUP_BRAND_RULE, GROUP_LICENCE_RULE, GROUP_OUT_OF_PERIMETER_HOLD, GROUP_SCOPE_RULE,
+  employerFromCertifiedScope } from '../identity/portalEmployer.js';
+import { sourceScopedKey } from '../identity/existingMaison.js';
+import { sourcePublishesEmployer } from '../identity/publisherFollow.js';
+import { isNativeOrigin } from '../identity/ordinaryIdentity.js';
+import { archivePublicationHold } from '../test/publicationPersistenceFixture.js';
 import { groupPortalBrands } from '../identity/groupBrands.js';
-import { toCandidate } from './ingest.js';
+import { postingLabelOrigin, toCandidate } from './ingest.js';
 import type { CandidateJob } from '../dedup/match.js';
 
 /**
@@ -18,12 +23,13 @@ import type { CandidateJob } from '../dedup/match.js';
  */
 const db = new PrismaClient();
 // Les observations d'employeur sont immuables (déclencheur) : chaque offre porte un identifiant propre au passage.
-beforeEach(async () => { await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany(); });
+beforeEach(async () => { await db.companyAlias.deleteMany(); await db.jobEvent.deleteMany(); await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany(); });
 afterAll(() => db.$disconnect());
 
 const RUN = randomUUID().slice(0, 8);
 const BRAND = `${GROUP_BRAND_PATH}:${GROUP_BRAND_RULE}`;
 const GROUP = `${CERTIFIED_SCOPE_PATH}:${GROUP_SCOPE_RULE}`;
+const LICENCE = `${CERTIFIED_SCOPE_PATH}:${GROUP_LICENCE_RULE}`;
 
 async function portail(key: string, maison: string, scope: 'MULTI_BRAND' | 'SINGLE_BRAND' | null) {
   await db.source.upsert({ where: { key }, update: { maison, portalScope: scope },
@@ -61,12 +67,65 @@ describe('portail relu MULTI_BRAND : la marque prouvée publie sous sa Maison, l
     expect(obs).toMatchObject({ labelOrigin: BRAND, rule: 'MULTI_BRAND_PORTAL_GROUP_BRAND' });
   });
 
-  it('aucune marque nommée : publiée sous le groupe propriétaire (le nom de la Maison au registre)', async () => {
+  it('aucune marque nommée : publiée sous le NOM DU GROUPE (« Levi Strauss & Co. », créée sous sa clé), jamais sous « Levi’s »', async () => {
     await portail('levis', "Levi's", 'MULTI_BRAND');
-    const c = offre('levis', 'ls-1', "Levi's", GROUP, 'Sales Stylist', 'LS MUENSTER ARKADEN, Münster, Germany');
-    expect((await resoudre(c)).rule).toBe('MULTI_BRAND_PORTAL_GROUP_OWNER');
+    await db.company.create({ data: { name: "Levi's", canonicalKey: 'LEVI_S', fashionjobsUrl: 'resolved:LEVI_S' } });
+    const c = offre('levis', 'ls-1', 'Levi Strauss & Co.', GROUP, 'Sales Stylist', 'LS MUENSTER ARKADEN, Münster, Germany');
+    expect(await resoudre(c)).toMatchObject({ rule: 'MULTI_BRAND_PORTAL_GROUP_OWNER', newKey: 'LEVI_STRAUSS', newName: 'Levi Strauss & Co.' });
     await upsertDeduplicated(db, c);
-    expect((await employeurPublie('levis', 'ls-1')).fashionjobsUrl).toBe('resolved:LEVI_S');
+    expect(await employeurPublie('levis', 'ls-1')).toEqual({ name: 'Levi Strauss & Co.', fashionjobsUrl: 'resolved:LEVI_STRAUSS' });
+  });
+
+  it('groupe existant au registre : Movado → « Movado Group » ; Nike → NIKE (alias relu « nike, inc. ») ; L’Oréal → « L’Oréal Groupe »', async () => {
+    await portail('movado', 'Movado', 'MULTI_BRAND');
+    await db.company.create({ data: { name: 'Movado', canonicalKey: 'MOVADO', fashionjobsUrl: 'resolved:MOVADO' } });
+    const movadoGroup = await db.company.create({ data: { name: 'Movado Group', canonicalKey: 'MOVADO_GROUP', fashionjobsUrl: 'resolved:MOVADO_GROUP' } });
+    expect((await resoudre(offre('movado', 'm-1', 'Movado Group', GROUP, 'Temporary Distribution Clerk', 'Moonachie, NJ'))).company?.id).toBe(movadoGroup.id);
+
+    await portail('nike', 'Nike', 'MULTI_BRAND');
+    const nike = await db.company.create({ data: { name: 'NIKE', canonicalKey: 'NIKE', fashionjobsUrl: 'resolved:NIKE' } });
+    await db.company.create({ data: { name: 'NIKE, Inc.', canonicalKey: 'NIKE_INC', fashionjobsUrl: 'resolved:NIKE_INC' } });
+    const review = await db.employerIdentityReview.create({ data: { id: `rev-${RUN}`, statement: 'test', evidence: {}, planHash: 'x', reviewedBy: 't', reviewedAt: new Date() } });
+    await db.companyAlias.create({ data: { aliasKey: `nike-inc-${RUN}`, displayName: 'NIKE, Inc.', companyId: nike.id, sourceKey: 'nike', normalizedName: 'nike, inc.', reviewId: review.id } });
+    expect((await resoudre(offre('nike', 'n-1', 'Nike, Inc.', GROUP, 'Lead Business Planner', 'Beaverton, Oregon'))).company?.id).toBe(nike.id);
+
+    await portail('l-oreal-professionnel', "L'Oréal (toutes Maisons)", 'MULTI_BRAND');
+    await db.company.create({ data: { name: "L'Oréal", canonicalKey: 'LOREAL', fashionjobsUrl: 'resolved:LOREAL', kind: 'GROUP' } });
+    const groupe = await db.company.create({ data: { name: "L'Oréal Groupe", canonicalKey: 'L_OREAL_GROUPE', fashionjobsUrl: 'resolved:L_OREAL_GROUPE' } });
+    const c = offre('l-oreal-professionnel', 'g-1', "L'Oréal Groupe", GROUP, "[L'OREAL Taiwan] Commercial Controller", 'Taipei');
+    expect((await resoudre(c)).company?.id).toBe(groupe.id);
+    await upsertDeduplicated(db, c);
+    expect((await employeurPublie('l-oreal-professionnel', 'g-1')).name).toBe("L'Oréal Groupe");
+  });
+
+  it('Aesop : la marque prouvée publie sous la Maison que la source porte déjà (clé de libellé), jamais une seconde « Aesop »', async () => {
+    await portail('l-oreal-professionnel', "L'Oréal (toutes Maisons)", 'MULTI_BRAND');
+    const aesop = await db.company.create({ data: { name: 'Aesop', canonicalKey: sourceScopedKey('l-oreal-professionnel', 'aesop'),
+      fashionjobsUrl: `resolved:${sourceScopedKey('l-oreal-professionnel', 'aesop')}` } });
+    const c = offre('l-oreal-professionnel', 'a-1', 'Aesop', BRAND, 'Aesop Store Manager | Leeds | Full Time', 'Leeds');
+    expect((await resoudre(c)).company?.id).toBe(aesop.id);
+    await upsertDeduplicated(db, c);
+    expect(await db.company.count({ where: { name: 'Aesop' } })).toBe(1);
+    expect((await employeurPublie('l-oreal-professionnel', 'a-1')).fashionjobsUrl).toBe(aesop.fashionjobsUrl);
+  });
+
+  it('licence : une offre L’Oréal publiée sous PRADA rejoint L’Oréal Groupe ; une offre publiée sous une autre Maison, jamais', async () => {
+    await portail('l-oreal-professionnel', "L'Oréal (toutes Maisons)", 'MULTI_BRAND');
+    const prada = await db.company.create({ data: { name: 'PRADA', canonicalKey: 'PRADA', fashionjobsUrl: 'resolved:PRADA' } });
+    const groupe = await db.company.create({ data: { name: "L'Oréal Groupe", canonicalKey: 'L_OREAL_GROUPE', fashionjobsUrl: 'resolved:L_OREAL_GROUPE' } });
+    // Comme à l'ingestion : la clé d'indice est celle du registre pour « Prada » (`resolveCompany`), d'où PRADA aujourd'hui.
+    const natif = { ...offre('l-oreal-professionnel', 'p-1', 'Prada', 'dataLayer.jobBrand:EXPLICIT_JOB_BRAND', 'Prada Beauty Advisor, Harrods London (37.5 Hours)', 'London'), companyId: 'PRADA' };
+    await upsertDeduplicated(db, natif);
+    expect((await employeurPublie('l-oreal-professionnel', 'p-1')).name).toBe('PRADA');
+    const licence = offre('l-oreal-professionnel', 'p-1', "L'Oréal Groupe", LICENCE, 'Prada Beauty Advisor, Harrods London (37.5 Hours)', 'London');
+    await upsertDeduplicated(db, licence);
+    expect((await employeurPublie('l-oreal-professionnel', 'p-1')).name).toBe("L'Oréal Groupe");
+    expect(prada.id).not.toBe(groupe.id);
+    // Une offre déjà sous une autre Maison (qui n'est pas une licence de la liste) n'est pas déplacée par cette règle.
+    const autre = await db.company.create({ data: { name: 'Saloncentric', canonicalKey: 'SALONCENTRIC', fashionjobsUrl: 'resolved:SALONCENTRIC' } });
+    await upsertDeduplicated(db, { ...offre('l-oreal-professionnel', 's-1', 'Saloncentric', 'dataLayer.jobBrand:EXPLICIT_JOB_BRAND', 'Sales Consultant', 'Dallas'), companyId: 'SALONCENTRIC' });
+    expect((await employeurPublie('l-oreal-professionnel', 's-1')).name).toBe(autre.name);
+    expect(await motif(offre('l-oreal-professionnel', 's-1', "L'Oréal Groupe", LICENCE, 'Sales Consultant', 'Dallas'))).toBe('PORTAL_OWNER_REPLACES_EMPLOYER');
   });
 
   it('marque portée par la candidate mais absente de l’offre : refusée, jamais crue sur parole', async () => {
@@ -129,5 +188,70 @@ describe('le domaine (logo) de la Maison créée suit la marque, jamais le group
     const candidate = toCandidate(kiehls, source, kiehls.company || source.company, 'AVATURE');
     expect(candidate).toMatchObject({ rawEmployerName: "Kiehl's", employerLabelOrigin: BRAND });
     expect(candidate.companyDomain).toBeUndefined();
+  });
+});
+
+describe('D-506 §3 : une marque déduite ne témoigne jamais pour le suivi de l’éditeur', () => {
+  it('la carte de la collecte ne garde que les libellés natifs', () => {
+    const brand = employerFromCertifiedScope({ externalId: 'x', title: 'Vans: Supervisor - Peabody', url: 'https://x', raw: { title: 'Vans: Supervisor - Peabody' },
+      publicationHold: 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL' }, 'VF Corporation', 'MULTI_BRAND', groupPortalBrands('vf-corporation', 'VF Corporation'));
+    expect(brand.employerEvidence?.path).toBe(GROUP_BRAND_PATH);
+    expect(isNativeOrigin(postingLabelOrigin(brand))).toBe(false);
+    expect(isNativeOrigin(postingLabelOrigin({ employerEvidence: { rawName: 'Vans', path: 'detail.jobPostingInfo.logoImage.alt', rule: 'LOGO_ALT' } }))).toBe(true);
+  });
+  it('une observation antérieure d’origine « liste du groupe » ne prouve pas que la source publie l’employeur', async () => {
+    const vans = await db.company.create({ data: { name: 'Vans', canonicalKey: 'VANS', fashionjobsUrl: 'resolved:VANS' } });
+    const before = new Date(Date.now() + 60_000);
+    const observe = (id: string, labelOrigin: string) => db.employerObservation.create({ data: { sourceKey: 'vf-corporation', externalId: `${id}-${RUN}`,
+      observationHash: `${id}-${RUN}-${labelOrigin}`, rawEmployerName: 'Vans', labelOrigin, normalizedEmployerName: 'vans', canonicalEmployerId: vans.id,
+      rule: 'MULTI_BRAND_PORTAL_GROUP_BRAND', pipelineVersion: 1 } });
+    await observe('w-brand', BRAND);
+    expect(await db.$transaction(tx => sourcePublishesEmployer(tx, 'vf-corporation', [`w-brand-${RUN}`], 'vans', vans.id, before))).toBe(false);
+    await observe('w-native', 'detail.jobPostingInfo.logoImage.alt:LOGO_ALT');
+    expect(await db.$transaction(tx => sourcePublishesEmployer(tx, 'vf-corporation', [`w-native-${RUN}`], 'vans', vans.id, before))).toBe(true);
+  });
+});
+
+describe('groupe Prada : Marchesi 1824 retenue hors périmètre, aucune Maison créée', () => {
+  const marchesi = (id: string, title: string) => ({ externalId: `${id}-${RUN}`, title, url: `https://jobs.pradagroup.com/job/${id}-${RUN}/`, location: 'Milano, IT',
+    company: 'Marchesi 1824', employerEvidence: { rawName: 'Marchesi 1824', path: 'listing.facility', rule: 'CONFIGURED_BRAND_PROPERTY' },
+    raw: { title, listingBrand: { property: 'facility', value: 'Marchesi 1824' } }, description: 'x' });
+  it('la retenue s’archive sous le périmètre courant du portail, la représentation est retirée, aucune Maison n’apparaît', async () => {
+    await portail('prada-group', 'Prada Group', 'MULTI_BRAND');
+    const at = new Date(Date.now() - 60_000);
+    const held = employerFromCertifiedScope(marchesi('mc-1', 'Catering Supervisor'), 'Prada Group', 'MULTI_BRAND', groupPortalBrands('prada-group', 'Prada Group'), at);
+    expect(held).toMatchObject({ publicationHold: GROUP_OUT_OF_PERIMETER_HOLD, publicationWithdrawnAt: at });
+    await archivePublicationHold(db, 'prada-group', held);
+    expect(await db.company.count({ where: { name: { contains: 'Marchesi', mode: 'insensitive' } } })).toBe(0);
+    expect(await db.jobSource.count({ where: { sourceKey: 'prada-group', externalId: `mc-1-${RUN}` } })).toBe(0);
+  });
+  it('si le portail n’est plus relu MULTI_BRAND, la retenue n’est plus courante : refusée', async () => {
+    await portail('prada-group', 'Prada Group', null);
+    const held = { ...marchesi('mc-2', 'Quality Manager'), publicationHold: GROUP_OUT_OF_PERIMETER_HOLD, publicationWithdrawnAt: new Date(Date.now() - 60_000) };
+    await expect(archivePublicationHold(db, 'prada-group', held)).rejects.toThrow('Group perimeter hold is no longer current');
+  });
+});
+
+describe('groupe Prada : la colonne « Brand » précise une offre publiée sous le groupe', () => {
+  const ligne = (id: string, title: string, brand: string) => ({ ...offre('prada-group', id, brand, 'listing.facility:CONFIGURED_BRAND_PROPERTY', title, 'Milano, IT'),
+    companyId: brand === 'Prada' ? 'PRADA' : brand === 'Prada Group' ? 'PRADA_GROUP' : 'CHURCH_S', raw: { title, listingBrand: { property: 'facility', value: brand } } });
+  it('relu MULTI_BRAND : « Prada » rejoint PRADA, « Church’s » rejoint sa Maison créée, sans revue', async () => {
+    await portail('prada-group', 'Prada Group', 'MULTI_BRAND');
+    const groupe = await db.company.create({ data: { name: 'Prada Group', canonicalKey: 'PRADA_GROUP', fashionjobsUrl: 'resolved:PRADA_GROUP' } });
+    const prada = await db.company.create({ data: { name: 'PRADA', canonicalKey: 'PRADA', fashionjobsUrl: 'resolved:PRADA' } });
+    for (const [id, title] of [['h-1', 'Hostess, Milan'], ['c-1', 'In Store Artisan']]) await upsertDeduplicated(db, ligne(id, title, 'Prada Group'));
+    expect((await employeurPublie('prada-group', 'h-1')).name).toBe(groupe.name);
+    await upsertDeduplicated(db, ligne('h-1', 'Hostess, Milan', 'Prada'));
+    expect((await employeurPublie('prada-group', 'h-1')).name).toBe(prada.name);
+    await upsertDeduplicated(db, ligne('c-1', 'In Store Artisan', "Church's"));
+    expect((await employeurPublie('prada-group', 'c-1')).name).toBe("Church's");
+    expect(await db.company.count({ where: { name: { in: ['PRADA', "Church's"] } } })).toBe(2);
+  });
+  it('portail non relu : la même transition reste une divergence en revue', async () => {
+    await portail('prada-group', 'Prada Group', null);
+    await db.company.create({ data: { name: 'Prada Group', canonicalKey: 'PRADA_GROUP', fashionjobsUrl: 'resolved:PRADA_GROUP' } });
+    await db.company.create({ data: { name: 'PRADA', canonicalKey: 'PRADA', fashionjobsUrl: 'resolved:PRADA' } });
+    await upsertDeduplicated(db, ligne('h-2', 'Hostess, Milan', 'Prada Group'));
+    expect(await motif(ligne('h-2', 'Hostess, Milan', 'Prada'))).toBe('EMPLOYER_SPELLING_DIVERGED');
   });
 });

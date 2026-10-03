@@ -1,0 +1,22 @@
+{
+ "phase": "production",
+ "commit": "bf36c74c8223882a61c0d38f2efaf09be2537c31",
+ "planHash": "adf279ea201b8ec9de5a2fd4fff1ce482313d35f0d6f478c20c81073b3b44ac3",
+ "batchId": "20261003-D522-PRADA-GROUPE-JA-v1",
+ "aliases": [
+  "prada-group: \"プラダ・グループ\""
+ ],
+ "merges": 0,
+ "alreadyMerged": [],
+ "evidence": [
+  {
+   "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=114",
+   "bytes": 115339
+  }
+ ],
+ "companiesTouched": 1,
+ "jobs": 305,
+ "activeJobs": 303
+}
+
+--apply absent : RIEN n'a été écrit.

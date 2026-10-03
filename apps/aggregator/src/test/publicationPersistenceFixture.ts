@@ -7,6 +7,7 @@ import { persistExtractionOutputs } from '../capture/store.js';
 import { upsertDeduplicated as write } from '../dedup/upsert.js';
 import { archivePublicationHold as hold } from '../pipeline/publicationHold.js';
 import { SCOPE_HOLD } from '../pipeline/scopeDecisions.js';
+import { GROUP_OUT_OF_PERIMETER_HOLD } from '../identity/portalEmployer.js';
 import type { NormalizedJob } from '../types.js';
 
 // Persistence-only tests isolate admission. Synthetic immutable outputs exercise
@@ -22,7 +23,7 @@ async function captured<T extends NormalizedJob>(db: PrismaClient, sourceKey: st
   const job = structuredClone(input);
   const native = { ...job };
   // Scope decisions are internal policy, always downstream of native capture.
-  if (native.publicationHold === SCOPE_HOLD) { delete native.publicationHold; delete native.publicationWithdrawnAt; }
+  if (native.publicationHold === SCOPE_HOLD || native.publicationHold === GROUP_OUT_OF_PERIMETER_HOLD) { delete native.publicationHold; delete native.publicationWithdrawnAt; }
   const batch = await db.captureBatch.create({ data: { sourceKey, configHash: evidenceHash({}), sourceKind: 'atsType' in input ? String(input.atsType) : undefined, readerRevision: 'synthetic-persistence-fixture' } });
   const [outputId] = await persistExtractionOutputs(db, batch.id, [native]);
   const manifestHash = await persistExtractionManifest(db, batch.id, { jobs: [native] });
