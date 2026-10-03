@@ -1,0 +1,14 @@
+{
+ "currentStatus": "PAUSED",
+ "targetStatus": "PAUSED",
+ "key": "rotate",
+ "maison": "ROTATE",
+ "intention": "A_TRANCHER",
+ "trajectory": "REVUE_HUMAINE",
+ "basis": "PREUVE",
+ "decision": "Aucune décision CEO : pause de la revue du 23/09 (audits/2026-09-23/post-run-source-review.json)",
+ "reason": "La page carrières (lue le 03/10/2026) publie 5 stages non rémunérés à Copenhague en accordéon : aucune page ni adresse par offre, aucun JobPosting, candidature par e-mail ; un stage annonce un début en juin 2026. Le lecteur générique ne lit pas d'offre sans page propre.",
+ "nextAction": "Arbitrage du CEO ; si oui, lecteur par sélecteurs relus (titre et texte de chaque stage, lien de la page carrières commune), puis requalification par source-add --official-domain=rotatebirgerchristensen.com.",
+ "reviewAt": "2026-10-09",
+ "question": "ROTATE publie 5 stages non rémunérés sur une seule page, sans page par offre, candidature par e-mail. Les publier, chacun avec le lien de la page carrières commune ?"
+}

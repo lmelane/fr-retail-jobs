@@ -1,0 +1,20 @@
+{
+ "config": {
+  "startUrl": "https://www.ghostfashion.com/careers",
+  "emptyListingText": "Although we do not have current openings"
+ },
+ "jobs": 0,
+ "declaredTotal": 0,
+ "complete": true,
+ "truncated": false,
+ "verdict": "PROVEN",
+ "method": "START_PAGE_PUBLISHER_DECLARES_NO_OPENING",
+ "termination": "PUBLISHER_DECLARES_NO_OPENING",
+ "issues": [],
+ "canonicalIds": [
+  []
+ ],
+ "publisherCounter": "Although we do not have current openings",
+ "pageSha256": "296f34fa5caae69b9342c5b6385b7f37c35108ff8117a71d280380ad0cf81a9e",
+ "replayedRequests": 2
+}

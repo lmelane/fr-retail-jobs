@@ -1,0 +1,17 @@
+robots.txt https://beminimalist.co/robots.txt : HTTP 200, CatwalksBot AUTORISÉ sur /pages/about
+page https://beminimalist.co/pages/about : HTTP 200, finale https://beminimalist.co/pages/about, 848240 octets, sha256 f13dca665395ffee12a6763cf48c9ef68a74ded22a289d9df29a8fef753f663a
+JobPosting (mot) : 0 ; blocs application/ld+json : 6
+texte visible /career|joining|reach out/ : 3
+    Careers
+    Looking forward to joining Minimalist?
+    Reach out
+liens de même origine /job|career|recruit/ : 0
+robots.txt https://beminimalist.zohorecruit.in/robots.txt : HTTP 200, CatwalksBot AUTORISÉ sur /jobs/Careers
+page https://beminimalist.zohorecruit.in/jobs/Careers : HTTP 200, finale https://beminimalist.zohorecruit.in/jobs/Careers, 1719428 octets, sha256 0e5c68674174798b938d07b34cd4a863fe9e51a0306de4610133f5731d6c47e8
+JobPosting (mot) : 0 ; blocs application/ld+json : 0
+Zoho Recruit : société déclarée 'Minimalist', 5 offre(s) dans la liste embarquée
+    84123000002071238 | Business Development Executive | Jaipur, India | Publish=True
+    84123000002071138 | Sales Manager | Mumbai, India | Publish=True
+    84123000000898074 | Growth Manager | Jaipur, India | Publish=True
+    84123000002071217 | Business Manager -Rx | Chennai, India | Publish=True
+    84123000000920003 | Sales Manager-Rx | Surat, India | Publish=False

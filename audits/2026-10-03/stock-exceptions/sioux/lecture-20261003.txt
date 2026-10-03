@@ -1,0 +1,16 @@
+robots.txt https://www.sioux.de/robots.txt : HTTP 200, CatwalksBot AUTORISÉ sur /pages/stellenangebote
+page https://www.sioux.de/pages/stellenangebote : HTTP 200, finale https://www.sioux.de/pages/stellenangebote, 354627 octets, sha256 3c15724f24b5e18f5618e70915efce8b324f7f3788692ad5649fc9f955e9016a
+JobPosting (mot) : 0 ; blocs application/ld+json : 1
+texte visible /offene Stellen|Stellenangebot/ : 7
+    Stellenangebote
+    Stellenangebote
+    Stellenangebote
+    Bei Fragen rund um unsere Stellenangebote oder Bewerbungen, rufen Sie uns unter folgender Telefonnummer 07143 / 371 251 an oder schreiben Sie uns eine E-Mail an Silvia Maier
+    OFFENE STELLEN
+    Stellenangebot
+    Stellenangebote
+liens de même origine /job|stellen|karriere|career/ : 4
+    https://www.sioux.de/pages/stellenangebote
+    https://www.sioux.de/pages/stellenangebote#
+    https://www.sioux.de/pages/stellenangebote#MainContent
+    https://www.sioux.de/pages/stellenangebote#reopenBanner

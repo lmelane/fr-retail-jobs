@@ -1,0 +1,8 @@
+
+CORRECTIONS D'ATS ET DE PORTAIL — 1 source(s)
+
+   ghost                      generic-listing    → generic-listing    https://www.ghostfashion.com/careers
+                              config : {"startUrl":"https://www.ghostfashion.com/careers","emptyListingText":"Although we do not have current openings"}
+
+INSPECTION SEULEMENT — rien n'a été écrit. Ajouter --ecrire pour appliquer.
+

@@ -1,0 +1,18 @@
+robots.txt https://www.rotatebirgerchristensen.com/robots.txt : HTTP 200, CatwalksBot AUTORISÉ sur /career
+page https://www.rotatebirgerchristensen.com/career : HTTP 200, finale https://www.rotatebirgerchristensen.com/career, 151881 octets, sha256 6d1508db5e6fec52049803e20a12356dcdb4aef7083ba5884e22da18870242c6
+JobPosting (mot) : 0 ; blocs application/ld+json : 0
+texte visible /intern$|copenhagen|June 2026|unpaid|un-paid|non-paid|send your/ : 23
+    E-Commerce Intern
+    From our headquarters in Copenhagen, Denmark, we operate in 40+ countries and work with retailers all over the world such as NET-A-PORTER, Browns, Mytheresa and many more.
+    We are now looking for a dedicated and enthusiastic full-time intern to join our E-Commerce team at our office in Copenhagen.
+    The internship is full time for a minimum of 3-6 months with start from June 2026. The role is un-paid and everyone is welcome to apply!
+    Kindly send your cover letter and CV to Matthew Watkins, at
+    Sustainability & Production Intern
+    3–6 months (unpaid, as part of an educational program)
+    Copenhagen
+    Send your application and CV to Katrine Præstensgaard, People Coordinator, at
+    Sourcing & Development Intern
+    3–6 months (unpaid, as part of an educational program)
+    Copenhagen
+liens de même origine /career|job/ : 1
+    https://www.rotatebirgerchristensen.com/career

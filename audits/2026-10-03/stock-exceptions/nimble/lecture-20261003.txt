@@ -1,0 +1,38 @@
+robots.txt https://nimbleactivewear.com/robots.txt : HTTP 200, CatwalksBot AUTORISÉ sur /pages/careers
+page https://nimbleactivewear.com/pages/careers : HTTP 200, finale https://nimbleactivewear.com/pages/careers, 301488 octets, sha256 fd4cbf2a5b06162641bde619a978be5723fe3c34c3360d580496f844b541de82
+JobPosting (mot) : 0 ; blocs application/ld+json : 2
+texte visible /job|growing|product developer/ : 3
+    We're growing and looking for new friends to join our dynamic & amazing team!
+    Keen to be a part of it? Check out the job specs below.
+    Product Developer - February 2026
+liens de même origine /^/pages/(?!careers)/ : 15
+    https://nimbleactivewear.com/pages/about-us
+    https://nimbleactivewear.com/pages/book-an-appointment
+    https://nimbleactivewear.com/pages/contact
+    https://nimbleactivewear.com/pages/faqs
+    https://nimbleactivewear.com/pages/find-your-fit
+    https://nimbleactivewear.com/pages/leggings-comparison-guide
+    https://nimbleactivewear.com/pages/nimble-x-community
+    https://nimbleactivewear.com/pages/our-stores
+    https://nimbleactivewear.com/pages/our-sustainability-story
+    https://nimbleactivewear.com/pages/privacy
+    https://nimbleactivewear.com/pages/product-developer
+    https://nimbleactivewear.com/pages/returns
+    https://nimbleactivewear.com/pages/shipping
+    https://nimbleactivewear.com/pages/terms
+    https://nimbleactivewear.com/pages/what-is-your-returns-policy
+robots.txt https://nimbleactivewear.com/robots.txt : HTTP 200, CatwalksBot AUTORISÉ sur /pages/product-developer
+page https://nimbleactivewear.com/pages/product-developer : HTTP 200, finale https://nimbleactivewear.com/pages/product-developer, 307247 octets, sha256 c8e31a072f0fa1d0d7a89daea2267e12492cd69758d1b71496778019d47ca939
+JobPosting (mot) : 0 ; blocs application/ld+json : 2
+texte visible /^Product Developer|location|sydney|melbourne|australia|survey/ : 11
+    Product Developer
+    Australia (AUD $)
+    Australia (AUD $)
+    Australia (AUD $)
+    Australia (AUD $)
+    Product Developer
+    Product Developer
+    Be part of a fast-growing Australian brand, where there is no limit to the impact that you can have
+    Link to survey
+    Australia (AUD $)
+    Australia (AUD $)

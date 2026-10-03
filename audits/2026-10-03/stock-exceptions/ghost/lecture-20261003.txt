@@ -1,0 +1,8 @@
+robots.txt https://www.ghostfashion.com/robots.txt : HTTP 200, CatwalksBot AUTORISÉ sur /careers
+page https://www.ghostfashion.com/careers : HTTP 200, finale https://www.ghostfashion.com/careers, 102901 octets, sha256 28e4e39872a10f2022ee0b7bdec3269ed4fe76451d09c3ffc64557c84356e1d8
+JobPosting (mot) : 0 ; blocs application/ld+json : 0
+texte visible /openings|vacanc|position/ : 1
+    Thank you for your interest in Ghost. Although we do not have current openings, we are always on the lookout for great talent.
+liens de même origine /job|career|vacanc/ : 2
+    https://www.ghostfashion.com/careers
+    https://www.ghostfashion.com/careers#

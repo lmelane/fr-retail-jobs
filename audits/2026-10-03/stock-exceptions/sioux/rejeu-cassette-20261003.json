@@ -1,0 +1,20 @@
+{
+ "config": {
+  "startUrl": "https://www.sioux.de/pages/stellenangebote",
+  "emptyListingText": "Derzeit haben wir keine offenen Stellen."
+ },
+ "jobs": 0,
+ "declaredTotal": 0,
+ "complete": true,
+ "truncated": false,
+ "verdict": "PROVEN",
+ "method": "START_PAGE_PUBLISHER_DECLARES_NO_OPENING",
+ "termination": "PUBLISHER_DECLARES_NO_OPENING",
+ "issues": [],
+ "canonicalIds": [
+  []
+ ],
+ "publisherCounter": "Derzeit haben wir keine offenen Stellen.",
+ "pageSha256": "7f288305ca38c32826baa4189c04febdd9fc46f2d9ebcb136b4a4ba0f6b595ba",
+ "replayedRequests": 1
+}

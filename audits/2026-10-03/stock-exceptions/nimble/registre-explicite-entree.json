@@ -1,0 +1,14 @@
+{
+ "currentStatus": "PAUSED",
+ "targetStatus": "PAUSED",
+ "key": "nimble",
+ "maison": "Nimble",
+ "intention": "A_TRANCHER",
+ "trajectory": "REVUE_HUMAINE",
+ "basis": "PREUVE",
+ "decision": "Aucune décision CEO : pause de la revue du 23/09 (audits/2026-09-23/post-run-source-review.json)",
+ "reason": "La page carrières (lue le 03/10/2026) ne liste qu'une offre, « Product Developer - February 2026 », vers une page Shopify (/pages/product-developer) sans JobPosting, sans lieu ni date de publication : le lecteur générique, qui lit les offres structurées, ne peut pas la lire ; une lecture dédiée publierait une offre sans lieu, datée de février.",
+ "nextAction": "Arbitrage du CEO ; selon la réponse, lecteur dédié de la page, pause assumée relue au réexamen, ou retrait.",
+ "reviewAt": "2026-10-09",
+ "question": "Nimble ne publie qu'une offre (« Product Developer - February 2026 ») sur une page sans données structurées, sans lieu ni date de publication. La collecter quand même ?"
+}

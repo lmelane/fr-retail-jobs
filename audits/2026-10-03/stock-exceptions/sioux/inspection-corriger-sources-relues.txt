@@ -1,0 +1,8 @@
+
+CORRECTIONS D'ATS ET DE PORTAIL — 1 source(s)
+
+   sioux                      generic-listing    → generic-listing    https://www.sioux.de/pages/stellenangebote
+                              config : {"startUrl":"https://www.sioux.de/pages/stellenangebote","emptyListingText":"Derzeit haben wir keine offenen Stellen."}
+
+INSPECTION SEULEMENT — rien n'a été écrit. Ajouter --ecrire pour appliquer.
+
