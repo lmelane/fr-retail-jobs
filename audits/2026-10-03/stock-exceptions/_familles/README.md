@@ -26,8 +26,10 @@ Sources ACTIVE dégradées au RUN `9022fc4b-1b96-431d-bee9-86ed244ef4f1` (02/10,
    Correctif `ca9e05f` : `listProof`. Rejeu des captures du 02/10 : les six passent PROVEN (`SHORT_PAGE` pour lvmh,
    `DECLARED_TOTAL_REACHED` pour SmartRecruiters, terminaisons déjà probantes pour le refresh).
    Une preuve qui manque laisse l'énumération inconnue, comme avant : aucune collecte ne devient bloquante.
-2. **wttj-sector** : prouvée (`ORGANIZATIONS_RECONCILED`) mais la terminaison n'est pas probante pour le refresh
-   (`DECLARED_BUT_NOT_PROVING`, `refreshPlan.ts`) : la promouvoir est une lecture D-492 à écrire.
+2. **wttj-sector** : prouvée (`ORGANIZATIONS_RECONCILED`), terminaison probante pour le refresh depuis l'arbitrage du
+   CTO du 03/10 (`PROVING_TERMINATIONS`). L'absence ne s'y juge que dans son périmètre (`absenceScope`) : les
+   organisations présentes ET prouvées. Une organisation sortie de la facette ne ferme aucune de ses offres
+   (`../wttj-sector/perimetre-absence.out` : Hermès sortie, 929 représentations hors périmètre sur 2 656).
 3. **tapestry, `CANONICAL_ID_CONTRACT_BROKEN`** : défaut du lecteur. La page `#facets` de la lecture partitionnée
    était archivée sans `canonicalIds` : contrat partiel, preuve tombée au normaliseur (`canonicalContractDeclared:
    false` au 02/10). Correctif `42f685a`, témoin dans `workday.partition.test.ts`. Rejeu : 220 pages sur 220 déclarent.
@@ -65,3 +67,14 @@ fermetures des autres lots du même RUN).
   après une collecte prouvée, SmartRecruiters après deux. RUN de la release : aucune (preuve observée) ; RUN suivant :
   environ 2 153 ; encore suivant : environ 2 292 (avec au plus 1 512 ordinaires : 3 665 et 3 804, sous le seuil). Témoin :
   `attestationWarmup.test.ts`.
+
+## Suites de la lecture adverse du 03/10 (branche `d522-6-audit-wttj`)
+
+- **HIGH métier, périmètre d'absence** : `absenceScope` (lecteur `wttjSector.ts`) lu par `refreshEvidence.ts`
+  (`outsideScopeOf`, requête `raw #>> '{organization,slug}'`) et `availability.ts` (aucune retenue hors périmètre).
+  Témoin `absenceScope.test.ts` ; requête réelle rejouée en lecture seule (`perimetre-absence.mts`).
+- **Mise en route** : seules comptent les collectes d'un RUN `ingest-all` terminées par une fin probante
+  (`warmupStreak`, témoin `attestationWarmupRuns.test.ts`).
+- **LOW laissé** : `SourceRun.canAttestAbsence` (`health.ts`) ignore la mise en route ; seule la capture attestante
+  (`attestingCapture.ts`) décide d'une fermeture. Le recalculer dans `health.ts` dupliquerait la règle sur une autre
+  source de vérité (sans terminaison scellée) : à traiter si les bilans l'affichent comme un droit de fermer.

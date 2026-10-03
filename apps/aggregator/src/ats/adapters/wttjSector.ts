@@ -202,10 +202,17 @@ export async function fetchWttjSectorJobs(config: Record<string, unknown>): Prom
   return { jobs, declaredTotal, truncated, rejectedRows, ...(complete ? { complete: true } : {}),
     enumeration: { method: 'FACETED_ORGANIZATION_SWEEP_OF_ALGOLIA_INDEX',
       endpoint: `https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`, issues, enumerationTraversalComplete: complete,
-      // `ORGANIZATIONS_RECONCILED` n'est PAS une terminaison probante pour le refresh (`refreshPlan.ts`,
-      // `DECLARED_BUT_NOT_PROVING`) : la promouvoir est une lecture à écrire, pas un effet de bord de ce lecteur.
+      // `ORGANIZATIONS_RECONCILED` est probante pour le refresh (`PROVING_TERMINATIONS`, arbitrage du CTO du 03/10/2026),
+      // mais l'absence ne s'y juge que DANS `absenceScope` : les organisations présentes et prouvées.
       pages, rawCount, termination: truncated ? 'ORGANIZATION_SHORT_OF_DECLARED_TOTAL' : complete ? 'ORGANIZATIONS_RECONCILED' : 'EVERY_ORGANIZATION_READ',
       canonicalAbsenceProofUsable: absenceProofUsable,
+      /**
+       * LE PÉRIMÈTRE D'ABSENCE (D-522 §6, lecture métier du 03/10/2026, HIGH). Une organisation sortie de la facette n'est
+       * plus balayée : sans ce périmètre, ses offres encore en ligne manqueraient à la preuve et seraient toutes fermées
+       * (Hermès : 929 offres dont wttj-sector est la seule source). Seules les offres d'une organisation présente ET
+       * prouvée par `listProof` peuvent être déclarées absentes ; la valeur est lue dans `JobSource.raw.organization.slug`.
+       */
+      absenceScope: { rawPath: ['organization', 'slug'], proven: organizations.filter((_, i) => perOrganization[i]!.complete === true) },
       scopes: organizations.map((slug, i) => ({ scope: slug,
         declaredTotal: perOrganization[i].declaredTotal ?? -1,
         uniqueIds: perOrganization[i].jobs.length,

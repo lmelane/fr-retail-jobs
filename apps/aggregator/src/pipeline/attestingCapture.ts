@@ -29,7 +29,7 @@ import { isCompleteEmptyListing, isDeclaredEmptyEnumeration, isPublisherConfirme
 import { splitRejectedRows } from './rejectedRows.js';
 import { lightPassRunIds } from './referenceRuns.js';
 import { isIncrementalResult } from '../lib/incrementalReading.js';
-import { enumerationEvidence, type AttestationFacts, type EnumerationEvidence } from './refreshPlan.js';
+import { enumerationEvidence, PROVING_TERMINATIONS, type AttestationFacts, type EnumerationEvidence } from './refreshPlan.js';
 
 /** Les identifiants VUS par la capture, classés par devenir. `published` = sorties du manifeste sans disposition. */
 export type CaptureDispositions = {
@@ -72,9 +72,25 @@ export function provenStreak(completes: ReadonlyArray<boolean | null | undefined
   return gap === -1 ? completes.length : gap;
 }
 
-/** Le `complete` scellé d'une collecte précédente ; illisible : null, et la série s'arrête (le refus est le sens sûr). */
-async function sealedComplete(db: Prisma.TransactionClient, batchId: string, store?: ObjectStore): Promise<boolean | null> {
-  try { return (await readExtractionManifest(db, batchId, store)).metadata.complete === true; }
+/** Le RUN complet quotidien : seule commande dont une collecte compte dans la série de mise en route. */
+export const WARMUP_RUN_COMMAND = 'ingest-all';
+
+/**
+ * La série de mise en route (D-522 §6, lecture technique du 03/10/2026). Ne compte que les collectes d'un RUN complet
+ * (`ingest-all`) — une vérification manuelle (`runId` nul, `ingest --source`) est ignorée, ni comptée ni bloquante — dont le
+ * manifeste scellé dit `complete: true` ET une terminaison PROBANTE (`PROVING_TERMINATIONS`). Manifeste illisible : la série
+ * s'arrête. `earlier` va de la plus récente à la plus ancienne. Pure.
+ */
+export function warmupStreak(earlier: ReadonlyArray<{ runCommand: string | null; metadata: { complete?: unknown; enumeration?: { termination?: unknown } } | null }>,
+  required: number): number {
+  const runs = earlier.filter(row => row.runCommand === WARMUP_RUN_COMMAND).slice(0, required);
+  return provenStreak(runs.map(row => row.metadata !== null && row.metadata.complete === true
+    && typeof row.metadata.enumeration?.termination === 'string' && PROVING_TERMINATIONS.has(row.metadata.enumeration.termination)));
+}
+
+/** Le manifeste scellé d'une collecte précédente ; illisible : null (la série s'arrête, le refus est le sens sûr). */
+async function sealedMetadata(db: Prisma.TransactionClient, batchId: string, store?: ObjectStore) {
+  try { return (await readExtractionManifest(db, batchId, store)).metadata as { complete?: unknown; enumeration?: { termination?: unknown } }; }
   catch { return null; }
 }
 
@@ -190,13 +206,14 @@ export async function readAttestingCapture(db: Prisma.TransactionClient, sourceK
   const required = ATTESTATION_WARMUP_BY_KIND[registry.kind] ?? 0;
   let warmup: { required: number; provenBefore: number } | undefined;
   if (required > 0) {
+    const fullRuns = (await db.pipelineRun.findMany({ where: { command: WARMUP_RUN_COMMAND }, select: { id: true } })).map(run => run.id);
     const earlier = await db.sourceIngestionCompletion.findMany({
-      where: { batch: { sourceKey, OR: [{ runId: null }, { runId: { notIn: lightPasses } }] }, completedAt: { lt: completion.row.completedAt }, batchId: { not: batch.id } },
+      where: { batch: { sourceKey, runId: { in: fullRuns } }, completedAt: { lt: completion.row.completedAt }, batchId: { not: batch.id } },
       orderBy: [{ completedAt: 'desc' }, { batchId: 'desc' }], select: { batchId: true }, take: required,
     });
-    const completes: Array<boolean | null> = [];
-    for (const row of earlier) completes.push(await sealedComplete(db, row.batchId, store));
-    warmup = { required, provenBefore: provenStreak(completes) };
+    const rows = [];
+    for (const row of earlier) rows.push({ runCommand: WARMUP_RUN_COMMAND, metadata: await sealedMetadata(db, row.batchId, store) });
+    warmup = { required, provenBefore: warmupStreak(rows, required) };
   }
   const rejectedRows = Array.isArray(manifest.metadata.rejectedRows) ? manifest.metadata.rejectedRows : [];
   const split = splitRejectedRows(rejectedRows);

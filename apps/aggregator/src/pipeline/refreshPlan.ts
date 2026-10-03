@@ -85,6 +85,8 @@ export type EnumerationEvidence = {
    * `undefined` = l'adaptateur ne se prononce pas, on ne présume rien de défavorable.
    */
   canonicalAbsenceProofUsable?: boolean;
+  /** Le périmètre d'absence déclaré par le lecteur (`AdapterResult.enumeration.absenceScope`) ; absent : toute la source. */
+  absenceScope?: { rawPath: string[]; proven: string[] };
 };
 
 const object = (value: unknown): Record<string, unknown> | undefined =>
@@ -102,12 +104,38 @@ export function enumerationEvidence(sourceKey: string, captureBatchId: string, m
     else ids.push(...values);
   }
   const issues = enumeration?.issues;
-  return { sourceKey, captureBatchId,
+  const scope = absenceScopeOf(enumeration?.absenceScope);
+  return { sourceKey, captureBatchId, ...(scope ? { absenceScope: scope } : {}),
     termination: typeof enumeration?.termination === 'string' ? enumeration.termination : null,
     canonicalSet: [...new Set(ids)], canonicalContractDeclared: declared,
     canonicalContractBroken: Array.isArray(issues) && issues.includes('CANONICAL_ID_CONTRACT_BROKEN'),
     canonicalAbsenceProofUsable: enumeration?.canonicalAbsenceProofUsable !== false,
   };
+}
+
+const SCOPE_SEGMENT = /^[A-Za-z_][A-Za-z0-9_]{0,63}$/;
+/**
+ * Le périmètre d'absence d'une preuve scellée. Illisible (chemin hors liste, valeurs non textuelles) : un périmètre VIDE,
+ * qui n'autorise aucune absence — jamais l'ancien comportement « toute la source », qui fermerait hors périmètre.
+ */
+function absenceScopeOf(value: unknown): { rawPath: string[]; proven: string[] } | undefined {
+  if (value === undefined || value === null) return undefined;
+  const raw = object(value);
+  const path = raw?.rawPath, proven = raw?.proven;
+  const valid = Array.isArray(path) && path.length > 0 && path.length <= 4 && path.every(s => typeof s === 'string' && SCOPE_SEGMENT.test(s))
+    && Array.isArray(proven) && proven.every(v => typeof v === 'string' && v.trim());
+  return valid ? { rawPath: [...path as string[]], proven: [...proven as string[]] } : { rawPath: [], proven: [] };
+}
+
+/**
+ * Les représentations HORS du périmètre d'absence (D-522 §6) : leur valeur de périmètre est absente, illisible ou hors de
+ * `proven`. Elles ne sont jamais déclarées absentes (`representationState`, `UNVERIFIABLE`). Sans périmètre : aucune. Pure.
+ */
+export function outsideAbsenceScope(scope: { rawPath: string[]; proven: string[] } | undefined,
+  valueByJobSource: ReadonlyMap<string, string | null>): Set<string> {
+  if (!scope) return new Set();
+  const proven = new Set(scope.proven);
+  return new Set([...valueByJobSource].filter(([, value]) => scope.rawPath.length === 0 || value === null || !proven.has(value)).map(([id]) => id));
 }
 
 export type Representation = {
@@ -311,6 +339,8 @@ export function representationState(
   rep: Representation,
   observed: ReadonlySet<string> | null,
   sourceEligible: boolean,
+  /** Hors du périmètre d'absence de la preuve (`outsideAbsenceScope`, D-522 §6) : jamais déclarée absente. */
+  outOfAbsenceScope = false,
 ): RepresentationState {
   if (!sourceEligible || observed === null) return 'UNVERIFIABLE';
   if (rep.writeFailed) return 'PRESENT_BUT_WRITE_FAILED';
@@ -318,6 +348,7 @@ export function representationState(
   if (rep.rejected) return 'PRESENT_BUT_REJECTED';
   if (rep.skipped) return 'PRESENT_BUT_SKIPPED';
   if (observed.has(rep.externalId)) return 'PRESENT_AND_REATTESTED';
+  if (outOfAbsenceScope) return 'UNVERIFIABLE';
   return 'ABSENT_FROM_PROVEN_ENUMERATION';
 }
 

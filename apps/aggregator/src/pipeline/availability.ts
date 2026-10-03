@@ -33,6 +33,7 @@ import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { objectStoreConfigured, objectStoreFromEnv } from '../retention/objectStore.js';
 import { ATTESTATION_MIN_COVERAGE } from './attestation.js';
 import { readAttestingCapture } from './attestingCapture.js';
+import { outsideScopeOf } from './refreshEvidence.js';
 import { seenByCapture } from './refreshEvidence.js';
 import { MASS_ABSENCE_MIN_STOCK, type AttestationFacts } from './refreshPlan.js';
 import { pauseDecided } from '../registry/explicitRegistry.js';
@@ -137,7 +138,9 @@ export async function runAvailabilityReview(prisma: PrismaClient, options: { dry
       const { capture } = result;
       captureBatchId = capture.captureBatchId;
       const seen = seenByCapture(new Set(capture.evidence.canonicalSet), capture.dispositions);
-      missed = rows.filter(row => row.lastSeenAt < capture.startedAt && !seen.has(row.externalId));
+      // D-522 §6 : hors du périmètre d'absence de la preuve (une organisation sortie du balayage), rien n'est retenu.
+      const outside = await outsideScopeOf(prisma, sourceKey, capture.evidence);
+      missed = rows.filter(row => row.lastSeenAt < capture.startedAt && !seen.has(row.externalId) && !outside.has(row.id));
       reason = reconfirmationVerdict({ facts: capture.facts, stock: rows.length, missed: missed.length });
       const toHold = reason ? [] : missed.filter(row => !stillHeld(row));
       written = dryRun ? toHold.length : await hold(prisma, toHold.map(row => row.id), capture.startedAt, {

@@ -132,6 +132,8 @@ describe('wttj-sector — les organisations d’un secteur (2 144 lues sur 2 144
     // Réconciliation complète : terminaison probante pour le refresh (arbitrage du CTO, lecture D-492, D-522 §6).
     expect(result.enumeration!.termination).toBe('ORGANIZATIONS_RECONCILED');
     expect(PROVING_TERMINATIONS.has('ORGANIZATIONS_RECONCILED')).toBe(true);
+    // Le périmètre d'absence : les seules organisations présentes ET prouvées (lecture métier du 03/10, HIGH).
+    expect(result.enumeration!.absenceScope).toEqual({ rawPath: ['organization', 'slug'], proven: ['diptyque', 'hermes'] });
   });
   it.each([
     ['un total qui varie', { nbHitsOnPage: (p: number) => (p === 1 ? 151 : 150) }],
@@ -151,6 +153,8 @@ describe('wttj-sector — les organisations d’un secteur (2 144 lues sur 2 144
     expect(result.enumeration!.termination).not.toBe('ORGANIZATIONS_RECONCILED');
     expect(PROVING_TERMINATIONS.has(result.enumeration!.termination)).toBe(false);
     expect(result.enumeration!.issues!.some((i) => i.startsWith('ORGANIZATIONS_UNPROVEN=1:hermes'))).toBe(true);
+    // L'organisation non prouvée sort du périmètre d'absence : aucune de ses offres ne peut être déclarée absente.
+    expect(result.enumeration!.absenceScope).toEqual({ rawPath: ['organization', 'slug'], proven: ['diptyque'] });
   });
   it('n’atteste rien quand une ligne est servie deux fois dans une organisation', async () => {
     const base = algolia({ total: 150, template: WTTJ.hits, idKey: 'reference' });

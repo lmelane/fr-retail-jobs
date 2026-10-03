@@ -1,9 +1,22 @@
-import type { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { chunk } from '../lib/chunk.js';
 import { readAttestingCapture, type CaptureDispositions } from './attestingCapture.js';
-import { identifiersComparable, massAbsenceGuard, planRefresh, representationState, sourceEligibility,
-  type Representation, type RepresentationState } from './refreshPlan.js';
+import { identifiersComparable, massAbsenceGuard, outsideAbsenceScope, planRefresh, representationState, sourceEligibility,
+  type EnumerationEvidence, type Representation, type RepresentationState } from './refreshPlan.js';
+
+/**
+ * Les représentations actives d'une source HORS du périmètre d'absence de sa preuve (D-522 §6) : la valeur `rawPath` de
+ * leur `JobSource.raw` est lue en base (texte seul, jamais le brut entier). Sans périmètre : aucune requête, aucune.
+ */
+export async function outsideScopeOf(db: Prisma.TransactionClient, sourceKey: string, evidence: Pick<EnumerationEvidence, 'absenceScope'>): Promise<Set<string>> {
+  if (!evidence.absenceScope) return new Set();
+  const path = evidence.absenceScope.rawPath;
+  const rows = path.length ? await db.$queryRaw<{ id: string; value: string | null }[]>(Prisma.sql`
+    SELECT id, raw #>> ${path}::text[] AS value FROM "JobSource" WHERE "sourceKey" = ${sourceKey} AND "isActive"`)
+    : await db.jobSource.findMany({ where: { sourceKey, isActive: true }, select: { id: true } }).then(list => list.map(row => ({ id: row.id, value: null })));
+  return outsideAbsenceScope(evidence.absenceScope, new Map(rows.map(row => [row.id, row.value])));
+}
 
 export type SourceEligibilityRow = {
   source: string; eligible: boolean; reasons: string[]; captureBatchId: string | null; startedAt: Date | null; termination: string | null;
@@ -45,6 +58,11 @@ export async function readAbsencePlan(db: Prisma.TransactionClient, scope: Prism
   }
   const captures = new Map<string, Awaited<ReturnType<typeof readAttestingCapture>>>();
   for (const key of keys) captures.set(key, await readAttestingCapture(db, key, now, store));
+  const outside = new Set<string>();
+  for (const key of keys) {
+    const result = captures.get(key)!;
+    if (result.ok) for (const id of await outsideScopeOf(db, key, result.capture.evidence)) outside.add(id);
+  }
   const observedBy = new Map<string, Set<string>>();
   const dispositionsBy = new Map<string, CaptureDispositions>();
   const eligibility: SourceEligibilityRow[] = keys.map(source => {
@@ -79,7 +97,7 @@ export async function readAbsencePlan(db: Prisma.TransactionClient, scope: Prism
   });
   const states = new Map<string, RepresentationState>();
   for (const rep of representations) {
-    states.set(rep.jobSourceId, representationState(rep, observedBy.get(rep.sourceKey) ?? null, allowed.has(rep.sourceKey)));
+    states.set(rep.jobSourceId, representationState(rep, observedBy.get(rep.sourceKey) ?? null, allowed.has(rep.sourceKey), outside.has(rep.jobSourceId)));
   }
   const jobIds = [...new Set(rows.flatMap(row => row.jobId ? [row.jobId] : []))];
   const activeByJob = new Map<string, string[]>();

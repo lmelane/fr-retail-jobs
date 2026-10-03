@@ -143,6 +143,13 @@ export type AdapterResult = {
      * d'absence est refusée pour ce cycle.
      */
     canonicalAbsenceProofUsable?: boolean;
+    /**
+     * LE PÉRIMÈTRE D'ABSENCE (D-522 §6, lecture métier du 03/10/2026). Présent quand la source balaie des sous-ensembles
+     * (wttj-sector : une organisation à la fois) : seule une représentation dont la valeur `rawPath` (lue dans son
+     * `JobSource.raw`) figure dans `proven` peut être déclarée absente. Une organisation sortie du balayage, ou non prouvée,
+     * n'atteste jamais l'absence de ses offres. Absent : toute la source est le périmètre, comme avant.
+     */
+    absenceScope?: { rawPath: string[]; proven: string[] };
     /** Le parcours du listing a-t-il été mené à son terme ? Indépendant de l'exploitabilité ci-dessus. */
     enumerationTraversalComplete?: boolean; scopes?: Array<{ scope: string; declaredTotal: number; uniqueIds: number; pages: number; complete: boolean }>;
     pageEvidence?: Array<{ url: string; checkedAt: string; sha256: string; offset: number; pagination: { start: number; end: number; total: number } | null;
