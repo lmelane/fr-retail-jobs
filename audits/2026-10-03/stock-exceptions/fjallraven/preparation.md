@@ -15,7 +15,7 @@ ne sortent pas et ne figurent pas dans la preuve d'énumération (`outOfScopeEmp
 # 1. Nouvelle source (qualification, décision d'accès, promotion, ingestion)
 sh apps/aggregator/start.sh source-add --key=fjallraven-fenix-outdoor --name=Fjällräven --kind=teamtailor \
   --careers-url=https://career.fenixoutdoor.se/jobs --official-domain=fjallraven.com --tier=GROUP_OFFICIAL \
-  --reviewer=loic-melane-d522 --setting=origin=https://career.fenixoutdoor.se '--setting=employer=Fjällräven North America'
+  --reviewer=assistant-d522 --setting=origin=https://career.fenixoutdoor.se '--setting=employer=Fjällräven North America'
 # 2. Si l'identité retient les offres (libellé « Fjällräven North America » inconnu) : alias limité à la source
 python3 apps/aggregator/scripts/ops/db.py production npx tsx apps/aggregator/scripts/ops/record-employer-alias.mts \
   --spec=audits/2026-10-03/stock-exceptions/fjallraven/alias-fjallraven-north-america.json --phase=production        # aperçu

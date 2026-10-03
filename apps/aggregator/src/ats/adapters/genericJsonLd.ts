@@ -73,8 +73,9 @@ const CHALLENGE_PAGE = /just a moment|cf-chl|cf_chl|challenge-platform|_Incapsul
  * refusait `EMPTY_FEED_NOT_NATIVELY_PROVEN` — une Maison sans offre restait en pause comme une source en panne.
  *
  * La preuve est STRICTE, et jamais déduite d'un silence :
- *   · la phrase est relue par un humain et configurée telle quelle (`emptyListingText`, littéral de 16 caractères au
- *     moins — une donnée, jamais une expression) ; une phrase devinée ou générique ne prouve rien ;
+ *   · la phrase est relevée par l'assistant sur la page officielle et configurée telle quelle par un fichier relu
+ *     (`emptyListingText`, littéral de 16 caractères au moins — une donnée, jamais une expression) ; une phrase
+ *     devinée ou générique ne prouve rien ;
  *   · elle figure dans le TEXTE VISIBLE de la page (scripts, styles, gabarits, `noscript` et commentaires retirés) : un
  *     message « aucune offre » gardé dans le code d'une application ne dit rien de ce que la page affiche ;
  *   · la page et toutes les pages liées lues ne portent AUCUNE offre : ni JobPosting lisible, ni même le mot

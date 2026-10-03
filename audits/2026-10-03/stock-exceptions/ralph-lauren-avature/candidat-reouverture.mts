@@ -8,7 +8,7 @@
 import { PrismaClient } from '@prisma/client';
 import { sourceLaunchArguments, registeredSourceCandidate } from '../../../../apps/aggregator/src/onboarding/launch.js';
 
-const args = ['--key=ralph-lauren-avature', '--registered-revision=de332ddf-b45d-42fa-a89e-9ab1106e0d62', '--official-domain=ralphlauren.com', '--reviewer=loic-melane-d522'];
+const args = ['--key=ralph-lauren-avature', '--registered-revision=de332ddf-b45d-42fa-a89e-9ab1106e0d62', '--official-domain=ralphlauren.com', '--reviewer=assistant-d522'];
 const input = sourceLaunchArguments(args);
 const db = new PrismaClient();
 try {

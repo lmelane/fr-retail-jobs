@@ -41,7 +41,7 @@ revised.append({
                'audits/2026-10-03/stock-exceptions/ralph-lauren-avature/). portalScope SINGLE_BRAND posé (D-481 §2).'),
     'nextAction': ('Après le RUN d\'acceptation de r6 : source-add --key=ralph-lauren-avature '
                    '--registered-revision=de332ddf-b45d-42fa-a89e-9ab1106e0d62 --official-domain=ralphlauren.com '
-                   '--reviewer=loic-melane-d522 ; juger la collecte par les critères de D-483 '
+                   '--reviewer=assistant-d522 ; juger la collecte par les critères de D-483 '
                    '(audits/2026-09-30/d483-amorcage-waf/criteres-acceptation.md) et source.capture_adopted.'),
     'reviewAt': '2026-10-06', 'question': None,
 })

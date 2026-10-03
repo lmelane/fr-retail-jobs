@@ -3,7 +3,7 @@
   "--key=ralph-lauren-avature",
   "--registered-revision=de332ddf-b45d-42fa-a89e-9ab1106e0d62",
   "--official-domain=ralphlauren.com",
-  "--reviewer=loic-melane-d522"
+  "--reviewer=assistant-d522"
  ],
  "status": "PAUSED",
  "currentRevisionId": "de332ddf-b45d-42fa-a89e-9ab1106e0d62",
@@ -23,7 +23,7 @@
   "tier": "EMPLOYER_DIRECT",
   "jobUrlPattern": null,
   "domain": "ralphlauren.com",
-  "domainSource": "registered revision reviewed by loic-melane-d522",
+  "domainSource": "registered revision reviewed by assistant-d522",
   "portalScope": "SINGLE_BRAND",
   "note": "lot GENERIC 2026-09-06 — validé 1082 offres, 1082 avec lieu"
  }
