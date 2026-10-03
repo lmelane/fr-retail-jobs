@@ -18,6 +18,9 @@ async function wipe() {
   await prisma.jobEvent.deleteMany({});
   await prisma.jobSource.deleteMany({});
   await prisma.job.deleteMany({});
+  // La répartition « retenues à la collecte » lit TOUT le catalogue : une observation retenue laissée par un autre fichier
+  // (sa représentation effacée par un nettoyage global) fausserait le décompte selon l'ordre des fichiers (D-522 §6).
+  await prisma.sourceObservation.deleteMany({ where: { publicationHold: { not: null } } });
   await prisma.sourceObservation.deleteMany({ where: { sourceKey: { startsWith: 'expo-' } } });
   await prisma.source.deleteMany({ where: { key: { startsWith: 'expo-' } } });
   await prisma.company.deleteMany({ where: { canonicalKey: { startsWith: 'EXPO_' } } });

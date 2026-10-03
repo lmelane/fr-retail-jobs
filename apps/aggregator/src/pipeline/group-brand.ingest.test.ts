@@ -24,7 +24,11 @@ import type { CandidateJob } from '../dedup/match.js';
 const db = new PrismaClient();
 // Les observations d'employeur sont immuables (déclencheur) : chaque offre porte un identifiant propre au passage.
 beforeEach(async () => { await db.companyAlias.deleteMany(); await db.jobEvent.deleteMany(); await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany(); });
-afterAll(() => db.$disconnect());
+afterAll(async () => {
+  // Les observations retenues de ce fichier (Marchesi) ne doivent pas survivre à leurs représentations effacées.
+  await db.sourceObservation.deleteMany({ where: { externalId: { endsWith: `-${RUN}` } } });
+  await db.$disconnect();
+});
 
 const RUN = randomUUID().slice(0, 8);
 const BRAND = `${GROUP_BRAND_PATH}:${GROUP_BRAND_RULE}`;
