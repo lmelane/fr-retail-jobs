@@ -22,8 +22,8 @@
   "trajectory": "A_REPARER",
   "basis": "PREUVE",
   "decision": "Aucune décision CEO : pause de la revue du 23/09 ; plafond de tolérance du propriétaire (19/09, sourceCertification.ts)",
-  "reason": "03/10 : 452 offres, 18 fiches réellement vides chez l'éditeur (recrutements saisonniers PEAKREQ ; détail Oracle à description, qualifications et responsabilités de longueur 0) pour une tolérance de 4 : validation REJECTED. Portail du groupe (Typo, Factorie, Supré, Cotton On Kids/Body nommés dans les titres), aucun employeur natif par offre, portalScope NULL. Domaine : cottonongroup.com sert la page qui lie le tenant (pas de relation à instruire).",
-  "nextAction": "Requalifier quand les fiches vides repassent sous la tolérance, ou selon l'arbitrage sur la tolérance ; avant : portalScope MULTI_BRAND et libellé de groupe (aucun chemin relu ne renomme Source.maison).",
+  "reason": "03/10 : 452 offres lisibles ; 18 fiches vides chez l'éditeur (saisonniers PEAKREQ, description, qualifications et responsabilités de longueur 0). La validation refuse la SOURCE entière dès que les fiches non qualifiées dépassent la tolérance (apps/aggregator/src/connectors/sourceValidation.ts:183-185, 18 pour 4) : défaut du code au regard de D-523 (une offre qui ne peut pas être servie est retenue, pas la source). Portail du groupe (Typo, Factorie, Supré nommés dans les titres), sans employeur natif par offre ; cottonongroup.com sert la page qui lie le portail.",
+  "nextAction": "Correction D-523 de la validation (offres vides retenues une à une), menée sur la plateforme ; puis portalScope MULTI_BRAND, libellé de groupe (aucun chemin relu ne renomme Source.maison : outil à écrire) et requalification par source-add --registered-revision.",
   "reviewAt": "2026-10-09",
   "question": null
  },
@@ -64,8 +64,8 @@
   "trajectory": "A_REPARER",
   "basis": "PREUVE",
   "decision": "Aucune décision CEO : pause de la revue du 23/09",
-  "reason": "Le 500 venait du dialecte /api/jobs ; le dialecte CareerConnect déclaré par le site lit 260 offres (fichier relu prêt). 6 fiches sont des gabarits vides chez l'éditeur pour une tolérance de 2 : la validation sera REJECTED tant qu'elles restent. titancompany.in/careers lie le portail.",
-  "nextAction": "Appliquer audits/2026-10-03/stock-exceptions/fastrack/registre-relu-fastrack.csv, puis source-add --key=fastrack --registered-revision=<révision créée> --official-domain=titancompany.in quand les fiches vides passent sous 3.",
+  "reason": "Le HTTP 500 venait du dialecte /api/jobs ; le dialecte CareerConnect déclaré par le site lit 260 offres (fichier relu prêt) ; titancompany.in/careers lie le portail. 6 fiches sont des gabarits vides chez l'éditeur : la validation refuse la SOURCE au-delà de 2 (apps/aggregator/src/connectors/sourceValidation.ts:183-185), défaut du code au regard de D-523 (l'offre est retenue, pas la source).",
+  "nextAction": "Appliquer audits/2026-10-03/stock-exceptions/fastrack/registre-relu-fastrack.csv ; après la correction D-523 de la validation, source-add --key=fastrack --registered-revision=<révision créée> --official-domain=titancompany.in.",
   "reviewAt": "2026-10-09",
   "question": null
  },
