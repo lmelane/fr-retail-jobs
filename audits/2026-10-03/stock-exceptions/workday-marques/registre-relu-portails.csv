@@ -1,0 +1,18 @@
+cle;portail_une_seule_marque;preuve
+mango;SINGLE_BRAND;32 libelles natifs observes (EmployerObservation au 03/10/2026) tous des societes MANGO/MNG (MANGO MNG S.A. 640 ... MANGONOR) voir libelles-natifs.md
+swarovski;SINGLE_BRAND;39 libelles natifs tous des societes Swarovski (1151 Swarovski Retail Ventures 424 ... 1010 DSW Kristall AG & Co KG) voir libelles-natifs.md
+canada-goose;SINGLE_BRAND;10 libelles natifs tous Canada Goose (Canada Goose Inc. 50 ...) voir libelles-natifs.md
+puma;SINGLE_BRAND;52 libelles natifs tous PUMA ou World Cat (filiale d'approvisionnement de PUMA) voir libelles-natifs.md
+mecca;SINGLE_BRAND;2 libelles natifs MECCA Brands Pty Ltd 175 et MECCA Brands NZ Pty Ltd 9 voir libelles-natifs.md
+aritzia;SINGLE_BRAND;2 libelles natifs Aritzia LP 228 et United States of Aritzia Inc. 327 voir libelles-natifs.md
+uniqlo-hkm-headquarters;SINGLE_BRAND;1 libelle natif UNIQLO HONG KONG LIMITED 4 voir libelles-natifs.md
+nordstrom;SINGLE_BRAND;1 libelle natif Nordstrom Inc 2273 (Nordstrom Rack est une enseigne de Nordstrom) voir libelles-natifs.md
+brunello-cucinelli;SINGLE_BRAND;11 libelles natifs tous des societes BRUNELLO CUCINELLI voir libelles-natifs.md
+therealreal;SINGLE_BRAND;1 libelle natif The RealReal Inc. 160 voir libelles-natifs.md
+uniqlo-stores;SINGLE_BRAND;11 libelles natifs tous UNIQLO EUROPE LIMITED (succursales) voir libelles-natifs.md
+levis;MULTI_BRAND;portail Levi Strauss & Co. qui publie Levi's et Beyond Yoga (73 offres Beyond Yoga retenues le 02/10) R-142 §3 liste fermee groupBrands.ts
+nike;MULTI_BRAND;portail Nike Inc. qui publie Nike et Converse (Converse Inc. 8 ... American Converse S.L. 2) R-142 §3 liste fermee groupBrands.ts
+nike-nke2;MULTI_BRAND;portail Nike Inc. qui publie Nike et Converse (31 offres Converse retenues le 02/10) R-142 §3 liste fermee groupBrands.ts
+movado;MULTI_BRAND;portail Movado Group (libelles US01 Movado Group Inc. MGI Luxury Group ...) marques detenues et licences R-142 §3 liste fermee groupBrands.ts
+vf-corporation;MULTI_BRAND;portail VF Corporation qui publie The North Face Vans Timberland Altra Icebreaker Kipling Napapijri Eastpak Smartwool JanSport R-142 §3 liste fermee groupBrands.ts
+l-oreal-professionnel;MULTI_BRAND;portail careers.loreal.com toutes Maisons du groupe L'Oreal (dataLayer jobBrand Multi Brand ou N/A sur 399 offres du 02/10) R-142 §3 liste fermee groupBrands.ts
