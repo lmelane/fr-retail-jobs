@@ -33,7 +33,8 @@ export function requestTarget(kind: string, config: Record<string, unknown>): { 
     // l'hôte réellement appelé et ferait lire robots au mauvais endroit.
     case 'rituals': return { origin: str('origin') || 'https://careers.rituals.com', path: '/api/v1/jobs/' };
     default: {
-      const candidate = str('origin') || str('listingUrl') || str('jobs_url') || str('sitemapUrl') || str('careers_url') || (str('domainName') || str('domain') ? `https://${str('domainName') || str('domain')}` : '');
+      // `feedUrl` et `startUrl` : le flux et la page carrières que le lecteur générique appelle (Sioux, 03/10/2026).
+      const candidate = str('origin') || str('listingUrl') || str('jobs_url') || str('sitemapUrl') || str('careers_url') || str('feedUrl') || str('startUrl') || (str('domainName') || str('domain') ? `https://${str('domainName') || str('domain')}` : '');
       if (!candidate) throw new Error(`${kind}: no request origin in the configuration (origin / listingUrl / jobs_url / sitemapUrl / domainName)`);
       const u = new URL(candidate); return { origin: u.origin, path: u.pathname || '/' };
     }

@@ -75,6 +75,13 @@ describe('request target per kind', () => {
       .toEqual({ origin: 'https://careers.example.com', path: '/api/v1/jobs/' });
   });
 
+  it('generic-listing : la page carrières (`startUrl`) et le flux (`feedUrl`) sont les adresses que le lecteur appelle (Sioux, 03/10/2026)', () => {
+    expect(requestTarget('generic-listing', { startUrl: 'https://www.sioux.de/pages/stellenangebote', emptyListingText: 'Derzeit haben wir keine offenen Stellen.' }))
+      .toEqual({ origin: 'https://www.sioux.de', path: '/pages/stellenangebote' });
+    expect(requestTarget('generic-listing', { feedUrl: 'https://picard-fashion.com/blogs/karriere.atom' }))
+      .toEqual({ origin: 'https://picard-fashion.com', path: '/blogs/karriere.atom' });
+  });
+
   it('refuses a configuration with nothing to request', () => {
     expect(() => requestTarget('generic-listing', {})).toThrow(/no request origin/);
     // Le repli d'un kind ne doit pas devenir un repli GÉNÉRAL : un kind inconnu sans origine reste refusé.
