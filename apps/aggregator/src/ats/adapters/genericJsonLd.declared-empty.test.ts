@@ -60,6 +60,32 @@ describe('D-522 §6 : une page carrières qui annonce elle-même l\'absence d\'o
     expect(startPageDeclaresNoOpening(hidden, SIOUX.text)).toBe(false);
   });
 
+  it.each([
+    ['dans un élément masqué (display:none)', (html: string) => html.replace(`<p class="has-text-align-center" style="text-align: center;">${SIOUX.text}</p>`,
+      `<p class="has-text-align-center" style="text-align: center; display: none">${SIOUX.text}</p>`)],
+    ['dans un élément hidden', (html: string) => html.replace(`<p class="has-text-align-center" style="text-align: center;">${SIOUX.text}</p>`,
+      `<div hidden><p>${SIOUX.text}</p></div>`)],
+  ])('une phrase %s ne prouve rien', async (_label, mutate) => {
+    const html = mutate(SIOUX.html);
+    // Prémisse : la mutation a bien porté sur la phrase (elle est toujours dans les octets, plus dans le texte visible).
+    expect(html).not.toBe(SIOUX.html);
+    expect(html).toContain(SIOUX.text);
+    expect(visiblePageText(html)).not.toContain(SIOUX.text);
+    mockFetch.mockImplementation(async () => html);
+    expect((await fetchGenericJsonLdJobs({ startUrl: SIOUX.url, emptyListingText: SIOUX.text })).complete).toBe(false);
+  });
+
+  it('une page qui charge un portail d\'éditeur d\'ATS ne prouve jamais un zéro, même phrase visible', async () => {
+    const html = GHOST.html.replace('</body>', '<script src="https://boards.greenhouse.io/embed/job_board/js?for=ghost"></script></body>');
+    expect(visiblePageText(html)).toContain(GHOST.text);
+    mockFetch.mockImplementation(async () => html);
+    const result = await fetchGenericJsonLdJobs({ startUrl: GHOST.url, emptyListingText: GHOST.text });
+    expect(result.complete).toBe(false);
+    expect(result.enumeration?.issues).toContain('DECLARED_EMPTY_CONTRADICTED');
+    // Une marque voisine n'est pas un éditeur : « clever.com » ne contient pas lever.co.
+    expect(startPageDeclaresNoOpening(GHOST.html.replace('</body>', '<a href="https://clever.com">clever</a></body>'), GHOST.text)).toBe(true);
+  });
+
   it('une offre trouvée sur une page liée contredit la phrase : rien n\'est prouvé, l\'offre est rendue', async () => {
     const withLink = GHOST.html.replace('</footer>', '<a href="/careers/store-manager">Store Manager</a></footer>');
     mockFetch.mockImplementation(async url => String(url).endsWith('/store-manager') ? jobPosting('Store Manager') : withLink);

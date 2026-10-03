@@ -1,0 +1,25 @@
+# Témoin du lecteur (genericJsonLd.declared-empty.test.ts) AVANT le correctif, 03/10/2026 :
+     × prouve le zéro natif de https://www.sioux.de/pages/stellenangeb… par sa phrase native, sans aucune offre 2ms
+     × prouve le zéro natif de https://www.ghostfashion.com/careers par sa phrase native, sans aucune offre 0ms
+     × une phrase qui n'est que dans un script, un gabarit ou un commentaire ne prouve rien 0ms
+     × une offre trouvée sur une page liée contredit la phrase : rien n'est prouvé, l'offre est rendue 3ms
+     × un JobPosting sur la page même contredit la phrase 0ms
+     × un JobPosting illisible (JSON cassé) sur la page même contredit la phrase 0ms
+     × une offre en microdonnées contredit la phrase 0ms
+     × une page liée illisible empêche la preuve : le zéro n'est jamais déduit d'un échec 1ms
+     × refuse une phrase trop courte pour être une preuve, et toute phrase hors du mode page carrières 3ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+AssertionError: expected [ …(2) ] to include 'LINKED_PAGE_FETCH_FAILURES=1'
+
+# Témoin de validation (sourceValidation.test.ts -t D-522) avec la relecture générique retirée (aller-retour sed) :
+     × D-522 §6 : validates a careers page that shows its reviewed no-opening sentence, replayed on its archived bytes (Sioux) 112ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+AssertionError: expected { …(9) } to match object { verdict: 'VALIDATED', …(1) }
+      Tests  1 failed | 36 skipped (37)
+
+# Durcissement (élément masqué, portail d'ATS embarqué), gardes retirées le temps du test :
+     × une phrase dans un élément masqué (display:none) ne prouve rien 3ms
+     × une phrase dans un élément hidden ne prouve rien 1ms
+     × une page qui charge un portail d'éditeur d'ATS ne prouve jamais un zéro, même phrase visible 2ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  3 failed | 12 passed (15)

@@ -77,7 +77,12 @@ const CHALLENGE_PAGE = /just a moment|cf-chl|cf_chl|challenge-platform|_Incapsul
  *     message « aucune offre » gardé dans le code d'une application ne dit rien de ce que la page affiche ;
  *   · la page et toutes les pages liées lues ne portent AUCUNE offre : ni JobPosting lisible, ni même le mot
  *     `JobPosting` (un JSON-LD cassé ou des microdonnées) ; une offre trouvée contredit la phrase et rien n'est prouvé ;
+ *   · la page ne charge aucun portail d'éditeur d'ATS (widget, iframe, script) qui pourrait afficher des offres absentes
+ *     du HTML servi, et la phrase n'est pas dans un élément masqué ;
  *   · toutes les pages liées ont été lues : un échec de lecture n'est jamais un zéro.
+ * Limite assumée : une offre publiée en HTML simple À CÔTÉ de la phrase conservée (sans lien d'offre, sans données
+ * structurées) ne se distingue pas d'un texte de page ; la phrase est relue en contexte, et une Maison qui publie retire
+ * en pratique sa phrase d'absence.
  * Elle ne vaut qu'en mode page carrières (`startUrl`) : une liste paginée, un plan du site ou un flux ont leur propre
  * preuve, et une phrase n'y remplacerait pas leur parcours.
  *
@@ -87,14 +92,22 @@ const CHALLENGE_PAGE = /just a moment|cf-chl|cf_chl|challenge-platform|_Incapsul
  */
 export const DECLARED_EMPTY_TERMINATION = 'PUBLISHER_DECLARES_NO_OPENING';
 const EMPTY_LISTING_TEXT_MIN_LENGTH = 16;
-const collapse = (text: string) => text.replace(/[\s ]+/g, ' ').trim();
+// `\s` couvre l'espace insécable (U+00A0) en JavaScript.
+const collapse = (text: string) => text.replace(/\s+/g, ' ').trim();
 
-/** Le texte qu'un visiteur lit sur la page : sans scripts, styles, gabarits, `noscript`, ni commentaires. */
+/** Le texte qu'un visiteur lit sur la page : sans scripts, styles, gabarits, `noscript`, commentaires, ni éléments masqués. */
 export function visiblePageText(html: string): string {
   const $ = cheerio.load(html);
-  $('script,style,template,noscript,svg,iframe,object').remove();
+  $('script,style,template,noscript,svg,iframe,object,[hidden],[aria-hidden="true"]').remove();
+  $('[style]').filter((_, el) => /display\s*:\s*none|visibility\s*:\s*hidden/i.test($(el).attr('style') ?? '')).remove();
   return collapse($.root().text());
 }
+
+/**
+ * Un portail d'offres embarqué (widget, iframe ou script d'un éditeur d'ATS) peut afficher des offres que le HTML servi
+ * ne porte pas : une page qui en charge un ne prouve jamais un zéro, quelle que soit sa phrase.
+ */
+const ATS_EMBED = /(?<![a-z0-9-])(?:greenhouse\.io|lever\.co|ashbyhq\.com|teamtailor|recruitee\.com|personio\.(?:de|com)|workable\.com|smartrecruiters\.com|join\.com|zohorecruit|bamboohr\.com|jobylon|softgarden|talent-?soft|myworkdayjobs|successfactors|icims\.com|taleo\.net|jobvite|breezy\.hr|homerun\.co|welcometothejungle|flatchr|digitalrecruiters|eightfold\.ai|phenompeople|avature\.net)/i;
 
 /** La phrase relue, ou null quand la source n'en déclare pas ; toute autre valeur est une configuration refusée. */
 function emptyListingText(config: Record<string, unknown>): string | null {
@@ -112,7 +125,7 @@ const pageCarriesPosting = (html: string) => extractJobPostings(html).length > 0
 
 /** La page affiche la phrase relue et ne porte aucune offre. Partagée avec la validation, qui la rejoue sur les octets archivés. */
 export function startPageDeclaresNoOpening(html: string, text: string): boolean {
-  return !pageCarriesPosting(html) && visiblePageText(html).includes(collapse(text));
+  return !pageCarriesPosting(html) && !ATS_EMBED.test(html) && visiblePageText(html).includes(collapse(text));
 }
 
 /** La relecture de la validation sur les réponses archivées d'une collecte de page carrières (`sourceValidation.ts`). */
@@ -491,7 +504,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
   // D-522 §6 : la page affiche la phrase relue, et ni elle ni aucune page liée, toutes lues, ne porte d'offre.
   if (declaredEmptyText) {
     const declared = visiblePageText(html).includes(declaredEmptyText);
-    if (declared && !pageCarriesPosting(html) && linkedPagesCarryingPosting === 0 && linkFailures === 0 && links.size <= 150 && byKey.size === 0) {
+    if (declared && startPageDeclaresNoOpening(html, declaredEmptyText) && linkedPagesCarryingPosting === 0 && linkFailures === 0 && links.size <= 150 && byKey.size === 0) {
       return { jobs: [], declaredTotal: 0, complete: true, truncated: false,
         enumeration: { method: 'START_PAGE_PUBLISHER_DECLARES_NO_OPENING', endpoint: startUrl, pages: 1 + links.size, rawCount: links.size,
           termination: DECLARED_EMPTY_TERMINATION, issues: [],
