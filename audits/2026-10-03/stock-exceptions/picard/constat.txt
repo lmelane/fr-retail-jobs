@@ -1,0 +1,8 @@
+Constat du 03/10/2026 — https://picard-fashion.com/blogs/karriere.atom (blog Shopify ; robots.txt n'interdit que /blogs/*+*)
+- 6 articles dans le flux ; la page /blogs/karriere en liste 6, sans pagination : la liste lue est entière, mais aucun total
+  ni fin publiés (limite connue PUBLISHER_FEED_WITHOUT_TOTAL, D-520 §4 b ; rejeu-cassette.json : NOT_PROVEN / UNPROVABLE).
+- Pays et lieu 0/6 : les articles (Atom et JSON-LD « Article ») ne portent aucun champ de lieu ; le texte cite une ville
+  (« Flughafen München », « Headquarter Obertshausen ») : une ville seule ne fait pas un pays (R-125 §1). Pas un défaut de lecteur.
+- ÉCART HORS LECTEUR : 6 offres actives de picard viennent de picard.recruitee.com (Friedrich PICARD GmbH, l'employeur
+  usurpé corrigé le 19/09), vues pour la dernière fois le 19/09 et jamais fermées : la liste du flux ne peut attester aucune
+  absence. Fermeture = écriture en production, sur GO.

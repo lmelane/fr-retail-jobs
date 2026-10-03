@@ -1,0 +1,7 @@
+Constat du 03/10/2026 (lecture polie, CatwalksBot, robots.txt relu : /sitemap.xml non interdit)
+- https://jobs.sephora.com/sitemap.xml : flux RSS « Google Base », 2 090 articles, 15,5 Mo, fin </channel></rss> ;
+  parseSuccessFactorsJobFeed : 2 090 offres, 2 090 identifiants distincts (18 ms).
+- Pages en_US relues en ligne (startrow 0, 825, 1650) : 50 identifiants, 50 présents dans le flux ; total affiché 1 645.
+- Capture 95470f67 (RUN 02/10) contre le flux du 03/10 : 2 069 lues ; 67 lues absentes du flux, 88 du flux non lues
+  (14 h d'écart). Trois des 67 relues en ligne (1367236855, 1370345755, 1367190155) : « has been filled ».
+- Toutes les langues hors en_US : chaque identifiant lu est dans le flux (fr_FR 174/174, it_IT 138/138, …).

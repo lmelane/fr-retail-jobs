@@ -1,0 +1,37 @@
+{
+ "jobs": 6,
+ "complete": false,
+ "truncated": false,
+ "reading": {
+  "enumerationReading": "NOT_PROVEN",
+  "enumerationUnprovable": "PUBLISHER_FEED_WITHOUT_TOTAL"
+ },
+ "termination": "FEED_READ",
+ "issues": [
+  "PUBLISHER_FEED_WITHOUT_TOTAL",
+  "ENUMERATION_NOT_PROVEN"
+ ],
+ "description200": "6/6",
+ "country": "0/6",
+ "location": "0/6",
+ "sample": [
+  {
+   "id": "https://picard-fashion.com/blogs/karriere/unterstutzung-marketing-m-w-d",
+   "title": "Unterstützung Marketing (m/w/d)",
+   "desc": 1681,
+   "url": "https://picard-fashion.com/blogs/karriere/unterstutzung-marketing-m-w-d"
+  },
+  {
+   "id": "https://picard-fashion.com/blogs/karriere/werksstudent-in-aushilfe-fotostudio",
+   "title": "Werkstudent:in für Produktfotografie & Content Creation",
+   "desc": 1524,
+   "url": "https://picard-fashion.com/blogs/karriere/werksstudent-in-aushilfe-fotostudio"
+  },
+  {
+   "id": "https://picard-fashion.com/blogs/karriere/store-manager-m-w-d-in-vollzeit-flughafen-munchen",
+   "title": "Store Manager (m/w/d) in Vollzeit - Flughafen München",
+   "desc": 2956,
+   "url": "https://picard-fashion.com/blogs/karriere/store-manager-m-w-d-in-vollzeit-flughafen-munchen"
+  }
+ ]
+}

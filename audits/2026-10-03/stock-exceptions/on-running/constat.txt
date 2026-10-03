@@ -1,0 +1,7 @@
+Constat du 03/10/2026 — https://boards-api.greenhouse.io/v1/boards/onrunning/jobs?content=true (robots.txt : seul /embed/ interdit)
+- 232 offres (meta.total 232). Contenu : 112 offres portent « &lt;p&gt;-&lt;/p&gt; » pour toute description ; 120 un texte réel.
+- La page Greenhouse de l'offre 8119272 ne porte rien d'autre ; jobs.on.com (Eightfold, domaine on.com) n'a que 11 postes
+  JR… sans lien avec ces 232. Cause native, déjà échec connu D-480 §1 (« 116 offres sur 242 ont - »).
+- Pays (pays-greenhouse.mts, lecteur du dépôt) : r6 (nom de bureau, D-520) laisse 19 offres sans pays ; avec le correctif
+  « code postal + pays » : 14 (11 « HQ Shanghai », 3 « New York HQ », bureaux sans adresse : ville seule, R-125).
+  Le RUN du 02/10 (25 % de pays) tournait sans la règle D-520 du nom de bureau.

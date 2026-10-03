@@ -1,0 +1,12 @@
+Constat du 03/10/2026 — https://lumentee.com/careers/ (WordPress ; robots.txt n'interdit pas /careers/)
+- La page affiche 8 postes (cartes « role-card ») : un titre, UNE phrase (56 à 106 caractères), service, lieu (Mumbai /
+  Remote, India), « Full-time » ; « View Role » est un lien mailto:careers@lumentee.com. Aucune fiche, aucune page d'offre.
+- Le JSON-LD de la page porte 3 JobPosting (Senior Fashion Designer, Frontend Engineer, D2C Growth Marketer), sans url propre.
+- En production : 5 offres actives, toutes « D2C Growth Marketer », aux adresses /careers/, #roles, #main, #culture, # —
+  la même page relue par ses ancres (corrigé, commit « une ancre de la page de départ… »). La prémisse de D-480
+  (« 8 postes affichés, 5 lisibles ») était fausse : 1 posting lisible, publié 5 fois.
+- Restent, natifs : descriptions d'une phrase (0 % au seuil), 5 postes sur 8 absents du JSON-LD, candidature par e-mail.
+  Défaut de lecteur restant (non corrigé ici) : plusieurs JobPosting sans url sur une même page prennent la même identité
+  (empreinte de la page) et se réduisent au dernier.
+- Les 4 copies (#roles, #main, #culture, #) restent actives : la liste ne peut attester aucune absence. Fermeture = écriture
+  en production, sur GO.

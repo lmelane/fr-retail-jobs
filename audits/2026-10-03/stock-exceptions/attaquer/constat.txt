@@ -1,0 +1,6 @@
+Constat du 03/10/2026 — https://attaquercycling.com/pages/careers (Shopify ; robots.txt n'interdit pas /pages/careers)
+- Une seule page « Open Positions » : 3 postes, chacun avec sa fiche (/pages/careers/<poste>#role, JSON-LD JobPosting
+  complet : descriptions 3 500 à 5 000 caractères, pays). Rejeu de la cassette du 03/10 : 3/3, descriptions et pays 3/3.
+- Ni total publié, ni pagination, ni plan des offres : ?page=1 rend la même page (octets différents : identifiants de
+  requête). La liste est lue en entier, mais indémontrable par la famille (NO_PUBLISHER_LISTING_OR_SITEMAP, D-520 §4 b,
+  échec connu D-480). Aucun défaut de lecteur.

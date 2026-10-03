@@ -1,0 +1,3 @@
+A pages 110 count [ 1099 ] sortBy hot distincts 1099 répétées []
+B pages 110 count [ 1099 ] sortBy hot distincts 1098 répétées [ [ '563705892206374', [ '608', '610' ] ] ]
+dans A pas dans B [ '563705887980440' ] dans B pas dans A []
