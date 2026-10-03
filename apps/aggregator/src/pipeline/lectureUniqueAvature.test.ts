@@ -179,6 +179,43 @@ describe('Ralph Lauren (Avature, portail, défi AWS WAF amorcé et inscrit, D-48
     expect(stats.errorNote).toBeUndefined();
     expect(batches[0].ingestionCompletion).not.toBeNull();
   });
+
+  /*
+   * D-522 §6 (03/10/2026) : la réouverture réelle de Ralph Lauren passe par `source-add --registered-revision`, donc par
+   * une campagne (qualification amorcée et décision dans le run du parent) puis une ingestion ENFANT dans un autre run,
+   * qui reçoit la capture par `INGEST_ADOPT_CAPTURE`. Ce chemin n'était prouvé que sans défi AWS (L'Oréal, plus bas).
+   */
+  const campaign = async () => {
+    await activeSource(KEY, config()); const since = await mark();
+    const seen = network(); const primer = browser();
+    const access = await maintainSourceAccess(db, KEY, 60_000);
+    const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: access.qualificationCaptureId! }, include: { outcome: true } });
+    // Prémisse : la capture remise est bien amorcée et inscrite, collectée sans décision, et l'amorçage a eu lieu une fois.
+    expect(batch).toMatchObject({ accessDecisionId: null, outcome: { status: 'EXTRACTED', transportCoverage: 'HTTP_WITH_WAF_BOOTSTRAP' } });
+    expect(primer).toHaveBeenCalledTimes(1);
+    return { seen, primer, since, handoff: { captureId: batch.id, runId: batch.runId } };
+  };
+
+  it('réouverture par campagne, avant (sans remise) : l’enfant refait un amorçage, relit la liste et reçoit le 406', async () => {
+    const { seen, primer } = await campaign();
+    const [stats] = await runQualifiedIngest(db, KEY, true, 120_000);
+    expect(primer).toHaveBeenCalledTimes(2);
+    expect(seen.refused).toBeGreaterThan(0);
+    expect(stats.errorNote).toMatch(/406/);
+  });
+
+  it('réouverture par campagne, après : la capture amorcée remise à l’enfant est adoptée, sans second amorçage ni relecture', async () => {
+    const { seen, primer, since, handoff } = await campaign();
+    const [stats] = await runQualifiedIngest(db, KEY, true, 120_000, handoff);
+    expect(primer).toHaveBeenCalledTimes(1);
+    expect(seen).toMatchObject({ reads: 1, refused: 0 });
+    expect(stats.errorNote).toBeUndefined();
+    const batches = await jobBatches(KEY, since);
+    expect(batches).toHaveLength(1);
+    expect(batches[0]).toMatchObject({ id: handoff.captureId, ingestionAdmission: { policyVersion: CAPTURE_ADOPTION_POLICY },
+      outcome: { transportCoverage: 'HTTP_WITH_WAF_BOOTSTRAP' } });
+    expect(batches[0].ingestionCompletion).not.toBeNull();
+  });
 });
 
 /*

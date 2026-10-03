@@ -1,0 +1,7 @@
+# Sortie de lecture-a-froid.sh, 03/10/2026 06:25 UTC
+User-agent: *
+Allow: /*/jobs
+Disallow: /*/jobs/*qtvc=
+HTTP 200 taille 229207 (en-têtes : server: cloudflare, content-type: text/html;charset=UTF-8, cf-cache-status: DYNAMIC)
+compteur de la page : « 20 of 999+ results »
+liens JobDetail distincts sur la page 0 : 20

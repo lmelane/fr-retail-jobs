@@ -1,0 +1,14 @@
+# Portail du groupe Fenix Outdoor, lié depuis fenixoutdoor.com (lu le 03/10/2026 vers 06:27 UTC)
+# curl -A 'CatwalksBot/1.0 (+https://catwalks.io/bot)' -H 'accept: application/json' 'https://career.fenixoutdoor.se/jobs.json?per_page=100'
+# robots.txt : Disallow /app/ /messages/ /messenger/ /facebook/tab/ /jobs/internal/ ; Content-Signal: search=yes, ai-train=no, ai-input=yes
+feed_url https://career.fenixoutdoor.se/jobs.json | items 65 | next_url None
+ 21  Globetrotter (DE)
+ 15  Fjällräven North America (US)
+ 12  Friluftsland (DK)
+  7  Fjällräven North America (CA)
+  2  Naturkompaniet (SE)
+  2  Partioaitta (FI)
+  2  Naturkompaniet (NO)
+  2  Fenix Outdoor (GB)
+  1  Fenix Outdoor North America (CA)
+  1  Hanwag (HU)

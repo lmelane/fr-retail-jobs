@@ -1,0 +1,30 @@
+{
+ "args": [
+  "--key=ralph-lauren-avature",
+  "--registered-revision=de332ddf-b45d-42fa-a89e-9ab1106e0d62",
+  "--official-domain=ralphlauren.com",
+  "--reviewer=loic-melane-d522"
+ ],
+ "status": "PAUSED",
+ "currentRevisionId": "de332ddf-b45d-42fa-a89e-9ab1106e0d62",
+ "portalScope": "SINGLE_BRAND",
+ "candidate": {
+  "key": "ralph-lauren-avature",
+  "maison": "Ralph Lauren",
+  "kind": "avature",
+  "config": {
+   "lists": [
+    "en_US/CareersCorporate/SearchJobsCorporate",
+    "en_US/CareersCorporate/SearchJobsRetail"
+   ],
+   "origin": "https://careers.ralphlauren.com"
+  },
+  "careersDomain": "careers.ralphlauren.com",
+  "tier": "EMPLOYER_DIRECT",
+  "jobUrlPattern": null,
+  "domain": "ralphlauren.com",
+  "domainSource": "registered revision reviewed by loic-melane-d522",
+  "portalScope": "SINGLE_BRAND",
+  "note": "lot GENERIC 2026-09-06 — validé 1082 offres, 1082 avec lieu"
+ }
+}

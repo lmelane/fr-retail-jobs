@@ -1,0 +1,64 @@
+== https://cove.teamtailor.com (2026-10-03T06:29:39Z)
+-- robots.txt (lignes Disallow pour * et Content-Signal)
+User-Agent: aihitdata
+Disallow: /
+User-Agent: *
+Disallow: /app/
+Disallow: /messages/
+Disallow: /messenger/
+Disallow: /facebook/tab/
+Disallow: /jobs/internal/
+Content-Signal: search=yes, ai-train=no, ai-input=yes
+-- jobs.json : feed_url https://cove.teamtailor.com/jobs.json | items 0 | next_url None
+-- page /jobs : HTTP 200 https://careers.cove.is/jobs
+-- liens d'offre sur la page : 0
+-- texte affiché : No open positions right now
+-- sitemap https://careers.cove.is/sitemap.xml : 0 URL d'offre
+== https://loplabbet.teamtailor.com (2026-10-03T06:29:44Z)
+-- robots.txt (lignes Disallow pour * et Content-Signal)
+User-Agent: aihitdata
+Disallow: /
+User-Agent: *
+Disallow: /app/
+Disallow: /messages/
+Disallow: /messenger/
+Disallow: /facebook/tab/
+Disallow: /jobs/internal/
+Content-Signal: search=yes, ai-train=no, ai-input=yes
+-- jobs.json : feed_url https://loplabbet.teamtailor.com/jobs.json | items 0 | next_url None
+-- page /jobs : HTTP 200 https://karriar.loplabbet.se/jobs
+-- liens d'offre sur la page : 0
+-- texte affiché : Inga lediga tjänster just nu
+-- sitemap https://karriar.loplabbet.se/sitemap.xml : 0 URL d'offre
+== https://career.fjallraven.com (2026-10-03T06:29:49Z)
+-- robots.txt (lignes Disallow pour * et Content-Signal)
+User-Agent: aihitdata
+Disallow: /
+User-Agent: *
+Disallow: /app/
+Disallow: /messages/
+Disallow: /messenger/
+Disallow: /facebook/tab/
+Disallow: /jobs/internal/
+Content-Signal: search=no, ai-train=no, ai-input=no
+-- jobs.json : feed_url https://career.fjallraven.com/jobs.json | items 0 | next_url None
+-- page /jobs : HTTP 200 https://career.fjallraven.com/jobs
+-- liens d'offre sur la page : 0
+-- texte affiché : No open positions right now
+-- sitemap https://career.fjallraven.com/sitemap.xml : 0 URL d'offre
+== https://careers.margarethowell.co.uk (2026-10-03T06:29:53Z)
+-- robots.txt (lignes Disallow pour * et Content-Signal)
+User-Agent: aihitdata
+Disallow: /
+User-Agent: *
+Disallow: /app/
+Disallow: /messages/
+Disallow: /messenger/
+Disallow: /facebook/tab/
+Disallow: /jobs/internal/
+Content-Signal: search=yes, ai-train=no, ai-input=yes
+-- jobs.json : feed_url https://careers.margarethowell.co.uk/jobs.json | items 0 | next_url None
+-- page /jobs : HTTP 200 https://careers.margarethowell.co.uk/jobs
+-- liens d'offre sur la page : 0
+-- texte affiché : No open positions right now
+-- sitemap https://careers.margarethowell.co.uk/sitemap.xml : 0 URL d'offre
