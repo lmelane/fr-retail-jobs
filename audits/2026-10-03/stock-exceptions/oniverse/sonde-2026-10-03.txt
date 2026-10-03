@@ -1,0 +1,19 @@
+Oniverse : cartographie du 03/10/2026 (CatwalksBot/1.0 ; robots.txt « User-agent: * / Allow: * »)
+
+Portail : careers.oniverse.it = Altamira HRM (ASP.NET WebForms : scripts Altamira.Web.*, analytics.altamirahrm.com).
+  Même famille que `zegna-altamira`, GABARIT DIFFÉRENT : l'adaptateur `altamira` actuel ne le lit pas
+  (liste `/default?…PagerAnnunci=` et fiches `/jobs/job-details?JobID=&Team=` chez Zegna ;
+   ici liste `/{locale}/home?StartupViewID=TableView&RunDefaultAction=true&PagerAnnunci=N`, lignes
+   `a.applications-row`, fiches `/{locale}/carriere/dettaglio-annuncio?JobID=N`, sans Team).
+Liste : 30 offres par page, tous pays confondus (fr-FR et en-GB rendent les mêmes 30 identifiants en page 1 ;
+  en-GB est redirigé 302 vers fr-FR selon la session). Page 30 : 8 offres et bouton « Next » désactivé
+  (aria-disabled="true") ; page 40 rend la page 30 (dernière page en boucle). Total ≈ 29 × 30 + 8 = 878 offres.
+  Aucun compteur d'éditeur dans la page.
+Fiches : 45/60 portent un JobPosting JSON-LD (hiringOrganization « Oniverse ») ; 15/60 n'en portent pas
+  (ex. JobID 222461134, Antonio Marras) mais donnent titre (h1 …Fld…), unité (aria-label « Unités opérationnelles »),
+  lieu (aria-label « Lieux ») et texte. Mesure : record-cassette --kind=generic-listing, maxPages=2 (cassette
+  scratchpad/cassettes/oniverse-d522-borne, 65 réponses, 45 offres lues sur 60 liens).
+Portails régionaux liés depuis le portail : calzedoniagroup.trabajo.infojobs.net (Espagne), Paycom (États-Unis,
+  clientkey B88CF2DD…), hh.ru/employer/7449 (Russie), hr@calzedonia.hk (Hong Kong).
+Sitemap (configuration actuelle) : périmé, 734 URL dont 146 en 404 au 23/09 : ne prouve rien.
+Couverture actuelle : 109 offres ONIVERSE servies par wttj-sector (02/10).

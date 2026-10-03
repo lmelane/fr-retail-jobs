@@ -1,0 +1,12 @@
+Le Slip Français : 03/10/2026
+- robots.txt welcometothejungle.com : Disallow /me, /settings, /users, */jobs?query=*, /*? ; pages entreprise non interdites.
+- Page HTML /fr/companies/le-slip-francais/jobs -> 403 CloudFront pour CatwalksBot (non contourné).
+- Lecteur WTTJ réel (ADAPTERS.WTTJ, {"slug":"le-slip-francais"}, API Algolia publique de WTTJ) : 1 offre, total
+  déclaré 1, terminaison SHORT_PAGE : « [CDD 2 mois] Assistant·e SAV » (publiée le 02/10/2026), employeur
+  « Le Slip Français ».
+- wttj-sector (ACTIVE, 2 656 offres actives) : config.organizations = ["charlotte-tilbury","lectra"] ; le slug
+  le-slip-francais n'y est pas et n'est pas dans excludeOrganizations.
+- Correction : ajouter "le-slip-francais" à config.organizations de wttj-sector. AUCUN outil existant ne l'écrit :
+  corriger-sources-relues refuse la famille wttj-sector (configPour -> null) et config_relue ne peut pas changer une
+  clé existante ; importer-registre-csv ne touche pas la configuration. Toute écriture de la config crée une
+  révision de wttj-sector (preuves d'identité liées à la révision) : requalification de la source entière.

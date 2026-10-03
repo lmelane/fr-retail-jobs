@@ -1,0 +1,2323 @@
+{
+ "batchId": "dd5462a4-3df8-4809-a50c-2cd3478e3323",
+ "reviewedAt": "2026-10-03T06:27:38.887Z",
+ "reviewer": "claude-d522-6-portails",
+ "sources": [
+  {
+   "sourceKey": "prada-group",
+   "expectedSourceHash": "db22b4a192aad4820d66b387853fbb0b8b334b24e044253c7e62551da2d2137c",
+   "fromCompanyIds": [
+    "cmtn5dgoo0b8pqq5lh5676e8v"
+   ],
+   "targetName": "Prada Group",
+   "targetKind": "GROUP",
+   "officialDomain": "pradagroup.com",
+   "portalUrl": "https://jobs.pradagroup.com",
+   "configPatch": {
+    "brandProperty": "facility"
+   },
+   "postings": [
+    {
+     "externalId": "1243085601",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=222",
+      "sha256": "012abfbd547e7a42068cedcd13845110e998166048dfdb28080d9c89ff4d6c37",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1248522301",
+     "targetName": "Marchesi 1824",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=192",
+      "sha256": "241645c8f69cb42cac9471d90117496781fd5423e9586e1538feff6a857a1b3d",
+      "property": "facility",
+      "value": "Marchesi 1824",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1249212001",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=192",
+      "sha256": "241645c8f69cb42cac9471d90117496781fd5423e9586e1538feff6a857a1b3d",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1256446201",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=204",
+      "sha256": "ff5e7ed2be3833ddb4fe8947db8e01032389ade4da910bb4e34abaed615ef429",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1266507701",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=204",
+      "sha256": "ff5e7ed2be3833ddb4fe8947db8e01032389ade4da910bb4e34abaed615ef429",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1266507801",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=210",
+      "sha256": "c65069b59ba05c4ebd3a8e4ae399d5bfc32d581c6375e1385044b6881c55478e",
+      "property": "facility",
+      "value": "ミュウミュウ",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1274201401",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=150",
+      "sha256": "11a32ccc8d68c3260a65d751592aea23b707e85536abcd1824c0f07fe26aada2",
+      "property": "facility",
+      "value": "プラダ",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1274201501",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=150",
+      "sha256": "11a32ccc8d68c3260a65d751592aea23b707e85536abcd1824c0f07fe26aada2",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1278922801",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=150",
+      "sha256": "11a32ccc8d68c3260a65d751592aea23b707e85536abcd1824c0f07fe26aada2",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1292096601",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=102",
+      "sha256": "13ff9d3ffd1923af8d719d0bfe4efdd0ea333f875bc6911bb2adfc8c2770cc60",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1292097201",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=102",
+      "sha256": "13ff9d3ffd1923af8d719d0bfe4efdd0ea333f875bc6911bb2adfc8c2770cc60",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1292097301",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=96",
+      "sha256": "bf12b3ba146200374bef4818f546fc951f735de9259205561e924dceeb8022f5",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1365807133",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=204",
+      "sha256": "ff5e7ed2be3833ddb4fe8947db8e01032389ade4da910bb4e34abaed615ef429",
+      "property": "facility",
+      "value": "ミュウミュウ",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1365807233",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=204",
+      "sha256": "ff5e7ed2be3833ddb4fe8947db8e01032389ade4da910bb4e34abaed615ef429",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1368308533",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=150",
+      "sha256": "11a32ccc8d68c3260a65d751592aea23b707e85536abcd1824c0f07fe26aada2",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1368882733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=144",
+      "sha256": "8c764528f87f0586175b6e9fa8139796dd0c1993d4162988992f594644ff7424",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1368917433",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=132",
+      "sha256": "8ade13685705ccd4dfe16d6f7ef84b911eca419df7dd622d2600187f5c0ed4e7",
+      "property": "facility",
+      "value": "ミュウミュウ",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1368917533",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=138",
+      "sha256": "8a2b3dde6da1be642dc9d4af907f6dd4d11d9d08cc517f1d4941db95abc4916b",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1369371933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=120",
+      "sha256": "8b1129bde6942772a6db150ced4823df0d5df62c46323eebb27a8ce933233ed4",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1369418533",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=120",
+      "sha256": "8b1129bde6942772a6db150ced4823df0d5df62c46323eebb27a8ce933233ed4",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1369419133",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=174",
+      "sha256": "253ffe33ad7ffa12662b87cb604a15be48e8325e49049ecb9fa7c37b38af9c8b",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1369512333",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=234",
+      "sha256": "d313499930616d36ac63c8461088db3ab0c70594a1bde0576761dc5037a1d557",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1370290933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=120",
+      "sha256": "8b1129bde6942772a6db150ced4823df0d5df62c46323eebb27a8ce933233ed4",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1370478833",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=174",
+      "sha256": "253ffe33ad7ffa12662b87cb604a15be48e8325e49049ecb9fa7c37b38af9c8b",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1371721833",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=84",
+      "sha256": "5423e3223366f2a2702f5ba8a12489401531d752f780b9fc67bdefcb4599d9c4",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1376558533",
+     "targetName": "Marchesi 1824",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=198",
+      "sha256": "3c80bb86ceb48886074074ca111dca857a132e9b596e05c35c0fb73df0279c80",
+      "property": "facility",
+      "value": "Marchesi 1824",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1376649633",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=0",
+      "sha256": "447d098cf61b49655841e3dcc2e647905be5c421b4b395914bdcfa79a7ae473b",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1387469133",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=144",
+      "sha256": "8c764528f87f0586175b6e9fa8139796dd0c1993d4162988992f594644ff7424",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1388905533",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=132",
+      "sha256": "8ade13685705ccd4dfe16d6f7ef84b911eca419df7dd622d2600187f5c0ed4e7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1391063633",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=84",
+      "sha256": "5423e3223366f2a2702f5ba8a12489401531d752f780b9fc67bdefcb4599d9c4",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1391070733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=84",
+      "sha256": "5423e3223366f2a2702f5ba8a12489401531d752f780b9fc67bdefcb4599d9c4",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1391072233",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=84",
+      "sha256": "5423e3223366f2a2702f5ba8a12489401531d752f780b9fc67bdefcb4599d9c4",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1393110433",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=228",
+      "sha256": "88a0fbcd8c8f38632211c29ad792c1b763f190338a99b6635d663663ee3b6ba9",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1393467533",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=216",
+      "sha256": "3425ef16970c187201b6c06d12a84021cc8e9585cd8b0947777882fdc249e733",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1394479633",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=210",
+      "sha256": "c65069b59ba05c4ebd3a8e4ae399d5bfc32d581c6375e1385044b6881c55478e",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1396218533",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=186",
+      "sha256": "1584deee8b293ea10f72a901e8e62c801bc5a87c23066d42dbdd1044ddbb4a73",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1400494733",
+     "targetName": "Marchesi 1824",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=90",
+      "sha256": "ea409fd6d93c99a6c9e693b05b717471c0393d6c9654670cd9586c8e4e910a8b",
+      "property": "facility",
+      "value": "Marchesi 1824",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1400926733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=84",
+      "sha256": "5423e3223366f2a2702f5ba8a12489401531d752f780b9fc67bdefcb4599d9c4",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1401368533",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=72",
+      "sha256": "d05d7d0e103b348b325be2a86c6b6deb33d2121849adaf603f24957ce5c7a059",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1404779333",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=210",
+      "sha256": "c65069b59ba05c4ebd3a8e4ae399d5bfc32d581c6375e1385044b6881c55478e",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1404783433",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=210",
+      "sha256": "c65069b59ba05c4ebd3a8e4ae399d5bfc32d581c6375e1385044b6881c55478e",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1405245333",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=204",
+      "sha256": "ff5e7ed2be3833ddb4fe8947db8e01032389ade4da910bb4e34abaed615ef429",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1406580333",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=186",
+      "sha256": "1584deee8b293ea10f72a901e8e62c801bc5a87c23066d42dbdd1044ddbb4a73",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1406615033",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=186",
+      "sha256": "1584deee8b293ea10f72a901e8e62c801bc5a87c23066d42dbdd1044ddbb4a73",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1410891333",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=90",
+      "sha256": "ea409fd6d93c99a6c9e693b05b717471c0393d6c9654670cd9586c8e4e910a8b",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1411563833",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=24",
+      "sha256": "a944ed7735b40fc9159d4b9bfaeb27d3d0d042ffd4c333ccd2f300e6fa08cf6f",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1411617333",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=24",
+      "sha256": "a944ed7735b40fc9159d4b9bfaeb27d3d0d042ffd4c333ccd2f300e6fa08cf6f",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1412248733",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=12",
+      "sha256": "c84838ff76c09f3dc892d36311643816787c0d9b2b404e82bf4c710eaa9fcf56",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1413458933",
+     "targetName": "Versace",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=240",
+      "sha256": "f669b462317736f6f311645d3f89c890a897a93d69f27cfedc02b495573251f7",
+      "property": "facility",
+      "value": "Versace",
+      "observedAt": "2026-10-03T06:17:40.000Z"
+     }
+    },
+    {
+     "externalId": "1413699233",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=228",
+      "sha256": "88a0fbcd8c8f38632211c29ad792c1b763f190338a99b6635d663663ee3b6ba9",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1414563433",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=216",
+      "sha256": "3425ef16970c187201b6c06d12a84021cc8e9585cd8b0947777882fdc249e733",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1414587533",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=210",
+      "sha256": "c65069b59ba05c4ebd3a8e4ae399d5bfc32d581c6375e1385044b6881c55478e",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1415419133",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=204",
+      "sha256": "ff5e7ed2be3833ddb4fe8947db8e01032389ade4da910bb4e34abaed615ef429",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1416316933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=198",
+      "sha256": "3c80bb86ceb48886074074ca111dca857a132e9b596e05c35c0fb73df0279c80",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1417167433",
+     "targetName": "Church's",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=162",
+      "sha256": "bdd7f033f1d9e55bb9e1a16113995f45e26ceb5e701dd3b3f3bbbedb1868de66",
+      "property": "facility",
+      "value": "Church's",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1417228433",
+     "targetName": "Marchesi 1824",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=156",
+      "sha256": "c4fb96a01c119a6b602d3f32f6c3fe91296c3991da671c58fcfc12a65fef86ba",
+      "property": "facility",
+      "value": "Marchesi 1824",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1417415133",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=162",
+      "sha256": "bdd7f033f1d9e55bb9e1a16113995f45e26ceb5e701dd3b3f3bbbedb1868de66",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1418799833",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=144",
+      "sha256": "8c764528f87f0586175b6e9fa8139796dd0c1993d4162988992f594644ff7424",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1419659333",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=114",
+      "sha256": "63f89cff1d787c00b4f967e48864f17937ce18b6ade3e75eb050ee94686877a2",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1419671933",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=114",
+      "sha256": "63f89cff1d787c00b4f967e48864f17937ce18b6ade3e75eb050ee94686877a2",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1420445633",
+     "targetName": "Versace",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=102",
+      "sha256": "13ff9d3ffd1923af8d719d0bfe4efdd0ea333f875bc6911bb2adfc8c2770cc60",
+      "property": "facility",
+      "value": "Versace",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1420681533",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=96",
+      "sha256": "bf12b3ba146200374bef4818f546fc951f735de9259205561e924dceeb8022f5",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1420831333",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=96",
+      "sha256": "bf12b3ba146200374bef4818f546fc951f735de9259205561e924dceeb8022f5",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1422990533",
+     "targetName": "Church's",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=18",
+      "sha256": "5498c062ccd6e23b1a9c023412ac740b3cc49121427f04eba199738892e2bdb9",
+      "property": "facility",
+      "value": "Church's",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1423178433",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=12",
+      "sha256": "c84838ff76c09f3dc892d36311643816787c0d9b2b404e82bf4c710eaa9fcf56",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1423455233",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=6",
+      "sha256": "6ae120aef420c3e0780b9d8d9fbcc858c46b47b1edc9069fa278381d57e1b7e5",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1423793733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=0",
+      "sha256": "447d098cf61b49655841e3dcc2e647905be5c421b4b395914bdcfa79a7ae473b",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1423800433",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=6",
+      "sha256": "6ae120aef420c3e0780b9d8d9fbcc858c46b47b1edc9069fa278381d57e1b7e5",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1423904333",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=0",
+      "sha256": "447d098cf61b49655841e3dcc2e647905be5c421b4b395914bdcfa79a7ae473b",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1424154433",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=234",
+      "sha256": "d313499930616d36ac63c8461088db3ab0c70594a1bde0576761dc5037a1d557",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1424172233",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=234",
+      "sha256": "d313499930616d36ac63c8461088db3ab0c70594a1bde0576761dc5037a1d557",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1424178933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=234",
+      "sha256": "d313499930616d36ac63c8461088db3ab0c70594a1bde0576761dc5037a1d557",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1424260733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=234",
+      "sha256": "d313499930616d36ac63c8461088db3ab0c70594a1bde0576761dc5037a1d557",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1424593933",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=222",
+      "sha256": "012abfbd547e7a42068cedcd13845110e998166048dfdb28080d9c89ff4d6c37",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1426686933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=198",
+      "sha256": "3c80bb86ceb48886074074ca111dca857a132e9b596e05c35c0fb73df0279c80",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1426771833",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=198",
+      "sha256": "3c80bb86ceb48886074074ca111dca857a132e9b596e05c35c0fb73df0279c80",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1427198033",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=180",
+      "sha256": "c6f7f34d595c71b9af772bd738da6cb2f305eddf43e1321a80fcc7cd97177716",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1427329733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=174",
+      "sha256": "253ffe33ad7ffa12662b87cb604a15be48e8325e49049ecb9fa7c37b38af9c8b",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1427341233",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=174",
+      "sha256": "253ffe33ad7ffa12662b87cb604a15be48e8325e49049ecb9fa7c37b38af9c8b",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1427349233",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=174",
+      "sha256": "253ffe33ad7ffa12662b87cb604a15be48e8325e49049ecb9fa7c37b38af9c8b",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1427683933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=162",
+      "sha256": "bdd7f033f1d9e55bb9e1a16113995f45e26ceb5e701dd3b3f3bbbedb1868de66",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1427810233",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=162",
+      "sha256": "bdd7f033f1d9e55bb9e1a16113995f45e26ceb5e701dd3b3f3bbbedb1868de66",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1428726633",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=150",
+      "sha256": "11a32ccc8d68c3260a65d751592aea23b707e85536abcd1824c0f07fe26aada2",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1429410733",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=126",
+      "sha256": "7e5be54566913fc3bd7feda16f28e54422cc54f9ea5d1ec73cce65c24641f846",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1429807433",
+     "targetName": "Versace",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=114",
+      "sha256": "63f89cff1d787c00b4f967e48864f17937ce18b6ade3e75eb050ee94686877a2",
+      "property": "facility",
+      "value": "Versace",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1430765233",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=102",
+      "sha256": "13ff9d3ffd1923af8d719d0bfe4efdd0ea333f875bc6911bb2adfc8c2770cc60",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1431618033",
+     "targetName": "Marchesi 1824",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=96",
+      "sha256": "bf12b3ba146200374bef4818f546fc951f735de9259205561e924dceeb8022f5",
+      "property": "facility",
+      "value": "Marchesi 1824",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1431866433",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=72",
+      "sha256": "d05d7d0e103b348b325be2a86c6b6deb33d2121849adaf603f24957ce5c7a059",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1431866533",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=72",
+      "sha256": "d05d7d0e103b348b325be2a86c6b6deb33d2121849adaf603f24957ce5c7a059",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1432475133",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=42",
+      "sha256": "43d8594e3af93ebe4c220a76912d13d3ef7f2a9d7b2b1c92e861ab4e16f5a708",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1432533833",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=42",
+      "sha256": "43d8594e3af93ebe4c220a76912d13d3ef7f2a9d7b2b1c92e861ab4e16f5a708",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1432614633",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=42",
+      "sha256": "43d8594e3af93ebe4c220a76912d13d3ef7f2a9d7b2b1c92e861ab4e16f5a708",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1432759333",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=18",
+      "sha256": "5498c062ccd6e23b1a9c023412ac740b3cc49121427f04eba199738892e2bdb9",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1432880033",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=18",
+      "sha256": "5498c062ccd6e23b1a9c023412ac740b3cc49121427f04eba199738892e2bdb9",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1433104233",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=18",
+      "sha256": "5498c062ccd6e23b1a9c023412ac740b3cc49121427f04eba199738892e2bdb9",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1433311733",
+     "targetName": "Versace",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=6",
+      "sha256": "6ae120aef420c3e0780b9d8d9fbcc858c46b47b1edc9069fa278381d57e1b7e5",
+      "property": "facility",
+      "value": "Versace",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1433317633",
+     "targetName": "Versace",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=6",
+      "sha256": "6ae120aef420c3e0780b9d8d9fbcc858c46b47b1edc9069fa278381d57e1b7e5",
+      "property": "facility",
+      "value": "Versace",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1433362133",
+     "targetName": "Marchesi 1824",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=12",
+      "sha256": "c84838ff76c09f3dc892d36311643816787c0d9b2b404e82bf4c710eaa9fcf56",
+      "property": "facility",
+      "value": "Marchesi 1824",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1433432733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=12",
+      "sha256": "c84838ff76c09f3dc892d36311643816787c0d9b2b404e82bf4c710eaa9fcf56",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1434180933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=240",
+      "sha256": "f669b462317736f6f311645d3f89c890a897a93d69f27cfedc02b495573251f7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:40.000Z"
+     }
+    },
+    {
+     "externalId": "1434181033",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=240",
+      "sha256": "f669b462317736f6f311645d3f89c890a897a93d69f27cfedc02b495573251f7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:40.000Z"
+     }
+    },
+    {
+     "externalId": "1434456533",
+     "targetName": "Church's",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=228",
+      "sha256": "88a0fbcd8c8f38632211c29ad792c1b763f190338a99b6635d663663ee3b6ba9",
+      "property": "facility",
+      "value": "Church's",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1434542933",
+     "targetName": "Versace",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=228",
+      "sha256": "88a0fbcd8c8f38632211c29ad792c1b763f190338a99b6635d663663ee3b6ba9",
+      "property": "facility",
+      "value": "Versace",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1434749133",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=222",
+      "sha256": "012abfbd547e7a42068cedcd13845110e998166048dfdb28080d9c89ff4d6c37",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1434795933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=222",
+      "sha256": "012abfbd547e7a42068cedcd13845110e998166048dfdb28080d9c89ff4d6c37",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1435206233",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=216",
+      "sha256": "3425ef16970c187201b6c06d12a84021cc8e9585cd8b0947777882fdc249e733",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1435606933",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=216",
+      "sha256": "3425ef16970c187201b6c06d12a84021cc8e9585cd8b0947777882fdc249e733",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1435963433",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=216",
+      "sha256": "3425ef16970c187201b6c06d12a84021cc8e9585cd8b0947777882fdc249e733",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1436308733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=210",
+      "sha256": "c65069b59ba05c4ebd3a8e4ae399d5bfc32d581c6375e1385044b6881c55478e",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1436447733",
+     "targetName": "Marchesi 1824",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=198",
+      "sha256": "3c80bb86ceb48886074074ca111dca857a132e9b596e05c35c0fb73df0279c80",
+      "property": "facility",
+      "value": "Marchesi 1824",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1436491633",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=192",
+      "sha256": "241645c8f69cb42cac9471d90117496781fd5423e9586e1538feff6a857a1b3d",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1436598333",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=192",
+      "sha256": "241645c8f69cb42cac9471d90117496781fd5423e9586e1538feff6a857a1b3d",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:39.000Z"
+     }
+    },
+    {
+     "externalId": "1437131733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=186",
+      "sha256": "1584deee8b293ea10f72a901e8e62c801bc5a87c23066d42dbdd1044ddbb4a73",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1437228533",
+     "targetName": "Versace",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=180",
+      "sha256": "c6f7f34d595c71b9af772bd738da6cb2f305eddf43e1321a80fcc7cd97177716",
+      "property": "facility",
+      "value": "Versace",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1437354433",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=186",
+      "sha256": "1584deee8b293ea10f72a901e8e62c801bc5a87c23066d42dbdd1044ddbb4a73",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1437375133",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=180",
+      "sha256": "c6f7f34d595c71b9af772bd738da6cb2f305eddf43e1321a80fcc7cd97177716",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1437535733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=180",
+      "sha256": "c6f7f34d595c71b9af772bd738da6cb2f305eddf43e1321a80fcc7cd97177716",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1437716933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=180",
+      "sha256": "c6f7f34d595c71b9af772bd738da6cb2f305eddf43e1321a80fcc7cd97177716",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1437868733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=162",
+      "sha256": "bdd7f033f1d9e55bb9e1a16113995f45e26ceb5e701dd3b3f3bbbedb1868de66",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1437950433",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=168",
+      "sha256": "6e0e4559a16de45c62955adb265d8117b9c03edacd220277ce97f9c5315412fc",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1437968133",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=168",
+      "sha256": "6e0e4559a16de45c62955adb265d8117b9c03edacd220277ce97f9c5315412fc",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1438027133",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=162",
+      "sha256": "bdd7f033f1d9e55bb9e1a16113995f45e26ceb5e701dd3b3f3bbbedb1868de66",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1438099833",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=168",
+      "sha256": "6e0e4559a16de45c62955adb265d8117b9c03edacd220277ce97f9c5315412fc",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1438100733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=168",
+      "sha256": "6e0e4559a16de45c62955adb265d8117b9c03edacd220277ce97f9c5315412fc",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1438237333",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=168",
+      "sha256": "6e0e4559a16de45c62955adb265d8117b9c03edacd220277ce97f9c5315412fc",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1439094133",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=156",
+      "sha256": "c4fb96a01c119a6b602d3f32f6c3fe91296c3991da671c58fcfc12a65fef86ba",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1439149533",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=156",
+      "sha256": "c4fb96a01c119a6b602d3f32f6c3fe91296c3991da671c58fcfc12a65fef86ba",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1439151933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=150",
+      "sha256": "11a32ccc8d68c3260a65d751592aea23b707e85536abcd1824c0f07fe26aada2",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1439154233",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=156",
+      "sha256": "c4fb96a01c119a6b602d3f32f6c3fe91296c3991da671c58fcfc12a65fef86ba",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1439155133",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=156",
+      "sha256": "c4fb96a01c119a6b602d3f32f6c3fe91296c3991da671c58fcfc12a65fef86ba",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1439159733",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=156",
+      "sha256": "c4fb96a01c119a6b602d3f32f6c3fe91296c3991da671c58fcfc12a65fef86ba",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:38.000Z"
+     }
+    },
+    {
+     "externalId": "1439260133",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=138",
+      "sha256": "8a2b3dde6da1be642dc9d4af907f6dd4d11d9d08cc517f1d4941db95abc4916b",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1439443333",
+     "targetName": "Versace",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=138",
+      "sha256": "8a2b3dde6da1be642dc9d4af907f6dd4d11d9d08cc517f1d4941db95abc4916b",
+      "property": "facility",
+      "value": "Versace",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1439567833",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=138",
+      "sha256": "8a2b3dde6da1be642dc9d4af907f6dd4d11d9d08cc517f1d4941db95abc4916b",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1439946733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=132",
+      "sha256": "8ade13685705ccd4dfe16d6f7ef84b911eca419df7dd622d2600187f5c0ed4e7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1439971633",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=126",
+      "sha256": "7e5be54566913fc3bd7feda16f28e54422cc54f9ea5d1ec73cce65c24641f846",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1440028033",
+     "targetName": "Versace",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=126",
+      "sha256": "7e5be54566913fc3bd7feda16f28e54422cc54f9ea5d1ec73cce65c24641f846",
+      "property": "facility",
+      "value": "Versace",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1440199833",
+     "targetName": "Versace",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=132",
+      "sha256": "8ade13685705ccd4dfe16d6f7ef84b911eca419df7dd622d2600187f5c0ed4e7",
+      "property": "facility",
+      "value": "Versace",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1440222433",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=132",
+      "sha256": "8ade13685705ccd4dfe16d6f7ef84b911eca419df7dd622d2600187f5c0ed4e7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1441349733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=108",
+      "sha256": "a8fad5c823bab58177653b1596ce78c7d863b1eb8c0b57a7241b020ed66986ce",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1441461233",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=102",
+      "sha256": "13ff9d3ffd1923af8d719d0bfe4efdd0ea333f875bc6911bb2adfc8c2770cc60",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1441506933",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=108",
+      "sha256": "a8fad5c823bab58177653b1596ce78c7d863b1eb8c0b57a7241b020ed66986ce",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1441524133",
+     "targetName": "Church's",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=108",
+      "sha256": "a8fad5c823bab58177653b1596ce78c7d863b1eb8c0b57a7241b020ed66986ce",
+      "property": "facility",
+      "value": "Church's",
+      "observedAt": "2026-10-03T06:17:37.000Z"
+     }
+    },
+    {
+     "externalId": "1441753133",
+     "targetName": "Versace",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=90",
+      "sha256": "ea409fd6d93c99a6c9e693b05b717471c0393d6c9654670cd9586c8e4e910a8b",
+      "property": "facility",
+      "value": "Versace",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1442201833",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=78",
+      "sha256": "c0fbac8309f25e530cc58ed578c9e94e0dccb68fb83a3e627c3ac86173db0595",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1442239133",
+     "targetName": "Versace",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=78",
+      "sha256": "c0fbac8309f25e530cc58ed578c9e94e0dccb68fb83a3e627c3ac86173db0595",
+      "property": "facility",
+      "value": "Versace",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1442290033",
+     "targetName": "Marchesi 1824",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=78",
+      "sha256": "c0fbac8309f25e530cc58ed578c9e94e0dccb68fb83a3e627c3ac86173db0595",
+      "property": "facility",
+      "value": "Marchesi 1824",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1442559233",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=78",
+      "sha256": "c0fbac8309f25e530cc58ed578c9e94e0dccb68fb83a3e627c3ac86173db0595",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1442562033",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=84",
+      "sha256": "5423e3223366f2a2702f5ba8a12489401531d752f780b9fc67bdefcb4599d9c4",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1442680033",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=66",
+      "sha256": "96f026a7facba002cdb96fb2be1d67c303c1a7fce3408b562f5bff312706d67e",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442682633",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=54",
+      "sha256": "25a111612f406ef841d5c3df4ca6502a211a42435082fc6ff919829b3eaa5785",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442686033",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=66",
+      "sha256": "96f026a7facba002cdb96fb2be1d67c303c1a7fce3408b562f5bff312706d67e",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442686633",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=48",
+      "sha256": "f1cdcb6ae5b97e68de9f70d47b2e0478e66016f99bb9616d5de50c6b332ed449",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442695433",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=72",
+      "sha256": "d05d7d0e103b348b325be2a86c6b6deb33d2121849adaf603f24957ce5c7a059",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1442709733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=66",
+      "sha256": "96f026a7facba002cdb96fb2be1d67c303c1a7fce3408b562f5bff312706d67e",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442710533",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=48",
+      "sha256": "f1cdcb6ae5b97e68de9f70d47b2e0478e66016f99bb9616d5de50c6b332ed449",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442711133",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=48",
+      "sha256": "f1cdcb6ae5b97e68de9f70d47b2e0478e66016f99bb9616d5de50c6b332ed449",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442712133",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=54",
+      "sha256": "25a111612f406ef841d5c3df4ca6502a211a42435082fc6ff919829b3eaa5785",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442712733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=60",
+      "sha256": "793812ad8f54824128cb5954278e2c405c1b5f8a7e52134d10bf3760d52a8af7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442713733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=60",
+      "sha256": "793812ad8f54824128cb5954278e2c405c1b5f8a7e52134d10bf3760d52a8af7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442713833",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=60",
+      "sha256": "793812ad8f54824128cb5954278e2c405c1b5f8a7e52134d10bf3760d52a8af7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442715833",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=60",
+      "sha256": "793812ad8f54824128cb5954278e2c405c1b5f8a7e52134d10bf3760d52a8af7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442717033",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=48",
+      "sha256": "f1cdcb6ae5b97e68de9f70d47b2e0478e66016f99bb9616d5de50c6b332ed449",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442727733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=54",
+      "sha256": "25a111612f406ef841d5c3df4ca6502a211a42435082fc6ff919829b3eaa5785",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442728933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=60",
+      "sha256": "793812ad8f54824128cb5954278e2c405c1b5f8a7e52134d10bf3760d52a8af7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442754933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=48",
+      "sha256": "f1cdcb6ae5b97e68de9f70d47b2e0478e66016f99bb9616d5de50c6b332ed449",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442755233",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=66",
+      "sha256": "96f026a7facba002cdb96fb2be1d67c303c1a7fce3408b562f5bff312706d67e",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442786633",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=54",
+      "sha256": "25a111612f406ef841d5c3df4ca6502a211a42435082fc6ff919829b3eaa5785",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442819733",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=42",
+      "sha256": "43d8594e3af93ebe4c220a76912d13d3ef7f2a9d7b2b1c92e861ab4e16f5a708",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442825833",
+     "targetName": "Versace",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=72",
+      "sha256": "d05d7d0e103b348b325be2a86c6b6deb33d2121849adaf603f24957ce5c7a059",
+      "property": "facility",
+      "value": "Versace",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1442884133",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=42",
+      "sha256": "43d8594e3af93ebe4c220a76912d13d3ef7f2a9d7b2b1c92e861ab4e16f5a708",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442991533",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=66",
+      "sha256": "96f026a7facba002cdb96fb2be1d67c303c1a7fce3408b562f5bff312706d67e",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442994533",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=66",
+      "sha256": "96f026a7facba002cdb96fb2be1d67c303c1a7fce3408b562f5bff312706d67e",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1442995133",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=54",
+      "sha256": "25a111612f406ef841d5c3df4ca6502a211a42435082fc6ff919829b3eaa5785",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443043833",
+     "targetName": "Miu Miu",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=60",
+      "sha256": "793812ad8f54824128cb5954278e2c405c1b5f8a7e52134d10bf3760d52a8af7",
+      "property": "facility",
+      "value": "Miu Miu",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443045933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=72",
+      "sha256": "d05d7d0e103b348b325be2a86c6b6deb33d2121849adaf603f24957ce5c7a059",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:36.000Z"
+     }
+    },
+    {
+     "externalId": "1443052233",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=30",
+      "sha256": "a2570b87628f0127849b6d3bfb2f1672a70845615e350c9191343a0526929067",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443055733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=24",
+      "sha256": "a944ed7735b40fc9159d4b9bfaeb27d3d0d042ffd4c333ccd2f300e6fa08cf6f",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1443056933",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=36",
+      "sha256": "85beb9926591f98424be2f1f507c862b3fa4b15df3128e42a8c31e24019384a7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443061733",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=30",
+      "sha256": "a2570b87628f0127849b6d3bfb2f1672a70845615e350c9191343a0526929067",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443062033",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=36",
+      "sha256": "85beb9926591f98424be2f1f507c862b3fa4b15df3128e42a8c31e24019384a7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443062133",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=36",
+      "sha256": "85beb9926591f98424be2f1f507c862b3fa4b15df3128e42a8c31e24019384a7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443062233",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=36",
+      "sha256": "85beb9926591f98424be2f1f507c862b3fa4b15df3128e42a8c31e24019384a7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443329833",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=36",
+      "sha256": "85beb9926591f98424be2f1f507c862b3fa4b15df3128e42a8c31e24019384a7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443330633",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=42",
+      "sha256": "43d8594e3af93ebe4c220a76912d13d3ef7f2a9d7b2b1c92e861ab4e16f5a708",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443342833",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=30",
+      "sha256": "a2570b87628f0127849b6d3bfb2f1672a70845615e350c9191343a0526929067",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443366033",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=36",
+      "sha256": "85beb9926591f98424be2f1f507c862b3fa4b15df3128e42a8c31e24019384a7",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443432233",
+     "targetName": "Marchesi 1824",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=30",
+      "sha256": "a2570b87628f0127849b6d3bfb2f1672a70845615e350c9191343a0526929067",
+      "property": "facility",
+      "value": "Marchesi 1824",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443453533",
+     "targetName": "Marchesi 1824",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=30",
+      "sha256": "a2570b87628f0127849b6d3bfb2f1672a70845615e350c9191343a0526929067",
+      "property": "facility",
+      "value": "Marchesi 1824",
+      "observedAt": "2026-10-03T06:17:35.000Z"
+     }
+    },
+    {
+     "externalId": "1443573333",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=18",
+      "sha256": "5498c062ccd6e23b1a9c023412ac740b3cc49121427f04eba199738892e2bdb9",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    },
+    {
+     "externalId": "1443895433",
+     "targetName": "Prada",
+     "targetKind": "BRAND",
+     "evidence": {
+      "url": "https://jobs.pradagroup.com/search/?createNewAlert=false&q=&locationsearch=&startrow=18",
+      "sha256": "5498c062ccd6e23b1a9c023412ac740b3cc49121427f04eba199738892e2bdb9",
+      "property": "facility",
+      "value": "Prada",
+      "observedAt": "2026-10-03T06:17:34.000Z"
+     }
+    }
+   ],
+   "evidence": [
+    {
+     "url": "https://jobs.pradagroup.com/job/Zurich-Team-Manager-Zurich/1443895433/",
+     "artifactText": "The Group, a world leader in the luxury sector, operates in more than 45 countries with the PRADA, Miu Miu, Versace, Church’s, Car Shoe and Luna Rossa brands",
+     "sha256": "41c98293625d9c1c83385bfec796dc1f8aa6c83c93796b6b898624ce79c26554",
+     "statement": "The official Prada Group careers portal states that the Group operates the PRADA, Miu Miu, Versace, Church’s, Car Shoe and Luna Rossa brands; its result table names the employing brand of each posting in the Brand column."
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+Jako : 03/10/2026
+- Source `jako` (personio jako.jobs.personio.de) RETIRED le 09/09 : fiches de démonstration Personio (« Test »).
+- Site officiel jako.com (robots.txt : pages carrière non interdites) :
+  /de-de/ueber-jako/karriere/jobs-jako/ -> 200, 17 postes listés sur le site lui-même (Bilanzbuchhalter,
+  Lagermitarbeiter, Product Manager Textil, ERP Developer, apprentissages 2027…), candidature par jobs@jako.com.
+  Fiche /…/bilanzbuchhalter-m-w-d-2304/ -> 200, porte un JobPosting JSON-LD.
+- Famille connue applicable : generic-listing (liste + fiches JSON-LD) ; non qualifiée faute de décision de périmètre.
+- Périmètre : JAKO AG = équipementier de sport d'équipe (« Teamsport, Corporate Teamwear ») ; absent de la liste
+  de référence apps/aggregator/data/reference/maisons.csv ; Company « Jako » kind UNKNOWN, 0 offre active.

@@ -1,0 +1,6 @@
+Sport 1 : 03/10/2026
+- Source `sport-1` (teamtailor sport1) RETIRED le 09/09 : contenu de démonstration Teamtailor.
+- Portail officiel karriere.sport1.no (lié par sport1.no) : 200, hébergé par ReachMee (site=12) ; robots.txt 404
+  (aucune interdiction). ReachMee n'est pas une famille d'adaptateur du code (src/ats/adapters).
+- Périmètre : Sport 1 = chaîne norvégienne de magasins de sport (Sport Holding : Intersport, Löplabbet…) ;
+  absente de maisons.csv ; Company « Sport 1 » kind UNKNOWN, 0 offre active.

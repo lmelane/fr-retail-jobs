@@ -1,0 +1,6 @@
+Miu Miu : 03/10/2026
+- Source `miu-miu` RETIRED (tenant SmartRecruiters « miu » = université égyptienne, retrait du 02/10).
+- Portail officiel : jobs.pradagroup.com (portail du groupe Prada, source prada-group ACTIVE) ; colonne « Brand » :
+  Miu Miu 35 + ミュウミュウ 3 sur les 243 offres du 03/10 (voir ../prada-group/).
+- Base : ces offres sont attribuées à « Prada Group ». La revue ../prada-group/revue-portail-prada-group.json les
+  attribue à Miu Miu (38 offres) ; aucune nouvelle source n'est nécessaire.

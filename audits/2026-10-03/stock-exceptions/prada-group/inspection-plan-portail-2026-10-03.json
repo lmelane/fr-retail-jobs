@@ -1,0 +1,25 @@
+{
+ "batchId": "dd5462a4-3df8-4809-a50c-2cd3478e3323",
+ "finding": "REVIEWED_PORTAL_OWNER",
+ "sourceKeys": [
+  "prada-group"
+ ],
+ "invariants": [
+  "lifecycle",
+  "source-owners"
+ ],
+ "excludedSourceKeys": [],
+ "operations": {
+  "Company": 6,
+  "Source": 1,
+  "Job": 191
+ },
+ "offresDeplacees": {
+  "PRADA": 126,
+  "Versace": 13,
+  "Miu Miu": 38,
+  "Church's (créée)": 4,
+  "Marchesi 1824 (créée)": 10
+ },
+ "observations": 191
+}

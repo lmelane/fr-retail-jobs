@@ -1,0 +1,26 @@
+Versace : sonde du 03/10/2026 (CatwalksBot/1.0, sans authentification, robots.txt lus d'abord)
+
+Workday de Capri (source `versace`, PAUSED, D-506 §1)
+  06:12 UTC https://capri.wd1.myworkdayjobs.com/robots.txt -> 503 {"errorCode":"ERR_TENANT_OUTAGE", outageUrl …?t=capri}
+  06:12 UTC /versace, /Versace -> 302 https://www.myworkday.com/wday/drs/outage?t=capri&s=Versace
+  06:12 UTC /michael_kors -> 302 …/outage?t=capri&s=michael_kors (le 02/10 à 14:40 UTC : 200)
+  06:12 UTC POST /wday/cxs/capri/Versace/jobs -> 303
+  06:34 UTC même réponse pour Versace et Michael Kors.
+  Lecture : le site Versace n'est pas revenu. Ce samedi matin tout le tenant Capri est en « outage », Michael Kors
+  compris : la sonde du jour ne distingue plus Versace ; celle du 02/10 (jour ouvré) montrait Versace seul coupé.
+
+Site officiel : https://www.versace.com/robots.txt -> 403 Akamai « Access Denied » pour CatwalksBot. Le lien
+« carrières » de versace.com n'a donc pas pu être lu à la source (aucun contournement).
+
+Portail du groupe Prada (source `prada-group`, ACTIVE, robots.txt : /search/ et /job/ autorisés)
+  Filtre « Brand » du portail (optionsFacetsDD_facility), compteur natif « Results 1 – 6 of N » :
+    Versace 13 · Miu Miu 35 · Prada 125 · Prada Group 50 · Church's 4 · Marchesi 1824 10 (total portail 243)
+  Cassette complète du vrai adaptateur (record-cassette --key=prada-group, 06:17 UTC) : 243 offres, 41 pages ;
+  colonne Brand par offre : Prada 125, Prada Group 50, Miu Miu 35, Versace 13, Marchesi 1824 10, Church's 4,
+  ミュウミュウ 3, プラダ・グループ 2, プラダ 1.
+  Phrase de périmètre sur chaque fiche : « The Group … operates in more than 45 countries with the PRADA, Miu Miu,
+  Versace, Church’s, Car Shoe and Luna Rossa brands ».
+
+Base (lecture seule, 03/10)
+  versace : 49 offres actives (dernière vue 30/09 16:19 UTC), liens vers le site coupé ; 6 inactives.
+  prada-group : 303 offres actives, TOUTES attribuées à « Prada Group » (Versace et Miu Miu compris).
