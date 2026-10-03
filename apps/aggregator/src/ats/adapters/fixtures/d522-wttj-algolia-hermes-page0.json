@@ -1,0 +1,103 @@
+{
+ "capturedAt": "2026-10-03T06:2xZ",
+ "request": {
+  "filters": "organization.slug:\"hermes\"",
+  "hitsPerPage": 100,
+  "page": 0
+ },
+ "meta": {
+  "nbHits": 684,
+  "page": 0,
+  "nbPages": 7,
+  "hitsPerPage": 100,
+  "exhaustiveNbHits": true,
+  "exhaustive": {
+   "nbHits": true,
+   "typo": true
+  },
+  "params": "filters=organization.slug%3A%22hermes%22&hitsPerPage=100&page=0"
+ },
+ "hits": [
+  {
+   "summary": "Rejoignez Hermès, une maison de luxe emblématique. En tant que Développeur Ennoblissement Matières - Chaussure, vous serez responsable du sourcing, du développe",
+   "organization": {
+    "slug": "hermes",
+    "name": "Hermès"
+   },
+   "slug": "cdi-developpeur-ennoblissement-matieres-chaussure-h-f_pantin_HERMS_xQ0MxpM",
+   "salary_maximum": null,
+   "salary_period": null,
+   "reference": "46ab71ee-7645-4a08-a90c-d97abf45bb83",
+   "published_at": "2026-10-03T00:04:43Z",
+   "remote": "unknown",
+   "salary_currency": null,
+   "education_level": null,
+   "experience_level_minimum": null,
+   "name": "CDI - Développeur Ennoblissement Matières - Chaussure (H/F)",
+   "offices": [
+    {
+     "city": "Pantin",
+     "country": "France",
+     "country_code": "FR",
+     "zip_code": null
+    }
+   ],
+   "salary_minimum": null,
+   "contract_type": "full_time"
+  },
+  {
+   "organization": {
+    "slug": "hermes",
+    "name": "Hermès"
+   },
+   "offices": [
+    {
+     "city": "Paris",
+     "country": "France",
+     "country_code": "FR",
+     "zip_code": null
+    }
+   ],
+   "reference": "ccc44d65-b390-4150-a38c-7d1929113c83",
+   "slug": "cdi-business-analyste-et-support-finance-travel-retail-h-f_paris",
+   "remote": "unknown",
+   "salary_currency": null,
+   "salary_minimum": null,
+   "salary_period": null,
+   "published_at": "2026-10-03T00:04:40Z",
+   "name": "CDI - Business Analyste et support finance - Travel retail (H/F)",
+   "summary": "Rejoignez Hermès, une maison française de luxe, en tant que Business Analyste et support finance - Travel retail. Vous serez responsable de l'analyse de la perf",
+   "salary_maximum": null,
+   "education_level": null,
+   "experience_level_minimum": null,
+   "contract_type": "full_time"
+  },
+  {
+   "summary": "Join Hermès, a prestigious French luxury brand, as a Communications Intern. In this role, you will assist with campaign planning and execution, generate reports",
+   "organization": {
+    "slug": "hermes",
+    "name": "Hermès"
+   },
+   "slug": "communications-intern_hong-kong_HERMS_KeeY3bY",
+   "salary_maximum": null,
+   "salary_period": null,
+   "reference": "2f61ecd4-32d0-4bb7-98a5-8dfc61be54ce",
+   "published_at": "2026-10-03T00:04:38Z",
+   "remote": "unknown",
+   "salary_currency": null,
+   "education_level": null,
+   "experience_level_minimum": null,
+   "name": "Communications Intern",
+   "offices": [
+    {
+     "city": "Hong Kong",
+     "country": "Hong Kong",
+     "country_code": "HK",
+     "zip_code": null
+    }
+   ],
+   "salary_minimum": null,
+   "contract_type": "internship"
+  }
+ ]
+}

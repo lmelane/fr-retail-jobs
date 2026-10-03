@@ -44,6 +44,9 @@ const DEFAULT_ORGANIZATION_CONCURRENCY = 2;
 
 type FacetResponse = {
   nbHits?: number;
+  /** `false` quand Algolia a compté les facettes sur un échantillon : la liste des valeurs n'est alors pas démontrée. */
+  exhaustiveFacetsCount?: boolean;
+  exhaustive?: { facetsCount?: boolean };
   facets?: Record<string, Record<string, number>>;
   message?: string;
   status?: number;
@@ -79,9 +82,21 @@ async function organizationFacet(filters: string): Promise<FacetResponse> {
  * redécoupe par pays et on fait l'union.
  */
 export async function listOrganizations(filters: string): Promise<Set<string>> {
+  return (await readOrganizations(filters)).slugs;
+}
+
+/**
+ * La liste des organisations ET sa preuve (D-522 §6). Elle n'est démontrée que lue d'une seule requête, sous le plafond
+ * de valeurs, sur un compte de facettes exact : c'est alors l'ensemble des organisations qu'Algolia associe au filtre.
+ * Redécoupée par pays, une offre sans pays de bureau échapperait à toutes les parts : liste lue, pas démontrée.
+ */
+export async function readOrganizations(filters: string): Promise<{ slugs: Set<string>; proven: boolean; issue?: string }> {
   const whole = await organizationFacet(filters);
   const slugs = Object.keys(whole.facets?.['organization.slug'] ?? {});
-  if (slugs.length < FACET_CAP) return new Set(slugs);
+  if (slugs.length < FACET_CAP) {
+    const exact = whole.exhaustiveFacetsCount === true || whole.exhaustive?.facetsCount === true;
+    return { slugs: new Set(slugs), proven: exact, ...(exact ? {} : { issue: 'ORGANIZATION_LIST_UNPROVEN' }) };
+  }
 
   const union = new Set<string>();
   for (const country of Object.keys(whole.facets?.['offices.country_code'] ?? {})) {
@@ -95,7 +110,7 @@ export async function listOrganizations(filters: string): Promise<Set<string>> {
     }
     for (const slug of partial) union.add(slug);
   }
-  return union;
+  return { slugs: union, proven: false, issue: 'ORGANIZATION_LIST_UNPROVEN' };
 }
 
 /**
@@ -120,7 +135,8 @@ export async function fetchWttjSectorJobs(config: Record<string, unknown>): Prom
     throw new Error('WTTJ sector sweep: no `sectors`, `parentSectors` or `organizations` configured');
   }
 
-  const found = clauses.length ? await listOrganizations(clauses.join(' OR ')) : new Set<string>();
+  const listing = clauses.length ? await readOrganizations(clauses.join(' OR ')) : { slugs: new Set<string>(), proven: true };
+  const found = listing.slugs;
   if (clauses.length && found.size === 0) {
     // Une facette renommée côté WTTJ rendrait zéro sans erreur : on refuse de
     // l'enregistrer comme « secteur vide ».
@@ -175,10 +191,20 @@ export async function fetchWttjSectorJobs(config: Record<string, unknown>): Prom
       jobs.push(job);
     }
   }
-  return { jobs, declaredTotal, truncated, rejectedRows,
+  /**
+   * D-522 §6 : le secteur est prouvé quand la liste de ses organisations l'est (`readOrganizations`) et que CHAQUE
+   * organisation a prouvé sa propre liste (`fetchWttjJobs`, `listProof`). Une seule qui manque : énumération INCONNUE,
+   * comme avant. 2 144 offres lues sur 2 144 au RUN du 02/10 restaient sans attestation d'absence.
+   */
+  const unproven = organizations.filter((_, i) => perOrganization[i]!.complete !== true);
+  const issues = [...(listing.issue ? [listing.issue] : []), ...(unproven.length ? [`ORGANIZATIONS_UNPROVEN=${unproven.length}:${unproven.slice(0, 5).join(',')}`] : [])];
+  const complete = !truncated && listing.proven && unproven.length === 0;
+  return { jobs, declaredTotal, truncated, rejectedRows, ...(complete ? { complete: true } : {}),
     enumeration: { method: 'FACETED_ORGANIZATION_SWEEP_OF_ALGOLIA_INDEX',
-      endpoint: `https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`,
-      pages, rawCount, termination: truncated ? 'ORGANIZATION_SHORT_OF_DECLARED_TOTAL' : 'EVERY_ORGANIZATION_READ',
+      endpoint: `https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`, issues, enumerationTraversalComplete: complete,
+      // `ORGANIZATIONS_RECONCILED` n'est PAS une terminaison probante pour le refresh (`refreshPlan.ts`,
+      // `DECLARED_BUT_NOT_PROVING`) : la promouvoir est une lecture à écrire, pas un effet de bord de ce lecteur.
+      pages, rawCount, termination: truncated ? 'ORGANIZATION_SHORT_OF_DECLARED_TOTAL' : complete ? 'ORGANIZATIONS_RECONCILED' : 'EVERY_ORGANIZATION_READ',
       canonicalAbsenceProofUsable: absenceProofUsable,
       scopes: organizations.map((slug, i) => ({ scope: slug,
         declaredTotal: perOrganization[i].declaredTotal ?? -1,

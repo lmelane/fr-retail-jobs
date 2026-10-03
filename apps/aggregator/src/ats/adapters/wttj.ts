@@ -7,6 +7,7 @@ import { educationLevel } from '../../normalize/experience.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 import { captureObservedAt } from '../../capture/context.js';
+import { listProof, type ListPage } from './listProof.js';
 
 /**
  * Welcome to the Jungle — its own search API, not a generic jobboard scrape.
@@ -111,7 +112,8 @@ export type WttjHit = {
   summary?: string;
 };
 
-type WttjResponse = { nbHits?: number; hits?: WttjHit[]; message?: string; status?: number };
+/** `nbPages` est borné par `paginationLimitedTo` (1 000 hits sur cet index) ; `exhaustiveNbHits` dit si `nbHits` est exact. */
+type WttjResponse = { nbHits?: number; nbPages?: number; exhaustiveNbHits?: boolean; hits?: WttjHit[]; message?: string; status?: number };
 
 /** Ce qu'Algolia rend à toute requête : un refus se lit dans `message`/`status`, jamais dans un tableau vide. */
 type AlgoliaRefusable = { message?: string; status?: number };
@@ -288,6 +290,8 @@ export async function fetchWttjJobs(config: Record<string, unknown>): Promise<Ad
   let declaredTotal: number | undefined;
   let anonymousRows = 0;
   let pages = 0, rawCount = 0, termination = 'SHORT_PAGE';
+  const listPages: ListPage[] = [];
+  const distinct = new Set<string>();
 
   for (let page = 0; ; page++) {
     // A rotated key is refreshed once and a persistent refusal throws (see
@@ -313,7 +317,7 @@ export async function fetchWttjJobs(config: Record<string, unknown>): Promise<Ad
        * JobSource historique portant ce même identifiant paraîtrait ABSENTE au refresh suivant.
        */
       const canonicalId = wttjCanonicalId(hit);
-      if (canonicalId) { if (!pageIds.includes(canonicalId)) pageIds.push(canonicalId); }
+      if (canonicalId) { if (!pageIds.includes(canonicalId)) pageIds.push(canonicalId); distinct.add(canonicalId); }
       else anonymousRows++;
       const job = parseWttjHit(hit, slug);
       /**
@@ -333,6 +337,7 @@ export async function fetchWttjJobs(config: Record<string, unknown>): Promise<Ad
       ids: pageIds, canonicalIds: pageIds, publisherCounter: String(response.nbHits ?? ''),
       componentCounters: [`page=${page}`, `hits=${hits.length}`, `filter=organization.slug:"${slug}"`] });
 
+    listPages.push({ index: page, total: response.nbHits, rows: hits.length, nbPages: response.nbPages, exhaustive: response.exhaustiveNbHits });
     if (response.nbHits !== undefined) declaredTotal = response.nbHits;
     // A short page is the last one; nbHits also bounds the loop.
     if (hits.length < PAGE_SIZE) break;
@@ -344,20 +349,27 @@ export async function fetchWttjJobs(config: Record<string, unknown>): Promise<Ad
    * Chaque page de recherche porte sa propre preuve ; un contrat partiel n'étant pas un contrat, aucune page
    * n'est muette.
    */
+  /**
+   * D-522 §6 : la fin de la liste se prouve sur ce qu'Algolia publie à chaque page (`listProof`) — même `nbHits` exact,
+   * `nbPages` qui le couvre (au-delà de 1 000 hits l'index refuse la page : la source échoue, bruyamment), pages
+   * contiguës jusqu'à la dernière, chaque ligne une fois. Une preuve qui manque laisse l'énumération INCONNUE, comme avant.
+   */
+  const proof = listProof({ pages: listPages, pageSize: PAGE_SIZE, distinctIds: distinct.size, rowsWithoutId: anonymousRows, requiresPageCount: true });
   const enumeration: AdapterResult['enumeration'] = {
     method: 'ALGOLIA_ORGANIZATION_FILTER_PAGINATION', endpoint: `https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`,
-    pages, rawCount, termination,
+    pages, rawCount, termination, enumerationTraversalComplete: proof.complete, issues: proof.failures,
     // Un hit sans `reference` ni `slug` a été vu sans pouvoir être nommé.
     canonicalAbsenceProofUsable: anonymousRows === 0,
     pageEvidence,
   };
 
-  if (config.withDescriptions === false) return { jobs, declaredTotal, rejectedRows, enumeration };
+  const proven = proof.complete ? { complete: true } : {};
+  if (config.withDescriptions === false) return { jobs, declaredTotal, rejectedRows, enumeration, ...proven };
   // Un hit qui porte encore `description` (ancienne forme de l'index) suffit ;
   // un résumé, quelle que soit sa longueur, n'est pas l'offre.
-  const complete = jobs.every((job) => typeof (job.raw as WttjHit).description === 'string');
-  if (complete) return { jobs, declaredTotal, rejectedRows, enumeration };
-  return {
+  const described = jobs.every((job) => typeof (job.raw as WttjHit).description === 'string');
+  if (described) return { jobs, declaredTotal, rejectedRows, enumeration, ...proven };
+  return { ...proven,
     // D-517 : en lecture incrémentale, la fiche n'est lue que pour une offre jamais vue.
     jobs: await attachWttjDescriptions(jobs.filter(job => !isKnownPosting(job.externalId)), slug, Number(config.detailConcurrency ?? 4)),
     declaredTotal, rejectedRows, enumeration,

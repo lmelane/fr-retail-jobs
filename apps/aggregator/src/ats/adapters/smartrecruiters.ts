@@ -4,6 +4,9 @@ import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { createHash } from 'node:crypto';
+import { captureObservedAt } from '../../capture/context.js';
+import { listProof, type ListPage } from './listProof.js';
 
 export type SmartRecruitersPosting = {
   id: string;
@@ -24,7 +27,10 @@ export type SmartRecruitersPosting = {
   company?: { identifier?: string; name?: string };
   customField?: { fieldLabel?: string; valueLabel?: string }[];
 };
-type Page = { content: SmartRecruitersPosting[]; totalFound?: number };
+/** L'enveloppe documentée de l'API publique : `offset` et `limit` servis en écho, `totalFound` à chaque page. */
+type Page = { content: SmartRecruitersPosting[]; totalFound?: number; offset?: number; limit?: number };
+
+const PAGE_SIZE = 100;
 
 /** SmartRecruiters' contract ids, in words the contract normalizer knows. */
 const CONTRACT_BY_ID: Record<string, string> = {
@@ -119,17 +125,54 @@ export async function fetchSmartRecruitersJobs(config: Record<string, unknown>):
   if (!company) throw new Error('SmartRecruiters company missing');
   const out: NormalizedJob[] = [];
   let declaredTotal: number | undefined;
+  const endpoint = `https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(company)}/postings`;
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  const listPages: ListPage[] = [];
+  const distinct = new Set<string>();
+  let rawCount = 0, rowsWithoutId = 0, offsetMismatch = false, termination = 'PAGE_BUDGET_EXHAUSTED';
   // Pas de plafond à 1 000 : l'API sert les offsets au-delà (vérifié : H&M
   // offset=1600 → 200, totalFound 1 622) ; le plafond laissait 622 offres H&M
   // jamais lues (lot 2, 2026-09-06). 20 000 = garde-fou contre une boucle.
-  for (let offset = 0; offset < 20_000; offset += 100) {
-    const page = await fetchJson<Page>(`https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(company)}/postings?limit=100&offset=${offset}`);
-    for (const job of page.content ?? []) out.push(parseSmartRecruitersPosting(job, company, typeof config.employerField === 'string' ? config.employerField : undefined));
+  for (let offset = 0; offset < 20_000; offset += PAGE_SIZE) {
+    const page = await fetchJson<Page>(`${endpoint}?limit=${PAGE_SIZE}&offset=${offset}`);
+    const content = page.content ?? [];
+    rawCount += content.length;
+    const ids: string[] = [];
+    for (const job of content) {
+      // L'identifiant de l'annonce est l'`externalId` écrit : la preuve et la sortie suivent le même chemin.
+      const id = typeof job.id === 'string' && job.id.trim() ? job.id : undefined;
+      if (!id) { rowsWithoutId += 1; rejectedRows.push({ reason: 'POSTING_WITHOUT_ID', raw: job }); continue; }
+      ids.push(id); distinct.add(id);
+      out.push(parseSmartRecruitersPosting(job, company, typeof config.employerField === 'string' ? config.employerField : undefined));
+    }
+    // Une API qui ignorerait `offset` ressert la première page : l'écho le dit avant même le compte des identifiants.
+    if (page.offset !== undefined && page.offset !== offset) offsetMismatch = true;
+    listPages.push({ index: offset / PAGE_SIZE, total: page.totalFound, rows: content.length });
+    pageEvidence.push({ url: `${endpoint}?limit=${PAGE_SIZE}&offset=${offset}`, checkedAt: captureObservedAt().toISOString(),
+      sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset,
+      pagination: page.totalFound === undefined ? null : { start: offset, end: offset + content.length, total: page.totalFound },
+      ids, canonicalIds: ids, publisherCounter: page.totalFound === undefined ? '' : `totalFound=${page.totalFound}`,
+      componentCounters: [`rows=${content.length}`, `offset=${page.offset ?? '?'}`] });
     if (page.totalFound !== undefined) declaredTotal = page.totalFound;
-    if (!page.content?.length || out.length >= (page.totalFound ?? 0)) break;
+    if (!content.length) { termination = 'EMPTY_PAGE'; break; }
+    if (rawCount >= (page.totalFound ?? 0)) { termination = 'DECLARED_TOTAL_REACHED'; break; }
   }
+  /**
+   * D-522 §6 : la fin de la liste se prouve sur ce que l'API publie à chaque page (`listProof`) — même `totalFound`
+   * partout, pages contiguës jusqu'à la dernière, chaque annonce une fois. hm-group (1 930 sur 1 930), marella,
+   * b-s-international et funky-buddha lisaient tout, douze collectes sur douze, et restaient « énumération inconnue ».
+   * Une preuve qui manque laisse l'énumération INCONNUE, comme avant : ce lot ne rend bloquante aucune collecte.
+   */
+  const proof = termination === 'PAGE_BUDGET_EXHAUSTED' ? { complete: false, failures: ['LIST_PAGE_BUDGET_EXHAUSTED'] }
+    : listProof({ pages: listPages, pageSize: PAGE_SIZE, distinctIds: distinct.size, rowsWithoutId });
+  const failures = [...proof.failures, ...(offsetMismatch ? ['LIST_OFFSET_IGNORED'] : [])];
+  const complete = failures.length === 0;
+  const listing = { declaredTotal, rejectedRows, ...(complete ? { complete: true } : {}),
+    enumeration: { method: 'PUBLIC_POSTING_API_OFFSET_PAGINATION', endpoint, pages: pageEvidence.length, rawCount, termination,
+      enumerationTraversalComplete: complete, issues: failures, canonicalAbsenceProofUsable: rowsWithoutId === 0, pageEvidence } };
 
-  if (config.withDescriptions === false) return { jobs: out, declaredTotal };
+  if (config.withDescriptions === false) return { jobs: out, ...listing };
 
   const limit = pLimit(Number(config.detailConcurrency ?? 4));
   const jobs = await Promise.all(
@@ -141,5 +184,5 @@ export async function fetchSmartRecruitersJobs(config: Record<string, unknown>):
       }),
     ),
   );
-  return { jobs, declaredTotal };
+  return { jobs, ...listing };
 }

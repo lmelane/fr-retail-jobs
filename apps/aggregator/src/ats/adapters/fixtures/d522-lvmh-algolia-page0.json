@@ -1,0 +1,84 @@
+{
+ "capturedAt": "2026-10-03T06:2xZ",
+ "request": {
+  "filters": "category:job",
+  "hitsPerPage": 100,
+  "page": 0
+ },
+ "meta": {
+  "nbHits": 5987,
+  "page": 0,
+  "nbPages": 60,
+  "hitsPerPage": 100,
+  "exhaustiveNbHits": true,
+  "exhaustive": {
+   "nbHits": true,
+   "typo": true
+  },
+  "params": "filters=category%3Ajob&hitsPerPage=100&page=0"
+ },
+ "hits": [
+  {
+   "publicationTimestamp": 1790992657,
+   "name": "Beauty Advisor - Full Time",
+   "maison": "Sephora",
+   "city": "Tacoma",
+   "countryRegion": "United States",
+   "country": "United States",
+   "contract": "Permanent Job",
+   "fullTimePartTime": "Full Time",
+   "language": "EN",
+   "link": "https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=297172",
+   "atsId": "297172",
+   "requiredExperienceFilter": "Beginner",
+   "businessGroup": "Selective Distribution",
+   "function": "Retail",
+   "description": "Beauty Advisor - Full Time",
+   "jobResponsabilities": null,
+   "profile": "Job ID: 297172\nStore Name/Number: WA-Tacoma  (0656)\nAddress: 4502 S Steele Street, Tacoma, WA 98409, United States (US)\nHourly/Salaried: Hourly (Non-Exempt)\nFul",
+   "additionalInformation": "",
+   "objectID": "297172"
+  },
+  {
+   "publicationTimestamp": 1790985344,
+   "name": "Seasonal Associate",
+   "maison": "Sephora",
+   "city": "Eugene",
+   "countryRegion": "United States",
+   "country": "United States",
+   "contract": "Non-guaranteed hours",
+   "fullTimePartTime": "Part Time",
+   "language": "EN",
+   "link": "https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=297168",
+   "atsId": "297168",
+   "businessGroup": "Selective Distribution",
+   "function": "Retail",
+   "description": "Seasonal Associate",
+   "jobResponsabilities": null,
+   "profile": "Job ID: 297168\nStore Name/Number: OR-Oakway Center (1422)\nAddress: 135 Oakway Road, Eugene, OR 97401, United States (US)\nHourly/Salaried: Hourly (Non-Exempt)\nFu",
+   "additionalInformation": "",
+   "objectID": "297168"
+  },
+  {
+   "publicationTimestamp": 1790984920,
+   "name": "Beauty Advisor - Flex",
+   "maison": "Sephora",
+   "city": "Bend",
+   "countryRegion": "United States",
+   "country": "United States",
+   "contract": "Non-guaranteed hours",
+   "fullTimePartTime": "Part Time",
+   "language": "EN",
+   "link": "https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=297170",
+   "atsId": "297170",
+   "requiredExperienceFilter": "Beginner",
+   "businessGroup": "Selective Distribution",
+   "function": "Retail",
+   "description": "Beauty Advisor - Flex",
+   "jobResponsabilities": null,
+   "profile": "Job ID: 297170\nStore Name/Number: OR-Bend (1270)\nAddress: The Shops at The Old Mill - 425 SW Powerhouse Dr #303, Bend, OR 97702, United States (US)\nHourly/Salar",
+   "additionalInformation": "",
+   "objectID": "297170"
+  }
+ ]
+}

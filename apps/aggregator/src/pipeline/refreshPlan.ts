@@ -182,6 +182,8 @@ export const PROVING_TERMINATIONS: ReadonlySet<string> = new Set([
  *   taleo        NO_FRESH_ROW                    (assumé en commentaire dans l'adaptateur)
  *   volcanic     PAGE_COUNT_REACHED
  *   wttjSector   EVERY_ORGANIZATION_READ
+ *   wttjSector   ORGANIZATIONS_RECONCILED        (D-522 §6, 03/10/2026 : liste des organisations exacte et chaque
+ *                                                 organisation prouvée par `listProof` ; promotion non écrite)
  *
  * Ce n'est pas un défaut à corriger ici : promouvoir une terminaison, c'est décider qu'elle DÉMONTRE la fin
  * du parcours — un arbitrage sur ce qui fait preuve, qui appartient au propriétaire et passe par une décision
@@ -192,7 +194,7 @@ export const PROVING_TERMINATIONS: ReadonlySet<string> = new Set([
  */
 export const DECLARED_BUT_NOT_PROVING = Object.freeze([
   'NO_FRESH_ROWS_OR_TOTAL_REACHED', 'DECLARED_PAGE_COUNT_REACHED', 'CURSOR_EXHAUSTED',
-  'SHORT_PAGE_PER_WEBSITE', 'NO_FRESH_ROW', 'PAGE_COUNT_REACHED', 'EVERY_ORGANIZATION_READ',
+  'SHORT_PAGE_PER_WEBSITE', 'NO_FRESH_ROW', 'PAGE_COUNT_REACHED', 'EVERY_ORGANIZATION_READ', 'ORGANIZATIONS_RECONCILED',
 ] as const);
 
 /**

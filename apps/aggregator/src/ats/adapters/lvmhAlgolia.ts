@@ -6,6 +6,7 @@ import { fetchJson, fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
+import { listProof, type ListPage } from './listProof.js';
 
 /**
  * LVMH's public job index — Sephora, Louis Vuitton, Dior, Tiffany and 49 other
@@ -87,6 +88,10 @@ type LvmhHit = {
 type AlgoliaResponse = {
   hits?: LvmhHit[];
   nbHits?: number;
+  /** Borné par `paginationLimitedTo` : un plafond de pagination se lit dans `nbPages × hitsPerPage < nbHits`. */
+  nbPages?: number;
+  /** `false` quand `nbHits` est une estimation d'Algolia. */
+  exhaustiveNbHits?: boolean;
   message?: string;
   status?: number;
 };
@@ -204,7 +209,9 @@ export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promi
   const seen = new Set<string>();
   const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   let declaredTotal: number | undefined;
-  let rawCount = 0, anonymousRows = 0;
+  let rawCount = 0, anonymousRows = 0, rowsWithoutId = 0;
+  const listPages: ListPage[] = [];
+  const distinct = new Set<string>();
   let termination = 'PAGE_BUDGET_EXHAUSTED';
 
   for (let page = 0; page < MAX_PAGES; page++) {
@@ -249,8 +256,9 @@ export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promi
       const written = parseLvmhHit(hit)?.externalId;
       if (!canonical) anonymousRows++;
       const id = canonical ?? written;
-      if (id) ids.push(id);
+      if (id) { ids.push(id); distinct.add(id); } else rowsWithoutId++;
     }
+    listPages.push({ index: page, total: response.nbHits, rows: hits.length, nbPages: response.nbPages, exhaustive: response.exhaustiveNbHits });
     pageEvidence.push({ url: `${HOST}/1/indexes/${INDEX}/query`, checkedAt: captureObservedAt().toISOString(),
       sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: page * PAGE_SIZE,
       pagination: response.nbHits === undefined ? null
@@ -281,9 +289,19 @@ export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promi
     ...new Set(pageEvidence.flatMap((pe) => pe.canonicalIds ?? [])),
   ].filter((id) => !published.has(id)).map((id) => ({ reason: 'MISSING_NAME_OR_REPEATED_ID', raw: { objectID: id }, canonicalId: id }));
 
-  return { jobs, declaredTotal, rejectedRows,
+  /**
+   * D-522 §6 : la fin de l'index se prouve sur ce qu'Algolia publie à chaque page (`listProof`) — même `nbHits` exact
+   * partout, `nbPages` qui le couvre, pages contiguës jusqu'à la dernière, chaque ligne une fois. Sans cela, 5 980 offres
+   * lues sur 5 980 restaient « énumération inconnue » et aucune absence n'était attestable.
+   * Une preuve qui manque laisse l'énumération INCONNUE, comme avant (`complete` absent, motifs nommés) : ce lot ajoute
+   * des preuves, il ne rend bloquante aucune collecte qui ne l'était pas.
+   */
+  const proof = termination === 'PAGE_BUDGET_EXHAUSTED' ? { complete: false, failures: ['LIST_PAGE_BUDGET_EXHAUSTED'] }
+    : listProof({ pages: listPages, pageSize: PAGE_SIZE, distinctIds: distinct.size, rowsWithoutId, requiresPageCount: true });
+  return { jobs, declaredTotal, rejectedRows, ...(proof.complete ? { complete: true } : {}),
     enumeration: { method: 'PUBLIC_ALGOLIA_INDEX_PAGINATION', endpoint: `${HOST}/1/indexes/${INDEX}/query`,
-      pages: pageEvidence.length, rawCount, termination,
+      pages: pageEvidence.length, rawCount, termination, enumerationTraversalComplete: proof.complete,
+      issues: proof.complete ? [] : proof.failures,
       // Un hit sans `objectID` ni `atsId` n'est identifié que par son titre : ce n'est pas une identité,
       // donc aucun identifiant historique ne peut être déclaré absent pour ce cycle.
       canonicalAbsenceProofUsable: anonymousRows === 0, pageEvidence } };
