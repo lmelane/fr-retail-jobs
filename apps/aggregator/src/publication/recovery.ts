@@ -15,7 +15,7 @@ import { normalizeGenericPosting } from '../ats/adapters/genericJsonLd.js';
 import { readCaudalieRaw } from '../ats/adapters/caudalie.js';
 import { MARC_O_POLO_READER, readMarcOPoloRaw } from '../ats/adapters/marcOPolo.js';
 import { applySmartRecruitersJobAd, parseSmartRecruitersPosting, type PostingDetail, type SmartRecruitersPosting } from '../ats/adapters/smartrecruiters.js';
-import { applySuccessFactorsDetail, brandPropertyOf, normalizeRmkItem, splitSlug, type RetainedSuccessFactorsDetail, type RmkV2Item } from '../ats/adapters/successfactors.js';
+import { applySuccessFactorsDetail, brandPropertyOf, normalizeRmkItem, splitSlug, withListingBrand, type RetainedSuccessFactorsDetail, type RmkV2Item } from '../ats/adapters/successfactors.js';
 import { normalizeAnnouncement, type DrItem } from '../ats/adapters/digitalrecruiters.js';
 import { personioDetailFromEvidence } from '../ats/adapters/personioDetail.js';
 import { normalizeJobPosting } from '../connectors/generic/jsonLdSitemap.js';
@@ -477,6 +477,17 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
           const { successfactorsDetail, ...listing } = rest;
           const { city, title } = splitSlug(raw.slug);
           job = { externalId: String(raw.id), title, location: city, url: new URL(raw.path, origin).toString(), raw: listing };
+          // The brand the listing row named under the configured column (D-522 §6): applied only while the source still
+          // configures that same column, through the collector's own helper.
+          if (raw.listingBrand != null) {
+            if (!object(raw.listingBrand) || typeof raw.listingBrand.property !== 'string' || typeof raw.listingBrand.value !== 'string' ||
+              !raw.listingBrand.value.trim()) return failure('RAW_SCHEMA_INVALID');
+            const configured = brandPropertyOf(config);
+            if (configured === raw.listingBrand.property) {
+              const { listingBrand: _listingBrand, ...plain } = listing;
+              job = withListingBrand({ ...job, raw: plain }, configured, raw.listingBrand.value);
+            }
+          }
           if (successfactorsDetail != null) {
             if (!object(successfactorsDetail)) return failure('DETAIL_EVIDENCE_UNUSABLE');
             job = applySuccessFactorsDetail(job, successfactorsDetail as RetainedSuccessFactorsDetail, brandPropertyOf(config));

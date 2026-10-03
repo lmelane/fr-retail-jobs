@@ -83,6 +83,33 @@ export function parseListing(html: string, origin: string): SuccessFactorsJob[] 
   return [...seen.values()];
 }
 
+/**
+ * The employing brand a classic HTML listing names in a column of its result table, keyed by posting id.
+ *
+ * `jobs.pradagroup.com` (03/10/2026, 41 pages, 243 postings): the « Brand » column `td.colFacility` names Prada, Miu Miu,
+ * Versace, Church's, Marchesi 1824 or Prada Group on every row, while every detail page states the group-wide
+ * `hiringOrganization` « Prada Group » and no brand property. The configured `brandProperty` names the column
+ * (`facility` → `td.colFacility`). Only the desktop table cell is read: the mobile block of the same row reuses the
+ * class `jobFacility` for the DEPARTMENT. An empty cell, or one id carrying two different values, yields no brand.
+ */
+export function parseListingBrands(html: string, brandProperty: string): Map<string, string> {
+  const $ = cheerio.load(html, { scriptingEnabled: false });
+  const column = `col${brandProperty[0].toUpperCase()}${brandProperty.slice(1)}`;
+  const brands = new Map<string, string>();
+  const conflicting = new Set<string>();
+  $('tr.data-row').each((_, row) => {
+    const ids = new Set([...($(row).html() ?? '').matchAll(JOB_LINK)].map(match => match[3]));
+    const cells = $(row).children('td').filter((_, cell) => ($(cell).attr('class') ?? '').split(/\s+/).includes(column));
+    const value = cells.length === 1 ? cells.first().text().replace(/\s+/g, ' ').trim() : '';
+    if (ids.size !== 1 || !value || value.length > 200) return;
+    const [id] = ids;
+    if (brands.has(id) && brands.get(id) !== value) conflicting.add(id);
+    brands.set(id, value);
+  });
+  for (const id of conflicting) brands.delete(id);
+  return brands;
+}
+
 /** "PARIS-Social-Media-Coordinator" -> { city: "PARIS", title: "Social Media Coordinator" } */
 export function splitSlug(slug: string): { city?: string; title: string } {
   const decoded = decodeURIComponent(slug).replace(/-/g, ' ').trim();
@@ -495,7 +522,7 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
         const url = new URL(firstUrl);
         if (locale) url.searchParams.set('locale', locale);
         const html = locale ? await fetchText(url.href, { headers: HEADERS }) : firstHtml;
-        const result = await fetchHtmlJobs(origin, url.href, html);
+        const result = await fetchHtmlJobs(origin, url.href, html, brandProperty);
         for (const job of result.jobs) if (!byId.has(job.externalId)) byId.set(job.externalId, job);
         pages += result.enumeration!.pages; rawCount += result.enumeration!.rawCount;
         evidence.push(...(result.enumeration!.pageEvidence ?? []));
@@ -516,7 +543,7 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
         termination: !complete ? 'INCOMPLETE_LOCALE_ENUMERATION' : reconciled.length ? 'ALL_LOCALE_TOTALS_RECONCILED_BY_FRESH_PASS' : 'ALL_LOCALE_TOTALS_REACHED',
         scopes, pageEvidence: evidence, issues: [...issues, ...reconciled.map(locale => `${locale}:RECONCILED_BY_FRESH_PASS`)] } });
   }
-  const result = await fetchHtmlJobs(origin, firstUrl, firstHtml);
+  const result = await fetchHtmlJobs(origin, firstUrl, firstHtml, brandProperty);
   if (!result.jobs.length && result.declaredTotal === undefined) return rmk(firstHtml);
   return finish(result);
 }
@@ -526,7 +553,7 @@ type HtmlPass = { jobs: NormalizedJob[]; seenIds: Set<string>; declaredTotal?: n
   termination: string; issues: Set<string>; pageEvidence: PageEvidence };
 
 /** One pass over the publisher's HTML pagination, from its first page. */
-async function readHtmlPass(origin: string, firstUrl: string, firstHtml: string, pass: number): Promise<HtmlPass> {
+async function readHtmlPass(origin: string, firstUrl: string, firstHtml: string, pass: number, brandProperty?: string): Promise<HtmlPass> {
   const jobs: NormalizedJob[] = [];
   const seenIds = new Set<string>();
   let offset = 0, pages = 0, rawCount = 0, declaredTotal: number | undefined, totalChanged = false;
@@ -545,6 +572,7 @@ async function readHtmlPass(origin: string, firstUrl: string, firstHtml: string,
       else if (declaredTotal !== pagination.total) { totalChanged = true; issues.add('SOURCE_TOTAL_CHANGED'); }
     }
     const listing = parseListing(html, origin);
+    const brands = brandProperty ? parseListingBrands(html, brandProperty) : new Map<string, string>();
     const $ = cheerio.load(html, { scriptingEnabled: false });
     // The second pass reads the same addresses: its evidence is told apart by a fragment, never by another request.
     pageEvidence.push({ url: pass > 1 ? `${url}#pass=${pass}` : url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset,
@@ -557,7 +585,8 @@ async function readHtmlPass(origin: string, firstUrl: string, firstHtml: string,
       seenIds.add(job.externalId);
       const { city, title } = splitSlug(job.slug);
       // The listing link is retained whole (id, path, slug, lot F3b): the retained-publication reader rebuilds the URL on the configured origin.
-      jobs.push({ externalId: job.externalId, title, location: city, url: job.url, raw: { slug: job.slug, id: job.externalId, path: new URL(job.url).pathname, source: 'successfactors' } });
+      jobs.push(withListingBrand({ externalId: job.externalId, title, location: city, url: job.url, raw: { slug: job.slug, id: job.externalId, path: new URL(job.url).pathname, source: 'successfactors' } },
+        brandProperty, brands.get(job.externalId)));
     }
     if (pagination && seenIds.size === pagination.total) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
     if (fresh.length === 0) {
@@ -590,11 +619,11 @@ const passProven = (pass: HtmlPass) => pass.declaredTotal !== undefined && !pass
  * terminaison probante de sa seconde passe et ferme : aligner les deux est une décision sur ce qui fait preuve. Un second changement reste non
  * prouvé. Le rejeu hors réseau sert les réponses d'une même adresse dans l'ordre de leur capture : il relit la même passe.
  */
-async function fetchHtmlJobs(origin: string, firstUrl: string, firstHtml: string): Promise<AdapterResult> {
-  const first = await readHtmlPass(origin, firstUrl, firstHtml, 1);
+async function fetchHtmlJobs(origin: string, firstUrl: string, firstHtml: string, brandProperty?: string): Promise<AdapterResult> {
+  const first = await readHtmlPass(origin, firstUrl, firstHtml, 1, brandProperty);
   const passes = [first];
   if (first.totalChanged && first.termination !== 'PAGE_BUDGET_EXHAUSTED')
-    passes.push(await readHtmlPass(origin, firstUrl, await fetchText(firstUrl, { headers: HEADERS }), 2));
+    passes.push(await readHtmlPass(origin, firstUrl, await fetchText(firstUrl, { headers: HEADERS }), 2, brandProperty));
   const last = passes[passes.length - 1];
   const jobs: NormalizedJob[] = [];
   const kept = new Set<string>();
@@ -801,6 +830,22 @@ export function employerFromDetail(detail: SuccessFactorsDetail, brandProperty?:
   return { company: detail.company, employerEvidence: detail.employerEvidence };
 }
 
+/**
+ * The brand a classic HTML listing row names in the configured column, as employer evidence, retained in RAW
+ * (`listingBrand`) so the retained-publication reader rebuilds the same attribution without network.
+ */
+export function withListingBrand(job: NormalizedJob, brandProperty: string | undefined, brand: string | undefined): NormalizedJob {
+  const value = brand?.trim();
+  if (!brandProperty || !value) return job;
+  return { ...job, company: value, employerEvidence: { rawName: value, path: `listing.${brandProperty}`, rule: 'CONFIGURED_BRAND_PROPERTY' },
+    raw: { ...(job.raw as object), listingBrand: { property: brandProperty, value } } };
+}
+
+/** A brand the configured property named on the listing (RMK field or HTML column) — never inferred, never the group label. */
+const listingBrandOf = (job: NormalizedJob, brandProperty?: string) =>
+  brandProperty && job.employerEvidence?.rule === 'CONFIGURED_BRAND_PROPERTY' && job.employerEvidence.path === `listing.${brandProperty}`
+    ? job.employerEvidence : undefined;
+
 /** The retained detail (lot F3b): the microdata read, with its dates as ISO text, kept beside the listing link in RAW. */
 export type RetainedSuccessFactorsDetail = Omit<SuccessFactorsDetail, 'postedAt' | 'validThrough'> & { postedAt?: string | null; validThrough?: string | null };
 export function retainedSuccessFactorsDetail(detail: SuccessFactorsDetail): RetainedSuccessFactorsDetail {
@@ -815,7 +860,11 @@ export function applySuccessFactorsDetail(job: NormalizedJob, detail: SuccessFac
       throw new Error('Invalid native SuccessFactors closure');
     return { ...job, publicationHold: 'APPLICATION_EXPLICITLY_CLOSED', publicationWithdrawnAt: observedAt };
   }
-  const employer = employerFromDetail(detail as SuccessFactorsDetail, brandProperty);
+  const fromDetail = employerFromDetail(detail as SuccessFactorsDetail, brandProperty);
+  // Precedence: the brand property of the detail page, then the brand the listing named under the same configured
+  // property, then the page's group-wide hiringOrganization (« Prada Group » on every jobs.pradagroup.com page).
+  const listed = fromDetail.employerEvidence?.rule === 'CONFIGURED_BRAND_PROPERTY' ? undefined : listingBrandOf(job, brandProperty);
+  const employer = listed ? { company: listed.rawName, employerEvidence: listed } : fromDetail;
   const date = (value: unknown) => value instanceof Date ? value : typeof value === 'string' ? new Date(value) : undefined;
   return {
     ...job,
