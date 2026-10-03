@@ -215,8 +215,9 @@ export async function fetchTeamtailorJobs(
     if (feed.next_url === undefined || feed.next_url === null) return { jobs, complete: true, truncated: false,
       // A valid single empty feed with no continuation explicitly declares zero.
       // Positive boards still do not acquire an invented global publisher total.
-      // Limited to one employer, an empty result is not the publisher's zero: only an empty feed declares it.
-      ...(rawItems === 0 && pageEvidence.length === 1 ? { declaredTotal: 0 } : {}),
+      // Limited to one employer (D-523 §2), a complete feed without that employer is that employer's proven zero; the
+      // validator re-reads it on the archived pages (`teamtailorEmployerAbsent`, sourceValidation.ts).
+      ...(jobs.length === 0 && (employer !== undefined || (rawItems === 0 && pageEvidence.length === 1)) ? { declaredTotal: 0 } : {}),
       enumeration: enumeration('NEXT_URL_NULL', true) };
     if (typeof feed.next_url !== 'string' || !feed.next_url.trim()) throw new Error('Teamtailor invalid next_url');
     if (!feed.items.length) throw new Error('Teamtailor empty page with continuation');

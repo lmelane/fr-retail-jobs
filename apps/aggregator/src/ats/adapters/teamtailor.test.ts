@@ -129,11 +129,17 @@ describe('Teamtailor — portail de groupe limité à un employeur (Fenix Outdoo
     vi.mocked(fetchJson).mockResolvedValueOnce(feed);
     expect((await fetchTeamtailorJobs({ origin: fenixOrigin, employer: 'Fjällräven' })).jobs).toHaveLength(0);
   });
-  it('un portail sans offre de l’employeur n’atteste pas un zéro de l’éditeur', async () => {
+  it('un portail complet sans offre de l’employeur est le zéro prouvé de cet employeur (D-523 §2), jamais sur une liste incomplète', async () => {
     vi.mocked(fetchJson).mockResolvedValueOnce(feed);
-    const r = await fetchTeamtailorJobs({ origin: fenixOrigin, employer: 'Hanwag' });
+    const r = await fetchTeamtailorJobs({ origin: fenixOrigin, employer: 'Fjällräven Europe' });
+    // Prémisse : le flux de l'éditeur porte des offres, aucune de cet employeur.
+    expect(fenix.items.length).toBeGreaterThan(0);
     expect(r.jobs).toEqual([]);
-    expect(r.declaredTotal).toBeUndefined();
+    expect(r).toMatchObject({ complete: true, declaredTotal: 0 });
+    vi.mocked(fetchJson).mockResolvedValueOnce({ ...feed, next_url: `${fenixOrigin}/jobs.json?page=2&per_page=100` });
+    const partial = await fetchTeamtailorJobs({ origin: fenixOrigin, employer: 'Fjällräven Europe', maxPages: 1 });
+    expect(partial).toMatchObject({ complete: false });
+    expect(partial.declaredTotal).toBeUndefined();
   });
   it('refuse un employeur vide ou non textuel', async () => {
     for (const employer of ['', '  ', 42, ['Fjällräven North America']]) {

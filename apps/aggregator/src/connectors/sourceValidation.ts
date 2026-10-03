@@ -72,6 +72,24 @@ export type SourceValidationReport = {
 export const EXPLAINED_NATIVE_ROWS: ReadonlySet<string> = new Set(['LISTED_PAGE_WITHOUT_JOBPOSTING', 'LISTED_POSTING_PREVIEW',
   'LISTED_SPONTANEOUS_APPLICATION_CARD']);
 
+/** Le zéro d'un employeur sur un portail Teamtailor de groupe, relu sur les octets archivés (au plus 40 pages, comme le lecteur). */
+async function teamtailorEmployerAbsent(db: PrismaClient, batchId: string, employer: string, store?: ObjectStore) {
+  const wanted = employer.normalize('NFC').trim();
+  const rows = await db.rawCapture.findMany({ where: { batchId }, orderBy: { sequence: 'asc' }, take: 41 });
+  if (!rows.length || rows.length > 40) return false;
+  for (const [index, row] of rows.entries()) {
+    if (row.status !== 200 || !row.complete || !row.blobHash) return false;
+    const value = JSON.parse((await readRawBlob(db, row.blobHash, store)).toString('utf8'));
+    if (typeof value?.version !== 'string' || !/^https:\/\/jsonfeed\.org\/version\/1(?:\.1)?$/.test(value.version) || !Array.isArray(value.items)) return false;
+    if ((index === rows.length - 1) !== (value.next_url == null)) return false;
+    if (value.items.some((item: { _jobposting?: { hiringOrganization?: { name?: unknown } } }) => {
+      const name = item?._jobposting?.hiringOrganization?.name;
+      return typeof name === 'string' && name.normalize('NFC').trim() === wanted;
+    })) return false;
+  }
+  return true;
+}
+
 /** A PROVEN empty feed (`nativeEmpty`): one complete native response with the protocol's explicit end/zero marker.
  * Greenhouse additionally requires meta.total=0, as observed in the production RAW on 2026-09-23. Since D-523
  * (03/10/2026) an empty reading without this proof is no longer refused: it stays named (`EMPTY_FEED_NOT_NATIVELY_PROVEN`)
@@ -89,6 +107,10 @@ async function nativeEmptyFeed(db: PrismaClient, batchId: string, kind: string, 
     return archivedStartPageDeclaresNoOpening(config, pages);
   }
   if (!['ashby', 'teamtailor', 'greenhouse'].includes(kind)) return false;
+  // D-522 §6, D-523 §2 : un portail de groupe limité à un employeur (`config.employer`, Fjällräven sur Fenix Outdoor) n'a de
+  // zéro que pour SON employeur : chaque page archivée est un JSON Feed complet, la dernière sans suite, et aucune offre ne
+  // porte le libellé exact de l'employeur. Le flux de l'éditeur, lui, n'est pas vide.
+  if (kind === 'teamtailor' && typeof config.employer === 'string') return teamtailorEmployerAbsent(db, batchId, config.employer, store);
   const rows = await db.rawCapture.findMany({ where: { batchId }, take: 2 });
   if (rows.length !== 1 || rows[0].status !== 200 || !rows[0].complete || !rows[0].blobHash) return false;
   const value = JSON.parse((await readRawBlob(db, rows[0].blobHash, store)).toString('utf8'));

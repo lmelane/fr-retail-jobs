@@ -155,6 +155,26 @@ describe('native source validation', () => {
     expect(continued instanceof Error ? continued.message : JSON.stringify(continued.report)).not.toMatch(/"nativeEmpty":true/);
   });
 
+  it('D-522 §6 (MEDIUM 5 de l\'audit) : un portail de groupe limité à un employeur, complet et sans offre de cet employeur, est un zéro prouvé (Fjällräven sur Fenix Outdoor)', async () => {
+    const employer = 'Fjällräven North America';
+    const item = (id: string, name: string) => ({ id, title: `Store ${id}`, url: `https://career.fenix.example/jobs/${id}`, date_published: '2026-10-01',
+      _jobposting: { title: `Store ${id}`, hiringOrganization: { name }, description: '<p>Texte</p>' } });
+    const feed = async (key: string, items: object[]) => {
+      keys.push(key); const origin = `https://careers.${key}.example`;
+      await db.source.create({ data: { key, tenantKey: key, maison: 'Fjällräven', kind: 'teamtailor', config: { origin, employer }, tier: 'GROUP_OFFICIAL' } });
+      vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ version: 'https://jsonfeed.org/version/1.1', title: key, home_page_url: `${origin}/jobs`,
+        feed_url: `${origin}/jobs.json`, items }), { headers: { 'content-type': 'application/feed+json' } })));
+      return captureSourceForValidation(db, key, 30_000);
+    };
+    // Prémisse : le flux de l'éditeur n'est PAS vide (d'autres employeurs du groupe) ; seul le périmètre de la source l'est.
+    const others = [item('1', 'Globetrotter'), item('2', 'Naturkompaniet')];
+    expect(others.length).toBeGreaterThan(0);
+    expect(await feed(`source-validation-${randomUUID()}`, others)).toMatchObject({ verdict: 'VALIDATED', report: { observed: 0, nativeEmpty: true } });
+    // Une offre de l'employeur dans le flux : ce n'est plus un zéro.
+    const one = await feed(`source-validation-${randomUUID()}`, [...others, item('3', employer)]);
+    expect(one.report).toMatchObject({ observed: 1, nativeEmpty: false });
+  });
+
   it('accepts the complete Greenhouse zero-total response captured in production', async () => {
     const key = `source-validation-${randomUUID()}`; keys.push(key);
     await db.source.create({ data: { key, tenantKey: key, maison: key, kind: 'greenhouse', config: { board: key }, tier: 'ATS_OFFICIAL' } });
