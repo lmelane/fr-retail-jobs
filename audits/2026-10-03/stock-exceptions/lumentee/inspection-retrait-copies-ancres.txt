@@ -1,0 +1,11 @@
+Inspection en lecture seule (transaction READ ONLY), 03/10/2026 :
+  python3 apps/aggregator/scripts/ops/db.py readonly npx tsx apps/aggregator/src/remediation/cli.ts plan-anchor-duplicates \
+    --spec audits/2026-10-03/stock-exceptions/lumentee/retrait-copies-ancres-spec.json --out <plan hors dépôt>
+Pourquoi une commande sœur : plan-homonym-representations refuse la révision courante (les copies en viennent) et retire
+pour identité contredite ; publication-groups exige une preuve d'identité native entre les copies (« lacks pairwise native
+identity evidence », aperçu du 03/10) et ne retire une identité historique qu'avec une représentation irrécupérable.
+{"batchId": "20261003-D522-LUMENTEE-COPIES-ANCRES-v1", "finding": "ANCHOR_DUPLICATE_REPRESENTATIONS", "sourceKeys": ["lumentee"], "companyIds": ["cmtlyfryv00ygqf5kv4lecpr2"], "invariants": ["lifecycle"]}
+{"keptRepresentationId": "cmueb91zl0svhoi35fnxxl07c", "keptJobId": "cmueb91zl0svfoi35f5a0906v", "keepUrl": "https://lumentee.com/careers/"}
+Counter({('JobSource', ('isActive',)): 4, ('Job', ('closedAt', 'isActive', 'withdrawalReason', 'withdrawnAt')): 4})
+[('cmueb92180svooi35ds8s6c0f', 'https://lumentee.com/careers/#main'), ('cmueb922v0svvoi350b4b0hcx', 'https://lumentee.com/careers/#roles'), ('cmueb924d0sw2oi35q6q1iv0t', 'https://lumentee.com/careers/#culture'), ('cmueb925x0sw9oi35fnmfpv9d', 'https://lumentee.com/careers/#')]
+hash du plan à l'inspection : df8e67e77e48a33fc8e77dfa1765af45d09349bc5db8273d6cfe93b013c5d72e (8 opérations ; createdAt dans le plan : regénérer le jour de l'application)

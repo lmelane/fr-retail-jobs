@@ -1,0 +1,7 @@
+Inspection en lecture seule (transaction READ ONLY), 03/10/2026 :
+  python3 apps/aggregator/scripts/ops/db.py readonly npx tsx apps/aggregator/src/remediation/cli.ts plan-homonym-representations \
+    --spec audits/2026-10-03/stock-exceptions/picard/retrait-homonyme-spec.json --out <plan hors dépôt>
+{"batchId": "20261003-D522-PICARD-HOMONYME-v1", "finding": "HOMONYM_REVISION_REPRESENTATIONS", "sourceKeys": ["picard"], "companyIds": ["cmtlyfsyi010sqf5kw0w3wr96"], "invariants": ["lifecycle"]}
+Counter({('JobSource', ('isActive',)): 6, ('Job', ('closedAt', 'isActive', 'withdrawalReason', 'withdrawnAt')): 6})
+[('2643843', 'https://picard.recruitee.com/o/e-commerce-manager-b2b-digital-sales-mw'), ('2524594', 'https://picard.recruitee.com/o/fachkraft-fur-lagerlogistik-fachlageris'), ('2615448', 'https://picard.recruitee.com/o/full-stack-developer-mwd-java'), ('2716066', 'https://picard.recruitee.com/o/graphic-designer-art-director-mwd'), ('2645251', 'https://picard.recruitee.com/o/lagerhelfer-mwd-auf-minijob-basis'), ('399344', 'https://picard.recruitee.com/o/initiativbewerbung')]
+hash du plan à l inspection : cb4afbeb8534ab71b6cdc56a154dbb66a803b62a12875f8b67a8eb6c954a1025 (12 opérations ; createdAt dans le plan : le hash change à chaque génération, l application relit le plan produit le jour même)
