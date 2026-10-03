@@ -14,6 +14,7 @@ import { parseRecruiteeJob } from '../ats/adapters/recruitee.js';
 import { normalizeGenericPosting } from '../ats/adapters/genericJsonLd.js';
 import { readCaudalieRaw } from '../ats/adapters/caudalie.js';
 import { MARC_O_POLO_READER, readMarcOPoloRaw } from '../ats/adapters/marcOPolo.js';
+import { WORDPRESS_POST_TYPE_READER, readWordpressPostTypeRaw } from '../ats/adapters/wordpressPostType.js';
 import { applySmartRecruitersJobAd, parseSmartRecruitersPosting, type PostingDetail, type SmartRecruitersPosting } from '../ats/adapters/smartrecruiters.js';
 import { applySuccessFactorsDetail, brandPropertyOf, normalizeRmkItem, splitSlug, withListingBrand, type RetainedSuccessFactorsDetail, type RmkV2Item } from '../ats/adapters/successfactors.js';
 import { normalizeAnnouncement, type DrItem } from '../ats/adapters/digitalrecruiters.js';
@@ -207,6 +208,11 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         // Marc O'Polo (D-485) : la liste et la fiche retenues sont relues par la même fonction que la collecte.
         if (config.reader === MARC_O_POLO_READER && raw.source === 'marc-o-polo-vacancies-v1') {
           job = readMarcOPoloRaw(raw, context.observedAt); break;
+        }
+        // Un type de billet WordPress (D-522 §6) : le billet et le JobPosting de sa fiche, relus par la fonction de la collecte.
+        if (config.reader === WORDPRESS_POST_TYPE_READER && raw.source === 'wordpress-post-type-v1') {
+          if (!identifier((raw.post as { id?: unknown } | undefined)?.id)) return failure('NATIVE_ID_MISSING');
+          job = readWordpressPostTypeRaw(raw); break;
         }
         if (typeof config.feedUrl === 'string' && typeof raw.feedItem === 'string') {
           const items = parseFeed(raw.feedItem);

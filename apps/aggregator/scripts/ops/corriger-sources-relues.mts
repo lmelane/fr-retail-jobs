@@ -28,7 +28,8 @@
  *
  * Depuis D-485 (Marc O'Polo, 30/09/2026), une source qui GARDE sa famille est aussi corrigée quand sa ligne porte
  * `config_relue` et que la configuration obtenue diffère de celle en base : un lecteur dédié choisi dans la famille
- * `generic-listing` (`reader`), validé par le parseur de ce lecteur avant toute écriture.
+ * `generic-listing` (`reader`), validé par le parseur de ce lecteur avant toute écriture (Marc O'Polo ; le type de billet
+ * WordPress de Kastner & Öhler, D-522 §6).
  *
  * Le déclencheur `Source_record_revision` crée une nouvelle révision à chaque écriture : c'est
  * voulu. Changer l'ATS d'une source change ce qu'elle collecte, et les preuves d'identité
@@ -42,6 +43,7 @@ import { parseSourceCandidate } from '../../src/connectors/sourceCandidate.js';
 import { tenantKeyOf } from '../../src/connectors/sourceStore.js';
 import { careerConnectOptions, phenomDialect } from '../../src/ats/adapters/phenom.js';
 import { MARC_O_POLO_READER, marcOPoloSettings } from '../../src/ats/adapters/marcOPolo.js';
+import { WORDPRESS_POST_TYPE_READER, wordpressPostTypeSettings } from '../../src/ats/adapters/wordpressPostType.js';
 import { evidenceHash } from '../../src/lib/evidenceHash.js';
 
 const ECRIRE = process.argv.includes('--ecrire');
@@ -109,8 +111,12 @@ function completer(kind: string, config: Record<string, unknown>, relue: string)
   }
   // Un lecteur dédié choisi dans la même famille (Marc O'Polo, D-485) : ses réglages passent par le parseur du lecteur.
   if ((kind === 'generic-listing' || kind === 'generic-jsonld') && complete.reader !== undefined) {
-    if (complete.reader !== MARC_O_POLO_READER) return `lecteur « ${String(complete.reader)} » inconnu de ce script`;
-    try { marcOPoloSettings(complete); } catch (error) { return `réglages refusés par le lecteur Marc O'Polo : ${(error as Error).message}`; }
+    if (complete.reader === MARC_O_POLO_READER) {
+      try { marcOPoloSettings(complete); } catch (error) { return `réglages refusés par le lecteur Marc O'Polo : ${(error as Error).message}`; }
+    } else if (complete.reader === WORDPRESS_POST_TYPE_READER) {
+      // Un type de billet WordPress lu par l'API REST du site (Kastner & Öhler, D-522 §6).
+      try { wordpressPostTypeSettings(complete); } catch (error) { return `réglages refusés par le lecteur WordPress : ${(error as Error).message}`; }
+    } else return `lecteur « ${String(complete.reader)} » inconnu de ce script`;
   }
   return complete;
 }

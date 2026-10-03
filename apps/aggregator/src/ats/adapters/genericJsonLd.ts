@@ -15,6 +15,7 @@ import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 import { captureObservedAt } from '../../capture/context.js';
 import { fetchCaudalieJobs } from './caudalie.js';
 import { fetchMarcOPoloJobs, MARC_O_POLO_READER } from './marcOPolo.js';
+import { fetchWordpressPostTypeJobs, WORDPRESS_POST_TYPE_READER } from './wordpressPostType.js';
 import { joinSpontaneousApplicationCards, joinUnreachableSpontaneousCard, SPONTANEOUS_APPLICATION_CARD } from './joinSpontaneousCard.js';
 
 /**
@@ -176,6 +177,8 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
   if (config.reader === 'caudalie-ajax') return fetchCaudalieJobs(config);
   // Marc O'Polo (D-485) : la liste entière vient de l'API que le site déclare, témoin : la page publiée (`marcOPolo.ts`).
   if (config.reader === MARC_O_POLO_READER) return fetchMarcOPoloJobs(config);
+  // Un type de billet WordPress public, lu par l'API REST du site contre son total (Kastner & Öhler, D-522 §6).
+  if (config.reader === WORDPRESS_POST_TYPE_READER) return fetchWordpressPostTypeJobs(config);
   /**
    * An RSS/Atom careers feed, when the site publishes one — the cheapest generic
    * path (no page crawl at all). Many small brands and TalentSoft/WordPress sites
