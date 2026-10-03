@@ -137,6 +137,19 @@ export function isDeclaredEmptyEnumeration(run: Pick<AttestationInput, 'complete
 }
 
 /**
+ * D-523 (règle du CEO, 03/10/2026) — UNE LISTE COMPLÈTE PROUVÉE ET VIDE, sans total annoncé : parcours démontré, sans erreur
+ * ni troncature, rien collecté, aucun total positif ne la contredit. Avec un total annoncé à 0 c'est le zéro annoncé
+ * (`isDeclaredEmptyEnumeration`). `health.ts` en fait un zéro prouvé pour une source sans offre au dernier run productif ;
+ * juste après des offres, c'est le cas où la distinction avec un lecteur qui perd tout est impossible (zéro non prouvé).
+ * Elle ne donne PAS le droit d'attester : sans total annoncé à 0, la preuve scellée dit BROKEN et n'atteste rien
+ * (`attestingCapture.ts`, `attestationFacts`).
+ */
+export function isCompleteEmptyListing(run: Pick<AttestationInput, 'complete' | 'errors' | 'truncated' | 'declaredTotal' | 'fetched'>): boolean {
+  return run.complete === true && run.errors === 0 && run.truncated !== true && run.fetched === 0
+    && (run.declaredTotal === 0 || run.declaredTotal === undefined || run.declaredTotal === null);
+}
+
+/**
  * Ce run a-t-il le droit de faire disparaître des offres qu'il n'a pas revues ?
  *
  * `false` ne signifie pas « la source est cassée » : il signifie « le silence de

@@ -176,6 +176,24 @@ describe('D-517 — une lecture incrémentale ne lit, n’écrit et ne rend que 
     expect(await runLightPass(db, { runId: null, sources: [key], now: () => at(10) })).toMatchObject({ collected: [key], ok: 1, created: 1 });
   });
 
+  it('D-523 : une source vide lue par une passe : sa liste vide est validée sans être prouvée, rien n’est écrit, la passe suivante découvre sa première offre', async () => {
+    const key = await establishedSource('vide');
+    // Le dernier RUN a prouvé le zéro : c'est ce résumé que lit `provenEmptySources` pour la mettre dans les passes.
+    await db.source.update({ where: { key }, data: { lastRunStatus: 'OK', lastRunJobs: 0 } });
+    // Prémisse : la source ne sert rien et n'a rien de connu ; la liste lue sera vide.
+    expect(await db.jobSource.count({ where: { sourceKey: key } })).toBe(0);
+    network([]);
+    expect(await runLightPass(db, { runId: null, sources: [key], now: () => at(4) })).toMatchObject({ collected: [key], ok: 1, failed: 0, created: 0 });
+    const batch = await db.captureBatch.findFirstOrThrow({ where: { sourceKey: key, purpose: 'JOBS', attemptOrdinal: { not: null } }, orderBy: { attemptOrdinal: 'desc' } });
+    // Avant D-523, ce lot vide était REJETÉ : la source perdait sa qualification et sortait des passes du jour.
+    expect(await db.sourceValidation.findFirstOrThrow({ where: { captureBatchId: batch.id } }))
+      .toMatchObject({ verdict: 'VALIDATED', report: expect.objectContaining({ observed: 0, nativeEmpty: false }) });
+    network([{ id: 'premiere' }]);
+    expect(await runLightPass(db, { runId: null, sources: [key], now: () => at(10) })).toMatchObject({ collected: [key], ok: 1, created: 1 });
+    // Régression : une passe n'écrit jamais le résumé du RUN, ni sur une liste vide non prouvée, ni sur une offre trouvée.
+    expect(await db.source.findUniqueOrThrow({ where: { key } })).toMatchObject({ lastRunStatus: 'OK', lastRunJobs: 0 });
+  });
+
   it('une nouvelle seulement retenue (non listée) : la collecte est validée, rien n’est publié, la passe suivante la relit', async () => {
     const key = await establishedSource('retenue');
     await ingestSyntheticFeed(db, key, [{ id: 'a' }, { id: 'r-cachee', listed: false }]);
@@ -453,6 +471,21 @@ describe('D-517 — la sélection par l’importance pour le candidat (toute sou
     // Prémisse : la source a du neuf, elle est retenue sans la garde.
     expect((await significantSources(db, new Date(), new Set())).map(source => source.key)).toContain(key);
     expect((await significantSources(db, new Date(), new Set([key]))).map(source => source.key)).not.toContain(key);
+  });
+
+  it('D-523 : une source au zéro prouvé (dernier RUN sain et vide) est lue à chaque passe ; un zéro non prouvé reste au RUN', async () => {
+    const vide = await establishedSource('zero-prouve');
+    const doute = await establishedSource('zero-doute');
+    await db.source.update({ where: { key: vide }, data: { lastRunStatus: 'OK', lastRunJobs: 0 } });
+    await db.source.update({ where: { key: doute }, data: { lastRunStatus: 'BROKEN', lastRunJobs: 0 } });
+    // Prémisse : aucune publication nouvelle sur 7 jours ; la règle de nouveauté seule ne les retiendrait pas.
+    expect(await db.jobSource.count({ where: { sourceKey: { in: [vide, doute] } } })).toBe(0);
+    const selected = await significantSources(db);
+    expect(selected.find(source => source.key === vide)).toMatchObject({ newPostings: 0, perDay: 0 });
+    expect(selected.map(source => source.key)).not.toContain(doute);
+    // L'intention fait foi : en pause, la source vide n'est plus lue.
+    await db.source.update({ where: { key: vide }, data: { status: 'PAUSED' } });
+    expect((await significantSources(db)).map(source => source.key)).not.toContain(vide);
   });
 
   it('une source en pause n’est jamais lue, même productive', async () => {

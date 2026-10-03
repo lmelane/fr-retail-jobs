@@ -159,13 +159,28 @@ describe('native source validation', () => {
     expect(await captureSourceForValidation(db, key, 30_000)).toMatchObject({ verdict: 'VALIDATED', report: { nativeEmpty: true, absenceAttestation: false } });
   });
 
-  it('refuses an empty collector result without a qualified native empty-feed protocol', async () => {
+  /*
+   * D-523 (03/10/2026) : « le nombre d'offres ne détermine jamais l'état de la source ». Avant, ce flux vide sans protocole
+   * de zéro était REJETÉ : la source perdait sa qualification, donc sa collecte (qualification refusée, escalade) et son
+   * activation (Ghost, Sioux, revue du 23/09), alors qu'un lot vide ne publie ni n'atteste rien. Il est désormais validé,
+   * NON prouvé (nommé, `nativeEmpty: false`) ; la santé de la collecte le classe « lecteur ».
+   */
+  it('D-523 : validates an empty collector result without a qualified native empty-feed protocol, named as unproven', async () => {
     const key = `source-validation-${randomUUID()}`; keys.push(key);
     await db.source.create({ data: { key, tenantKey: key, maison: key, kind: 'greenhouse', config: { board: key }, tier: 'ATS_OFFICIAL' } });
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ jobs: [], witness: key }))));
     const validation = await captureSourceForValidation(db, key, 30_000);
-    expect(validation).toMatchObject({ verdict: 'REJECTED', report: { observed: 0, nativeEmpty: false,
+    expect(validation).toMatchObject({ verdict: 'VALIDATED', report: { observed: 0, qualified: 0, nativeEmpty: false, absenceAttestation: false,
       reasons: { EMPTY_FEED_NOT_NATIVELY_PROVEN: 1 } } });
+    expect((await db.source.findUniqueOrThrow({ where: { key } })).status).toBe('DRAFT');
+  });
+
+  it('D-523 : a reading that saw a row it cannot read is no empty list, and stays refused', async () => {
+    const { batch } = await capture([{ ...nativeJob, title: undefined }]);
+    // Prémisse : rien n'est publiable et le lecteur a vu une ligne illisible (pas un flux vide).
+    const validation = await validateCapturedSource(db, batch.id);
+    expect(validation.report).toMatchObject({ observed: 0, inputUnqualified: 1 });
+    expect(validation).toMatchObject({ verdict: 'REJECTED', report: { nativeEmpty: false, reasons: expect.objectContaining({ EMPTY_FEED_NOT_NATIVELY_PROVEN: 1 }) } });
   });
 
   it.each([

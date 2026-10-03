@@ -1,0 +1,32 @@
+sourceKey|kind|run_status|jobs|fetched|declaredTotal|complete|truncated|errors|classe|state|cause|trajectory|escalated|validation|raisons_validation|ranAt|note
+l-oreal-professionnel|avature|BROKEN|0|0|||f|1|ECHEC|||||VALIDATED|{"CONTENT_MISSING": 1}|2026-10-02 16:17:37.249|1 erreur de collecte ou d’écriture : HTTP 406 for https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0
+lerros|personio|BROKEN|0|1||t|f|0|TOUT_RETENU|EN_ATTENTE|ANOMALIE_VOLUME|AUTO|f|VALIDATED|{}|2026-10-02 16:02:52.537|ne rend aucune offre, 1 au dernier run productif · 1 annonce retenue : 1 sur preuve de la source (NATIVE_SPONTANEOUS_APPLICATION=1)
+bernadette|greenhouse|OK|0|0|0|t|f|0|ZERO_PROUVE_ANNONCE|NORMALE|||f|VALIDATED|{}|2026-10-02 16:02:27.704|éditeur : zéro annoncé, parcours complet sans erreur
+chrome|greenhouse|OK|0|0|0|t|f|0|ZERO_PROUVE_ANNONCE|NORMALE|||f|VALIDATED|{}|2026-10-02 16:02:31.822|éditeur : zéro annoncé, parcours complet sans erreur
+cove|teamtailor|OK|0|0|0|t|f|0|ZERO_PROUVE_ANNONCE|NORMALE|||f|VALIDATED|{}|2026-10-02 16:02:27.699|éditeur : zéro annoncé, parcours complet sans erreur
+cuyana|greenhouse|OK|0|0|0|t|f|0|ZERO_PROUVE_ANNONCE|NORMALE|||f|VALIDATED|{}|2026-10-02 16:02:29.239|éditeur : zéro annoncé, parcours complet sans erreur
+fjallraven|teamtailor|OK|0|0|0|t|f|0|ZERO_PROUVE_ANNONCE|NORMALE|||f|VALIDATED|{}|2026-10-02 16:02:30.973|éditeur : zéro annoncé, parcours complet sans erreur
+klattermusen|teamtailor|OK|0|0|0|t|f|0|ZERO_PROUVE_ANNONCE|NORMALE|||f|VALIDATED|{}|2026-10-02 16:02:50.571|éditeur : zéro annoncé, parcours complet sans erreur
+loplabbet|teamtailor|OK|0|0|0|t|f|0|ZERO_PROUVE_ANNONCE|NORMALE|||f|VALIDATED|{}|2026-10-02 16:02:32.642|éditeur : zéro annoncé, parcours complet sans erreur
+margaret-howell|teamtailor|OK|0|0|0|t|f|0|ZERO_PROUVE_ANNONCE|NORMALE|||f|VALIDATED|{}|2026-10-02 16:02:34.089|éditeur : zéro annoncé, parcours complet sans erreur
+(10 rows)
+key|kind|lastRunStatus|lastRunJobs
+(0 rows)
+key|status|kind|verdict|reasons|observed|validatedAt
+ghost|PAUSED|generic-listing|REJECTED|{"ENUMERATION_INCOMPLETE": 1, "EMPTY_FEED_NOT_NATIVELY_PROVEN": 1}|0|2026-09-23 14:19:52.399
+minimalist|PAUSED|generic-listing|REJECTED|{"ENUMERATION_INCOMPLETE": 1, "EMPTY_FEED_NOT_NATIVELY_PROVEN": 1}|0|2026-09-23 14:24:14.855
+nimble|PAUSED|generic-listing|REJECTED|{"ENUMERATION_INCOMPLETE": 1, "EMPTY_FEED_NOT_NATIVELY_PROVEN": 1}|0|2026-09-23 14:24:57.352
+rotate|PAUSED|generic-listing|REJECTED|{"ENUMERATION_INCOMPLETE": 1, "EMPTY_FEED_NOT_NATIVELY_PROVEN": 1}|0|2026-09-23 14:44:35.894
+sioux|PAUSED|generic-listing|REJECTED|{"ENUMERATION_INCOMPLETE": 1, "EMPTY_FEED_NOT_NATIVELY_PROVEN": 1}|0|2026-09-23 14:48:28.686
+(5 rows)
+key|status|statusIntention|statusTrajectory|statusBasis|motif
+ghost|PAUSED|COLLECTER|A_REPARER|PREUVE|La page annonce explicitement l'absence d'offres ; le lecteur générique ne possède pas de protocole de zéro HTML qualifié : pause distincte d'une panne ou fermeture d'employeur (revue du 23/09) ; vali
+minimalist|PAUSED|COLLECTER|A_REPARER|PREUVE|Rubrique Careers avec candidature spontanée, sans liste structurée identifiée ; pas de zéro natif attesté (revue du 23/09). Une candidature spontanée n'est jamais publiée (D-511).
+nimble|PAUSED|COLLECTER|A_REPARER|PREUVE|Offres visibles en HTML sans publication JSON-LD récupérée : limite du lecteur, pas un catalogue vide (revue du 23/09) ; validation REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN).
+ralph-lauren-avature|PAUSED|COLLECTER|A_REPARER|DECISION|« Ralph Lauren est en pause jusqu'au lot anti-robot » (D-483) ; la collecte de publication a reçu un 406 après le second amorçage (D-516) : 0 offre publiée sur 1 160 lues.
+rotate|PAUSED|COLLECTER|A_REPARER|PREUVE|Offres visibles en HTML sans publication JSON-LD récupérée : limite du lecteur, pas un catalogue vide (revue du 23/09) ; validation REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN).
+sioux|PAUSED|COLLECTER|A_REPARER|PREUVE|La page annonce explicitement l'absence d'offres ; le lecteur générique ne possède pas de protocole de zéro HTML qualifié : pause distincte d'une panne ou fermeture d'employeur (revue du 23/09) ; vali
+le-slip-francais|RETIRED|COLLECTER|A_REPARER|PREUVE|Le site officiel renvoie vers son profil WTTJ, absent de la capture sectorielle actuelle ; maintien retiré du canal individuel, sans déclarer zéro poste ni fermeture de l'employeur (23/09).
+luxe-talent|RETIRED|NE_PAS_COLLECTER|DECISION|DECISION|« Le seul cabinet ou job board qui doit rester, c'est WTTJ » (D-477) ; Luxe Talent retirée le 29/09 par retire-source, 0 offre en ligne.
+sport-1|RETIRED|NE_PAS_COLLECTER|DECISION|PREUVE|Le portail indique explicitement être un site de démonstration et invite à rejoindre Teamtailor.
+(9 rows)

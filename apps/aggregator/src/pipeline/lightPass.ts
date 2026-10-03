@@ -11,7 +11,8 @@
  * LA SÉLECTION, PAR L'IMPORTANCE POUR LE CANDIDAT ET PAS PAR LE COÛT (D-517 remplace la règle de coût de la lecture
  * R-143 §1). Toute source qui a fait paraître au moins une publication nouvelle sur les 7 derniers jours
  * (`JobSource.firstSeenAt`) entre dans la passe, lue en base à chaque passe : une Maison qui se met à recruter y entre
- * d'elle-même, une source muette depuis une semaine en sort. Mesuré le 02/10/2026 (`audits/2026-10-02/fraicheur-d517/`) :
+ * d'elle-même, une source muette depuis une semaine en sort, sauf si son zéro est prouvé (D-523, `provenEmptySources`) : une
+ * source vide reste lue à chaque passe pour découvrir sa prochaine publication. Mesuré le 02/10/2026 (`audits/2026-10-02/fraicheur-d517/`) :
  * 285 sources, toutes les nouvelles publications. Un seuil plus haut n'économiserait presque rien : en lecture
  * incrémentale, une source calme ne coûte que sa liste (le seuil d'une par jour retenait 147 sources et 96,6 % des
  * nouvelles publications pour 6 470 requêtes par passe ; toutes, 8 160) et il écartait Audemars Piguet, Mulberry,
@@ -120,10 +121,28 @@ export async function significantSources(prisma: PrismaClient, now = new Date(),
     SELECT s.key, s.kind, flux.n, extract(epoch FROM (bornes.t - debut.d))::float8 / 86400 AS days
     FROM "Source" s JOIN flux ON flux."sourceKey" = s.key JOIN debut ON debut."sourceKey" = s.key, bornes
     WHERE s.status = 'ACTIVE' AND debut.d <= bornes.t - interval '1 day'`;
-  return rows.map(row => ({ key: row.key, kind: row.kind, newPostings: Number(row.n), perDay: Number(row.n) / Number(row.days) }))
-    .filter(row => KIND_TO_ATS[row.kind] && row.newPostings >= SIGNIFICANT_NEW_IN_WINDOW && !leftToRun.has(row.key))
+  const flux = rows.map(row => ({ key: row.key, kind: row.kind, newPostings: Number(row.n), perDay: Number(row.n) / Number(row.days) }))
+    .filter(row => row.newPostings >= SIGNIFICANT_NEW_IN_WINDOW);
+  const inFlux = new Set(flux.map(row => row.key));
+  // D-523 : une source dont le zéro est prouvé (dernier RUN sain et vide, `health.ts`) est lue à chaque passe.
+  const empty = (await provenEmptySources(prisma)).filter(row => !inFlux.has(row.key)).map(row => ({ ...row, newPostings: 0, perDay: 0 }));
+  return [...flux, ...empty]
+    .filter(row => KIND_TO_ATS[row.kind] && !leftToRun.has(row.key))
     .sort((a, b) => b.perDay - a.perDay || a.key.localeCompare(b.key))
     .map(({ key, newPostings, perDay }) => ({ key, newPostings, perDay }));
+}
+
+/**
+ * D-523 (règle du CEO, 03/10/2026) — UNE SOURCE VIDE RESTE INTERROGÉE À UNE CADENCE RAISONNABLE. « Aujourd'hui 0, demain
+ * peut-être 5, et Catwalks doit les découvrir automatiquement. » La règle des 7 jours ne regarde que la nouveauté : une
+ * source dont le dernier RUN a prouvé une liste vide (zéro annoncé ou liste complète vide, statut sain) n'y entre jamais,
+ * et sa prochaine publication n'était découverte qu'au RUN quotidien, que D-517 §2 réduit au filet de sécurité. Sa liste
+ * vide coûte une requête par passe (8 sources ACTIVE au zéro prouvé le 03/10/2026, `audits/2026-10-03/d523-zero/`).
+ * Une source dont le zéro n'est PAS prouvé (lecteur en doute, `ZERO_NOT_PROVEN`) reste au RUN : la relire plus souvent ne
+ * réparerait pas son lecteur. Lecture en base.
+ */
+export async function provenEmptySources(prisma: PrismaClient): Promise<Array<{ key: string; kind: string }>> {
+  return prisma.source.findMany({ where: { status: 'ACTIVE', lastRunStatus: 'OK', lastRunJobs: 0 }, select: { key: true, kind: true }, orderBy: { key: 'asc' } });
 }
 
 /**
@@ -186,7 +205,7 @@ export async function runLightPass(prisma: PrismaClient, options: {
   result.unknown = wanted.filter(key => !registry.has(key));
   result.total = keys.length;
   await log.info('light.sources_selected', { sources: keys.length, sourceKeys: keys, ignored: result.unknown, deadline: new Date(deadline).toISOString(),
-    rule: options.sources ? 'EXPLICIT' : `D-517 ≥ ${SIGNIFICANT_NEW_IN_WINDOW} nouvelle sur ${SIGNIFICANT_WINDOW_DAYS} jours`, concurrency: LIGHT_PASS_CONCURRENCY });
+    rule: options.sources ? 'EXPLICIT' : `D-517 ≥ ${SIGNIFICANT_NEW_IN_WINDOW} nouvelle sur ${SIGNIFICANT_WINDOW_DAYS} jours, ou D-523 zéro prouvé`, concurrency: LIGHT_PASS_CONCURRENCY });
   const limit = pLimit(Math.max(1, options.concurrency ?? LIGHT_PASS_CONCURRENCY));
   // allSettled : une panne inattendue n'abandonne pas les sources en cours ; la passe attend leur fin, puis échoue.
   const settled = await Promise.allSettled(keys.map(key => limit(async () => {

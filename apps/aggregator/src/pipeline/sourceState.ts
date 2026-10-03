@@ -38,8 +38,10 @@ export type CollectionKind = typeof COLLECTION_KINDS[number];
  * Les échéances, fixées par l'assistant sur la mesure du 02/10/2026 (`audits/2026-10-02/etat-sources/`) :
  *   · EN_ATTENTE (cause passagère) : 48 h ou 3 tentatives complètes (RUN ou vérification ; une passe incrémentale ne
  *     compte pas, elle relit la même liste plusieurs fois par jour) ; au-delà, BLOQUEE et A_REPARER ;
- *   · BLOQUEE qui devait revenir seule (volume à zéro, employeur à identifier sans aucune offre publiée) : comme
- *     EN_ATTENTE ;
+ *   · BLOQUEE qui devait revenir seule (employeur à identifier sans aucune offre publiée) : comme EN_ATTENTE ;
+ *   · D-523 (03/10/2026) : le nombre d'offres, zéro compris, ne fait jamais un état. Un zéro prouvé (total annoncé à 0, liste
+ *     complète vide) est NORMALE ; un zéro non prouvé (`ZERO_NOT_PROVEN`) est un soupçon de lecture, classé LECTEUR, qui ne
+ *     touche ni l'intention (`Source.status`) ni la cadence ;
  *   · volume anormal, liste non prouvée, qualification refusée, défaut interne : EN_ATTENTE à la première occurrence,
  *     même si la collecte publie, puis à réparer s'il persiste à la tentative complète suivante (`deadlineAttempts: 2`) ;
  *     mesuré : 17 épisodes de défaut interne sur 17 ont duré un seul RUN ;
@@ -96,7 +98,7 @@ export const CAUSES = {
     missing: 'rien au premier RUN si la fiche se relit ; sinon, lire le motif de la retenue et corriger la lecture du détail ou l’identité, puis verifier-source' },
   CONTENU_INCOMPLET: { label: 'contenu incomplet (descriptions manquantes, lignes rejetées)', base: 'DEGRADEE', trajectory: 'A_REPARER',
     missing: 'corriger la lecture du détail des offres, puis verifier-source' },
-  ANOMALIE_VOLUME: { label: 'volume anormal (chute, zéro, saut de retenues)', base: 'EN_ATTENTE', trajectory: 'AUTO',
+  ANOMALIE_VOLUME: { label: 'volume anormal (chute non confirmée, saut de retenues)', base: 'EN_ATTENTE', trajectory: 'AUTO',
     deadlineAttempts: 2, waitsWhilePublishing: true,
     missing: 'rien au premier RUN si la collecte suivante retrouve son volume ; sinon, comparer la liste à celle du site' },
   LECTEUR: { label: 'lecteur ou configuration de la source en échec', base: 'BLOQUEE', trajectory: 'A_REPARER',
@@ -120,6 +122,13 @@ export const CAUSES = {
 export type CauseClass = keyof typeof CAUSES;
 export const CAUSE_CLASSES = Object.keys(CAUSES) as CauseClass[];
 
+/**
+ * D-523 : le zéro non prouvé (`health.ts`) et ce qu'il demande. La réparation porte sur le LECTEUR (lui donner la preuve de
+ * la liste vide, ou retrouver les offres qu'il manque), jamais sur l'intention : une source vide reste ACTIVE et lue.
+ */
+export const ZERO_NOT_PROVEN = 'ZERO_NOT_PROVEN';
+const ZERO_NOT_PROVEN_MISSING = 'zéro non prouvé (D-523) : vérifier sur le site si la liste est vraiment vide ; si oui, donner au lecteur la preuve de la liste vide (total annoncé, fin de liste), sinon corriger le lecteur, puis verifier-source ; jamais une pause pour ce motif, la source reste ACTIVE et lue';
+
 /** Quand une collecte porte plusieurs causes, la première de cet ordre l'emporte (les autres codes restent dans la preuve). */
 const PRECEDENCE: readonly CauseClass[] = ['NON_CLASSEE', 'DEFAUT_INTERNE', 'QUALIFICATION_REFUSEE', 'CERTIFICAT_TLS', 'LECTEUR', 'ACCES_REFUSE',
   'INDISPONIBILITE_PASSAGERE', 'ANOMALIE_VOLUME', 'IDENTITE_EMPLOYEUR', 'LISTE_NON_PROUVEE', 'RETENUE_A_INSTRUIRE', 'CONTENU_INCOMPLET', 'LISTE_INDEMONTRABLE'];
@@ -139,6 +148,8 @@ const BY_NAME: Readonly<Record<string, CauseClass>> = {
   ENUMERATION_UNPROVABLE: 'LISTE_INDEMONTRABLE', RETENTION_TO_INSTRUCT: 'RETENUE_A_INSTRUIRE',
   DESCRIPTION_COVERAGE_BELOW_FLOOR: 'CONTENU_INCOMPLET', REJECTED_NATIVE_ROWS: 'CONTENU_INCOMPLET', NATIVE_REFUSAL_MASS: 'CONTENU_INCOMPLET',
   SOURCE_HEALTH_REGRESSION: 'ANOMALIE_VOLUME', NATIVE_RETENTION_JUMP: 'ANOMALIE_VOLUME',
+  // D-523 : le lecteur ne voit rien et la source ne déclare pas l'absence ; jamais un volume, jamais un motif de pause.
+  ZERO_NOT_PROVEN: 'LECTEUR',
   Error: 'LECTEUR', UNCLASSIFIED_FAILURE: 'LECTEUR', SyntaxError: 'LECTEUR', BlockedUrlError: 'LECTEUR', ChainCompletionRefused: 'CERTIFICAT_TLS',
   UNCLASSIFIED_INGEST_ERRORS: 'DEFAUT_INTERNE', PipelinePausedError: 'NON_COLLECTEE',
 };
@@ -300,7 +311,8 @@ function withCause(sourceKey: string, cause: CauseClass, state: OperationalState
   let missing: string = known === 'PUBLIE' ? `rien : échec connu décidé (${KNOWN_FAILURE_DECISION}), la source publie ses offres`
     : known === 'MUET' ? `échec connu décidé (${KNOWN_FAILURE_DECISION}), mais cette collecte n’a rien publié, contrairement à la prémisse de la décision : réparer, ou proposer une pause décidée`
       : limit && !publishes ? 'liste indémontrable (D-520 §4 b), mais cette collecte n’a rien publié : réparer le lecteur ou l’adresse, puis verifier-source'
-        : spec.missing;
+        : cause === 'LECTEUR' && (codes ?? []).some(code => code.split('/')[1] === ZERO_NOT_PROVEN) ? ZERO_NOT_PROVEN_MISSING
+          : spec.missing;
   if (!known && trajectory === 'AUTO') {
     const waiting = state !== 'DEGRADEE';
     deadline = new Date(since.getTime() + deadlineHours(spec, waiting) * HOUR);
@@ -427,6 +439,16 @@ export function reconcileRun(input: { states: readonly SourceState[]; now: Date;
     && (s.cause === 'NON_COLLECTEE' ? s.computedAt.getTime() >= start : (s.lastCollectionAt?.getTime() ?? 0) >= start)).map(s => s.sourceKey);
   if (input.systemFailures.length) add('PANNE_SYSTEME', input.systemFailures.join(', '), []);
   if (ourSide.length >= SYSTEMIC_OUR_SIDE_BLOCKED) add('PANNE_SYSTEME', `${ourSide.length} sources laissées bloquées de notre côté par ce RUN (seuil ${SYSTEMIC_OUR_SIDE_BLOCKED})`, ourSide);
+  /*
+   * D-523 : un zéro du marché se prouve (total annoncé, liste complète) ; un zéro non prouvé est un soupçon de lecture. Une
+   * source isolée reste classée « lecteur » sans rougir le RUN ; une masse dans le même RUN est une panne de lecture de notre
+   * côté (transport, anti-robot partagé, lecteur commun), pas un marché vide : elle ne se cache pas source par source. Avant
+   * D-523, ces flux vides étaient refusés à la validation et comptés ci-dessus (qualification refusée).
+   */
+  const unprovenZeros = start === undefined ? [] : input.states.filter(s => s.cause === 'LECTEUR' && s.codes.some(code => code.split('/')[1] === ZERO_NOT_PROVEN)
+    && (s.lastCollectionAt?.getTime() ?? 0) >= start).map(s => s.sourceKey);
+  if (unprovenZeros.length >= SYSTEMIC_OUR_SIDE_BLOCKED) add('PANNE_SYSTEME',
+    `${unprovenZeros.length} sources sans offre lue ni absence déclarée dans ce RUN (zéro non prouvé, seuil ${SYSTEMIC_OUR_SIDE_BLOCKED}) : panne de lecture, pas un marché vide (D-523)`, unprovenZeros);
   if (input.unexplainedCoverage.length) add('COUVERTURE_INEXPLIQUEE', 'perte de couverture sans cause trouvée', [...input.unexplainedCoverage]);
   const toVerify: RunVerdict['toVerify'] = input.coverageToVerify?.length
     ? [{ reason: 'COUVERTURE_A_VERIFIER', detail: COVERAGE_TO_VERIFY_DETAIL, sources: [...input.coverageToVerify] }] : [];

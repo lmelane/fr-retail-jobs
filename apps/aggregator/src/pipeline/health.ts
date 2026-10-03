@@ -1,7 +1,7 @@
 import { log } from '../observability/logger.js';
 import type { PrismaClient } from '@prisma/client';
 import type { IngestStats } from './ingest.js';
-import { isTrustedForAttestation, isDeclaredEmptyEnumeration, isPublisherConfirmedDrop } from './attestation.js';
+import { isTrustedForAttestation, isDeclaredEmptyEnumeration, isCompleteEmptyListing, isPublisherConfirmedDrop } from './attestation.js';
 import { recordSourceRunSummary } from '../connectors/sourceStore.js';
 import { ADVERTISEMENT_WITHDRAWN_RETENTION, GUARDED_NEGATIVE_PROOFS, MASS_GUARDED_RETENTIONS, isNativeEvidenceRetention, publicationDisposition, retentionClass,
   type RetentionClass } from './publicationDisposition.js';
@@ -33,7 +33,7 @@ const COLLAPSE_RATIO = 0.5;
  * D-491 (arbitrage CEO du 30/09/2026) : une baisse de plus de 50 % ne bloque le RUN que si AU MOINS ce nombre d'offres
  * disparaissent (publiées au run productif de référence, moins publiées par ce run). En dessous, elle reste signalée
  * au bilan et dans l'alerte. Mesuré le 30/09 : `indiska`, 3 offres puis 1, rendait le RUN rouge. Une source qui tombe
- * à ZÉRO reste jugée par sa règle propre (« ne rend aucune offre », ou zéro annoncé et prouvé), jamais par celle-ci.
+ * à ZÉRO reste jugée par sa règle propre, jamais par celle-ci : depuis D-523, zéro prouvé (sain) ou zéro non prouvé (lecteur).
  */
 export const MINOR_DROP_BLOCKING_DISAPPEARED = 10;
 
@@ -123,9 +123,13 @@ export type SourceHealth = {
  *   · `ENUMERATION_UNPROVABLE` : une liste NON PROUVÉE dont le lecteur nomme la raison (`STRUCTURAL_LIMIT_MARKERS` : page
  *     d'accueil sans liste, flux) — limite connue et classée depuis D-520 §4 b (`isKnownListLimit`) : non bloquante, sans
  *     escalade, jamais attestante ; posée seulement quand aucun autre défaut n'est trouvé (chute, champs, retenue à instruire) ;
- *   · `SOURCE_HEALTH_REGRESSION` ne nomme plus que le volume : chute non confirmée par l'éditeur, zéro, couverture d'URL. */
+ *   · `ZERO_NOT_PROVEN` (D-523, 03/10/2026) : le lecteur n'a rien vu et la source ne déclare pas l'absence (pas de total
+ *     annoncé à zéro ; pas de liste complète prouvée, ou une liste complète vide juste après des offres) : un SOUPÇON DE LECTURE, classé « lecteur » par l'état opérationnel,
+ *     jamais un volume ; il ne touche ni l'intention de la source ni sa cadence. Un zéro PROUVÉ n'est pas un incident ;
+ *   · `SOURCE_HEALTH_REGRESSION` ne nomme plus que le volume : chute non confirmée par l'éditeur, couverture d'URL, et une
+ *     collecte dont tout ce qui a été lu est retenu (le lecteur a vu des offres, aucune n'est publiée). */
 export type HealthFinding = 'ENUMERATION_NOT_PROVEN' | 'ENUMERATION_REFUTED' | 'NATIVE_RETENTION_JUMP' | 'DESCRIPTION_COVERAGE_BELOW_FLOOR' | 'NATIVE_REFUSAL_MASS'
-  | 'ENUMERATION_TRUNCATED' | 'RETENTION_TO_INSTRUCT' | 'ENUMERATION_UNPROVABLE';
+  | 'ENUMERATION_TRUNCATED' | 'RETENTION_TO_INSTRUCT' | 'ENUMERATION_UNPROVABLE' | 'ZERO_NOT_PROVEN';
 /** Les incidents qui ne portent que sur la LISTE : à côté d'une retenue à instruire, c'est la retenue qui est nommée (D-480 §1 : tout autre défaut reste bloquant). */
 const LIST_FINDINGS: ReadonlySet<HealthFinding> = new Set(['ENUMERATION_NOT_PROVEN', 'ENUMERATION_REFUTED', 'ENUMERATION_TRUNCATED', 'ENUMERATION_UNPROVABLE']);
 
@@ -434,8 +438,36 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
       note: `troncature : ${stat.fetched} collectées` +
         (stat.declaredTotal == null ? ', total inconnu' : ` sur ${stat.declaredTotal} déclarées`) };
   }
-  if (jobs === 0 && !stat.rejected && isDeclaredEmptyEnumeration(stat)) {
-    return { ...base, status: 'OK', note: 'éditeur : zéro annoncé, parcours complet sans erreur' };
+  /*
+   * D-523 (règle du CEO, 03/10/2026) : « le nombre d'offres ne détermine jamais l'état de la source » ; zéro offre est un
+   * état normal du marché. Un zéro PROUVÉ n'est pas un incident :
+   *   · la source annonce un total de 0, parcours complet (`isDeclaredEmptyEnumeration`), qu'elle ait publié avant ou non ;
+   *   · ou une liste complète prouvée ne contient rien, sans total (`isCompleteEmptyListing`), pour une source qui n'avait
+   *     rien au dernier run productif (ou pas de passé).
+   * LE CAS OÙ LA DISTINCTION EST IMPOSSIBLE : une liste complète vide, SANS total annoncé, juste après des offres. La fin de
+   * liste prouve qu'on a lu toute la réponse, pas que le lecteur en a lu les offres (champ renommé, gabarit changé) : vu
+   * d'une seule réponse, une liste vidée et un lecteur qui perd tout sont identiques, et ses offres disparaîtraient sans
+   * bruit. Elle reste un zéro non prouvé (ci-dessous) tant qu'un run productif figure dans l'historique (`HISTORY` jours),
+   * puis devient un zéro prouvé ; un total annoncé à 0 la prouve tout de suite. La fermeture garde ses propres gardes :
+   * sans total annoncé à 0, la preuve scellée dit BROKEN et n'atteste rien (`attestingCapture.ts`, `attestationFacts`).
+   */
+  const declaredEmpty = isDeclaredEmptyEnumeration(stat);
+  const emptyListing = !declaredEmpty && isCompleteEmptyListing(stat);
+  if (jobs === 0 && !stat.rejected && (declaredEmpty || emptyListing && !(before != null && before > 0))) {
+    return { ...base, status: 'OK', note: declaredEmpty ? 'éditeur : zéro annoncé, parcours complet sans erreur'
+      : 'liste complète prouvée et vide, sans total annoncé, rien au dernier run productif : zéro prouvé (D-523)' };
+  }
+  /*
+   * D-523 : le lecteur n'a RIEN vu et la source ne déclare pas l'absence. Ce n'est ni un volume ni un état du marché, c'est
+   * un soupçon de lecture (clé tournée, chemin déplacé, anti-robot silencieux) : classé « lecteur », il n'attestera
+   * rien et ne change ni l'intention de la source ni sa cadence.
+   */
+  if (jobs === 0 && stat.fetched === 0) {
+    const why = emptyListing && !stat.rejected
+      ? `liste complète vide sans total annoncé, après ${before} offre(s) au dernier run productif : la fin de liste ne distingue pas une liste vidée d’un lecteur qui perd les offres`
+      : 'le lecteur ne trouve rien et la source ne déclare pas l’absence';
+    return { ...base, status: 'BROKEN', finding: 'ZERO_NOT_PROVEN',
+      note: `zéro non prouvé${before === null ? ' au premier run' : ''} : ${why} (soupçon de lecture, D-523)${!emptyListing && before != null && before > 0 ? ` ; ${before} au dernier run productif` : ''}` };
   }
   if (before === null && jobs === 0) {
     return { ...base, status: 'BROKEN', note: 'premier run sans offre exploitable' };
@@ -482,8 +514,7 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
       note: `énumération réfutée : le balayage n’a pas atteint la fin du listing${by}` };
   }
 
-  // Zero from a source that was producing is the signal that matters most:
-  // it is what a rotated key, a moved path and a new bot shield all look like.
+  // The reader saw postings (the empty readings are judged above, D-523) and none of them published.
   if (jobs === 0) {
     return {
       source: stat.source,
@@ -683,7 +714,9 @@ async function recordRun(prisma: PrismaClient, results: SourceHealth[], stats: I
             declaredTotal: stat.declaredTotal, fetched: stat.fetched, previous: result.previous,
             published: result.jobs, previousDeclaredTotal: result.confirmedDrop?.previousDeclaredTotal ?? null,
           }) && (isDeclaredEmptyEnumeration(stat) || !!result.confirmedDrop ||
-            !(result.previous != null && result.previous > 0 && result.jobs < result.previous * COLLAPSE_RATIO)),
+            !(result.previous != null && result.previous > 0 && result.jobs < result.previous * COLLAPSE_RATIO))
+            // D-523 : un zéro prouvé sans total annoncé est sain, mais n'atteste rien, comme la preuve scellée (`attestationFacts`).
+            && (result.jobs > 0 || isDeclaredEmptyEnumeration(stat)),
           // The coverage rates ride along on EVERY run, incident or not: they
           // are the trend the next regression gets caught against. Columns
           // carry the queryable numbers; the note stays human-readable.

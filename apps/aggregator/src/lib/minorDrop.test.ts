@@ -158,11 +158,13 @@ describe('D-491 : le seuil de dix offres disparues', () => {
 });
 
 describe('D-491 : une source qui tombe à ZÉRO reste jugée par sa règle propre', () => {
-  it('3 → 0 : « ne rend aucune offre », bloquante, jamais une baisse de moins de dix', async () => {
+  // D-523 : liste complète vide SANS total juste après des offres = zéro non prouvé (soupçon de lecture), jamais une baisse.
+  it('3 → 0 : zéro non prouvé, bloquant, jamais une baisse de moins de dix', async () => {
     const [s, history] = drop(3, 0);
     const { issues, incidents, summary } = await runOne({ ...s, complete: true }, history);
-    expect(issues).toEqual([{ origin: 'UNKNOWN', code: 'SOURCE_HEALTH_REGRESSION', count: 1 }]);
-    expect(incidents[0]).toMatchObject({ status: 'BROKEN', blocking: true, note: 'ne rend aucune offre, 3 au dernier run productif' });
+    expect(issues).toEqual([{ origin: 'UNKNOWN', code: 'ZERO_NOT_PROVEN', count: 1 }]);
+    expect(incidents[0]).toMatchObject({ status: 'BROKEN', blocking: true, finding: 'ZERO_NOT_PROVEN' });
+    expect(incidents[0].note).toContain('après 3 offre(s) au dernier run productif');
     expect(incidents[0].minorDrop).toBeUndefined();
     expect(summary.minorDrops).toEqual([]);
   });

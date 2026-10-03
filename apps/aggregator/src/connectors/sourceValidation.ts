@@ -68,9 +68,10 @@ export type SourceValidationReport = {
 export const EXPLAINED_NATIVE_ROWS: ReadonlySet<string> = new Set(['LISTED_PAGE_WITHOUT_JOBPOSTING', 'LISTED_POSTING_PREVIEW',
   'LISTED_SPONTANEOUS_APPLICATION_CARD']);
 
-/** An empty collector is insufficient: require one complete native response
- * with the protocol's explicit end/zero marker. Greenhouse additionally requires
- * meta.total=0, as observed in the production RAW on 2026-09-23. */
+/** A PROVEN empty feed (`nativeEmpty`): one complete native response with the protocol's explicit end/zero marker.
+ * Greenhouse additionally requires meta.total=0, as observed in the production RAW on 2026-09-23. Since D-523
+ * (03/10/2026) an empty reading without this proof is no longer refused: it stays named (`EMPTY_FEED_NOT_NATIVELY_PROVEN`)
+ * and the collection's health classes it as a reader suspicion (`health.ts`, ZERO_NOT_PROVEN). */
 async function nativeEmptyFeed(db: PrismaClient, batchId: string, kind: string, store?: ObjectStore) {
   if (!['ashby', 'teamtailor', 'greenhouse'].includes(kind)) return false;
   const rows = await db.rawCapture.findMany({ where: { batchId }, take: 2 });
@@ -165,13 +166,25 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
   // absence: refresh independently checks the sealed enumeration/completion.
   // Native malformed rows share the existing per-publication allowance. They
   // remain named and cannot be silently counted as published.
-  const perPublication = new Set<string>([...PER_PUBLICATION_REASONS, 'ENUMERATION_INCOMPLETE', 'REJECTED_NATIVE_ROWS']);
+  /*
+   * D-523 (règle du CEO, 03/10/2026) : « le nombre d'offres ne détermine jamais l'état de la source ». Une liste lue en
+   * entier par le rejeu exact, qui ne montre RIEN (aucune publication, aucune ligne illisible), ne publie rien et n'atteste
+   * rien (`absenceAttestation: false`, la fermeture relit la preuve scellée) : la refuser ne protégeait aucune offre, elle
+   * retirait la qualification de la source, donc sa collecte (QUALIFICATION_REFUSEE, escalade, « à réparer ») et son
+   * activation (Ghost, Sioux, revue du 23/09). Le flux vide non prouvé reste NOMMÉ (`EMPTY_FEED_NOT_NATIVELY_PROVEN`,
+   * `nativeEmpty: false`) ; la santé de la collecte le classe « lecteur » (`health.ts`, ZERO_NOT_PROVEN), sans toucher
+   * l'intention. Un lecteur qui échoue (exception, rejeu inexact) ou qui voit des lignes qu'il ne sait pas lire reste refusé
+   * (une page de navigation ou un aperçu déjà expliqués, `EXPLAINED_NATIVE_ROWS`, ne sont pas des offres illisibles).
+   */
+  const emptyReading = report.observed === 0 && (report.inputUnqualified ?? 0) === 0 && report.held === 0 && report.rejected === 0;
+  const perPublication = new Set<string>([...PER_PUBLICATION_REASONS, 'ENUMERATION_INCOMPLETE', 'REJECTED_NATIVE_ROWS',
+    ...(emptyReading ? ['EMPTY_FEED_NOT_NATIVELY_PROVEN'] : [])]);
   const batchReasons = Object.keys(report.reasons).filter(name => !perPublication.has(name));
   const unqualified = report.rejected + (report.inputUnqualified ?? 0);
   const allowance = unqualifiedAllowanceFor(report.observed + (report.incrementalKnown ?? 0) + (report.inputUnqualified ?? 0));
   report.allowance = { ...VALIDATION_UNQUALIFIED_ALLOWANCE, applied: allowance };
   const verdict = report.replayExact && unqualified <= allowance && batchReasons.length === 0 &&
-    (report.qualified > 0 || report.nativeEmpty || onlySpontaneous(report) || (report.incrementalNothingNew ?? 0) > 0) ? 'VALIDATED' : 'REJECTED';
+    (report.qualified > 0 || report.nativeEmpty || emptyReading || onlySpontaneous(report) || (report.incrementalNothingNew ?? 0) > 0) ? 'VALIDATED' : 'REJECTED';
   return db.$transaction(async tx => {
     // Serialize completed decisions with promotion. The append sequence, not a
     // millisecond timestamp or UUID order, identifies the latest decision.

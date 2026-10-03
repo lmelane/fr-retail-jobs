@@ -35,7 +35,22 @@ describe('checkSourceHealth', () => {
     expect(report.broken).toBe(0);
     const latest = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'declared-empty' }, orderBy: [{ ranAt: 'desc' }, { id: 'desc' }] });
     expect(latest).toMatchObject({ status: 'OK', fetched: 0, declaredTotal: 0, canAttestAbsence: true });
-    expect((await checkSourceHealth(prisma, [stat('silent-empty', 0)])).broken).toBe(1);
+    // Un collecteur qui ne rend rien sans démontrer la fin de sa liste : zéro non prouvé, soupçon de lecture (D-523).
+    expect((await checkSourceHealth(prisma, [{ ...stat('silent-empty', 0), complete: undefined }])).incidents[0])
+      .toMatchObject({ status: 'BROKEN', finding: 'ZERO_NOT_PROVEN' });
+  });
+
+  it('D-523 : une liste complète vide sans total, sans offre au dernier run productif, est saine et n’atteste rien', async () => {
+    // Prémisse : parcours démontré (complete), aucun total annoncé, rien collecté.
+    const empty = { ...stat('complete-empty', 0), declaredTotal: undefined };
+    expect(empty).toMatchObject({ complete: true, fetched: 0, errors: 0 });
+    expect((await checkSourceHealth(prisma, [empty])).broken).toBe(0);
+    expect(await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'complete-empty' } }))
+      .toMatchObject({ status: 'OK', jobs: 0, canAttestAbsence: false });
+    // Juste après des offres, la même lecture ne se distingue pas d'un lecteur qui perd tout : zéro non prouvé.
+    await checkSourceHealth(prisma, [stat('emptied-listing', 12)]);
+    expect((await checkSourceHealth(prisma, [{ ...stat('emptied-listing', 0), declaredTotal: undefined }])).incidents[0])
+      .toMatchObject({ status: 'BROKEN', finding: 'ZERO_NOT_PROVEN', previous: 12 });
   });
   it('persists the original failed-page cause and denies absence attestation', async () => {
     const failed = { ...stat('l-oreal-professionnel', 0), errors: 1, complete: false,

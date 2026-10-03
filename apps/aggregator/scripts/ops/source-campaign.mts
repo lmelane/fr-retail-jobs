@@ -19,6 +19,7 @@ import { campaignArguments, selectCandidates, sourceQualificationRefusal } from 
  *   DOMAINE_OFFICIEL_DIVERGENT  le domaine officiel du registre n'est pas celui réellement servi (site ou hôte
  *                          canonique du portail sur un autre domaine d'employeur) : registre à revoir
  *   COLLECTE_NON_VALIDEE   l'adaptateur ou la validation native refuse : défaut de notre contrat, à développer
+ *   LECTEUR_A_VERIFIER     lecture vide sans zéro natif prouvé ni aucune offre lue : la source reste en qualification (D-523)
  *   HORS_PARCOURS          palier, famille ou configuration hors du parcours maintenu (éditeurs, cabinets, contrat absent)
  *
  * Écarts du registre consignés dans `etapes` sans bloquer : `careersDomainDerive` (domaine carrière absent, dérivé de
@@ -52,7 +53,7 @@ import { effectiveSourceConfig } from '../../src/connectors/sourceConfig.js';
 import { recordSourceIdentityReview } from '../../src/connectors/sourceIdentity.js';
 import { captureSourceForValidation } from '../../src/connectors/sourceValidation.js';
 import { observedRequests, qualifySourceAccess } from '../../src/connectors/sourceAccessQualification.js';
-import { promoteSource } from '../../src/connectors/sourceStore.js';
+import { promoteSource, SourcePromotionGateError } from '../../src/connectors/sourceStore.js';
 import { sourceStatus } from '../../src/onboarding/status.js';
 import { ingestionChildEnvironment } from '../../src/onboarding/launch.js';
 import { objectStoreConfigured, objectStoreFromEnv } from '../../src/retention/objectStore.js';
@@ -298,7 +299,9 @@ async function qualifier(c: Candidat): Promise<Verdict> {
   const status = await sourceStatus(db, c.key) as { promotionGatesPass?: boolean; status?: string; identity?: unknown; native?: unknown; access?: unknown };
   etapes.portes = { identity: status.identity, native: status.native, access: status.access, promotionGatesPass: status.promotionGatesPass, status: status.status };
   try { etapes.promotion = await promoteSource(db, c.key, revision); }
-  catch (error) { raisons.unshift(`promotion : ${message(error)}`); return rendre('COLLECTE_NON_VALIDEE', { revision, offres }); }
+  // D-523 : une lecture vide sans zéro natif prouvé ne promeut pas une source jamais lue ; elle reste en qualification.
+  catch (error) { raisons.unshift(`promotion : ${message(error)}`); return rendre(error instanceof SourcePromotionGateError && error.code === 'READER_UNPROVEN'
+    ? 'LECTEUR_A_VERIFIER' : 'COLLECTE_NON_VALIDEE', { revision, offres }); }
   const result = rendre('QUALIFIEE', { revision, offres });
   if (options.ingest) {
     const run = await ingestChild(c.key, validation.captureBatchId);

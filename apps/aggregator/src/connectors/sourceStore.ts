@@ -136,7 +136,7 @@ export type PromoteResult = {
 
 /** Promotion consumes current independent native, identity and access decisions. */
 export class SourcePromotionGateError extends Error {
-  constructor(readonly code: 'SOURCE_MISSING' | 'REVISION_MISMATCH' | 'RETIRED' | 'CONFIG_EMPTY' | 'CONCURRENT_CHANGE', message: string) {
+  constructor(readonly code: 'SOURCE_MISSING' | 'REVISION_MISMATCH' | 'RETIRED' | 'CONFIG_EMPTY' | 'CONCURRENT_CHANGE' | 'READER_UNPROVEN', message: string) {
     super(message); this.name = 'SourcePromotionGateError';
   }
 }
@@ -167,13 +167,34 @@ export async function promoteSource(prisma: PrismaClient, key: string, expectedR
      * revue ne faisait que les recopier. Restent les deux contrôles qui MESURENT quelque chose :
      * la collecte est-elle validée hors réseau, et le robots.txt nous autorise-t-il.
      */
-    await requireSourceValidation(tx, row.currentRevisionId);
+    const validation = await requireSourceValidation(tx, row.currentRevisionId);
     await requireSourceAccess(tx, row);
     if (from === 'ACTIVE') return { key, from, to: 'ACTIVE' };
+    await requireReaderProof(tx, row.currentRevisionId, validation.report);
     const changed = await tx.source.updateMany({ where: { key, currentRevisionId: row.currentRevisionId, status: from }, data: { status: 'ACTIVE' } });
     if (changed.count !== 1) throw new SourcePromotionGateError('CONCURRENT_CHANGE', 'promote: source changed while its identity was checked');
     return { key, from, to: 'ACTIVE' };
   });
+}
+
+/**
+ * D-523 (règle du CEO, 03/10/2026, arbitrage du CTO) : une source VALIDE, accessible et correctement identifiée reste
+ * ACTIVE même à zéro offre. Depuis D-523, une lecture vide sans protocole de zéro natif est validée (elle ne retire plus la
+ * qualification d'une source déjà ACTIVE). Mais une source qui n'a jamais montré qu'on sait la lire n'est pas encore prouvée
+ * valide : un mauvais identifiant de board ou un mauvais chemin rendent une réponse vide bien formée. À la promotion
+ * (première qualification, campagne, réouverture), l'une de deux preuves est exigée sur la révision courante :
+ *   · au moins une offre réellement lue par une tentative de qualification (`observed` ou publications connues relues) ;
+ *   · un zéro natif prouvé (`nativeEmpty` : la source déclare l'absence ou sa liste complète est vide, protocole existant).
+ * Sinon la source ne passe pas ACTIVE : elle reste en qualification, cause « lecteur à vérifier ».
+ */
+type ReaderEvidence = { observed?: number; incrementalKnown?: number; nativeEmpty?: boolean };
+const proves = (report: unknown) => { const r = (report ?? {}) as ReaderEvidence;
+  return (r.observed ?? 0) > 0 || (r.incrementalKnown ?? 0) > 0 || r.nativeEmpty === true; };
+async function requireReaderProof(tx: Prisma.TransactionClient, revisionId: string, current: unknown): Promise<void> {
+  if (proves(current)) return;
+  const attempts = await tx.sourceValidation.findMany({ where: { sourceRevisionId: revisionId }, select: { report: true } });
+  if (attempts.some(attempt => proves(attempt.report))) return;
+  throw new SourcePromotionGateError('READER_UNPROVEN', 'lecteur à vérifier : aucune offre lue ni zéro natif prouvé par les qualifications de cette révision ; la source reste en qualification (D-523)');
 }
 
 /**
