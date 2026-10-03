@@ -130,6 +130,19 @@ export async function fetchTeamtailorJobs(
   const maxPages = config.maxPages === undefined ? MAX_PAGES : Number(config.maxPages);
   if (!Number.isSafeInteger(maxPages) || maxPages < 1 || maxPages > MAX_PAGES) throw new Error('Invalid Teamtailor page budget');
   const jobOrigin = typeof config.jobOrigin === 'string' ? config.jobOrigin : undefined;
+  /**
+   * PORTAIL DE GROUPE LIMITÉ À UN EMPLOYEUR (D-522 §6, 03/10/2026). Fjällräven publie ses offres nord-américaines sur
+   * le portail du groupe Fenix Outdoor, qui publie aussi d'autres enseignes (Globetrotter, Friluftsland, Naturkompaniet
+   * déjà collectée par sa propre source…). `employer` est le libellé natif EXACT (`_jobposting.hiringOrganization.name`,
+   * forme NFC) des offres que cette source collecte ; les autres ne sont pas des offres de cette source : elles ne
+   * sortent pas, ne figurent pas dans la preuve d'énumération et sont comptées (`outOfScopeEmployer`). Le réglage fait
+   * partie de la configuration, donc de son empreinte et de sa revue. Comparaison exacte, jamais par sous-chaîne.
+   */
+  const employerSetting = config.employer;
+  if (employerSetting !== undefined && (typeof employerSetting !== 'string' || !employerSetting.trim())) throw new Error('Invalid Teamtailor employer setting');
+  const employer = typeof employerSetting === 'string' ? employerSetting.normalize('NFC').trim() : undefined;
+  let outOfScopeEmployer = 0;
+  let rawItems = 0;
   const jobs: NormalizedJob[] = [];
   const ids = new Set<string>();
   /** La charge utile déjà vue pour chaque identifiant : distingue un recouvrement d'une contradiction. */
@@ -186,17 +199,24 @@ export async function fetchTeamtailorJobs(
         continue; // Même offre, même contenu : déjà comptée, et la page ne la renomme pas.
       }
       vus.set(job.externalId, JSON.stringify(item));
+      rawItems++;
+      if (employer !== undefined && item._jobposting?.hiringOrganization?.name?.normalize('NFC').trim() !== employer) {
+        outOfScopeEmployer++;
+        continue;
+      }
       ids.add(job.externalId);
       jobs.push(job);
       pageIds.push(job.externalId);
     }
     pageEvidence.push({ url, checkedAt: observedAt, sha256: createHash('sha256').update(JSON.stringify(feed)).digest('hex'),
       offset: jobs.length - pageIds.length, pagination: null, ids: pageIds, canonicalIds: pageIds,
-      publisherCounter: String(feed.items.length), componentCounters: [] });
+      publisherCounter: String(feed.items.length),
+      componentCounters: employer === undefined ? [] : [`employer=${employer}`, `outOfScopeEmployer=${outOfScopeEmployer}`] });
     if (feed.next_url === undefined || feed.next_url === null) return { jobs, complete: true, truncated: false,
       // A valid single empty feed with no continuation explicitly declares zero.
       // Positive boards still do not acquire an invented global publisher total.
-      ...(jobs.length === 0 && pageEvidence.length === 1 ? { declaredTotal: 0 } : {}),
+      // Limited to one employer, an empty result is not the publisher's zero: only an empty feed declares it.
+      ...(rawItems === 0 && pageEvidence.length === 1 ? { declaredTotal: 0 } : {}),
       enumeration: enumeration('NEXT_URL_NULL', true) };
     if (typeof feed.next_url !== 'string' || !feed.next_url.trim()) throw new Error('Teamtailor invalid next_url');
     if (!feed.items.length) throw new Error('Teamtailor empty page with continuation');

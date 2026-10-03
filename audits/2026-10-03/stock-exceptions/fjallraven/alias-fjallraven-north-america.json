@@ -1,0 +1,9 @@
+{
+  "batchId": "20261003-D522-6-FJALLRAVEN-NORTH-AMERICA",
+  "reviewedBy": "loic-melane-d522",
+  "reviewedAt": "2026-10-03T07:00:00Z",
+  "statement": "Fjällräven North America est la filiale nord-américaine de Fjällräven (groupe Fenix Outdoor) : la page officielle career.fjallraven.com lie le portail du groupe career.fenixoutdoor.se, où ses 22 offres (magasins Fjällräven aux États-Unis et au Canada) portent ce libellé natif. Alias limité à la source fjallraven-fenix-outdoor, libellé exact.",
+  "aliases": [{ "sourceKey": "fjallraven-fenix-outdoor", "rawName": "Fjällräven North America", "targetCompany": "Fjällräven" }],
+  "merges": [],
+  "evidence": [{ "url": "https://career.fjallraven.com/", "artifactFile": "audits/2026-10-03/stock-exceptions/fjallraven/career.fjallraven.com-20261003.html", "explanation": "Site carrière officiel de Fjällräven : lie https://career.fenixoutdoor.se/jobs et /group-companies (groupe Fenix Outdoor)." }]
+}

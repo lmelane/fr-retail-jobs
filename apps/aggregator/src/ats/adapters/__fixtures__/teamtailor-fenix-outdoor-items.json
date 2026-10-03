@@ -1,0 +1,138 @@
+{
+ "version": "https://jsonfeed.org/version/1.1",
+ "feed_url": "https://career.fenixoutdoor.se/jobs.json",
+ "items": [
+  {
+   "id": "61b66763-02f4-41cd-a5e4-dd226cfed251",
+   "title": "Timemedarbejder Friluftsland Roskilde",
+   "url": "https://career.fenixoutdoor.se/jobs/1138391-timemedarbejder-friluftsland-roskilde",
+   "date_published": "2026-10-01T00:00:00+02:00",
+   "_jobposting": {
+    "title": "Timemedarbejder Friluftsland Roskilde",
+    "hiringOrganization": {
+     "name": "Friluftsland"
+    },
+    "jobLocation": [
+     {
+      "@type": "Place",
+      "address": {
+       "@type": "PostalAddress",
+       "streetAddress": "Skomagergade 32",
+       "addressLocality": "Roskilde",
+       "postalCode": "4000",
+       "addressCountry": "DK",
+       "addressRegion": "Denmark"
+      }
+     }
+    ],
+    "description": "<p>(texte réduit)</p>"
+   }
+  },
+  {
+   "id": "088b01d1-0217-4a8e-a7e3-f984a84242c4",
+   "title": "Seasonal Retail Sales Associate",
+   "url": "https://career.fenixoutdoor.se/jobs/8495143-seasonal-retail-sales-associate",
+   "date_published": "2026-10-03T02:42:43+02:00",
+   "_jobposting": {
+    "title": "Seasonal Retail Sales Associate",
+    "hiringOrganization": {
+     "name": "Fjällräven North America"
+    },
+    "jobLocation": [
+     {
+      "@type": "Place",
+      "address": {
+       "@type": "PostalAddress",
+       "streetAddress": "165 Newbury St",
+       "addressLocality": "Boston",
+       "postalCode": "02116-2854",
+       "addressCountry": "US",
+       "addressRegion": "United States"
+      }
+     }
+    ],
+    "description": "<p>(texte réduit)</p>"
+   }
+  },
+  {
+   "id": "af108002-a9e3-4856-9011-d94fe204cf60",
+   "title": "Part-Time Retail Supervisor",
+   "url": "https://career.fenixoutdoor.se/jobs/8495141-part-time-retail-supervisor",
+   "date_published": "2026-10-03T02:37:50+02:00",
+   "_jobposting": {
+    "title": "Part-Time Retail Supervisor",
+    "hiringOrganization": {
+     "name": "Fjällräven North America"
+    },
+    "jobLocation": [
+     {
+      "@type": "Place",
+      "address": {
+       "@type": "PostalAddress",
+       "streetAddress": "165 Newbury St",
+       "addressLocality": "Boston",
+       "postalCode": "02116-2854",
+       "addressCountry": "US",
+       "addressRegion": "United States"
+      }
+     }
+    ],
+    "description": "<p>(texte réduit)</p>"
+   }
+  },
+  {
+   "id": "2f416b89-e6fe-4756-b233-2056a7c5259e",
+   "title": "Graphic Designer, vikariat",
+   "url": "https://career.fenixoutdoor.se/jobs/8472837-graphic-designer-vikariat",
+   "date_published": "2026-10-01T00:00:00+02:00",
+   "_jobposting": {
+    "title": "Graphic Designer, vikariat",
+    "hiringOrganization": {
+     "name": "Naturkompaniet"
+    },
+    "jobLocation": [
+     {
+      "@type": "Place",
+      "address": {
+       "@type": "PostalAddress",
+       "streetAddress": "Kungstensgatan 36",
+       "addressLocality": "Stockholm",
+       "postalCode": "113 59",
+       "addressCountry": "SE",
+       "addressRegion": "Stockholm"
+      }
+     }
+    ],
+    "description": "<p>(texte réduit)</p>"
+   }
+  },
+  {
+   "id": "e1055023-2c65-49db-be72-a897e3e1ae3d",
+   "title": "Forklift Operator 1",
+   "url": "https://career.fenixoutdoor.se/jobs/8481337-forklift-operator-1",
+   "date_published": "2026-09-30T17:35:14+02:00",
+   "_jobposting": {
+    "title": "Forklift Operator 1",
+    "hiringOrganization": {
+     "name": "Fenix Outdoor North America"
+    },
+    "jobLocation": [
+     {
+      "@type": "Place",
+      "address": {
+       "@type": "PostalAddress",
+       "streetAddress": "293029 James Jones Way",
+       "addressLocality": "Balzac",
+       "postalCode": "T0M 0E0",
+       "addressCountry": "CA",
+       "addressRegion": "North America"
+      }
+     }
+    ],
+    "description": "<p>(texte réduit)</p>"
+   }
+  }
+ ],
+ "observedAt": "2026-10-03T06:40:00Z",
+ "source": "https://career.fenixoutdoor.se/jobs.json?per_page=100 (65 items, réduit à 5)"
+}

@@ -96,3 +96,52 @@ describe('Teamtailor enumeration evidence', () => {
     await expect(fetchTeamtailorJobs({origin:origin+'?country=FR'})).rejects.toThrow('unfiltered');
   });
 });
+
+/**
+ * D-522 §6 (03/10/2026) : Fjällräven publie ses 22 offres nord-américaines sur le portail du groupe Fenix Outdoor
+ * (`career.fenixoutdoor.se`), qui publie aussi Globetrotter, Friluftsland, Naturkompaniet (déjà collectée), Hanwag…
+ * Une source limitée à une Maison lit le portail entier mais ne garde que l'employeur nommé par `employer`
+ * (libellé natif exact de `_jobposting.hiringOrganization.name`) : couverture rétablie, aucun autre périmètre,
+ * aucun doublon de Naturkompaniet. Fixture : le feed réel du 03/10, réduit à 5 offres.
+ */
+describe('Teamtailor — portail de groupe limité à un employeur (Fenix Outdoor → Fjällräven)', () => {
+  const fenix = JSON.parse(readFileSync(new URL('./__fixtures__/teamtailor-fenix-outdoor-items.json', import.meta.url), 'utf8'));
+  const fenixOrigin = 'https://career.fenixoutdoor.se';
+  const feed = { version: fenix.version, feed_url: fenix.feed_url, items: fenix.items };
+  const labels = (items: Array<{ _jobposting: { hiringOrganization: { name: string } } }>) => items.map(i => i._jobposting.hiringOrganization.name);
+  it('ne garde que les offres de l’employeur configuré, et sa preuve ne nomme qu’elles', async () => {
+    // Prémisse : le feed mêle bien plusieurs employeurs du groupe, dont Naturkompaniet (collectée ailleurs).
+    expect(new Set(labels(fenix.items)).size).toBeGreaterThan(2);
+    expect(labels(fenix.items)).toContain('Naturkompaniet');
+    vi.mocked(fetchJson).mockResolvedValueOnce(feed);
+    const r = await fetchTeamtailorJobs({ origin: fenixOrigin, employer: 'Fjällräven North America' });
+    expect(r.jobs.map(j => j.company)).toEqual(['Fjällräven North America', 'Fjällräven North America']);
+    expect(r).toMatchObject({ complete: true, truncated: false });
+    expect(r.declaredTotal).toBeUndefined();
+    expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual(r.jobs.map(j => j.externalId));
+    expect(r.enumeration!.pageEvidence![0].publisherCounter).toBe('5');
+    expect(r.enumeration!.pageEvidence![0].componentCounters).toEqual(['employer=Fjällräven North America', 'outOfScopeEmployer=3']);
+  });
+  it('compare le libellé en forme normalisée (NFC), jamais par sous-chaîne', async () => {
+    vi.mocked(fetchJson).mockResolvedValueOnce(feed);
+    const r = await fetchTeamtailorJobs({ origin: fenixOrigin, employer: 'Fjällräven North America'.normalize('NFD') });
+    expect(r.jobs).toHaveLength(2);
+    vi.mocked(fetchJson).mockResolvedValueOnce(feed);
+    expect((await fetchTeamtailorJobs({ origin: fenixOrigin, employer: 'Fjällräven' })).jobs).toHaveLength(0);
+  });
+  it('un portail sans offre de l’employeur n’atteste pas un zéro de l’éditeur', async () => {
+    vi.mocked(fetchJson).mockResolvedValueOnce(feed);
+    const r = await fetchTeamtailorJobs({ origin: fenixOrigin, employer: 'Hanwag' });
+    expect(r.jobs).toEqual([]);
+    expect(r.declaredTotal).toBeUndefined();
+  });
+  it('refuse un employeur vide ou non textuel', async () => {
+    for (const employer of ['', '  ', 42, ['Fjällräven North America']]) {
+      await expect(fetchTeamtailorJobs({ origin: fenixOrigin, employer })).rejects.toThrow('employer');
+    }
+  });
+  it('sans réglage, lit le portail entier comme avant', async () => {
+    vi.mocked(fetchJson).mockResolvedValueOnce(feed);
+    expect((await fetchTeamtailorJobs({ origin: fenixOrigin })).jobs).toHaveLength(5);
+  });
+});

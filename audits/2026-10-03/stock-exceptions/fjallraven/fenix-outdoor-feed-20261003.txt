@@ -1,0 +1,16 @@
+Lecture locale 03/10/2026 ~06:35 UTC, UA CatwalksBot/1.0, robots.txt de career.fenixoutdoor.se : Allow (Disallow /app/, /messages/, /jobs/internal/ seulement ; Content-Signal search=yes).
+https://career.fenixoutdoor.se/jobs.json?per_page=100 : 65 offres, next_url absent.
+Par hiringOrganization.name :
+  Fjällräven North America: 22
+  Globetrotter: 21
+  Friluftsland: 12
+  Naturkompaniet: 4
+  Partioaitta: 2
+  Fenix Outdoor: 2
+  Fenix Outdoor North America: 1
+  Hanwag: 1
+https://career.fjallraven.com/jobs.json : items [] (source fjallraven, 0 offre).
+https://naturkompaniet.teamtailor.com/jobs.json : 4 offres Naturkompaniet (source naturkompaniet ACTIVE) ; le filtre employeur 'Fjällräven North America' les exclut : aucun doublon.
+https://career.fenixoutdoor.us/jobs.json : 1 offre 'Fenix Outdoor North America' (hors Fjällräven).
+Lecteur r6 + correctif, record-cassette --kind=teamtailor --config={origin, employer:'Fjällräven North America'} : robots ALLOWED, 22 offres lues, 2 réponses.
+Page officielle career.fjallraven.com (sha256 5f78b9f469c164ad200949bce1ea50b81b0e79377c3618698066d6a7469f2917) : lie https://career.fenixoutdoor.se/jobs et /group-companies.

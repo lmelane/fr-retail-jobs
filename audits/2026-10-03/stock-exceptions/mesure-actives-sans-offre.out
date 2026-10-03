@@ -1,0 +1,10 @@
+          key          |          maison          | lastRunStatus | lastRunJobs 
+-----------------------+--------------------------+---------------+-------------
+ cove                  | Cove                     | OK            |           0
+ lerros                | LERROS                   | BROKEN        |           0
+ l-oreal-professionnel | L'Oréal (toutes Maisons) | BROKEN        |           0
+ loplabbet             | Löplabbet                | OK            |           0
+ fjallraven            | Fjällräven               | OK            |           0
+ margaret-howell       | Margaret Howell          | OK            |           0
+(6 rows)
+
