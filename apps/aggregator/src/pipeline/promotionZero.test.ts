@@ -7,7 +7,7 @@ import { fetchAtsJobs } from '../ats/index.js';
 import { effectiveSourceConfig } from '../connectors/sourceConfig.js';
 import { promoteSource, SourcePromotionGateError } from '../connectors/sourceStore.js';
 import { admissionFixture } from '../test/sourceAdmissionFixture.js';
-import { ingestSyntheticFeed, qualifiedSource, releaseQualifiedSources } from '../test/ingestionFixture.js';
+import { ingestSyntheticFeed, qualifiedSource, releaseQualifiedSources, resolvedCompany } from '../test/ingestionFixture.js';
 import { computeSourceState } from './sourceState.js';
 import { checkSourceHealth } from './health.js';
 
@@ -72,4 +72,20 @@ describe('D-523 — promouvoir exige une preuve qu’on sait lire la source', ()
     expect(await promoteSource(db, key, source.currentRevisionId!)).toMatchObject({ from: 'ACTIVE', to: 'ACTIVE' });
     expect((await db.source.findUniqueOrThrow({ where: { key } })).status).toBe('ACTIVE');
   });
+
+  it('jour 11 : la purge de SourceRun ne change pas un zéro non prouvé en zéro prouvé tant que les offres sont en catalogue', async () => {
+    const key = `jour-onze-${randomUUID().slice(0, 8)}`; keys.push(key);
+    await qualifiedSource(db, key);
+    await db.source.update({ where: { key }, data: { portalScope: 'SINGLE_BRAND' } });
+    await resolvedCompany(db, key);
+    await checkSourceHealth(db, [await ingestSyntheticFeed(db, key, [{ id: 'a' }, { id: 'b' }, { id: 'c' }])]);
+    // La purge des 10 jours a effacé tout l'historique de la source ; ses offres sont toujours en catalogue.
+    await db.sourceRun.deleteMany({ where: { sourceKey: key } });
+    expect(await db.sourceRun.count({ where: { sourceKey: key } })).toBe(0);
+    expect(await db.jobSource.count({ where: { sourceKey: key, isActive: true } })).toBe(3);
+    const emptyListing = { source: key, complete: true, fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 0,
+      withDescription: 0, withDate: 0, withCountry: 0, withUrl: 0 };
+    expect((await checkSourceHealth(db, [emptyListing])).incidents[0]).toMatchObject({ status: 'BROKEN', finding: 'ZERO_NOT_PROVEN' });
+  });
 });
+

@@ -38,6 +38,15 @@ const COLLAPSE_RATIO = 0.5;
  */
 export const MINOR_DROP_BLOCKING_DISAPPEARED = 10;
 
+/**
+ * D-523 : ce que la santé sait de la source au-delà de la fenêtre de `SourceRun` (purgée à `HISTORY` jours). `activeStock`
+ * compte ses représentations actives (`JobSource`, jamais purgé) ; `lastRunDeclaredEmpty` dit si sa dernière collecte
+ * complète (hors passe) était déjà un zéro annoncé sur liste prouvée (confirmation de l'éditeur).
+ */
+export type SourceMemory = { activeStock: number; lastRunDeclaredEmpty: boolean };
+/** D-523 : à partir de ce nombre d'offres, un zéro annoncé attend sa confirmation au RUN complet suivant. */
+export const ZERO_TO_CONFIRM_MIN = 10;
+
 /** Runs to keep per source; enough to see a trend without growing forever. */
 const HISTORY = 10;
 
@@ -127,10 +136,12 @@ export type SourceHealth = {
  *   · `ZERO_NOT_PROVEN` (D-523, 03/10/2026) : le lecteur n'a rien vu et la source ne déclare pas l'absence (pas de total
  *     annoncé à zéro ; pas de liste complète prouvée, ou une liste complète vide juste après des offres) : un SOUPÇON DE LECTURE, classé « lecteur » par l'état opérationnel,
  *     jamais un volume ; il ne touche ni l'intention de la source ni sa cadence. Un zéro PROUVÉ n'est pas un incident ;
+ *   · `ZERO_ANNOUNCED_TO_CONFIRM` (D-523) : zéro annoncé après au moins `ZERO_TO_CONFIRM_MIN` offres, en attente de la
+ *     confirmation de l'éditeur au RUN complet suivant ;
  *   · `SOURCE_HEALTH_REGRESSION` ne nomme plus que le volume : chute non confirmée par l'éditeur, couverture d'URL, et une
  *     collecte dont tout ce qui a été lu est retenu (le lecteur a vu des offres, aucune n'est publiée). */
 export type HealthFinding = 'ENUMERATION_NOT_PROVEN' | 'ENUMERATION_REFUTED' | 'NATIVE_RETENTION_JUMP' | 'DESCRIPTION_COVERAGE_BELOW_FLOOR' | 'NATIVE_REFUSAL_MASS'
-  | 'ENUMERATION_TRUNCATED' | 'RETENTION_TO_INSTRUCT' | 'ENUMERATION_UNPROVABLE' | 'ZERO_NOT_PROVEN';
+  | 'ENUMERATION_TRUNCATED' | 'RETENTION_TO_INSTRUCT' | 'ENUMERATION_UNPROVABLE' | 'ZERO_NOT_PROVEN' | 'ZERO_ANNOUNCED_TO_CONFIRM';
 /** Les incidents qui ne portent que sur la LISTE : à côté d'une retenue à instruire, c'est la retenue qui est nommée (D-480 §1 : tout autre défaut reste bloquant). */
 const LIST_FINDINGS: ReadonlySet<HealthFinding> = new Set(['ENUMERATION_NOT_PROVEN', 'ENUMERATION_REFUTED', 'ENUMERATION_TRUNCATED', 'ENUMERATION_UNPROVABLE']);
 
@@ -228,7 +239,8 @@ export async function checkSourceHealth(
   const previous = await previousCounts(prisma, stats.map(s => s.source));
   const results = stats.map(stat => {
     const before = previous.get(stat.source);
-    return evaluateSourceHealth(stat, before?.jobs ?? null, before?.retention ?? null, before?.declaredTotal ?? null);
+    return evaluateSourceHealth(stat, before?.jobs ?? null, before?.retention ?? null, before?.declaredTotal ?? null,
+      { activeStock: before?.activeStock ?? 0, lastRunDeclaredEmpty: before?.lastRunDeclaredEmpty ?? false });
   });
 
   await recordRun(prisma, results, stats);
@@ -251,7 +263,7 @@ export async function checkSourceHealth(
  * without it no drop can be confirmed by the publisher (D-484 §2) and a collapse blocks as before.
  */
 export function evaluateSourceHealth(stat: IngestStats, before: number | null, retentionBaseline: RetentionBaseline | null = null,
-  previousDeclaredTotal: number | null = null): SourceHealth {
+  previousDeclaredTotal: number | null = null, memory: SourceMemory | null = null): SourceHealth {
   const jobs = stat.created + stat.merged + stat.updated;
   const retention = stat.held ? describeRetention(stat) : undefined;
   const base = { source: stat.source, jobs, previous: before, coverage: coverageOf(stat), rates: ratesOf(stat),
@@ -262,7 +274,7 @@ export function evaluateSourceHealth(stat: IngestStats, before: number | null, r
     .reduce((total, [, n]) => total + n, 0);
   if (stat.errors > 0 && identityRefused === stat.errors && !stat.errorNote && (stat.issues ?? []).every(issue => issue.code === IDENTITY_REFUSAL)) {
     const seen = evaluateSourceHealth({ ...stat, errors: 0, issues: undefined, writeFailures: undefined, updated: stat.updated + identityRefused },
-      before, retentionBaseline, previousDeclaredTotal);
+      before, retentionBaseline, previousDeclaredTotal, memory);
     const defect = (seen.status === 'BROKEN' || seen.status === 'DEGRADED') && !seen.nonBlockingRetentionOnly && !seen.confirmedDrop && !seen.minorDrop
       && seen.blocking !== false;
     const refusals = `${plural(stat.errors, 'erreur', 'erreurs')} de collecte ou d’écriture${failureCauses(stat)}`;
@@ -282,7 +294,7 @@ export function evaluateSourceHealth(stat: IngestStats, before: number | null, r
     return { ...base, status: 'OK',
       note: `aucune offre : ${retention.note} ; ${enumerationLabel(stat)} ; zéro réel, pas une régression (D-511)` };
   }
-  const collection = collectionHealth(stat, base, jobs, before, previousDeclaredTotal);
+  const collection = collectionHealth(stat, base, jobs, before, previousDeclaredTotal, memory);
   if (!retention) return collection;
   /**
    * D-453 §1 et D-456 : une retenue sur preuve de la source, ou écartée par l'équipe, reste visible mais ne fait
@@ -437,7 +449,7 @@ function guardedShare(stat: IngestStats, baseline: RetentionBaseline | null, neg
 
 /** Everything a run is judged on besides write errors and retentions: extent, volume, field coverage. */
 function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>, jobs: number, before: number | null,
-  previousDeclaredTotal: number | null): SourceHealth {
+  previousDeclaredTotal: number | null, memory: SourceMemory | null): SourceHealth {
   if (stat.truncated) {
     return { ...base, status: 'DEGRADED', finding: 'ENUMERATION_TRUNCATED',
       note: `troncature : ${stat.fetched} collectées` +
@@ -446,21 +458,34 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
   /*
    * D-523 (règle du CEO, 03/10/2026) : « le nombre d'offres ne détermine jamais l'état de la source » ; zéro offre est un
    * état normal du marché. Un zéro PROUVÉ n'est pas un incident :
-   *   · la source annonce un total de 0, parcours complet (`isDeclaredEmptyEnumeration`), qu'elle ait publié avant ou non ;
-   *   · ou une liste complète prouvée ne contient rien, sans total (`isCompleteEmptyListing`), pour une source qui n'avait
-   *     rien au dernier run productif (ou pas de passé).
-   * LE CAS OÙ LA DISTINCTION EST IMPOSSIBLE : une liste complète vide, SANS total annoncé, juste après des offres. La fin de
-   * liste prouve qu'on a lu toute la réponse, pas que le lecteur en a lu les offres (champ renommé, gabarit changé) : vu
-   * d'une seule réponse, une liste vidée et un lecteur qui perd tout sont identiques, et ses offres disparaîtraient sans
-   * bruit. Elle reste un zéro non prouvé (ci-dessous) tant qu'un run productif figure dans l'historique (`HISTORY` jours),
-   * puis devient un zéro prouvé ; un total annoncé à 0 la prouve tout de suite. La fermeture garde ses propres gardes :
-   * sans total annoncé à 0, la preuve scellée dit BROKEN et n'atteste rien (`attestingCapture.ts`, `attestationFacts`).
+   *   · la source annonce un total de 0, parcours complet (`isDeclaredEmptyEnumeration`) ; après au moins
+   *     `ZERO_TO_CONFIRM_MIN` offres, il se confirme au RUN complet suivant (ci-dessous) ;
+   *   · ou une liste complète prouvée ne contient rien, sans total (`isCompleteEmptyListing`), pour une source qui n'a
+   *     plus aucune offre en catalogue ni au dernier run productif.
+   * LE CAS OÙ LA DISTINCTION EST IMPOSSIBLE (garde technique de l'assistant, D-519 §4) : une liste complète vide, SANS total
+   * annoncé, alors que la source a encore des offres. La fin de liste prouve qu'on a lu toute la réponse, pas que le
+   * lecteur en a lu les offres (champ renommé, gabarit changé) : vu d'une seule réponse, une liste vidée et un lecteur qui
+   * perd tout sont identiques. Elle reste un zéro non prouvé tant que les offres de la source sont en catalogue
+   * (`memory.activeStock`, lu dans `JobSource`, jamais purgé) : seul un zéro prouvé qui atteste et ferme ces offres la
+   * lève, quelle que soit l'ancienneté du dernier run productif. La fermeture garde ses propres gardes : sans total annoncé
+   * à 0, la preuve scellée n'atteste rien (`attestingCapture.ts`, `attestationFacts`).
    */
   const declaredEmpty = isDeclaredEmptyEnumeration(stat);
   const emptyListing = !declaredEmpty && isCompleteEmptyListing(stat);
-  if (jobs === 0 && !stat.rejected && (declaredEmpty || emptyListing && !(before != null && before > 0))) {
-    return { ...base, status: 'OK', note: declaredEmpty ? 'éditeur : zéro annoncé, parcours complet sans erreur'
-      : 'liste complète prouvée et vide, sans total annoncé, rien au dernier run productif : zéro prouvé (D-523)' };
+  const stock = memory?.activeStock ?? 0;
+  const prior = Math.max(before ?? 0, stock);
+  if (jobs === 0 && !stat.rejected && declaredEmpty) {
+    // D-523, arbitrage du CTO : un zéro annoncé après au moins dix offres attend la confirmation de l'éditeur au RUN complet
+    // suivant (même total de 0 sur une liste complète prouvée) ; confirmé, il est sain et la fermeture suit ses règles.
+    if (prior >= ZERO_TO_CONFIRM_MIN && !memory?.lastRunDeclaredEmpty) {
+      return { ...base, status: 'BROKEN', finding: 'ZERO_ANNOUNCED_TO_CONFIRM',
+        note: `zéro annoncé par l’éditeur après ${prior} offres, à confirmer au RUN complet suivant (D-523)` };
+    }
+    return { ...base, status: 'OK', note: prior >= ZERO_TO_CONFIRM_MIN ? 'éditeur : zéro annoncé et confirmé au RUN complet suivant, parcours complet sans erreur'
+      : 'éditeur : zéro annoncé, parcours complet sans erreur' };
+  }
+  if (jobs === 0 && !stat.rejected && emptyListing && prior === 0) {
+    return { ...base, status: 'OK', note: 'liste complète prouvée et vide, sans total annoncé, aucune offre en catalogue : zéro prouvé (D-523)' };
   }
   /*
    * D-523 : le lecteur n'a RIEN vu et la source ne déclare pas l'absence. Ce n'est ni un volume ni un état du marché, c'est
@@ -468,11 +493,12 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
    * rien et ne change ni l'intention de la source ni sa cadence.
    */
   if (jobs === 0 && stat.fetched === 0) {
+    const had = [before != null && before > 0 ? `${before} au dernier run productif` : '', stock > 0 ? `${stock} en catalogue` : ''].filter(Boolean).join(', ');
     const why = emptyListing && !stat.rejected
-      ? `liste complète vide sans total annoncé, après ${before} offre(s) au dernier run productif : la fin de liste ne distingue pas une liste vidée d’un lecteur qui perd les offres`
-      : 'le lecteur ne trouve rien et la source ne déclare pas l’absence';
+      ? `liste complète vide sans total annoncé, alors que la source a des offres (${had}) : la fin de liste ne distingue pas une liste vidée d’un lecteur qui perd les offres`
+      : `le lecteur ne trouve rien et la source ne déclare pas l’absence${had ? ` (${had})` : ''}`;
     return { ...base, status: 'BROKEN', finding: 'ZERO_NOT_PROVEN',
-      note: `zéro non prouvé${before === null ? ' au premier run' : ''} : ${why} (soupçon de lecture, D-523)${!emptyListing && before != null && before > 0 ? ` ; ${before} au dernier run productif` : ''}` };
+      note: `zéro non prouvé${before === null && stock === 0 ? ' au premier run' : ''} : ${why} (soupçon de lecture, D-523)` };
   }
   if (before === null && jobs === 0) {
     return { ...base, status: 'BROKEN', note: 'premier run sans offre exploitable' };
@@ -527,9 +553,10 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
       jobs,
       previous: before,
       note:
+        // D-523 : le lecteur a vu des offres et aucune n'est publiable ; ce n'est pas un zéro du marché.
         before != null && before > 0
-          ? `ne rend aucune offre, ${before} au dernier run productif`
-          : 'ne rend toujours aucune offre : n’a jamais produit depuis son catalogage',
+          ? `aucune offre publiable sur ${stat.fetched} lue(s), ${before} au dernier run productif`
+          : `aucune offre publiable sur ${stat.fetched} lue(s), jamais publié depuis son catalogage`,
     };
   }
 
@@ -604,7 +631,7 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
  *   · au moins un poste est retenu pour annonce retirée ;
  *   · CHAQUE offre disparue est couverte par une retenue de ce run qui retire sur preuve native (D-514 §4, et la candidature
  *     spontanée ou le vivier de D-511/D-512 retirés le même jour : la 11e disparue du 01/10).
- * Rend le nombre de postes retirés pour annonce, 0 sinon. Zéro offre publiée reste une source cassée (vérifié avant) ; au-delà
+ * Rend le nombre de postes retirés pour annonce, 0 sinon. Zéro offre publiée est jugé avant, par sa règle propre (D-523) ; au-delà
  * de sa borne, la garde de masse de la retenue (`MASS_GUARDED_RETENTIONS`) rend la source bloquante.
  */
 function advertisementWithdrawalDrop(stat: IngestStats, disappeared: number): number {
@@ -678,12 +705,13 @@ function fieldCoverageIncident(stat: IngestStats): string | undefined {
  * itself, so the baseline is genuinely the previous run — not this one. A source
  * with no history returns nothing and is treated as NEW.
  */
-async function previousCounts(prisma: PrismaClient, sourceKeys: string[]): Promise<Map<string, { jobs: number; declaredTotal: number | null; retention: RetentionBaseline | null }>> {
+async function previousCounts(prisma: PrismaClient, sourceKeys: string[]): Promise<Map<string, { jobs: number | null; declaredTotal: number | null;
+  retention: RetentionBaseline | null; activeStock: number; lastRunDeclaredEmpty: boolean }>> {
   // Most recent first; the first row seen per source is its last run.
   const rows = await prisma.sourceRun.findMany({
     where: { sourceKey: { in: sourceKeys } },
     orderBy: { ranAt: 'desc' },
-    select: { sourceKey: true, jobs: true, fetched: true, accepted: true, runId: true, declaredTotal: true },
+    select: { sourceKey: true, jobs: true, fetched: true, accepted: true, runId: true, declaredTotal: true, complete: true, errors: true, truncated: true },
   });
   // The guard's reference: only a row of a COMPLETE production RUN counts, never a targeted, canary or --source run.
   const runIds = [...new Set(rows.flatMap(row => row.runId ? [row.runId] : []))];
@@ -707,14 +735,25 @@ async function previousCounts(prisma: PrismaClient, sourceKeys: string[]): Promi
   const retention = new Map<string, RetentionBaseline>();
   // R-143 §1 : la collecte d'une passe légère n'est jamais la référence d'une autre (`referenceRuns.ts`).
   const lightPasses = await lightPassRunIds(prisma, runIds);
+  // D-523 : la dernière collecte complète (hors passe) de chaque source, pour la confirmation d'un zéro annoncé.
+  const lastDeclaredEmpty = new Map<string, boolean>();
   for (const row of rows) {
     if (row.runId && lightPasses.has(row.runId)) continue;
+    if (!lastDeclaredEmpty.has(row.sourceKey)) lastDeclaredEmpty.set(row.sourceKey, row.jobs === 0 && isDeclaredEmptyEnumeration({
+      complete: row.complete ?? undefined, errors: row.errors ?? 0, truncated: row.truncated ?? undefined, declaredTotal: row.declaredTotal ?? undefined, fetched: row.fetched ?? 0 }));
     const known = latest.get(row.sourceKey);
     if (known === undefined || known.jobs === 0 && row.jobs > 0) latest.set(row.sourceKey, { jobs: row.jobs, declaredTotal: row.declaredTotal });
     if (!retention.has(row.sourceKey) && row.runId && completeRuns.has(row.runId) && (row.fetched ?? 0) > 0 && row.accepted != null)
       retention.set(row.sourceKey, { fetched: row.fetched!, accepted: row.accepted });
   }
-  return new Map([...latest].map(([key, run]) => [key, { ...run, retention: retention.get(key) ?? null }]));
+  // D-523 : les offres de la source encore en catalogue, mémoire durable au-delà de la purge de `SourceRun`.
+  const stock = new Map((await prisma.jobSource.groupBy({ by: ['sourceKey'], where: { sourceKey: { in: sourceKeys }, isActive: true }, _count: { _all: true } }))
+    .map(row => [row.sourceKey, row._count._all]));
+  const memory = (key: string) => ({ activeStock: stock.get(key) ?? 0, lastRunDeclaredEmpty: lastDeclaredEmpty.get(key) ?? false });
+  return new Map([...new Set([...latest.keys(), ...stock.keys()])].map(key => {
+    const run = latest.get(key);
+    return [key, { jobs: run?.jobs ?? null, declaredTotal: run?.declaredTotal ?? null, retention: retention.get(key) ?? null, ...memory(key) }];
+  }));
 }
 
 async function recordRun(prisma: PrismaClient, results: SourceHealth[], stats: IngestStats[]): Promise<void> {

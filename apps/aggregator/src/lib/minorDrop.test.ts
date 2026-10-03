@@ -36,6 +36,8 @@ function fakeDb(sourceKey: string, history: PastRun[]) {
     source: { updateMany: async () => ({ count: 1 }) },
     // R-143 §1 (`referenceRuns.ts`) : aucun de ces runs n'est une passe légère.
     pipelineRun: { findMany: async () => [] },
+    // D-523 : aucune offre en catalogue pour ces sources (mémoire durable de `health.ts`, `JobSource`).
+    jobSource: { groupBy: async () => [] },
   };
   return { db: db as unknown as PrismaClient, written };
 }
@@ -164,7 +166,7 @@ describe('D-491 : une source qui tombe à ZÉRO reste jugée par sa règle propr
     const { issues, incidents, summary } = await runOne({ ...s, complete: true }, history);
     expect(issues).toEqual([{ origin: 'UNKNOWN', code: 'ZERO_NOT_PROVEN', count: 1 }]);
     expect(incidents[0]).toMatchObject({ status: 'BROKEN', blocking: true, finding: 'ZERO_NOT_PROVEN' });
-    expect(incidents[0].note).toContain('après 3 offre(s) au dernier run productif');
+    expect(incidents[0].note).toContain('3 au dernier run productif');
     expect(incidents[0].minorDrop).toBeUndefined();
     expect(summary.minorDrops).toEqual([]);
   });

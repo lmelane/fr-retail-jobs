@@ -3,8 +3,10 @@ import { captureReaderRevision } from '../capture/revision.js';
 
 /** v3 separates partial publication from absence attestation, accounts for
  * malformed native rows with the existing allowance, and certifies Greenhouse's
- * explicit zero-total response. The SQL admission contract uses this version. */
-export const SOURCE_VALIDATION_POLICY = 'source-validation-20260923-v3';
+ * explicit zero-total response. v4 (D-523, 03/10/2026) validates an empty reading without native zero proof, named
+ * `EMPTY_FEED_NOT_NATIVELY_PROVEN` (never `nativeEmpty`) ; promotion still requires a read offer or a proven zero
+ * (`sourceStore.ts`). The SQL admission contract accepts v3 and v4 (migration 20261003090000). */
+export const SOURCE_VALIDATION_POLICY = 'source-validation-20261003-v4';
 
 /**
  * Combien d'offres non qualifiées un lot tolère — décision du propriétaire, 19/09/2026.

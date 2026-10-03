@@ -179,11 +179,13 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
   // Native malformed rows share the existing per-publication allowance. They
   // remain named and cannot be silently counted as published.
   /*
-   * D-523 (règle du CEO, 03/10/2026) : « le nombre d'offres ne détermine jamais l'état de la source ». Une liste lue en
-   * entier par le rejeu exact, qui ne montre RIEN (aucune publication, aucune ligne illisible), ne publie rien et n'atteste
-   * rien (`absenceAttestation: false`, la fermeture relit la preuve scellée) : la refuser ne protégeait aucune offre, elle
+   * D-523 (règle du CEO, 03/10/2026) : « le nombre d'offres ne détermine jamais l'état de la source ». Une lecture rejouée
+   * à l'identique qui ne montre RIEN (aucune publication, aucune ligne illisible), que sa liste soit démontrée complète ou
+   * non (`ENUMERATION_INCOMPLETE` : jamais un zéro prouvé, ni ici ni à la promotion), ne publie rien et n'atteste rien
+   * (`absenceAttestation: false`, la fermeture relit la preuve scellée) : la refuser ne protégeait aucune offre, elle
    * retirait la qualification de la source, donc sa collecte (QUALIFICATION_REFUSEE, escalade, « à réparer ») et son
-   * activation (Ghost, Sioux, revue du 23/09). Le flux vide non prouvé reste NOMMÉ (`EMPTY_FEED_NOT_NATIVELY_PROVEN`,
+   * activation (Ghost, Sioux, revue du 23/09). Seul `nativeEmpty` (protocole de zéro natif) prouve le zéro ; la promotion
+   * d'une source jamais lue l'exige, ou une offre lue (`sourceStore.ts`, READER_UNPROVEN). Le flux vide non prouvé reste NOMMÉ (`EMPTY_FEED_NOT_NATIVELY_PROVEN`,
    * `nativeEmpty: false`) ; la santé de la collecte le classe « lecteur » (`health.ts`, ZERO_NOT_PROVEN), sans toucher
    * l'intention. Un lecteur qui échoue (exception, rejeu inexact) ou qui voit des lignes qu'il ne sait pas lire reste refusé
    * (une page de navigation ou un aperçu déjà expliqués, `EXPLAINED_NATIVE_ROWS`, ne sont pas des offres illisibles).

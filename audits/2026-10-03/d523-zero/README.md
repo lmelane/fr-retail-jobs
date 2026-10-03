@@ -46,3 +46,19 @@ HTML) : la campagne rendrait `LECTEUR_A_VERIFIER` et la source resterait en qual
 zéro natif du lecteur générique (lot D-522 §6). La réactivation est une écriture de production, hors de ce lot.
 
 Aucune source n'est RETIRED pour seul volume nul (`le-slip-francais` : canal WTTJ ; `luxe-talent` : job board, D-477).
+
+## Arbitrages du CTO sur les lectures adverses (03/10/2026)
+
+- **Promotion** : une source qui n'est pas déjà ACTIVE ne passe ACTIVE qu'avec une offre réellement lue par une
+  qualification de sa révision courante, ou un zéro natif prouvé (`READER_UNPROVEN`, campagne `LECTEUR_A_VERIFIER`).
+  Une liste vide `ENUMERATION_INCOMPLETE` n'est jamais un zéro prouvé.
+- **Mémoire durable** : le soupçon de lecture ne dépend plus de la fenêtre de 10 jours de `SourceRun` ; une liste
+  complète vide sans total reste « zéro non prouvé » tant que la source a des offres en catalogue (`JobSource` actives).
+- **Zéro annoncé après 10 offres ou plus** : en attente (« zéro annoncé à confirmer ») ; confirmé au RUN complet suivant,
+  il est sain ; sinon « lecteur ».
+- **Panne de lecture** : seuls les zéros non prouvés NOUVEAUX dans un RUN comptent (seuil 10).
+- **Politique de validation** `source-validation-20261003-v4` ; migration `20261003090000_validation_policy_v4` (gardes
+  SQL d'admission et d'adoption) qui accepte v3 et v4 : l'ordre de livraison est libre, le nouveau code refait une
+  validation v3 à la collecte suivante (les passes laissent ces sources au RUN jusque-là, `READER_STALE`).
+- Cherry-pick des lots D-522 §6 : zéro natif de la page carrières générique (`emptyListingText`, Ghost, Sioux) et
+  lerros (candidature spontanée seule).

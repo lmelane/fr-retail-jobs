@@ -39,6 +39,8 @@ function fakeDb(sourceKey: string, history: PastRun[]) {
     source: { updateMany: async () => ({ count: 1 }) },
     // R-143 §1 (`referenceRuns.ts`) : aucun de ces runs n'est une passe légère.
     pipelineRun: { findMany: async () => [] },
+    // D-523 : aucune offre en catalogue pour ces sources (mémoire durable de `health.ts`, `JobSource`).
+    jobSource: { groupBy: async () => [] },
   };
   return { db: db as unknown as PrismaClient, written };
 }

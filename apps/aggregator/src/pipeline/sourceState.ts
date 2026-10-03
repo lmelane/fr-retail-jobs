@@ -50,7 +50,10 @@ export type CollectionKind = typeof COLLECTION_KINDS[number];
  *   · « depuis », les tentatives et l'escalade courent sur l'ÉPISODE (de la sortie de NORMALE au retour), pas sur la
  *     cause : une source qui alterne 429 et 403 ne repousse pas son échéance ;
  *   · à réparer ou en revue humaine : le RUN ne rougit pas chaque jour, mais au-delà de `REPAIR_CEILING_DAYS` jours
- *     l'état n'a plus de sortie crédible et le RUN passe rouge (réparer, ou décider une pause ou une exclusion).
+ *     l'état n'a plus de sortie crédible et le RUN passe rouge (réparer, ou décider une pause ou une exclusion) ; pour un
+ *     zéro non prouvé, jamais une pause ni une exclusion (D-523) : lecteur à réparer, preuve de zéro à établir ;
+ *   · zéro annoncé après au moins dix offres (`ZERO_A_CONFIRMER`) : en attente jusqu'au RUN complet suivant, qui le
+ *     confirme (NORMALE) ou le contredit (« lecteur » si la liste lue est vide sans preuve, NORMALE si des offres reviennent) ;
  */
 export const ESCALATION = { waitingHours: 48, waitingAttempts: 3, degradedDays: 7 } as const;
 export const REPAIR_CEILING_DAYS = 14;
@@ -96,6 +99,10 @@ export const CAUSES = {
   RETENUE_A_INSTRUIRE: { label: 'offres retenues sans preuve de l’éditeur (fiche illisible, identité contredite)', base: 'EN_ATTENTE', trajectory: 'AUTO',
     deadlineAttempts: 2, waitsWhilePublishing: true,
     missing: 'rien au premier RUN si la fiche se relit ; sinon, lire le motif de la retenue et corriger la lecture du détail ou l’identité, puis verifier-source' },
+  // D-523, arbitrage du CTO : un zéro annoncé par l'éditeur après au moins dix offres attend sa confirmation au RUN complet
+  // suivant (même total de 0, liste prouvée). Ni un volume, ni une pause.
+  ZERO_A_CONFIRMER: { label: 'zéro annoncé à confirmer (après au moins dix offres)', base: 'EN_ATTENTE', trajectory: 'AUTO', deadlineAttempts: 2,
+    missing: 'rien : le RUN complet suivant confirme le zéro annoncé (normale) ; sinon, lecteur à réparer, preuve de zéro à établir, puis verifier-source' },
   CONTENU_INCOMPLET: { label: 'contenu incomplet (descriptions manquantes, lignes rejetées)', base: 'DEGRADEE', trajectory: 'A_REPARER',
     missing: 'corriger la lecture du détail des offres, puis verifier-source' },
   ANOMALIE_VOLUME: { label: 'volume anormal (chute non confirmée, saut de retenues)', base: 'EN_ATTENTE', trajectory: 'AUTO',
@@ -131,7 +138,7 @@ const ZERO_NOT_PROVEN_MISSING = 'zéro non prouvé (D-523) : vérifier sur le si
 
 /** Quand une collecte porte plusieurs causes, la première de cet ordre l'emporte (les autres codes restent dans la preuve). */
 const PRECEDENCE: readonly CauseClass[] = ['NON_CLASSEE', 'DEFAUT_INTERNE', 'QUALIFICATION_REFUSEE', 'CERTIFICAT_TLS', 'LECTEUR', 'ACCES_REFUSE',
-  'INDISPONIBILITE_PASSAGERE', 'ANOMALIE_VOLUME', 'IDENTITE_EMPLOYEUR', 'LISTE_NON_PROUVEE', 'RETENUE_A_INSTRUIRE', 'CONTENU_INCOMPLET', 'LISTE_INDEMONTRABLE'];
+  'INDISPONIBILITE_PASSAGERE', 'ANOMALIE_VOLUME', 'ZERO_A_CONFIRMER', 'IDENTITE_EMPLOYEUR', 'LISTE_NON_PROUVEE', 'RETENUE_A_INSTRUIRE', 'CONTENU_INCOMPLET', 'LISTE_INDEMONTRABLE'];
 
 const TLS_CODES = /(CERT|LEAF_SIGNATURE|SELF_SIGNED|TLS|SSL)/;
 const READER_TRANSPORT = /^TRANSPORT_(ERR_INVALID_URL|UND_ERR_INVALID_ARG)$/;
@@ -149,7 +156,7 @@ const BY_NAME: Readonly<Record<string, CauseClass>> = {
   DESCRIPTION_COVERAGE_BELOW_FLOOR: 'CONTENU_INCOMPLET', REJECTED_NATIVE_ROWS: 'CONTENU_INCOMPLET', NATIVE_REFUSAL_MASS: 'CONTENU_INCOMPLET',
   SOURCE_HEALTH_REGRESSION: 'ANOMALIE_VOLUME', NATIVE_RETENTION_JUMP: 'ANOMALIE_VOLUME',
   // D-523 : le lecteur ne voit rien et la source ne déclare pas l'absence ; jamais un volume, jamais un motif de pause.
-  ZERO_NOT_PROVEN: 'LECTEUR',
+  ZERO_NOT_PROVEN: 'LECTEUR', ZERO_ANNOUNCED_TO_CONFIRM: 'ZERO_A_CONFIRMER',
   Error: 'LECTEUR', UNCLASSIFIED_FAILURE: 'LECTEUR', SyntaxError: 'LECTEUR', BlockedUrlError: 'LECTEUR', ChainCompletionRefused: 'CERTIFICAT_TLS',
   UNCLASSIFIED_INGEST_ERRORS: 'DEFAUT_INTERNE', PipelinePausedError: 'NON_COLLECTEE',
 };
@@ -309,7 +316,7 @@ function withCause(sourceKey: string, cause: CauseClass, state: OperationalState
   let trajectory: Trajectory = known === 'PUBLIE' ? 'DECISION' : known === 'MUET' || (limit && !publishes) ? 'A_REPARER' : spec.trajectory;
   let finalState = state, deadline: Date | null = null, escalated = ongoing ? previous!.escalated : false;
   let missing: string = known === 'PUBLIE' ? `rien : échec connu décidé (${KNOWN_FAILURE_DECISION}), la source publie ses offres`
-    : known === 'MUET' ? `échec connu décidé (${KNOWN_FAILURE_DECISION}), mais cette collecte n’a rien publié, contrairement à la prémisse de la décision : réparer, ou proposer une pause décidée`
+    : known === 'MUET' ? `échec connu décidé (${KNOWN_FAILURE_DECISION}), mais cette collecte n’a rien publié, contrairement à la prémisse de la décision : lecteur à réparer, puis verifier-source (D-523 : zéro offre n’est jamais un motif de pause)`
       : limit && !publishes ? 'liste indémontrable (D-520 §4 b), mais cette collecte n’a rien publié : réparer le lecteur ou l’adresse, puis verifier-source'
         : cause === 'LECTEUR' && (codes ?? []).some(code => code.split('/')[1] === ZERO_NOT_PROVEN) ? ZERO_NOT_PROVEN_MISSING
           : spec.missing;
@@ -431,9 +438,14 @@ export function reconcileRun(input: { states: readonly SourceState[]; now: Date;
     && s.deadline.getTime() <= input.now.getTime()).map(s => s.sourceKey));
   add('ECHEANCE_DEPASSEE', 'réexamen du registre échu', [...(input.registryOverdue ?? [])]);
   const ceiling = input.now.getTime() - REPAIR_CEILING_DAYS * 24 * HOUR;
+  const stale = input.states.filter(s => (s.trajectory === 'A_REPARER' || s.trajectory === 'REVUE_HUMAINE') && s.cause !== 'MOTIF_ABSENT'
+    && s.since.getTime() <= ceiling);
+  // D-523 : un zéro non prouvé ancien se répare côté lecteur ; il ne propose jamais une pause ni une exclusion.
+  const isZero = (s: SourceState) => s.codes.some(code => code.split('/')[1] === ZERO_NOT_PROVEN);
   add('ANCIENNETE_DEPASSEE', `à réparer ou en revue depuis plus de ${REPAIR_CEILING_DAYS} jours : réparer, ou décider une pause ou une exclusion`,
-    input.states.filter(s => (s.trajectory === 'A_REPARER' || s.trajectory === 'REVUE_HUMAINE') && s.cause !== 'MOTIF_ABSENT'
-      && s.since.getTime() <= ceiling).map(s => s.sourceKey));
+    stale.filter(s => !isZero(s)).map(s => s.sourceKey));
+  add('ANCIENNETE_DEPASSEE', `zéro non prouvé depuis plus de ${REPAIR_CEILING_DAYS} jours : lecteur à réparer, preuve de zéro à établir (D-523)`,
+    stale.filter(isZero).map(s => s.sourceKey));
   const start = input.runStartedAt?.getTime();
   const ourSide = start === undefined ? [] : input.states.filter(s => (s.state === 'BLOQUEE' || s.state === 'EN_ATTENTE') && s.cause && OUR_SIDE.has(s.cause)
     && (s.cause === 'NON_COLLECTEE' ? s.computedAt.getTime() >= start : (s.lastCollectionAt?.getTime() ?? 0) >= start)).map(s => s.sourceKey);
@@ -445,8 +457,10 @@ export function reconcileRun(input: { states: readonly SourceState[]; now: Date;
    * côté (transport, anti-robot partagé, lecteur commun), pas un marché vide : elle ne se cache pas source par source. Avant
    * D-523, ces flux vides étaient refusés à la validation et comptés ci-dessus (qualification refusée).
    */
-  const unprovenZeros = start === undefined ? [] : input.states.filter(s => s.cause === 'LECTEUR' && s.codes.some(code => code.split('/')[1] === ZERO_NOT_PROVEN)
-    && (s.lastCollectionAt?.getTime() ?? 0) >= start).map(s => s.sourceKey);
+  // Seuls les zéros non prouvés NOUVEAUX dans ce RUN (épisode ouvert depuis son début) : un zéro qui dure depuis longtemps
+  // a déjà sa trajectoire et son plafond de 14 jours ; le compter chaque jour ferait d'un stock une panne permanente.
+  const unprovenZeros = start === undefined ? [] : input.states.filter(s => s.cause === 'LECTEUR' && isZero(s)
+    && (s.lastCollectionAt?.getTime() ?? 0) >= start && s.since.getTime() >= start).map(s => s.sourceKey);
   if (unprovenZeros.length >= SYSTEMIC_OUR_SIDE_BLOCKED) add('PANNE_SYSTEME',
     `${unprovenZeros.length} sources sans offre lue ni absence déclarée dans ce RUN (zéro non prouvé, seuil ${SYSTEMIC_OUR_SIDE_BLOCKED}) : panne de lecture, pas un marché vide (D-523)`, unprovenZeros);
   if (input.unexplainedCoverage.length) add('COUVERTURE_INEXPLIQUEE', 'perte de couverture sans cause trouvée', [...input.unexplainedCoverage]);

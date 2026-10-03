@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { evaluateSourceHealth } from './health.js';
+import { evaluateSourceHealth, ZERO_TO_CONFIRM_MIN } from './health.js';
 import type { IngestStats } from './ingest.js';
 import { issuesFromResult } from '../lib/ingestionIssue.js';
-import { computeSourceState, reconcileRun, SYSTEMIC_OUR_SIDE_BLOCKED, type CollectionOutcome } from './sourceState.js';
+import { computeSourceState, reconcileRun, REPAIR_CEILING_DAYS, SYSTEMIC_OUR_SIDE_BLOCKED, type CollectionOutcome } from './sourceState.js';
 
 /**
  * D-523 (règle du CEO, 03/10/2026) : « le nombre d'offres ne détermine jamais l'état de la source » ; zéro offre est un
@@ -20,8 +20,8 @@ const outcome = (health: ReturnType<typeof evaluateSourceHealth>, stat: IngestSt
 const active = (key = 'maison-vide') => ({ key, status: 'ACTIVE', note: null });
 
 describe('D-523 — zéro prouvé : un état normal du marché', () => {
-  it('zéro annoncé par l’éditeur, après des offres : sain (prémisse inchangée)', () => {
-    expect(evaluateSourceHealth(empty({ declaredTotal: 0 }), 40)).toMatchObject({ status: 'OK' });
+  it('zéro annoncé par l’éditeur, après quelques offres : sain', () => {
+    expect(evaluateSourceHealth(empty({ declaredTotal: 0 }), 4)).toMatchObject({ status: 'OK' });
   });
 
   it.each([null, 0])('liste complète vide sans total, dernier run productif %s : sain, aucun code, NORMALE', before => {
@@ -69,4 +69,60 @@ describe('D-523 — zéro non prouvé : un soupçon de lecture, jamais un volume
     expect(verdict.reasons.map(r => r.reason)).toEqual(['PANNE_SYSTEME']);
     expect(verdict.reasons[0]!.sources).toHaveLength(SYSTEMIC_OUR_SIDE_BLOCKED);
   });
+
+  it('la panne de lecture ne compte que les zéros NOUVEAUX de ce RUN ; un stock ancien garde sa trajectoire sans rougir chaque jour', () => {
+    const runStartedAt = new Date(T0.getTime() - 3_600_000);
+    const states = Array.from({ length: SYSTEMIC_OUR_SIDE_BLOCKED }, (_, i) => {
+      const stat = empty({ source: `ancien-${i}`, complete: undefined });
+      const health = evaluateSourceHealth(stat, 10);
+      const first = computeSourceState({ source: active(`ancien-${i}`), outcome: outcome(health, stat, new Date(T0.getTime() - 3 * 86_400_000)), previous: null,
+        now: new Date(T0.getTime() - 3 * 86_400_000) });
+      return computeSourceState({ source: active(`ancien-${i}`), outcome: outcome(health, stat), previous: first, now: T0 });
+    });
+    // Prémisse : chacune est un zéro non prouvé recollecté par CE RUN, mais ouvert il y a trois jours.
+    expect(states.every(s => s.cause === 'LECTEUR' && s.lastCollectionAt!.getTime() >= runStartedAt.getTime() && s.since.getTime() < runStartedAt.getTime())).toBe(true);
+    expect(reconcileRun({ states, now: T0, runStartedAt, systemFailures: [], unexplainedCoverage: [] }).green).toBe(true);
+  });
+
+  it(`au-delà de ${REPAIR_CEILING_DAYS} jours, le RUN rougit, mais le texte demande le lecteur et la preuve, jamais une pause`, () => {
+    const stat = empty({ complete: undefined });
+    const health = evaluateSourceHealth(stat, 10);
+    const old = new Date(T0.getTime() - (REPAIR_CEILING_DAYS + 1) * 86_400_000);
+    const first = computeSourceState({ source: active(), outcome: outcome(health, stat, old), previous: null, now: old });
+    const state = computeSourceState({ source: active(), outcome: outcome(health, stat), previous: first, now: T0 });
+    const verdict = reconcileRun({ states: [state], now: T0, runStartedAt: new Date(T0.getTime() - 3_600_000), systemFailures: [], unexplainedCoverage: [] });
+    expect(verdict.reasons).toHaveLength(1);
+    expect(verdict.reasons[0]).toMatchObject({ reason: 'ANCIENNETE_DEPASSEE', sources: ['maison-vide'] });
+    expect(verdict.reasons[0]!.detail).toContain('preuve de zéro à établir');
+    expect(verdict.reasons[0]!.detail).not.toMatch(/pause|exclusion/);
+  });
 });
+
+describe('D-523 — la mémoire de la source survit à la purge de SourceRun ; le zéro annoncé après des offres se confirme', () => {
+  it('jour 11 : plus aucun run productif dans l’historique, mais des offres en catalogue : la liste complète vide reste non prouvée', () => {
+    const health = evaluateSourceHealth(empty(), null, null, null, { activeStock: 7, lastRunDeclaredEmpty: false });
+    expect(health).toMatchObject({ status: 'BROKEN', finding: 'ZERO_NOT_PROVEN' });
+    expect(health.note).toContain('7 en catalogue');
+    // Les offres fermées par un vrai zéro prouvé, plus rien en catalogue : la même lecture est un zéro prouvé.
+    expect(evaluateSourceHealth(empty(), null, null, null, { activeStock: 0, lastRunDeclaredEmpty: false })).toMatchObject({ status: 'OK' });
+  });
+
+  it(`zéro annoncé après ${ZERO_TO_CONFIRM_MIN} offres : en attente « à confirmer » ; confirmé au RUN suivant : NORMALE`, () => {
+    const stat = empty({ declaredTotal: 0 });
+    const first = evaluateSourceHealth(stat, ZERO_TO_CONFIRM_MIN, null, null, { activeStock: ZERO_TO_CONFIRM_MIN, lastRunDeclaredEmpty: false });
+    expect(first).toMatchObject({ status: 'BROKEN', finding: 'ZERO_ANNOUNCED_TO_CONFIRM' });
+    const waiting = computeSourceState({ source: active(), outcome: outcome(first, stat), previous: null, now: T0 });
+    expect(waiting).toMatchObject({ state: 'EN_ATTENTE', cause: 'ZERO_A_CONFIRMER', trajectory: 'AUTO' });
+    const next = new Date(T0.getTime() + 24 * 3_600_000);
+    const confirmed = evaluateSourceHealth(stat, ZERO_TO_CONFIRM_MIN, null, null, { activeStock: ZERO_TO_CONFIRM_MIN, lastRunDeclaredEmpty: true });
+    expect(confirmed).toMatchObject({ status: 'OK' });
+    expect(computeSourceState({ source: active(), outcome: outcome(confirmed, stat, next), previous: waiting, now: next })).toMatchObject({ state: 'NORMALE' });
+    // Non confirmé : la liste suivante est vide sans total, la source passe « lecteur ».
+    const unconfirmed = empty();
+    const reader = evaluateSourceHealth(unconfirmed, ZERO_TO_CONFIRM_MIN, null, null, { activeStock: ZERO_TO_CONFIRM_MIN, lastRunDeclaredEmpty: true });
+    expect(computeSourceState({ source: active(), outcome: outcome(reader, unconfirmed, next), previous: waiting, now: next })).toMatchObject({ cause: 'LECTEUR' });
+    // Sous le seuil, aucune attente.
+    expect(evaluateSourceHealth(stat, ZERO_TO_CONFIRM_MIN - 1, null, null, { activeStock: 0, lastRunDeclaredEmpty: false })).toMatchObject({ status: 'OK' });
+  });
+});
+

@@ -31,6 +31,9 @@ afterAll(async () => {
 describe('checkSourceHealth', () => {
   it('distingue un catalogue explicitement vide d’un collecteur qui ne retourne rien', async () => {
     await checkSourceHealth(prisma, [stat('declared-empty', 100)]);
+    // D-523 : après au moins dix offres, le zéro annoncé attend la confirmation de l'éditeur au RUN complet suivant.
+    expect((await checkSourceHealth(prisma, [{ ...stat('declared-empty', 0), declaredTotal: 0 }])).incidents[0])
+      .toMatchObject({ status: 'BROKEN', finding: 'ZERO_ANNOUNCED_TO_CONFIRM' });
     const report = await checkSourceHealth(prisma, [{ ...stat('declared-empty', 0), declaredTotal: 0 }]);
     expect(report.broken).toBe(0);
     const latest = await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'declared-empty' }, orderBy: [{ ranAt: 'desc' }, { id: 'desc' }] });
@@ -38,6 +41,20 @@ describe('checkSourceHealth', () => {
     // Un collecteur qui ne rend rien sans démontrer la fin de sa liste : zéro non prouvé, soupçon de lecture (D-523).
     expect((await checkSourceHealth(prisma, [{ ...stat('silent-empty', 0), complete: undefined }])).incidents[0])
       .toMatchObject({ status: 'BROKEN', finding: 'ZERO_NOT_PROVEN' });
+  });
+
+  it('D-523 : un zéro annoncé après dix offres ou plus est à confirmer ; confirmé au RUN suivant, il est sain', async () => {
+    await checkSourceHealth(prisma, [stat('zero-a-confirmer', 12)]);
+    const announced = { ...stat('zero-a-confirmer', 0), declaredTotal: 0 };
+    // Prémisse : un vrai zéro annoncé (total 0, liste complète, rien lu), après 12 offres.
+    expect(announced).toMatchObject({ complete: true, fetched: 0, declaredTotal: 0, errors: 0 });
+    expect((await checkSourceHealth(prisma, [announced])).incidents[0]).toMatchObject({ status: 'BROKEN', finding: 'ZERO_ANNOUNCED_TO_CONFIRM', previous: 12 });
+    expect(await prisma.sourceRun.findFirstOrThrow({ where: { sourceKey: 'zero-a-confirmer' }, orderBy: [{ ranAt: 'desc' }, { id: 'desc' }] }))
+      .toMatchObject({ canAttestAbsence: false });
+    expect((await checkSourceHealth(prisma, [announced])).broken).toBe(0);
+    // Sous dix offres, le zéro annoncé est sain tout de suite (Margaret Howell, Chrome : 1 ou 2 offres).
+    await checkSourceHealth(prisma, [stat('petit-zero', 2)]);
+    expect((await checkSourceHealth(prisma, [{ ...stat('petit-zero', 0), declaredTotal: 0 }])).broken).toBe(0);
   });
 
   it('D-523 : une liste complète vide sans total, sans offre au dernier run productif, est saine et n’atteste rien', async () => {

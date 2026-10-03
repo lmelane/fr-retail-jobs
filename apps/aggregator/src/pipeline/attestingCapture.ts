@@ -25,7 +25,7 @@ import { readExtractionManifest } from '../capture/manifest.js';
 import { readIngestionCompletion } from '../capture/completion.js';
 import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
-import { isDeclaredEmptyEnumeration, isPublisherConfirmedDrop, isTrustedForAttestation } from './attestation.js';
+import { isCompleteEmptyListing, isDeclaredEmptyEnumeration, isPublisherConfirmedDrop, isTrustedForAttestation } from './attestation.js';
 import { splitRejectedRows } from './rejectedRows.js';
 import { lightPassRunIds } from './referenceRuns.js';
 import { isIncrementalResult } from '../lib/incrementalReading.js';
@@ -74,14 +74,18 @@ export function attestationFacts(input: {
   const declaredTotal = input.metadata.declaredTotal ?? null;
   const fetched = input.outputs;
   const declaredEmpty = isDeclaredEmptyEnumeration({ complete: complete ?? undefined, errors, truncated, declaredTotal: declaredTotal ?? undefined, fetched });
-  const status: AttestationFacts['status'] = counts.published === 0 && !declaredEmpty ? 'BROKEN'
+  // D-523 : une liste complète prouvée et vide, sans total, d'une source qui n'avait rien publié, est un zéro prouvé, comme
+  // pour la santé (`health.ts`) ; elle n'atteste rien pour autant (seul un total annoncé à 0 le permet, ci-dessous).
+  const provenEmptyListing = counts.published === 0 && !declaredEmpty && !(previous !== null && previous > 0)
+    && isCompleteEmptyListing({ complete: complete ?? undefined, errors, truncated, declaredTotal: declaredTotal ?? undefined, fetched });
+  const status: AttestationFacts['status'] = counts.published === 0 && !declaredEmpty && !provenEmptyListing ? 'BROKEN'
     : previous === null && !declaredEmpty ? 'NEW'
     : errors > 0 || counts.held > 0 || truncated ? 'DEGRADED' : 'OK';
   // D-484 §2 : une chute que l'éditeur confirme, sur ces mêmes faits scellés, n'est pas un effondrement.
   const confirmedDrop = isPublisherConfirmedDrop({ previous, previousDeclaredTotal, published: counts.published, fetched,
     declaredTotal: declaredTotal ?? undefined, complete: complete ?? undefined, truncated, errors });
   const collapsed = !declaredEmpty && !confirmedDrop && previous !== null && previous > 0 && counts.published < previous * COLLAPSE_SHARE;
-  const canAttestAbsence = (previous !== null || declaredEmpty) && !collapsed && isTrustedForAttestation({
+  const canAttestAbsence = (previous !== null || declaredEmpty) && !collapsed && (counts.published > 0 || declaredEmpty) && isTrustedForAttestation({
     status, complete: complete ?? undefined, errors, truncated, declaredTotal: declaredTotal ?? undefined, fetched, previous,
     published: counts.published, previousDeclaredTotal,
   });
