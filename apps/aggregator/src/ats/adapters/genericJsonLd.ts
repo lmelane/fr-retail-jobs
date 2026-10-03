@@ -517,12 +517,23 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
   const $ = cheerio.load(html);
   const origin = new URL(startUrl).origin;
   const links = new Set<string>();
+  /**
+   * D-522 §6 (03/10/2026) — UNE ANCRE DE LA PAGE DE DÉPART EST LA PAGE DE DÉPART. Lumentee lie ses propres ancres
+   * (`#roles`, `#main`, `#culture`, `#`) : chacune était relue comme une page, et son offre publiée cinq fois sous cinq
+   * identités (l'empreinte de l'adresse). La page de départ, déjà lue, ne l'est plus une seconde fois, sous aucune ancre.
+   * Le fragment d'un lien vers UNE AUTRE page est gardé tel quel : il fait partie de l'identité des offres déjà publiées
+   * (Attaquer : `/pages/careers/garment-technician#role`), et le retirer les republierait sous une autre identité sans
+   * pouvoir fermer les anciennes (liste indémontrable).
+   */
+  const start = new URL(startUrl); start.hash = '';
   $('a[href]').each((_, el) => {
     const href = $(el).attr('href');
     if (!href) return;
     try {
       const url = new URL(href, startUrl);
       if (url.origin !== origin) return;
+      const page = new URL(url.href); page.hash = '';
+      if (page.href === start.href) return;
       if (/job|jobs|career|carriere|carrière|recrutement|vacanc/i.test(url.pathname)) links.add(url.toString());
     } catch { /* ignore */ }
   });

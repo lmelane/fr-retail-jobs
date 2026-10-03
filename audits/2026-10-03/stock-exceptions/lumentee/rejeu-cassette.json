@@ -1,0 +1,27 @@
+{
+ "jobs": 1,
+ "complete": false,
+ "truncated": false,
+ "reading": {
+  "enumerationReading": "NOT_PROVEN",
+  "enumerationUnprovable": "NO_PUBLISHER_LISTING_OR_SITEMAP"
+ },
+ "termination": "LINKS_EXHAUSTED",
+ "issues": [
+  "NO_PUBLISHER_LISTING_OR_SITEMAP",
+  "ENUMERATION_NOT_PROVEN"
+ ],
+ "description200": "0/1",
+ "country": "1/1",
+ "location": "1/1",
+ "sample": [
+  {
+   "id": "4bb39a95a4db7f9e4f033dfbd84837be3c656368",
+   "title": "D2C Growth Marketer",
+   "country": "IN",
+   "location": "Mumbai",
+   "desc": 72,
+   "url": "https://lumentee.com/careers/"
+  }
+ ]
+}

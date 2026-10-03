@@ -1,0 +1,43 @@
+{
+ "jobs": 3,
+ "complete": false,
+ "truncated": false,
+ "reading": {
+  "enumerationReading": "NOT_PROVEN",
+  "enumerationUnprovable": "NO_PUBLISHER_LISTING_OR_SITEMAP"
+ },
+ "termination": "LINKS_EXHAUSTED",
+ "issues": [
+  "NO_PUBLISHER_LISTING_OR_SITEMAP",
+  "ENUMERATION_NOT_PROVEN"
+ ],
+ "description200": "3/3",
+ "country": "3/3",
+ "location": "3/3",
+ "sample": [
+  {
+   "id": "ad5c5c4b4307885a16ad449d1b5d0c56e820f441",
+   "title": "Mid-Weight Graphic Designer",
+   "country": "AU",
+   "location": "Sydney, Australia",
+   "desc": 3242,
+   "url": "https://attaquercycling.com/pages/careers/mid-weight-graphic-designer#role"
+  },
+  {
+   "id": "27647030a71d9eac43eb40502370ec085f3a2a51",
+   "title": "Apparel Graphic Designer",
+   "country": "AU",
+   "location": "Sydney, Australia",
+   "desc": 4661,
+   "url": "https://attaquercycling.com/pages/careers/apparel-graphic-designer#role"
+  },
+  {
+   "id": "2f0ec73442d258200177321fb7d12772ed9d6dd7",
+   "title": "Garment Technician",
+   "country": "AU",
+   "location": "Sydney, Australia",
+   "desc": 4690,
+   "url": "https://attaquercycling.com/pages/careers/garment-technician#role"
+  }
+ ]
+}
