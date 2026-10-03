@@ -49,8 +49,15 @@ function egalesEnTempsConstant(a: string, b: string): boolean {
   return timingSafeEqual(ha, hb);
 }
 
-export type Appelant = 'site' | 'backend';
-const VARIABLE_DE_CLE: Record<Appelant, string> = { site: 'CATALOGUE_API_KEY', backend: 'CATALOGUE_API_KEY_BACKEND' };
+/*
+ * D-522 §5 — UN TROISIÈME APPELANT, LA CONSOLE AGRÉGATEUR (`CATALOGUE_OPS_KEY`). Les routes de pilotage `/api/ops/*`
+ * exposent l'état interne du catalogue (sources, causes, files de revue, parcours d'une offre) : elles ne répondent qu'à
+ * cette clé, détenue par le seul backend, qui la sert derrière `requireAdmin` (`/api/mgmt-sys-catwalks/agregateur/*`).
+ * Une clé dédiée plutôt qu'une portée de `CATALOGUE_API_KEY_BACKEND` : révocable seule, et la fuite de l'une n'ouvre pas
+ * l'autre ; aucune route publique ne l'accepte, aucune route ops n'accepte les deux autres.
+ */
+export type Appelant = 'site' | 'backend' | 'ops';
+const VARIABLE_DE_CLE: Record<Appelant, string> = { site: 'CATALOGUE_API_KEY', backend: 'CATALOGUE_API_KEY_BACKEND', ops: 'CATALOGUE_OPS_KEY' };
 
 /** La clé attendue d'un appelant, ou null si elle n'est pas configurée. */
 export function cleAttendue(appelant: Appelant = 'site'): string | null {

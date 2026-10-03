@@ -85,6 +85,14 @@ test('signed cursor (D-492 reading of 02/10/2026): the API image refuses to star
   delete env.CATALOGUE_CURSEUR_SECRET;
   assert.throws(() => validateRuntime('api', [], env, built, now), /missing binding: CATALOGUE_CURSEUR_SECRET/);
 });
+test('D-522 §5: the API image that declares the console key refuses to start without it, never logs it', () => {
+  const env = fixture('api'); env.CATALOGUE_OPS_KEY = 'ops-credential-not-for-logs-0123456789abcdef';
+  const result = validateRuntime('api', [], env, built, now);
+  assert.ok(result.proof.secretNames.includes('CATALOGUE_OPS_KEY'));
+  assert.ok(!JSON.stringify(result.proof).includes(env.CATALOGUE_OPS_KEY));
+  delete env.CATALOGUE_OPS_KEY;
+  assert.throws(() => validateRuntime('api', [], env, built, now), /missing binding: CATALOGUE_OPS_KEY/);
+});
 test('runtime egress follows pause; source access and SSRF remain in the HTTP layer', () => {
   const before = { profile: process.env.CATWALKS_RUNTIME_PROFILE, pause: process.env.PIPELINE_PAUSED };
   try {

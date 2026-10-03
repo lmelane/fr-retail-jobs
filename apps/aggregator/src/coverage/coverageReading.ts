@@ -288,6 +288,40 @@ export async function readCoverageHistory(db: Db, at: Date): Promise<HistoryRun[
   return [...runs.values()];
 }
 
+/**
+ * D-522 §5 — les offres servies MAINTENANT par Maison canonique et par marché, avec le même filtre et le même regroupement
+ * que l'avant du RUN (`readCoverageBefore`) : la console Agrégateur du back-office les lit ici, jamais par une requête à
+ * elle. `total` : toutes les offres servies (filtre public, pays connu), une fois chacune.
+ */
+export type ServedEntity = { scope: 'MAISON' | 'MARCHE'; key: string; label: string; served: number };
+export async function readServedCoverage(db: Db, at = new Date()): Promise<{ at: Date; total: number; entities: ServedEntity[] }> {
+  const entities = new Entities(await readCompanies(db));
+  let total = 0;
+  for (const row of await servedCells(db, at)) {
+    total += row.n;
+    entities.each({ c: row.c, p: row.p }, e => { e.served += row.n; });
+  }
+  return { at, total, entities: entities.list().filter((e): e is EntityState & { scope: 'MAISON' | 'MARCHE' } => e.scope !== 'SOURCE' && e.key !== '')
+    .map(e => ({ scope: e.scope, key: e.key, label: e.label, served: e.served })) };
+}
+
+/**
+ * D-522 §5 — la dernière photographie de couverture (`CoverageSnapshot`), écrite par la revue de couverture du RUN : une
+ * ligne par Maison, marché ou source qualifiée qui ne sert rien, avec la référence comparée et l'alerte posée. Les Maisons
+ * fusionnées depuis sont suivies vers l'absorbante (comme `readCoverageHistory`). `null` : aucun RUN photographié.
+ */
+export type SnapshotLine = { scope: EntityScope; key: string; label: string; served: number; reference: number | null;
+  cause: string | null; gravity: string | null };
+export async function readLatestCoverageSnapshot(db: Db): Promise<{ takenAt: Date; runId: string | null; rows: SnapshotLine[] } | null> {
+  const rows = await db.$queryRaw<Array<SnapshotLine & { takenAt: Date; runId: string | null }>>`
+    SELECT s."takenAt", s."runId", s.scope, s.key, s.label, s.served, s.reference, s.cause, s.gravity FROM "CoverageSnapshot" s
+    WHERE s."takenAt" = (SELECT max("takenAt") FROM "CoverageSnapshot")`;
+  if (!rows.length) return null;
+  const companies = await readCompanies(db);
+  return { takenAt: rows[0].takenAt, runId: rows[0].runId, rows: rows.map(({ takenAt: _t, runId: _r, ...row }) =>
+    row.scope === 'MAISON' ? { ...row, key: canonicalCompany(companies.merges, row.key) } : row) };
+}
+
 /** Écrit la photographie d'un RUN, d'un bloc. Rejouer le même instant ne duplique rien (unicité instant, portée, clé). */
 export async function writeCoverageSnapshot(prisma: PrismaClient, input: { runId: string | null; takenAt: Date; rows: readonly SnapshotRow[] }): Promise<number> {
   const data = input.rows.map(row => ({ runId: input.runId, takenAt: input.takenAt, scope: row.scope, key: row.key,

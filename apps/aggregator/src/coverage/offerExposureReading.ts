@@ -12,7 +12,7 @@ import { canonicalJobId } from '@catwalks/db';
 import { MARCHES } from '@catwalks/db/marches';
 import { LIGHT_PASS_RUN_COMMAND } from '../pipeline/referenceRuns.js';
 import { CAUSES as SOURCE_CAUSES, intentState, STATE_LABEL as SOURCE_STATE_LABEL, TRAJECTORY_LABEL as SOURCE_TRAJECTORY_LABEL } from '../pipeline/sourceState.js';
-import { pauseDecided } from '../registry/explicitRegistry.js';
+import { pauseDecided } from '../registry/explicitRegistryRead.js';
 import { canonicalCompany, marketLabel, marketOf } from './coverageReading.js';
 import { knownAlpha2 } from '@catwalks/db/iso-alpha2';
 import { classifyCollectionHold, classifyExposure, countVerdict, emptyCounts, trajectory, CAUSE_LABEL, STATE_LABEL, TRAJECTORY_LABEL,

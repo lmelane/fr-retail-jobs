@@ -205,7 +205,7 @@ async function upsertEntry(db: PrismaClient, sourceKey: string, draft: QueueEntr
 
 export type OpenQueueEntry = Awaited<ReturnType<typeof readIdentityQueue>>[number];
 /** La file ouverte, la plus urgente d'abord : escaladées ou échues, puis par offres en jeu. `overdue` se lit à `now`. */
-export async function readIdentityQueue(db: PrismaClient, now = new Date()) {
+export async function readIdentityQueue(db: Pick<PrismaClient, 'employerIdentityQueue'>, now = new Date()) {
   const rows = await db.employerIdentityQueue.findMany({ where: { resolvedAt: null } });
   return rows.map(row => ({ ...row, overdue: row.escalatedAt !== null || now.getTime() >= row.escalateAt.getTime(),
     ageDays: Math.floor((now.getTime() - row.firstSeenAt.getTime()) / (24 * HOUR)) }))

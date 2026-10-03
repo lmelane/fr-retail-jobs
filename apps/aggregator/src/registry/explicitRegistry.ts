@@ -2,7 +2,11 @@ import { Prisma, type PrismaClient } from '@prisma/client';
 import { createHash } from 'node:crypto';
 import { withdrawRetiredSource } from '../pipeline/deactivateSources.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
-import { TRAJECTORIES } from '../pipeline/sourceState.js';
+import { readRegistrySources, SOURCE_INTENTIONS, SOURCE_TRAJECTORIES, STATUS_BASES, STATUSES, type RegistrySource, type SourceIntention,
+  type SourceTrajectory, type Status, type StatusBasis } from './explicitRegistryRead.js';
+
+export { ambiguousSources, pauseDecided, readRegistrySources, SOURCE_INTENTIONS, SOURCE_TRAJECTORIES, STATUS_BASES, type AmbiguousSource,
+  type RegistrySource, type SourceIntention, type SourceTrajectory, type StatusBasis } from './explicitRegistryRead.js';
 
 /**
  * D-520 §2 — LE REGISTRE EXPLICITE : « une source qui n'est pas opérationnelle doit toujours avoir une raison explicite
@@ -22,19 +26,7 @@ import { TRAJECTORIES } from '../pipeline/sourceState.js';
 
 export const REGISTRY_PLAN_KIND = 'registre-explicite/1';
 export const REGISTRY_PREVIEW_KIND = 'registre-explicite-apercu/1';
-/** Ce que le registre veut de la source. */
-export const SOURCE_INTENTIONS = ['COLLECTER', 'COUVERTE_AILLEURS', 'NE_PAS_COLLECTER', 'A_TRANCHER'] as const;
-/** Les quatre sorties de D-520 §2, vocabulaire unique de l'état opérationnel (`pipeline/sourceState.ts`) : AUTO (revient
- * seule), A_REPARER, REVUE_HUMAINE, DECISION (exclusion ou pause décidée). */
-export const SOURCE_TRAJECTORIES = TRAJECTORIES;
-/** Ce qui fonde l'état : une décision (CEO ou propriétaire, datée), une règle validée, ou la seule preuve (aucune décision). */
-export const STATUS_BASES = ['DECISION', 'REGLE', 'PREUVE'] as const;
-const STATUSES = ['DRAFT', 'VALIDATED', 'ACTIVE', 'PAUSED', 'RETIRED'] as const;
 
-export type SourceIntention = typeof SOURCE_INTENTIONS[number];
-export type SourceTrajectory = typeof SOURCE_TRAJECTORIES[number];
-export type StatusBasis = typeof STATUS_BASES[number];
-type Status = typeof STATUSES[number];
 
 export type RegistryEntry = {
   key: string; maison: string; currentStatus: Status; intention: SourceIntention; targetStatus: Status;
@@ -42,13 +34,6 @@ export type RegistryEntry = {
   reviewAt: string | null; question: string | null;
 };
 export type RegistryPlan = { kind: typeof REGISTRY_PLAN_KIND; reviewer: string; observedAt?: string; entries: RegistryEntry[] };
-/** L'état d'une source tel que l'aperçu le lit. */
-export type RegistrySource = {
-  key: string; status: Status; note: string | null; statusIntention: string | null; statusTrajectory: string | null;
-  statusBasis: string | null; statusDecision: string | null; statusReason: string | null; statusNextAction: string | null;
-  statusQuestion: string | null; statusReviewAt: string | null; statusExplainedFor: string | null; statusReviewId: string | null;
-  activeJobs: number;
-};
 export type RegistryRefusal = { key: string; code: 'UNKNOWN_SOURCE' | 'ACTIVE_SOURCE' | 'STATUS_CHANGED' | 'NOT_IN_PLAN'; detail?: string };
 export type RegistryPreview = {
   kind: typeof REGISTRY_PREVIEW_KIND; plan: RegistryPlan; before: RegistrySource[];
@@ -118,47 +103,12 @@ export function previewRegistry(raw: unknown, sources: readonly RegistrySource[]
     hash: registryHash({ plan: normalized, before, retirements, refused }) };
 }
 
-/** Le registre lu, pour l'aperçu : statut, note, explication courante et publications actives. */
-export async function readRegistrySources(db: Prisma.TransactionClient | PrismaClient): Promise<RegistrySource[]> {
-  const rows = await db.$queryRaw<(Omit<RegistrySource, 'activeJobs'> & { activeJobs: bigint })[]>`
-    SELECT s.key, s.status::text AS status, s.note, s."statusIntention", s."statusTrajectory", s."statusBasis",
-           s."statusDecision", s."statusReason", s."statusNextAction", s."statusQuestion",
-           to_char(s."statusReviewAt", 'YYYY-MM-DD') AS "statusReviewAt", s."statusExplainedFor"::text AS "statusExplainedFor",
-           s."statusReviewId",
-           (SELECT count(*) FROM "JobSource" js WHERE js."sourceKey" = s.key AND js."isActive") AS "activeJobs"
-      FROM "Source" s ORDER BY s.key`;
-  return rows.map(r => ({ ...r, activeJobs: Number(r.activeJobs) }));
-}
-
 export async function previewRegistryReview(db: PrismaClient, raw: unknown): Promise<RegistryPreview> {
   validateRegistryPlan(raw);
   return db.$transaction(async tx => {
     await tx.$executeRaw`SET TRANSACTION READ ONLY`;
     return previewRegistry(raw, await readRegistrySources(tx));
   }, { isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead, timeout: 60_000 });
-}
-
-/**
- * Les sources dont l'état n'est pas expliqué : non ACTIVE sans explication, explication d'un autre statut (périmée),
- * ou pause dont la date de réexamen est passée. C'est la mesure de D-520 §2 ; elle doit rendre zéro.
- */
-/**
- * Une pause posée par une décision (fondement DECISION, expliquée pour ce statut) : seule celle-là garde ses offres servies
- * hors du plafond de R-143 §2 (D-485, D-493, D-506). Une pause sans décision, ou pas encore expliquée, suit le masquage.
- */
-export function pauseDecided(source: { status: string; statusBasis: string | null; statusExplainedFor: string | null }) {
-  return source.status === 'PAUSED' && source.statusExplainedFor === 'PAUSED' && source.statusBasis === 'DECISION';
-}
-
-export type AmbiguousSource = { key: string; status: Status; why: 'UNEXPLAINED' | 'STALE_EXPLANATION' | 'REVIEW_OVERDUE' };
-export function ambiguousSources(sources: readonly RegistrySource[], today: string): AmbiguousSource[] {
-  return sources.flatMap((s): AmbiguousSource[] => {
-    if (s.status === 'ACTIVE') return [];
-    if (!s.statusReviewId) return [{ key: s.key, status: s.status, why: 'UNEXPLAINED' }];
-    if (s.statusExplainedFor !== s.status) return [{ key: s.key, status: s.status, why: 'STALE_EXPLANATION' }];
-    if (s.statusReviewAt && s.statusReviewAt < today) return [{ key: s.key, status: s.status, why: 'REVIEW_OVERDUE' }];
-    return [];
-  });
 }
 
 export async function applyRegistryReview(db: PrismaClient, reviewed: unknown) {

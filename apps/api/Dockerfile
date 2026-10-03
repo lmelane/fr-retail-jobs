@@ -10,6 +10,8 @@ COPY apps/aggregator/package.json apps/aggregator/
 RUN npm ci --workspaces --include-workspace-root
 COPY packages/db packages/db
 COPY apps/api apps/api
+# D-522 §5 : les routes de pilotage importent les lecteurs du worker (sources seules ; le bundle n'emporte que ce qui est atteint).
+COPY apps/aggregator/src apps/aggregator/src
 COPY packages/runtime packages/runtime
 COPY docs/operations/railway/runtime-target.json docs/operations/railway/runtime-target.json
 ARG CATWALKS_BUILD_SHA

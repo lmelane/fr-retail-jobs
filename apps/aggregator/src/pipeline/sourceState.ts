@@ -15,7 +15,7 @@
  * remédiation automatique, la réconciliation du registre et le futur écran du back-office doivent s'y brancher, sans
  * redéfinir ces constantes.
  */
-import { isDecidedKnownFailure, isProvenSourceIssue, KNOWN_FAILURE_DECISION, KNOWN_LIST_LIMIT_DECISION, NATIVE_RETENTION, type IngestionIssue } from '../lib/ingestionIssue.js';
+import { isDecidedKnownFailure, isProvenSourceIssue, KNOWN_FAILURE_DECISION, KNOWN_LIST_LIMIT_DECISION, NATIVE_RETENTION, type IngestionIssue } from '../lib/issueRules.js';
 
 export const OPERATIONAL_STATES = ['NORMALE', 'DEGRADEE', 'EN_ATTENTE', 'BLOQUEE', 'EN_PAUSE', 'EXCLUE'] as const;
 export type OperationalState = typeof OPERATIONAL_STATES[number];

@@ -72,7 +72,7 @@ describe('le garde de clé (D-422)', () => {
  * ouverte, et personne ne le verrait. Il ÉCHOUE si une route oublie le garde.
  */
 describe('aucune route ne peut oublier le garde', () => {
-  it('les 13 routes protégées appellent refuserSiCleInvalide, /api/health non (D-422 §3)', () => {
+  it('les 19 routes protégées appellent refuserSiCleInvalide (ou routeOps, qui l’appelle), /api/health non (D-422 §3)', () => {
     const racine = join(__dirname, '..', '..', 'app', 'api');
     const routes: string[] = [];
     const parcourir = (dossier: string) => {
@@ -86,13 +86,15 @@ describe('aucune route ne peut oublier le garde', () => {
 
     // Prémisse : il y a bien 14 routes (dont `/api/marches`, lot 6, `/api/sitemap/emplois`, lot 9, `/api/registre/societes`,
     // D-471, `/api/taxonomie/export` et `/api/metiers/signalements`, lot 2E de D-475, `/api/alertes/examen`, R-130, et
-    // `/api/requetes`, D-501), sinon ce témoin ne teste rien.
-    expect(routes).toHaveLength(14);
+    // `/api/requetes`, D-501), plus les six routes de pilotage `/api/ops/*` (D-522 §5), sinon ce témoin ne teste rien.
+    expect(routes).toHaveLength(20);
 
     for (const chemin of routes) {
       const source = readFileSync(chemin, 'utf8');
       const estSante = chemin.includes('health');
-      expect(source.includes('refuserSiCleInvalide'), `${chemin} : garde ${estSante ? 'interdit' : 'manquant'}`).toBe(!estSante);
+      // Une route de pilotage passe par `routeOps` (lib/ops/lecture.ts), qui appelle le garde avec la seule clé ops.
+      const garde = chemin.includes(`${join('api', 'ops')}`) ? source.includes('routeOps(request') : source.includes('refuserSiCleInvalide');
+      expect(garde, `${chemin} : garde ${estSante ? 'interdit' : 'manquant'}`).toBe(!estSante);
     }
   });
 });
@@ -116,6 +118,41 @@ describe('les routes du backend seul (lot 2E)', () => {
       expect(refuserSiCleInvalide(requete('Bearer cle-du-backend'), 'r', ['backend'])).toBeNull();
     } finally {
       delete process.env.CATALOGUE_API_KEY_BACKEND;
+    }
+  });
+});
+
+/**
+ * D-522 §5 — les routes de pilotage n'admettent que `CATALOGUE_OPS_KEY`, et cette clé n'ouvre aucune autre route.
+ */
+describe('la clé de pilotage (D-522 §5)', () => {
+  it('routeOps n’admet que la clé ops', () => {
+    const source = readFileSync(join(__dirname, '..', 'ops', 'lecture.ts'), 'utf8');
+    expect(source).toMatch(/refuserSiCleInvalide\(request, requestId, \['ops'\]\)/);
+    expect(source).toMatch(/if \(!cleAttendue\('ops'\)\)/);
+  });
+
+  it('aucune autre route ne nomme l’appelant ops', () => {
+    const racine = join(__dirname, '..', '..', 'app', 'api');
+    const parcourir = (dossier: string): string[] => readdirSync(dossier, { withFileTypes: true }).flatMap(e =>
+      e.isDirectory() ? parcourir(join(dossier, e.name)) : e.name === 'route.ts' ? [join(dossier, e.name)] : []);
+    for (const chemin of parcourir(racine).filter(c => !c.includes(join('api', 'ops'))))
+      expect(readFileSync(chemin, 'utf8'), chemin).not.toMatch(/'ops'/);
+  });
+
+  it('la clé ops est refusée par les routes du site et du backend, et les leurs par le pilotage', () => {
+    process.env.CATALOGUE_API_KEY = 'cle-du-site';
+    process.env.CATALOGUE_API_KEY_BACKEND = 'cle-du-backend';
+    process.env.CATALOGUE_OPS_KEY = 'cle-du-pilotage';
+    try {
+      expect(refuserSiCleInvalide(requete('Bearer cle-du-pilotage'), 'r')!.status).toBe(401);
+      expect(refuserSiCleInvalide(requete('Bearer cle-du-pilotage'), 'r', ['backend'])!.status).toBe(401);
+      expect(refuserSiCleInvalide(requete('Bearer cle-du-site'), 'r', ['ops'])!.status).toBe(401);
+      expect(refuserSiCleInvalide(requete('Bearer cle-du-backend'), 'r', ['ops'])!.status).toBe(401);
+      expect(refuserSiCleInvalide(requete('Bearer cle-du-pilotage'), 'r', ['ops'])).toBeNull();
+    } finally {
+      delete process.env.CATALOGUE_API_KEY_BACKEND;
+      delete process.env.CATALOGUE_OPS_KEY;
     }
   });
 });

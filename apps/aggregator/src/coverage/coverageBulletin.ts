@@ -12,7 +12,7 @@ import { ANOMALY, CAUSE_GRAVITY, newAlerts, REFERENCE_RUNS, MIN_REFERENCE_RUNS, 
   type CoverageEvaluation, type CoverageFinding, type Gravity } from './coverageAlert.js';
 import type { MaskedStock } from './coverageReading.js';
 import type { Indicator } from './loopIndicators.js';
-import type { AmbiguousSource } from '../registry/explicitRegistry.js';
+import type { AmbiguousSource } from '../registry/explicitRegistryRead.js';
 import { exposureLines, type ExposureSummary } from './offerExposure.js';
 
 const NUMBER = new Intl.NumberFormat('fr-FR');

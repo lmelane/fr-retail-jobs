@@ -52,8 +52,15 @@ const nextConfig = {
   env: { CATWALKS_SCHEMA_MIGRATIONS: JSON.stringify(schemaMigrations) },
   // La stack locale (NEXT_DIST_DIR=.next-stack) construit à côté du `.next` d'un serveur de développement.
   distDir: process.env.NEXT_DIST_DIR || '.next',
-  // The shared db package ships TypeScript, so Next must compile it.
-  transpilePackages: ['@catwalks/db'],
+  // The shared db package ships TypeScript, so Next must compile it. D-522 §5 : les routes `/api/ops/*` lisent par les
+  // lecteurs du worker (`@catwalks/aggregator/src/…`, modules sans capture ni navigateur, témoin `ops-frontiere.test.ts`).
+  transpilePackages: ['@catwalks/db', '@catwalks/aggregator'],
+  // Le worker écrit ses imports en ESM Node (`./sourceState.js` pour `sourceState.ts`) : webpack doit essayer le `.ts`
+  // d'abord. Un paquet qui livre vraiment du `.js` le garde (repli dans l'ordre).
+  webpack(config) {
+    config.resolve.extensionAlias = { ...config.resolve.extensionAlias, '.js': ['.ts', '.tsx', '.js'], '.mjs': ['.mts', '.mjs'] };
+    return config;
+  },
   // Railway builds from the repo root; standalone keeps the image small.
   output: 'standalone',
   outputFileTracingRoot: new URL('../..', import.meta.url).pathname,
