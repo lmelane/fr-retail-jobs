@@ -148,7 +148,8 @@ export async function fetchSmartRecruitersJobs(config: Record<string, unknown>):
     }
     // Une API qui ignorerait `offset` ressert la première page : l'écho le dit avant même le compte des identifiants.
     if (page.offset !== undefined && page.offset !== offset) offsetMismatch = true;
-    listPages.push({ index: offset / PAGE_SIZE, total: page.totalFound, rows: content.length });
+    // Le rang vient de l'écho de la source quand elle le sert : la contiguïté se juge alors sur ce qu'elle dit avoir servi.
+    listPages.push({ index: (page.offset ?? offset) / PAGE_SIZE, total: page.totalFound, rows: content.length });
     pageEvidence.push({ url: `${endpoint}?limit=${PAGE_SIZE}&offset=${offset}`, checkedAt: captureObservedAt().toISOString(),
       sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset,
       pagination: page.totalFound === undefined ? null : { start: offset, end: offset + content.length, total: page.totalFound },
