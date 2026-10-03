@@ -3,14 +3,14 @@
   "key": "army-logic",
   "maison": "Army Logic",
   "currentStatus": "RETIRED",
-  "intention": "COLLECTER",
+  "intention": "NE_PAS_COLLECTER",
   "targetStatus": "RETIRED",
-  "trajectory": "A_REPARER",
+  "trajectory": "DECISION",
   "basis": "REGLE",
   "decision": "Précédent madame-figaro ; D58 (rattacher le tenant à son employeur réel)",
   "reason": "Tenant Lever hypebeast (17 offres le 03/10 : Hypemaker, HBX, Hypegolf) ; hypebeast.com/jobs lie jobs.lever.co/hypebeast. La nouvelle source Hypebeast est refusée à l'enregistrement : tenantKey lever:hypebeast détenue par army-logic RETIRED (sourceCandidate.ts), et aucun outil relu ne libère la clé d'une fiche retirée.",
-  "nextAction": "Outil relu (inspection puis --ecrire) qui renomme la tenantKey d'une fiche RETIRED, sur le modèle de declarer-portail-groupe.mts ; puis source-add --key=hypebeast --name=Hypebeast (toutes marques) --kind=lever --careers-url=https://jobs.lever.co/hypebeast --official-domain=hypebeast.com --tier=ATS_OFFICIAL --setting=site=hypebeast.",
-  "reviewAt": "2026-10-16",
+  "nextAction": "Couverte par une autre source, à construire : la source Hypebeast (Lever hypebeast, identité prouvée par hypebeast.com/jobs), après un outil relu qui libère la tenantKey lever:hypebeast de cette fiche retirée (inspection puis --ecrire, modèle declarer-portail-groupe.mts) ; puis source-add --key=hypebeast --reviewer=assistant-d522. Ce canal n'est jamais rouvert.",
+  "reviewAt": null,
   "question": null
  },
  {
